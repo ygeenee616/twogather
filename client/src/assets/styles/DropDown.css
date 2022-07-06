@@ -1,4 +1,20 @@
 /* 드롭다운 */
+.show-menu{
+  width: 376px;
+  height: 500px;
+  position: absolute;
+  left: 0px;
+  transition: 1s;
+  }
+  
+  .hide-menu{
+  width: 376px;
+  height: 500px;
+  position: absolute;
+  left: -376px;
+  transition: 1s;
+  }
+
 @keyframes slide-fade-in-dropdown-animation {
   0% {
     transform: translateY(-100%);

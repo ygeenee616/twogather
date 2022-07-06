@@ -7,6 +7,7 @@ import './../assets/styles/DropDown.css';
 SelectRoom.defaultProps = {
   "rooms" : [
     {
+      "id" : 1,
       "title" : "ROOM1",
       "pay" : 2000,
       "image" : "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165499379_cb3435826a2e97ca0881d27c3809abd2.jpg?type=m&w=900&h=900&autorotate=true&quality=90",
@@ -14,6 +15,7 @@ SelectRoom.defaultProps = {
       "people" : 3,
     },
     {
+      "id" : 2,
       "title" : "ROOM2",
       "pay" : 2500,
       "image" : "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165656778_49d6c018a651d91bab751a4f642e438f.jpg?type=m&w=900&h=900&autorotate=true&quality=90",
@@ -21,15 +23,14 @@ SelectRoom.defaultProps = {
       "people" : 4,
     },
     {
+      "id" : 3,
       "title" : "ROOM3",
       "pay" : 3100,
       "image" : "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165656779_ae06739167b0424f0a2995ff7e5825a5.jpg?type=m&w=900&h=900&autorotate=true&quality=90",
       "roomType" : "회의실",
       "people" : 6,
     }
-
-  ]
-    
+  ]    
 }
 
 export default function SelectRoom({rooms}) {
@@ -39,7 +40,7 @@ export default function SelectRoom({rooms}) {
   return (
     <RoomList>
       <p>세부 공간 선택</p>
-      <DropDownBtn onClick={e => setDropdownVisibility(!dropdownVisibility)}>
+      <DropDownBtn onClick={() => setDropdownVisibility(!dropdownVisibility)}>
         상세 설명 보기
       </DropDownBtn>
       
@@ -47,8 +48,8 @@ export default function SelectRoom({rooms}) {
         return (
         <div key={i}>
           <RoomItem>
-            <input type="radio" id="select" name="room" className={item.title}
-            onClick={e => console.log(e.target.className)}/>
+            <input type="radio" id="select" name="room" value={item.id}
+            onClick={e => console.log(e.target.value)}/>
             <RoomLabel>
               <span>{item.title}</span>
               <span>시간당 {item.pay}</span>
