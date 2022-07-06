@@ -3,7 +3,6 @@ import Dropdown from "./Dropdown";
 import styled from "styled-components";
 import './../assets/styles/DropDown.css';
 
-
 SelectRoom.defaultProps = {
   "rooms" : [
     {
@@ -75,7 +74,7 @@ const RoomList = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width : 250px;
+  width : 100%;
   border: solid #8DAEF2;
   border-width: 3px 1px;
   border-radius: 10px;
