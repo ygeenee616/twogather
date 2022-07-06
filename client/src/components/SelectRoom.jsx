@@ -76,8 +76,7 @@ const RoomList = styled.div`
   justify-content: center;
   width : 100%;
   border: solid #8DAEF2;
-  border-width: 3px 1px;
-  border-radius: 10px;
+  border-width: 3px 0;
   font-size: 0.8rem;
 `
 
