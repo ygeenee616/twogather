@@ -19,7 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "client": "cd ../client && npm start",
-    "concur": "concurrently --kill-others-on-fail \"npm run client\" \"npm run start\""
+    "concur": "concurrently --kill-others-on-fail \"npm run client\" \"nest start --watch\""
   },
   "dependencies": {
     "@nestjs/common": "^8.1.1",
