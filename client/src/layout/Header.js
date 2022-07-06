@@ -23,6 +23,49 @@ const Search = () => {
   );
 };
 
+const HostPage = () => {
+  return (
+    <TextWrap>
+      <a href="/">공간등록 및 관리</a>
+    </TextWrap>
+  );
+};
+
+const Notice = () => {
+  return (
+    <TextWrap style={{ marginLeft: "30vw" }}>
+      <a href="/">공지사항</a>
+    </TextWrap>
+  );
+};
+
+const Login = () => {
+  return (
+    <TextWrap>
+      <a href="/">로그인</a>
+    </TextWrap>
+  );
+};
+
+const Logout = () => {
+  return (
+    <TextWrap>
+      <a href="/">로그아웃</a>
+    </TextWrap>
+  );
+};
+
+const TextWrap = styled.div`
+  margin-left: 2vw;
+  a {
+    text-decoration: none;
+    color: black;
+    font-size: 1.5vw;
+    font-weight: bold;
+    cursor: pointer;
+  }
+`;
+
 const LogoWrap = styled.div`
   display: flex;
   .logoImg {
@@ -65,6 +108,8 @@ export default function Header() {
     <HeaderWrap>
       <Logo />
       <Search />
+      <Notice />
+      <Login />
     </HeaderWrap>
   );
 }
