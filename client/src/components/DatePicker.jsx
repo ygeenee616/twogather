@@ -4,7 +4,6 @@ import { ko } from "date-fns/esm/locale";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./../assets/styles/DatePicker.css";
-
 // CSS Modules, react-datepicker-cssmodules.css
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
@@ -47,9 +46,9 @@ export function MyTimePicker() {
   };
 
   useEffect(() => {
-    console.log(timeToString(startTime),
-    timeToString(endTime))
+    console.log(timeToString(startTime), timeToString(endTime))
   }, [startTime, endTime])
+
 
   return (
     <span className="timePicker">
@@ -81,4 +80,3 @@ export function MyTimePicker() {
       </span>
   )
 }
-

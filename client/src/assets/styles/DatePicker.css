@@ -5,7 +5,7 @@
 .react-datepicker {
   border-radius: 0.2rem;
   font-size: 0.7rem;
-  margin: 10px 0;
+  padding: 10px 5px;
   border: none;
 }
 
@@ -45,11 +45,11 @@
   color: #FFF;
 }
 
-.react-datepicker-wrapper, input{
+.react-datepicker-wrapper, .react-datepicker-wrapper input{
   width: 100px;
 }
 
-input {
+.react-datepicker-wrapper input {
   border: 2px solid #8DAEF2;
   border-radius: 5px;
   text-align: center;
@@ -59,4 +59,5 @@ input {
   width: 250px;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
