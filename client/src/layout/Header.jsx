@@ -3,9 +3,9 @@ import styled from "styled-components";
 import logoImg from "../assets/images/logo.png";
 import searchIcon from "../assets/images/searchIcon.PNG";
 
-const Logo = () => {
+export const Logo = ({ className }) => {
   return (
-    <LogoWrap>
+    <LogoWrap className={className}>
       <img className="logoImg" src={logoImg} alt="logo" />
       <div className="logoTitle">TWOGATHER</div>
     </LogoWrap>
@@ -33,7 +33,7 @@ const HostPage = () => {
 
 const Notice = () => {
   return (
-    <TextWrap style={{ marginLeft: "30vw" }}>
+    <TextWrap style={{ marginLeft: "27vw" }}>
       <a href="/">공지사항</a>
     </TextWrap>
   );
@@ -106,7 +106,7 @@ const HeaderWrap = styled.div`
 export default function Header() {
   return (
     <HeaderWrap>
-      <Logo />
+      <Logo className="headerLogo" />
       <Search />
       <Notice />
       <Login />
