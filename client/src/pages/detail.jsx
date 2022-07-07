@@ -43,7 +43,7 @@ const DetailContainer = styled.div`
 `
 
 const LeftContainer = styled.div`
-  width: 70%;
+  width: 60%;
   display: flex;
   flex-direction: column;
   align-items: center;
