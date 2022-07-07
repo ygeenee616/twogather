@@ -19,6 +19,7 @@ const CategoryButton = ({ img, title }) => {
 
 const ButtonWrap = styled.button`
   all: unset;
+  cursor: pointer;
   .imgWrap {
     width: 7vw;
     height: 7vw;
@@ -26,6 +27,7 @@ const ButtonWrap = styled.button`
     border-radius: 35%;
     text-align: center;
     line-height: 6.5vw;
+    transition: all 0.6s;
   }
   img {
     width: 5vw;
@@ -39,7 +41,7 @@ const ButtonWrap = styled.button`
   }
   &:hover {
     .imgWrap {
-      box-shadow: 7px 7px 7px #d9d9d9;
+      box-shadow: 5px 5px 5px #d9d9d9;
     }
   }
 `;
