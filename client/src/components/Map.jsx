@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import styled from 'styled-components';
 
 Map.defaultProps = {
-  place: "성수낙낙",
-  address: "서울특별시 성동구 성수2가3동 광나루로6길 49",
+  place: "스튜디오 709",
+  address: "서울 서초구 강남대로65길 12",
 }
 
 export default function Map({place, address}) {
@@ -52,7 +52,7 @@ export default function Map({place, address}) {
 }
 
 const CustomMap = styled.div`
-  width: 500px;
+  width: 100%;
   height: 300px;
   border-radius: 10px;
 `

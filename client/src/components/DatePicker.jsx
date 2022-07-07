@@ -52,8 +52,6 @@ export function MyTimePicker() {
 
   return (
     <span className="timePicker">
-      <p>예약 시간: </p>
-      
       <DatePicker
         locale={ko}
         selected={startTime}

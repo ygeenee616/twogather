@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const Container = styled.div`
-  max-width: 60%;
+  max-width: 100%;
 `;
 
 const StyledSlider = styled(Slider)`

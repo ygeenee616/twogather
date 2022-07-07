@@ -6,44 +6,63 @@ import Map from "../components/Map";
 import SelectRoom from "../components/SelectRoom";
 import { MyDatePicker, MyTimePicker } from "../components/DatePicker";
 import Button from '../components/Button';
+import ToTop from "../components/ToTop";
 
+Detail.defaultProps = {
+  title: "스튜디오 709"
+}
 
-export default function Detail() {
+export default function Detail({title}) {
   const [person, setPerson] = useState(0);
 
   return (
-    <DetailContainer>
-      <LeftContainer>
-        <ImageSlider />
-        <TabContainer>
-          <Tab />
-          <Map />
-        </TabContainer>
-      </LeftContainer>
+    <FullContainer>
+      <Header>[{title}]</Header>
+      <DetailContainer>
+        
+        <LeftContainer>
+          <ImageSlider />
+          <TabContainer>
+            <Tab />
+            <Map />
+          </TabContainer>
+        </LeftContainer>
 
-      <RightContainer>
-        <SelectRoom />
-        <MyDatePicker />
-        <MyTimePicker />
-        <Personnel>
-          예약 인원:
-          <input type='number' value={person}
-          onChange={(e) => setPerson(e.target.value)}/>
-          명
-        </Personnel>
-        <Button text="예약하기" />
-      </RightContainer>
-    </DetailContainer>
+        <RightContainer>
+          <SelectRoom />
+          <MyDatePicker />
+          <MyTimePicker />
+          <Personnel>
+            예약 인원:
+            <input type='number' value={person}
+            onChange={(e) => setPerson(e.target.value)}/>
+            명
+          </Personnel>
+          <Button text="예약하기" />
+        </RightContainer>
+        <ToTop />
+      </DetailContainer>
+    </FullContainer>
   )
 }
 
+const FullContainer = styled.div`
+  max-width: 100%;
+  margin: 0 15%;
+`
+
+const Header = styled.p`
+  font-size: 2.5rem;
+  font-weight: bold;
+`
+
 const DetailContainer = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
 `
 
 const LeftContainer = styled.div`
-  width: 60%;
+  width: 70%;
   display: flex;
   flex-direction: column;
   align-items: center;
