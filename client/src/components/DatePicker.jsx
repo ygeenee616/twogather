@@ -52,31 +52,33 @@ export function MyTimePicker() {
 
   return (
     <span className="timePicker">
-        <DatePicker
-          locale={ko}
-          selected={startTime}
-          onChange={(date) => setStartTime(date)}
-          filterTime={filterPassedTime}
-          showTimeSelect
-          showTimeSelectOnly
-          timeIntervals={60}
-          timeCaption="시간"
-          dateFormat="aa hh시"
-        />
+      <p>예약 시간: </p>
+      
+      <DatePicker
+        locale={ko}
+        selected={startTime}
+        onChange={(date) => setStartTime(date)}
+        filterTime={filterPassedTime}
+        showTimeSelect
+        showTimeSelectOnly
+        timeIntervals={60}
+        timeCaption="시간"
+        dateFormat="aa hh시"
+      />
 
-        <pre className="bookInfo"> ~ </pre>
+      <p className="bookInfo"> ~ </p>
 
-        <DatePicker
-          locale={ko}
-          selected={endTime}
-          onChange={(date) => setEndTime(date)}
-          filterTime={filterPassedTime}
-          showTimeSelect
-          showTimeSelectOnly
-          timeIntervals={60}
-          timeCaption="시간"
-          dateFormat="aa hh시"
-        />
-      </span>
+      <DatePicker
+        locale={ko}
+        selected={endTime}
+        onChange={(date) => setEndTime(date)}
+        filterTime={filterPassedTime}
+        showTimeSelect
+        showTimeSelectOnly
+        timeIntervals={60}
+        timeCaption="시간"
+        dateFormat="aa hh시"
+      />
+    </span>
   )
 }
