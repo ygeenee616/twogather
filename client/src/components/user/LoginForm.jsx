@@ -24,7 +24,6 @@ function LoginForm() {
         </div>
         <ContentsDiv>
           <LoginDiv className="login-form">
-            <LoginInput>
               <input
                 type="email"
                 className="email"
@@ -35,7 +34,6 @@ function LoginForm() {
                 className="password"
                 placeholder="패스워드"
               ></input>
-            </LoginInput>
             <LoginButton>LOGIN</LoginButton>
           </LoginDiv>
 
@@ -68,38 +66,31 @@ function LoginForm() {
 
 const LoginDiv = styled.form`
   display: flex;
-  flex-direction: row;
-  margin: 1rem;
-  height: 8rem;
-`;
-
-const LoginInput = styled.div`
-  display: flex;
   flex-direction: column;
-  padding: 1.5rem 0.5rem;
+  margin: 2rem 1rem 0;
 
   input {
-    width: 10rem;
+    width: 15rem;
     padding: 0.6rem;
+    margin:  0.6rem;
     border: solid #d9d9d9;
     border-radius: 10px;
-    + input {
-      margin: 1.5rem 0;
-    }
   }
 `;
 
+
+
 const LoginButton = styled.button`
-  padding: 2.5rem 0.5rem;
+  height: 3rem;
+  width: 17rem;
+  margin: 2rem 0.5rem 0;
+  border-radius: 10px;
   background-color: #bbd3f2;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   color: white;
   font-weight: bold;
   border: none;
-  border-radius: 10px;
-  width: 6em;
-  height: 7rem;
-  margin: 1.2rem 0.5rem;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+
   :hover {
     box-shadow: none;
   }
