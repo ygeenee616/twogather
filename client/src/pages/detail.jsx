@@ -68,6 +68,8 @@ const Personnel = styled.div`
   justify-content: space-between;
 
   & > input {
+    width: 50%;
+    max-height: 22px;
     border: 2px solid #8DAEF2;
     border-radius: 5px;
     text-align: center;
