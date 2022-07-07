@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from 'styled-components';
 import ImageSlider from "../components/ImageSlider";
 import Tab from '../components/Tab';
+import Map from "../components/Map";
 import SelectRoom from "../components/SelectRoom";
 import { MyDatePicker, MyTimePicker } from "../components/DatePicker";
 import Button from '../components/Button';
@@ -14,7 +15,10 @@ export default function Detail() {
     <DetailContainer>
       <LeftContainer>
         <ImageSlider />
-        <Tab />
+        <TabContainer>
+          <Tab />
+          <Map />
+        </TabContainer>
       </LeftContainer>
 
       <RightContainer>
@@ -50,6 +54,12 @@ const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`
+
+const TabContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 `
 
 const Personnel = styled.div`
