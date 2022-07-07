@@ -1,19 +1,23 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Container, ContentsDiv, FormDiv, FormTitle, UserBtn, Line } from "./UserForm";
 import { validateEmail } from "../../assets/utils/usefulFunction";
 
 function RegisterForm() {
+
+  const navigate = useNavigate();
+  const params = useParams();
+
   return (
     <Container>
       <FormDiv>
         <FormTitle>회원가입</FormTitle>
         <div>
-          <UserBtn value="USER" clicked>
+          <UserBtn value="USER" onClick={()=> navigate('/register/user')} clicked={params.userType === 'user'}>
             USER
           </UserBtn>
-          <UserBtn value="HOST">HOST</UserBtn>
+          <UserBtn value="HOST" onClick={()=> navigate('/register/host')} clicked={params.userType === 'host'}>HOST</UserBtn>
         </div>
         <ContentsDiv>
           <SocialRegisterDiv>
@@ -144,10 +148,9 @@ const RegisterBtn = styled.button`
   color: white;
   font-weight: bold;
   border: none;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
 
   :hover {
-    box-shadow: none;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   }
 `;
 

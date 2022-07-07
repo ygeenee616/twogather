@@ -57,11 +57,10 @@ export const UserBtn = styled.button`
 
     `
       : ` background-color: #D9D9D9;
-      box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
     `}
 
   :hover {
-    box-shadow: none;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
   }
 `;
 

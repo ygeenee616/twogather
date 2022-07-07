@@ -1,5 +1,8 @@
-import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from 'react-redux';
+
+import { validateEmail } from "../../assets/utils/usefulFunction";
 import styled from "styled-components";
 import {
   Container,
@@ -8,22 +11,28 @@ import {
   FormTitle,
   UserBtn,
 } from "./UserForm";
-import { validateEmail } from "../../assets/utils/usefulFunction";
+
 
 function LoginForm() {
+
+  const navigate = useNavigate();
+  const params = useParams();
+
+
   return (
     <Container>
       <FormDiv>
         <FormTitle>로그인</FormTitle>
 
         <div>
-          <UserBtn value="USER" clicked>
+        <UserBtn value="USER" onClick={()=> navigate('/login/user')} clicked={params.userType === 'user'}>
             USER
-          </UserBtn>
-          <UserBtn value="HOST">HOST</UserBtn>
+        </UserBtn>
+        <UserBtn value="HOST" onClick={()=> navigate('/login/host')} clicked={params.userType === 'host'}>HOST</UserBtn>
         </div>
         <ContentsDiv>
           <LoginDiv className="login-form">
+            <LoginInputDiv>
               <input
                 type="email"
                 className="email"
@@ -34,8 +43,10 @@ function LoginForm() {
                 className="password"
                 placeholder="패스워드"
               ></input>
+            </LoginInputDiv>
             <LoginButton>LOGIN</LoginButton>
           </LoginDiv>
+
 
           <SocialLoginDiv>
             <SocialLoginBtn className="kakao-login">
@@ -51,7 +62,7 @@ function LoginForm() {
           <LoginFooterDiv>
             <tr>
               <QuestionTD>회원이 아니신가요?</QuestionTD>
-              <LinkTD>회원가입</LinkTD>
+              <LinkTD><a onClick={() => { navigate('/register/user')}}>회원가입</a></LinkTD>
             </tr>
             <tr>
               <QuestionTD>비밀번호를 잊으셨나요?</QuestionTD>
@@ -66,33 +77,35 @@ function LoginForm() {
 
 const LoginDiv = styled.form`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   margin: 2rem 1rem 0;
 
   input {
-    width: 15rem;
+    width: 11rem;
     padding: 0.6rem;
-    margin:  0.6rem;
+    margin:  0.6rem 0.4rem;
     border: solid #d9d9d9;
     border-radius: 10px;
   }
 `;
 
-
+const LoginInputDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+`
 
 const LoginButton = styled.button`
-  height: 3rem;
-  width: 17rem;
-  margin: 2rem 0.5rem 0;
+  height: 7rem;
+  width: 6rem;
+  margin: 0.2rem 0.2rem;
   border-radius: 10px;
   background-color: #bbd3f2;
   color: white;
   font-weight: bold;
   border: none;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
 
   :hover {
-    box-shadow: none;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
   }
 `;
 
@@ -105,7 +118,6 @@ const SocialLoginDiv = styled.div`
 const SocialLoginBtn = styled.button`
   display: flex;
   flex-direction: row;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
   height: 3rem;
   width: 8rem;
   background-color: white;
@@ -115,7 +127,7 @@ const SocialLoginBtn = styled.button`
   margin: 1.5rem 0.5rem;
 
   :hover {
-    box-shadow: none;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
   }
 
   img {
