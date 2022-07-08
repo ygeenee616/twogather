@@ -6,16 +6,14 @@ import RegisterForm from "./pages/RegisterForm";
 import MyPage from "./pages/MyPage";
 
 function App() {
-
-
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
+          {/* 
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register/:userType" element={<RegisterForm />} />
           <Route path="/myPage" element={<MyPage/>}/>
-          {/* <Route path="/myPage" element={<MyPage />} />
           <Route path="/myPage/addReview" element={<AddReview />} />
 
           <Route path="/notice" element={<Notice />} />
@@ -43,7 +41,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="*" element={<NotFound />} /> */}
         </Routes>
-      </BrowserRouter> 
+      </BrowserRouter>
     </div>
   );
 }
