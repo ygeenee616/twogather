@@ -1,4 +1,4 @@
-import { useScript } from "../../assets/utils/usefulFunction";
+import { useScript } from "./usefulFunction";
 
 
 function kakaoLogin() {

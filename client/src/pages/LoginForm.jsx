@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
-import { validateEmail, useScript } from "../../assets/utils/usefulFunction";
+import { validateEmail, useScript } from "../assets/utils/usefulFunction";
 import styled from "styled-components";
 import {
   Container,
@@ -10,7 +10,7 @@ import {
   FormDiv,
   FormTitle,
   UserBtn,
-} from "./UserForm";
+} from "../components/UserForm";
 
 
 function LoginForm() {

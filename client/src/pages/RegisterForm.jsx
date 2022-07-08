@@ -1,8 +1,8 @@
 import { useState } from "react";
 import {  useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { Container, ContentsDiv, FormDiv, FormTitle, UserBtn, Line } from "./UserForm";
-import { validateEmail,validatePassword, } from "../../assets/utils/usefulFunction";
+import { Container, ContentsDiv, FormDiv, FormTitle, UserBtn, Line } from "../components/UserForm";
+import { validateEmail,validatePassword, } from "../assets/utils/usefulFunction";
 
 function RegisterForm() {
 
