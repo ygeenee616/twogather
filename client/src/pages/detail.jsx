@@ -50,7 +50,7 @@ export default function Detail({title, hashTag}) {
             onChange={(e) => setPerson(e.target.value)}/>
             명
           </Personnel>
-          <Link to='/book'><Button>예약하기</Button></Link>
+          <Button><Link to='/book' className="move">예약하기</Link></Button>
         </RightContainer>
 
         <ToTop />
@@ -143,9 +143,13 @@ const Button = styled.button`
   border-radius: 10px;
   border: none;
   background: #8DAEF2;
-  color: #fff;
 
   &:hover {
     box-shadow: 2px 2px 5px -1px #A6A9B6;
+  }
+
+  & .move {
+    text-decoration: none;
+    color: #fff;
   }
 `
