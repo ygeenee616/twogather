@@ -1,5 +1,5 @@
 import React from "react";
-import styled from 'styled-components';
+import styled from "styled-components";
 import { FiAlertCircle } from "react-icons/fi";
 
 Modal.defaultProps = {
