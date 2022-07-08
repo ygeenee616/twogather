@@ -1,5 +1,5 @@
 import React from "react";
-import styled from 'styled-components';
+import styled from "styled-components";
 
 PostBookInfo.defaultProps = {
   placeName: "스튜디오 709",

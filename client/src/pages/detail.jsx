@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled from 'styled-components';
+import styled from "styled-components";
 import { Link } from "react-router-dom";
 import ImageSlider from "../components/detail/ImageSlider";
 import Map from "../components/detail/Map";
@@ -38,6 +38,7 @@ Detail.defaultProps = {
   ]
 }
 
+// 탭 스크롤 함수
 function changeTab(props) {
   const thisContent = document.querySelector(`.${props}`);
   thisContent.scrollIntoView({behavior: 'smooth', block: 'center'})

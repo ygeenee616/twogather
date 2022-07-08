@@ -1,5 +1,5 @@
 import React from "react";
-import styled from 'styled-components';
+import styled from "styled-components";
 
 PostPayInfo.defaultProps = {
   date: "2022-07-08",
