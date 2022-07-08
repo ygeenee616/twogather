@@ -1,12 +1,14 @@
 import styled from "styled-components";
-import MyProfile from "../components/user/MyProfile";
-import MyReservation from "../components/user/MyReservation"
+import MyProfile from "../components/mypage/MyProfile";
+import MyReservation from "../components/mypage/MyReservation"
+import MyQnA from "../components/mypage/MyQnA";
 
 function MyPage() {
   return (
     <Container>
       <MyProfile></MyProfile>
       <MyReservation></MyReservation>
+      <MyQnA></MyQnA>
     </Container>
   );
 }
@@ -14,13 +16,11 @@ function MyPage() {
 
 export const Container = styled.div`
   display: flex;
-  felx-direction: column;
+  flex-direction: column;
   justify-content: center;
-  
+  position: relative; 
+  top: 5rem;
 `;
 
-const PageTitle = styled.div`
-  color: #a8c1e8;
-`;
 
 export default MyPage;

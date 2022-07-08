@@ -9,7 +9,7 @@ function MyProfile() {
         <ProfileImgEditBtn>프로필 수정</ProfileImgEditBtn>
       </ProfileImgDiv>
       <ProfileInfo>
-        <tr><Nickname> 닉네임 </Nickname></tr>
+        <tr> <Nickname colSpan='2'>닉네임</Nickname>  </tr>
         <tr>
           <InfoTag>이메일</InfoTag>
           <InfoTD>duck@naver.com</InfoTD>
@@ -72,28 +72,36 @@ const ProfileInfo = styled.table`
   border-collapse: collapse;
   border-spacing: 0;
 
+
   tr {
+    width: 100%;
     height: 1rem;
   }
 `
 
-const Nickname = styled.span`
+const Nickname = styled.td`
   font-size: 2rem;
   font-weight: bold;
+  text-align: left;
 
 `
 
 const InfoTag = styled.td`
+  font-size: 1rem;
   color: #505050;
-  width: 8rem;
+  width: 10rem;
   text-align: left;
 `
 
 const InfoTD = styled.td`
+  font-size: 1rem;
   width: 20rem;
   text-align: left;
   height: 1rem;
-
+  
+  a {
+    text-decoration: underline;
+  }
 `
 
 export default MyProfile;
