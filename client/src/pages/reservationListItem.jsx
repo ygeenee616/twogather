@@ -51,9 +51,11 @@ const ItemList = styled.div`
 const Item = styled.div`
   background-color: white;
   font-size: 1rem;
-  line-height: 3.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  height: 50%;
+  height: 3.4rem;
   margin: 0;
 `;
 
@@ -61,6 +63,7 @@ const ButtonBox = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 5px;
 `;
 

@@ -83,8 +83,10 @@ function AdminPage() {
     <Main>
       <SpaceForm>
         <InputBox>
-          공간 정보를 입력해주세요
-          <Hr></Hr>
+          <Title>
+            공간 정보를 입력해주세요
+            <Hr></Hr>
+          </Title>
         </InputBox>
         <InputBox>
           <StyledLabel>공간명</StyledLabel>
@@ -208,7 +210,6 @@ const Main = styled.div`
 `;
 
 const SpaceForm = styled.form`
-  margin: 0 auto;
   margin-top: 100px;
   width: 100%;
   height: 100%;
@@ -217,6 +218,7 @@ const SpaceForm = styled.form`
 //////////////////////////////////////////////////
 const StyledLabel = styled.div`
   color: #8daef2;
+  text-align: start;
   font-family: system-ui;
   margin-bottom: 10px;
   font-size: 1rem;
@@ -245,6 +247,8 @@ const StyledTextArea = styled.textarea`
 
 const InputBox = styled.div`
   padding: 10px;
+
+  text-align: start;
   width: 80%;
   margin: 0 auto;
 `;
@@ -290,6 +294,13 @@ const StyledButton = styled.button`
   :hover {
     background-color: black;
   }
+`;
+
+const Title = styled.h1`
+  color: #8daef2;
+  text-align: center;
+
+  
 `;
 
 const ButtonBox = styled.div`
