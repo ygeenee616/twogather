@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import partyIcon from "../assets/images/partyIcon.PNG";
 import studyIcon from "../assets/images/studyIcon.PNG";
@@ -7,8 +8,13 @@ import danceIcon from "../assets/images/danceIcon.PNG";
 import cameraIcon from "../assets/images/cameraIcon.PNG";
 
 const CategoryButton = ({ img, title }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/list/${title}`);
+  };
   return (
-    <ButtonWrap>
+    <ButtonWrap onClick={handleClick}>
       <div className="imgWrap">
         <img src={img} alt={title} />
       </div>
@@ -48,7 +54,7 @@ const ButtonWrap = styled.button`
 
 const CategoryWrap = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
 `;
 
 export default function Category() {

@@ -25,12 +25,12 @@ const RecomTitle = styled.div`
 `;
 
 const RecomWrap = styled.div`
-  margin: 10vh 10vw;
+  margin: 10vh 0;
 `;
 
 const CardWrap = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 `;
 
 export default function Recommendation() {

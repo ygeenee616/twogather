@@ -10,7 +10,7 @@ const productTags = (tag) => {
     resultStr += tag[i];
   }
   if (resultStr.length >= 20) {
-    for (let i = 0; i <= 19; i++) {
+    for (let i = 0; i <= 18; i++) {
       result += resultStr[i];
     }
     result += "···";
@@ -19,8 +19,8 @@ const productTags = (tag) => {
 };
 
 const SubTag = styled.span`
-  color: #a0a0a0;
-  font-size: 0.8vw;
+  color: #777;
+  font-size: 0.7vw;
 `;
 
 const CardWrap = styled.button`
@@ -29,9 +29,11 @@ const CardWrap = styled.button`
   display: flex;
   flex-direction: column;
   width: 19vw;
-  margin: 0.5vw;
   overflow: hidden;
   border: 1px solid #bfbfbf;
+  & + & {
+    margin-left: 1.1vw;
+  }
   &:hover {
     .productImg {
       transform: scale(1.1, 1.1);
@@ -40,7 +42,7 @@ const CardWrap = styled.button`
 `;
 
 const ProductImg = styled.img`
-  width: 19vw;
+  width: 100%;
   transition: all 0.5s;
 `;
 
@@ -58,11 +60,11 @@ const Title = styled.span`
   color: black;
   margin: 0.5vh 0;
   font-weight: bold;
-  font-size: 1.1vw;
+  font-size: 1vw;
 `;
 
 const Price = styled.span`
-  color: #8daef2;
+  color: #5155a6;
   font-size: 1.3vw;
   font-weight: 800;
 `;
@@ -83,7 +85,7 @@ export default function ProductCard({
       <ProductInfo>
         <Line>
           <SubTag>{productTags(tag)}</SubTag>
-          <img src={reviewImg} style={{ width: "1vw", marginLeft: "1.1vw" }} />
+          <img src={reviewImg} style={{ width: "1vw", marginLeft: "auto" }} />
           <SubTag>{review}</SubTag>
         </Line>
         <Line>
