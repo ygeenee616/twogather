@@ -7,6 +7,12 @@ import Book from './pages/Book';
 function App() {
   return (
     <div className="App">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/detail/" element={<Detail />} />
+          <Route path="/book" element={<Book />} />
+        </Routes>
+      </BrowserRouter>
       {/* <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginForm />} />
