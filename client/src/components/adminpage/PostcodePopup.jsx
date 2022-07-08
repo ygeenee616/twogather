@@ -3,6 +3,7 @@ import { useDaumPostcodePopup } from "react-daum-postcode";
 import styled from "styled-components";
 const PostcodePopup = () => {
   const open = useDaumPostcodePopup();
+  
   const [state, setState] = useState({
     myFullAddress: "",
     myPersonalAddress: "",
@@ -53,7 +54,6 @@ const PostcodePopup = () => {
             ...state,
             myPersonalAddress: e.target.value,
           });
-          console.log(state);
         }}
         placeholder={state.myExtraAddress}
       ></StyledInput>

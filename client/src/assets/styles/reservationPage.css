@@ -2,26 +2,23 @@
   border: 1px solid pink;
   background-color: lightblue;
 }
-.items {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-
-  width: 90%;
-
-  row-gap: 10px;
-  gap: 10px;
-  min-width: 1000px;
-}
 
 .header {
-  background-color: lemonchiffon;
-  font-size: 3vh;
+  background-color: white;
+  font-size: 1rem;
+  line-height: 55px;
   text-align: center;
+  height: 64px;
+
+  margin: 0;
+}
+.header:last-child {
+  border-right: none;
 }
 
 .list {
-  background-color: black;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1fr 2fr 1fr 1fr 2fr 1fr 1.2fr;
+  border-bottom: 2px solid #8daef2;
   column-gap: 3px;
 }
