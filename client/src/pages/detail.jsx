@@ -38,6 +38,7 @@ Detail.defaultProps = {
   ]
 }
 
+// 탭 스크롤 함수
 function changeTab(props) {
   const thisContent = document.querySelector(`.${props}`);
   thisContent.scrollIntoView({behavior: 'smooth', block: 'center'})
