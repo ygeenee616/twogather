@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from 'styled-components';
+import DetailHeader from "../components/DetailTitle";
 import ImageSlider from "../components/ImageSlider";
 import Tab from '../components/Tab';
 import Map from "../components/Map";
@@ -8,16 +9,13 @@ import { MyDatePicker, MyTimePicker } from "../components/DatePicker";
 import Button from '../components/Button';
 import ToTop from "../components/ToTop";
 
-Detail.defaultProps = {
-  title: "스튜디오 709"
-}
 
 export default function Detail({title}) {
   const [person, setPerson] = useState(0);
 
   return (
     <FullContainer>
-      <Header>[{title}]</Header>
+      <DetailHeader />
       <DetailContainer>
         
         <LeftContainer>
@@ -48,12 +46,9 @@ export default function Detail({title}) {
 
 const FullContainer = styled.div`
   max-width: 100%;
-  margin: 0 15%;
-`
-
-const Header = styled.p`
-  font-size: 2.5rem;
-  font-weight: bold;
+  margin: 5% 15%;
+  display: flex;
+  flex-direction: column;
 `
 
 const DetailContainer = styled.div`
@@ -78,7 +73,6 @@ const RightContainer = styled.div`
 const TabContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
 `
 
 const Personnel = styled.div`

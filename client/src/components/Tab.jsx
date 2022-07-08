@@ -74,7 +74,6 @@ export default function Tab({contents}) {
 
 const Container = styled.div`
   width: 100%;
-  margin: 20px 0;
   margin: 30px 0;
 `
 
@@ -110,6 +109,7 @@ const TabContent = styled.div`
   padding: 20px;
   white-space: pre-wrap;
   font-size: 0.9rem;
+  text-align: left;
 
   & + div {
     border-top: 2px solid #BBD3F2;
