@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import Dropdown from "./Dropdown";
 import styled from "styled-components";
 import './../../assets/styles/DropDown.css';
+import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 
 SelectRoom.defaultProps = {
   "rooms" : [
@@ -40,7 +41,7 @@ export default function SelectRoom({rooms}) {
     <RoomList>
       <p>세부 공간 선택</p>
       <DropDownBtn onClick={() => setDropdownVisibility(!dropdownVisibility)}>
-        상세 설명 보기
+        상세 설명 보기 { dropdownVisibility ? <HiChevronUp /> : <HiChevronDown />}   
       </DropDownBtn>
       
       {rooms.map((item, i) => {
@@ -90,7 +91,7 @@ const DropDownBtn = styled.p`
 const RoomItem = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   font-size: 0.7rem;
   border-top: 2px solid #8DAEF2;
 
@@ -104,4 +105,5 @@ const RoomItem = styled.div`
 const RoomLabel = styled.div`
   display: flex;
   flex-direction: column;
+  text-align: left;
 `

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Detail from './pages/Detail';
 import Book from './pages/Book';
+import Modal from './components/Modal'
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Routes>
           <Route path="/detail/" element={<Detail />} />
           <Route path="/book" element={<Book />} />
+          <Route path="/" element={<Modal />} />
         </Routes>
       </BrowserRouter>
       {/* <BrowserRouter>

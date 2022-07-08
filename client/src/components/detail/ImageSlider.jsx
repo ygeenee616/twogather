@@ -27,6 +27,7 @@ export default function ImageSlider({images}) {
   console.log(images)
   return (
     <Container>
+      <div>
       <StyledSlider {...settings}>
         {images.map(image => {
           return (
@@ -36,6 +37,7 @@ export default function ImageSlider({images}) {
           );
         })}
       </StyledSlider>
+      </div>
     </Container>
   );
 }

@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
 import ImageSlider from "../components/detail/ImageSlider";
 import Tab from '../components/detail/Tab';
 import Map from "../components/detail/Map";
 import SelectRoom from "../components/detail/SelectRoom";
 import { MyDatePicker, MyTimePicker } from "../components/detail/DatePicker";
 import ToTop from "../components/ToTop";
+
 
 Detail.defaultProps = {
   title: "스튜디오 709",
@@ -27,10 +29,11 @@ export default function Detail({title, hashTag}) {
         })}
         </div>
       </DetailHeader>
+
       <DetailContainer>
         
         <LeftContainer>
-          <ImageSlider />
+        <ImageSlider />
           <TabContainer>
             <Tab />
             <Map />
@@ -47,8 +50,9 @@ export default function Detail({title, hashTag}) {
             onChange={(e) => setPerson(e.target.value)}/>
             명
           </Personnel>
-          <Button>예약하기</Button>
+          <Link to='/book'><Button>예약하기</Button></Link>
         </RightContainer>
+
         <ToTop />
       </DetailContainer>
     </FullContainer>
@@ -89,9 +93,6 @@ const DetailContainer = styled.div`
 
 const LeftContainer = styled.div`
   width: 70%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 `
 
 const RightContainer = styled.div`
