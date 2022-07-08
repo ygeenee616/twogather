@@ -2,7 +2,7 @@ import React, { useState, memo } from "react";
 import styled from "styled-components";
 import { ImBin } from "react-icons/im";
 import { RiEdit2Fill } from "react-icons/ri";
-function ReservationListItem({ item }) {
+function BookListItem({ item }) {
   const { booker, bookMembers, bookedRoom, price, phoneNumber, date } = item;
   console.log(item);
   return (
@@ -110,4 +110,4 @@ const Button = styled.div`
   }
 `;
 
-export default ReservationListItem;
+export default BookListItem;

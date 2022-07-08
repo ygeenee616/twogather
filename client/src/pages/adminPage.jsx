@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
 import "../assets/styles/adminPage.css";
 import styled from "styled-components";
-import Postcode from "../components/adminpage/Postcode";
-import PostcodePopup from "../components/adminpage/PostcodePopup";
+import Postcode from "../components/adminComponents/Postcode";
+import PostcodePopup from "../components/adminComponents/PostcodePopup";
 
 function AdminPage() {
   const [imageSrc, setImageSrc] = useState("");

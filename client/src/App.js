@@ -1,7 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import AddSpace from "./pages/adminPage";
-import HostBookList from "./pages/hostBookList";
+import HostBookList from "./pages/hostBookListPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 
