@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import Dropdown from "./Dropdown";
 import styled from "styled-components";
-import './../assets/styles/DropDown.css';
+import './../../assets/styles/DropDown.css';
 
 SelectRoom.defaultProps = {
   "rooms" : [

@@ -2,6 +2,7 @@ import logo from "./logo.svg";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Detail from './pages/Detail';
+import Book from './pages/Book';
 
 function App() {
   return (

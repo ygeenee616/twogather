@@ -1,21 +1,32 @@
 import React, { useState } from "react";
 import styled from 'styled-components';
-import DetailHeader from "../components/DetailHeader";
-import ImageSlider from "../components/ImageSlider";
-import Tab from '../components/Tab';
-import Map from "../components/Map";
-import SelectRoom from "../components/SelectRoom";
-import { MyDatePicker, MyTimePicker } from "../components/DatePicker";
-import Button from '../components/Button';
+import ImageSlider from "../components/detail/ImageSlider";
+import Tab from '../components/detail/Tab';
+import Map from "../components/detail/Map";
+import SelectRoom from "../components/detail/SelectRoom";
+import { MyDatePicker, MyTimePicker } from "../components/detail/DatePicker";
 import ToTop from "../components/ToTop";
 
+Detail.defaultProps = {
+  title: "스튜디오 709",
+  hashTag: ["스튜디오", "촬영대관"]
+}
 
-export default function Detail({title}) {
+export default function Detail({title, hashTag}) {
   const [person, setPerson] = useState(0);
 
   return (
     <FullContainer>
-      <DetailHeader />
+      <DetailHeader>
+        <Title>[{title}]</Title>
+        <div style={{margin: "20px 0"}}>
+        {hashTag.map((tag, i) => {
+          return (
+            <HashTag key={i}># {tag}</HashTag>
+          )
+        })}
+        </div>
+      </DetailHeader>
       <DetailContainer>
         
         <LeftContainer>
@@ -36,7 +47,7 @@ export default function Detail({title}) {
             onChange={(e) => setPerson(e.target.value)}/>
             명
           </Personnel>
-          <Button text="예약하기" />
+          <Button>예약하기</Button>
         </RightContainer>
         <ToTop />
       </DetailContainer>
@@ -46,9 +57,29 @@ export default function Detail({title}) {
 
 const FullContainer = styled.div`
   max-width: 100%;
-  margin: 5% 15%;
+  margin: 5% 10%;
   display: flex;
   flex-direction: column;
+`
+const DetailHeader = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`
+
+const Title = styled.div`
+  font-weight: bold;
+  font-size: 2.5rem;
+`
+
+const HashTag = styled.span`
+  display: inline-block;
+  background-color: #9BA3EB;
+  color: white;
+  border-radius: 20px;
+  padding: 0 5px;
+  margin-right: 10px;
 `
 
 const DetailContainer = styled.div`
@@ -101,5 +132,19 @@ const Personnel = styled.div`
   /* Firefox */
   & > input[type=number] {
     -moz-appearance: textfield;
+  }
+`
+
+const Button = styled.button`
+  width: 100%;
+  padding: 5px;
+  margin: 20px 0;
+  border-radius: 10px;
+  border: none;
+  background: #8DAEF2;
+  color: #fff;
+
+  &:hover {
+    box-shadow: 2px 2px 5px -1px #A6A9B6;
   }
 `

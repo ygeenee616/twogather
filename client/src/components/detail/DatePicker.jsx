@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 
 import "react-datepicker/dist/react-datepicker.css";
-import "./../assets/styles/DatePicker.css";
+import "./../../assets/styles/DatePicker.css";
 // CSS Modules, react-datepicker-cssmodules.css
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
