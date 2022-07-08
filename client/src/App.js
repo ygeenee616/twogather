@@ -12,9 +12,10 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register/:userType" element={<RegisterForm />} />
-        <Route path="/myPage" element={<MyPage />} />
+        <Route path="/myPage" element={<MyPage />} /> 
       </Routes>
     </Router>
+   
   );
 }
 

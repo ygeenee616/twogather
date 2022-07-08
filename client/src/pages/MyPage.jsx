@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import MyProfile from "../components/user/MyProfile";
+import MyReservation from "../components/user/MyReservation"
 
 function MyPage() {
   return (
     <Container>
       <MyProfile></MyProfile>
+      <MyReservation></MyReservation>
     </Container>
   );
 }
