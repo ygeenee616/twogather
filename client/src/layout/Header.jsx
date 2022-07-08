@@ -39,7 +39,7 @@ const HostPage = () => {
 
 const Notice = () => {
   return (
-    <TextWrap style={{ marginLeft: "30vw" }}>
+    <TextWrap style={{ marginLeft: "27vw" }}>
       <a href="/">공지사항</a>
     </TextWrap>
   );
@@ -113,7 +113,7 @@ const HeaderWrap = styled.div`
 export default function Header() {
   return (
     <HeaderWrap>
-      <Logo />
+      <Logo className="headerLogo" />
       <Search />
       <Notice />
       <Login />
