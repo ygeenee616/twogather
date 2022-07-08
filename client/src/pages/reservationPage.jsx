@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import "../assets/styles/reservationPage.css";
 import ReservationListItem from "./reservationListItem";
 function reservationPage() {
   const data = [
@@ -44,16 +43,15 @@ function reservationPage() {
         </ReservationHeader>
 
         <ReservationForm>
-          <div className="list">
-            <div className="header">예약자</div>
-            <div className="header">예약방</div>
-            <div className="header">예약인원</div>
-            <div className="header">예약금액</div>
-            <div className="header">전화번호</div>
-            <div className="header">예약시간</div>
-            <div className="header">관리</div>
-          </div>
-          {/* <ReservationListItem items={data}></ReservationListItem> */}
+          <List>
+            <Header>예약자</Header>
+            <Header>예약방</Header>
+            <Header>예약인원</Header>
+            <Header>예약금액</Header>
+            <Header>전화번호</Header>
+            <Header>예약시간</Header>
+            <Header>관리</Header>
+          </List>
           {data.map((item) => {
             return <ReservationListItem item={item}></ReservationListItem>;
           })}
@@ -88,6 +86,7 @@ const ReservationForm = styled.div`
 
   width: 100%;
   height: 100%;
+  padding-bottom: 0;
 `;
 
 const TitleName = styled.div`
@@ -97,10 +96,35 @@ const TitleName = styled.div`
 const Title = styled.span`
   font-size: 1.2rem;
   line-height: 35px;
+  margin: 10px;
 `;
 
 const RoomName = styled.span`
-  font-size: 1.4rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #8daef2;
+`;
+
+const Header = styled.div`
+  background-color: white;
+  font-size: 1.2rem;
+  line-height: 2.4rem;
+  text-align: center;
+  height: 3rem;
+  font-weight: bold;
+
+  margin: 0;
+
+  &:last-child {
+    border-right: none;
+  }
+`;
+
+const List = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 2fr 1fr 1.2fr;
+  border-bottom: 2px solid #8daef2;
+  column-gap: 3px;
 `;
 
 export default reservationPage;
