@@ -1,5 +1,4 @@
-import React, {useState} from "react";
-import Dropdown from "./Dropdown";
+import React, {useState, useEffect} from 'react';
 import styled from "styled-components";
 import './../../assets/styles/DropDown.css';
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
@@ -32,6 +31,30 @@ SelectRoom.defaultProps = {
     }
   ]    
 }
+
+// 드롭다운 컴포넌트
+export function Dropdown(props) {
+  const [visibilityAnimation, setVisibilityAnimation] = useState(false);
+  const [repeat, setRepeat] = useState(null);
+
+  useEffect(() => {
+      if (props.visibility) {
+          clearTimeout(repeat);
+          setRepeat(null);
+          setVisibilityAnimation(true);
+      } else {
+          setRepeat(setTimeout(() => {
+              setVisibilityAnimation(false);
+          }, 400));
+      }
+  }, [props.visibility]);
+
+  return (
+      <article className={`components-dropdown ${props.visibility ? 'slide-fade-in-dropdown' : 'slide-fade-out-dropdown'}`}>
+          { visibilityAnimation && props.children }
+      </article>
+  )
+};
 
 export default function SelectRoom({rooms}) {
 
