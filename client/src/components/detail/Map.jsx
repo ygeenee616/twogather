@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import styled from 'styled-components';
+import styled from "styled-components";
 
 Map.defaultProps = {
   place: "스튜디오 709",

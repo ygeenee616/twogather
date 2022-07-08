@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled from 'styled-components';
+import styled from "styled-components";
 import { Link } from "react-router-dom";
 import ImageSlider from "../components/detail/ImageSlider";
 import Map from "../components/detail/Map";
