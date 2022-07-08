@@ -12,13 +12,21 @@ const Slide = styled.div`
   margin-bottom: 3vh;
 `;
 
+const ButtonWrap = styled.div`
+  display: flex;
+  margin: 0 15%;
+  flex-direction: column;
+`;
+
 export default function Home() {
   return (
     <div>
       <Header />
       <Slide>slide</Slide>
-      <Category />
-      <Recommendation />
+      <ButtonWrap>
+        <Category />
+        <Recommendation />
+      </ButtonWrap>
       <Footer />
     </div>
   );

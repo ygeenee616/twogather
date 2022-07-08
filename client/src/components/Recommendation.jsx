@@ -25,12 +25,17 @@ const RecomTitle = styled.div`
 `;
 
 const RecomWrap = styled.div`
-  margin: 10vh 10vw;
+  margin: 10vh 0;
 `;
 
 const CardWrap = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  button {
+    & + button {
+      margin-left: 1vw;
+    }
+  }
 `;
 
 export default function Recommendation() {
@@ -39,6 +44,7 @@ export default function Recommendation() {
     for (let i = 1; i <= 4; i++) {
       result.push(
         <ProductCard
+          className="recomCard"
           src={exData.src}
           tag={exData.tag}
           title={exData.title}
