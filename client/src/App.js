@@ -1,4 +1,7 @@
 import logo from "./logo.svg";
+import "./App.css";
+import AdminPage from "./pages/adminPage";
+import ReservationPage from "./pages/reservationPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 
