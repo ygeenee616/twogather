@@ -9,9 +9,8 @@ function App() {
 
   return (
     <Router>
-      {/* <Header /> */}
       <Routes>
-        <Route path="/login/:userType" element={<LoginForm />} />
+        <Route path="/login" element={<LoginForm />} />
         <Route path="/register/:userType" element={<RegisterForm />} />
       </Routes>
     </Router>

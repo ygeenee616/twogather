@@ -10,32 +10,32 @@ export const FormDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-item: center;
-  top: 10rem;
   position: absolute;
   width: 20rem;
+  top: 5rem;
   height: wrap-content;
   border: none;
-  border-radius: 10px;
   text-align: center;
 `;
+
 export const ContentsDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-item: center;
   position: absolute;
   width: 20rem;
-  top: 5rem;
+  padding: 3rem 0 0;
   height: wrap-content;
   border: 1px solid #bbd3f2;
-  border-top: none;
   border-radius: 10px;
+  top: 3rem;
   text-align: center;
 `;
 
 export const FormTitle = styled.div`
   color: #bbd3f2;
   font-weight: bold;
-  margin: 0.2rem 1rem;
+  margin: 0.2rem 2rem;
   text-align: left;
   font-size: 2rem;
 `;

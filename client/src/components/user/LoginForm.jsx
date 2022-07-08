@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
-import { validateEmail } from "../../assets/utils/usefulFunction";
+import { validateEmail, useScript } from "../../assets/utils/usefulFunction";
 import styled from "styled-components";
 import {
   Container,
@@ -19,29 +19,31 @@ function LoginForm() {
   const params = useParams();
 
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] =useState("")
+
+
   return (
     <Container>
       <FormDiv>
-        <FormTitle>로그인</FormTitle>
-
-        <div>
-        <UserBtn value="USER" onClick={()=> navigate('/login/user')} clicked={params.userType === 'user'}>
-            USER
-        </UserBtn>
-        <UserBtn value="HOST" onClick={()=> navigate('/login/host')} clicked={params.userType === 'host'}>HOST</UserBtn>
-        </div>
-        <ContentsDiv>
+      
+        <ContentsDiv >
+          <FormTitle>로그인</FormTitle>
           <LoginDiv className="login-form">
             <LoginInputDiv>
               <input
                 type="email"
                 className="email"
                 placeholder="이메일"
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
               ></input>
               <input
                 type="password"
                 className="password"
                 placeholder="패스워드"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
               ></input>
             </LoginInputDiv>
             <LoginButton>LOGIN</LoginButton>
