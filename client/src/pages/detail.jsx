@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from 'styled-components';
-import DetailHeader from "../components/DetailTitle";
+import DetailHeader from "../components/DetailHeader";
 import ImageSlider from "../components/ImageSlider";
 import Tab from '../components/Tab';
 import Map from "../components/Map";
