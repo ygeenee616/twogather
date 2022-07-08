@@ -44,13 +44,13 @@ function RegisterForm() {
       
       <FormDiv>
         <FormTitle>회원가입</FormTitle>
-        <div>
-          <UserBtn value="USER" onClick={()=> navigate('/register/user')} clicked={params.userType === 'user'}>
-            USER
-          </UserBtn>
-          <UserBtn value="HOST" onClick={()=> navigate('/register/host')} clicked={params.userType === 'host'}>HOST</UserBtn>
-        </div>
         <ContentsDiv>
+            <div>
+              <UserBtn value="USER" onClick={()=> navigate('/register/user')} clicked={params.userType === 'user'}>
+                USER
+              </UserBtn>
+              <UserBtn value="HOST" onClick={()=> navigate('/register/host')} clicked={params.userType === 'host'}>HOST</UserBtn>
+            </div>
           <SocialRegisterDiv>
             <SocialRegisterBtn className="kakao" onClick={()=>handleKakaoLogin()}>
               <img src="/images/kakaoLogo.png" alt="KAKAO" />

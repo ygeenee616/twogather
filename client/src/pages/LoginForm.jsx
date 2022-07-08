@@ -142,13 +142,13 @@ const SocialLoginBtn = styled.button`
 const LoginFooterDiv = styled.table`
   border: none;
   margin: 1.5rem;
-
+  font-size: 0.8rem;
   border-spacing: 0 10px;
 `;
 
 const QuestionTD = styled.td`
   text-align: left;
-  color: #d9d9d9;
+  color: #909090;
 `;
 const LinkTD = styled.td`
   text-align: right;

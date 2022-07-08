@@ -1,18 +1,24 @@
 import styled from "styled-components";
-import MyProfile from "../components/MyProfile";
+import MyProfile from "../components/user/MyProfile";
 
 function MyPage() {
   return (
-    <div>
-      <PageTitle> 마이페이지 </PageTitle>
+    <Container>
       <MyProfile></MyProfile>
-    </div>
+    </Container>
   );
 }
+
+
+export const Container = styled.div`
+  display: flex;
+  felx-direction: column;
+  justify-content: center;
+  
+`;
 
 const PageTitle = styled.div`
   color: #a8c1e8;
 `;
-
 
 export default MyPage;

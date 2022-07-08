@@ -12,7 +12,7 @@ export const FormDiv = styled.div`
   align-item: center;
   position: absolute;
   width: 20rem;
-  top: 5rem;
+  top: 3rem;
   height: wrap-content;
   border: none;
   text-align: center;
@@ -24,21 +24,20 @@ export const ContentsDiv = styled.div`
   align-item: center;
   position: absolute;
   width: 20rem;
-  padding: 3rem 0 0;
   height: wrap-content;
   border: 1px solid #bbd3f2;
   border-radius: 10px;
-  top: 3rem;
+  top: 5rem;
   text-align: center;
 `;
 
 export const FormTitle = styled.div`
   color: #bbd3f2;
   font-weight: bold;
-  margin: 0.2rem 2rem;
+  margin: 2rem;
   text-align: left;
   font-size: 2rem;
-`;
+`
 
 // 버튼안의 값: props로 value 값(USER / HOST) 넘겨받기
 // 클릭된 버튼: 클릭 -> 디렉토리 /user 또는 /host로 -> clicked props 넘겨받기
@@ -49,6 +48,7 @@ export const UserBtn = styled.button`
   width: 50%;
   border: none;
   border-radius: 10px;
+  color: #505050;
 
   value: ${(props) => props.value};
   ${(props) =>
