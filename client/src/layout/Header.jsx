@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logoImg from "../assets/images/logo.png";
 import searchIcon from "../assets/images/searchIcon.PNG";
 
-export const Logo = ({ className }) => {
+const Logo = () => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/");
+  };
   return (
-    <LogoWrap className={className}>
+    <LogoWrap onClick={handleClick}>
       <img className="logoImg" src={logoImg} alt="logo" />
       <div className="logoTitle">TWOGATHER</div>
     </LogoWrap>
@@ -68,6 +74,7 @@ const TextWrap = styled.div`
 
 const LogoWrap = styled.div`
   display: flex;
+  cursor: pointer;
   .logoImg {
     width: 2vw;
   }

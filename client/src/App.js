@@ -1,10 +1,21 @@
 import logo from "./logo.svg";
+import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
+import Detail from './pages/Detail';
+import Book from './pages/Book';
+import Modal from './components/Modal'
 
 function App() {
   return (
     <div className="App">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/detail/" element={<Detail />} />
+          <Route path="/book" element={<Book />} />
+          <Route path="/" element={<Modal />} />
+        </Routes>
+      </BrowserRouter>
       {/* <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginForm />} />
