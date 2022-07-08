@@ -62,6 +62,14 @@ const renderData = ({ offset, limit }) => {
     ));
 };
 
+const Selector = ({ about, clickEvent }) => {
+  return (
+    <SelectButton onClick={clickEvent}>
+      <About>{about}</About>
+    </SelectButton>
+  );
+};
+
 export default function ProductList() {
   const [page, setPage] = useState(1);
   const limit = 12;
@@ -70,6 +78,12 @@ export default function ProductList() {
     <div>
       <Header />
       <BottomWrap>
+        <SelectorWrap>
+          <Selector about="카테고리" />
+          <Selector about="지역" />
+          <Selector about="날짜" />
+          <Selector about="필터 초기화" />
+        </SelectorWrap>
         <ProductWrap>{renderData({ offset, limit })}</ProductWrap>
         <div>
           <Pagination
@@ -93,4 +107,32 @@ const ProductWrap = styled.div`
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   gap: 1vw;
+`;
+
+const SelectButton = styled.button`
+  all: unset;
+  width: 13vw;
+  height: 5vh;
+  margin: 1vh 0 6vh 0;
+  border: 1px solid #8daef2;
+  border-radius: 10px;
+  cursor: pointer;
+  & + & {
+    margin-left: 1vw;
+  }
+  &:nth-child(4) {
+    width: 9vw;
+    margin-left: auto;
+    div {
+      margin: 0;
+      text-align: center;
+    }
+  }
+`;
+const SelectorWrap = styled.div`
+  display: flex;
+`;
+const About = styled.div`
+  color: #8daef2;
+  margin-left: 10%;
 `;
