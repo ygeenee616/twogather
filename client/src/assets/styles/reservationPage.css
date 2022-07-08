@@ -1,0 +1,27 @@
+.listItem {
+  border: 1px solid pink;
+  background-color: lightblue;
+}
+.items {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+
+  width: 90%;
+
+  row-gap: 10px;
+  gap: 10px;
+  min-width: 1000px;
+}
+
+.header {
+  background-color: lemonchiffon;
+  font-size: 3vh;
+  text-align: center;
+}
+
+.list {
+  background-color: black;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 3px;
+}
