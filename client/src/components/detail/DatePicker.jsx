@@ -51,7 +51,8 @@ export function MyTimePicker() {
 
 
   return (
-    <span className="timePicker">
+    <div className="timePicker">
+
       <DatePicker
         locale={ko}
         selected={startTime}
@@ -61,10 +62,10 @@ export function MyTimePicker() {
         showTimeSelectOnly
         timeIntervals={60}
         timeCaption="시간"
-        dateFormat="aa hh시"
+        dateFormat="HH시 부터"
       />
 
-      <p className="bookInfo"> ~ </p>
+      <span className="bookInfo"> ~ </span>
 
       <DatePicker
         locale={ko}
@@ -75,8 +76,8 @@ export function MyTimePicker() {
         showTimeSelectOnly
         timeIntervals={60}
         timeCaption="시간"
-        dateFormat="aa hh시"
+        dateFormat="HH시 까지"
       />
-    </span>
+    </div>
   )
 }

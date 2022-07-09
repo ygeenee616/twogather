@@ -1,12 +1,8 @@
-* {
-  box-sizing: border-box;
-}
-
 .react-datepicker {
   border-radius: 0.2rem;
   font-size: 0.7rem;
   padding: 10px 5px;
-  margin-top: 20px;
+  margin: 20px 0;
   border: none;
 }
 
@@ -51,8 +47,8 @@
   color: #FFF;
 }
 
-.react-datepicker-wrapper, .react-datepicker-wrapper input{
-  width: 100px;
+.react-datepicker-wrapper, .react-datepicker-wrapper input {
+  width: 90%;
 }
 
 .react-datepicker-wrapper input {
@@ -66,4 +62,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.bookInfo {
+  text-align: center;
 }

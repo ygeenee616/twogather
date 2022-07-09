@@ -213,6 +213,7 @@ const Personnel = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  margin: 10px 0;
 
   & > input {
     width: 50%;
@@ -241,7 +242,6 @@ const Personnel = styled.div`
 const Button = styled.button`
   width: 100%;
   padding: 5px;
-  margin: 20px 0;
   border-radius: 10px;
   border: none;
   background: #8DAEF2;
