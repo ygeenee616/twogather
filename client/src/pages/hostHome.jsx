@@ -1,9 +1,14 @@
 import React, { useState, memo } from "react";
 import styled from "styled-components";
 import Chart from "../components/chart";
-import { ImUser } from "react-icons/im";
+import { Routes, Route, BrowserRouter, Link } from "react-router-dom";
 import userLogo from "../assets/images/user.png";
-function HostHome() {
+import AdminPage from "./adminPage";
+import { Test, Home, Hom } from "../pages/test";
+import HostBookList from "./hostBookListPage";
+
+const name = "강예정";
+function HostHome({ match, location, history }) {
   return (
     <Container>
       <SubContainer>
@@ -15,10 +20,10 @@ function HostHome() {
         </ManagerProfile>
         <ManagerNav>
           <div className="subMenuButton" backGroundColor="#8DAEF2">
-            예약관리
+            <Link to={"/host/greetings"}>test</Link>
           </div>
           <div className="subMenuButton" backGroundColor="#8FD6A3">
-            공간관리
+            <Link to={"/host/space"}>공간관리</Link>
           </div>
           <div className="subMenuButton" backGroundColor="#F9B6FF">
             공지사항
@@ -26,14 +31,40 @@ function HostHome() {
         </ManagerNav>
       </SubContainer>
       <ManagerMenu>
-        <div>
-          어서오세요 <br></br>관리자님 ㅎㅎ
-        </div>
-        <ChartContainer>
-          <Chart></Chart>
-        </ChartContainer>
+        <Routes>
+          <Route path="/space" element={<HB />} />;
+          <Route path="/greetings" element={<Greetings />} />;
+        </Routes>
+        {/* 
+        <Greeting>
+          <Label>{`어서오세요! `}</Label>
+          <Label className="username">{name}</Label>
+          <Label>님!</Label>
+        </Greeting>
+        <Chart></Chart> */}
       </ManagerMenu>
     </Container>
+  );
+}
+
+function Greetings() {
+  return (
+    <>
+      <Greeting>
+        <Label>{`어서오세요! `}</Label>
+        <Label className="username">{name}</Label>
+        <Label>님!</Label>
+      </Greeting>
+      <Chart></Chart>
+    </>
+  );
+}
+
+function HB() {
+  return (
+    <>
+      <HostBookList></HostBookList>
+    </>
   );
 }
 
@@ -70,6 +101,11 @@ const ProfileImg = styled.div`
 const Label = styled.span`
   margin-top: 20%;
   font-size: 2rem;
+  margin-right: 20px;
+  &.username {
+    font-size: 2.2rem;
+    color: blue;
+  }
 `;
 
 const ManagerProfile = styled.div`
@@ -133,4 +169,9 @@ const ChartContainer = styled.div`
   height: 100%;
 `;
 
+const Greeting = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 export default HostHome;

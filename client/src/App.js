@@ -3,15 +3,17 @@ import "./App.css";
 import AddSpace from "./pages/adminPage";
 import HostBookList from "./pages/hostBookListPage";
 import HostHome from "./pages/hostHome";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AdminPage from "./pages/adminPage";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
-import ChartBar from "./components/chart";
+import { Test, Home, Hom } from "./pages/test";
 
 function App() {
   return (
     <div className="App">
       {
         <BrowserRouter>
+          <Link to="/host">HostHome</Link>
           <Routes>
             {/*
             <Route path="/login" element={<LoginForm />} />
@@ -32,11 +34,13 @@ function App() {
             <Route path="/host/addHost" element={<AddHost />} />
             }
           */}
-            <Route path="/a" element={<ChartBar />} />
-            <Route path="/host" element={<HostHome />} />
+
+            <Route path="/host/*" element={<HostHome />} />
+
+            <Route path="/test" element={<Test />} />
+
             <Route path="/host/addSpace" element={<AddSpace />} />
             <Route path="/host/bookList" element={<HostBookList />} />
-
             {/*
             <Route path="/host/spaceList" element={<HostSpaceList />} />
             <Route path="/host/updateSpace" element={<UpdateSpace />} />

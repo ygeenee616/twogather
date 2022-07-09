@@ -6,8 +6,10 @@ import {
   YAxis,
   Tooltip,
   Legend,
+  Label,
   Bar,
 } from "recharts";
+import styled from "styled-components";
 
 function Chart() {
   const data = [
@@ -49,17 +51,25 @@ function Chart() {
   ];
 
   return (
-    <ResponsiveContainer width={"100%"} height={"70%"}>
-      <BarChart data={data}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="pv" fill="#8884d8" />
-        <Bar dataKey="uv" fill="#82ca9d" />
-      </BarChart>
-    </ResponsiveContainer>
+    <>
+      <Title>일별 매출 수</Title>
+      <ResponsiveContainer width={"100%"} height={"80%"}>
+        <BarChart data={data}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name"></XAxis>
+          <YAxis></YAxis>
+          <Tooltip />
+          <Legend type="diamond" />
+          <Bar dataKey="pv" fill="#8884d8" />
+          <Bar dataKey="uv" fill="#82ca9d" />
+        </BarChart>
+      </ResponsiveContainer>
+    </>
   );
 }
+
+const Title = styled.span`
+  font-size: 1.2rem;
+`;
+
 export default Chart;
