@@ -5,6 +5,7 @@ import HostBookList from "./pages/hostBookListPage";
 import HostHome from "./pages/hostHome";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
+import ChartBar from "./components/chart";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/host/addHost" element={<AddHost />} />
             }
           */}
+            <Route path="/a" element={<ChartBar />} />
             <Route path="/host" element={<HostHome />} />
             <Route path="/host/addSpace" element={<AddSpace />} />
             <Route path="/host/bookList" element={<HostBookList />} />
