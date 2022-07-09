@@ -11,11 +11,11 @@ ssh ubuntu@3.39.193.141 <<EOF
     cd ~/twogather/client
     npm install
     pm2 install typescript
-    pm2 --name twogather-client restart npm -- run start
+    pm2 restart ecosystem.client.config.js
     cd ~/twogather/server
     npm install
     pm2 install typescript
-    pm2 restart twogather-server restart npm -- run start
+    pm2 restart ecosystem.server.config.js
     exit
 EOF
 
