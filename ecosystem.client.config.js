@@ -1,8 +1,8 @@
 module.exports = {
     apps: [{
-      name    : "twogather",
+      name    : "twogather-client",
       script  : "npm",
-      args    : "run concur"
+      args    : "start"
     }]
   }
 
