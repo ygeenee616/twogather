@@ -16,12 +16,6 @@ function App() {
     <div className="App">
       {
         <BrowserRouter>
-          <Link to="/host">HostHome</Link>
-          <Link to="/test">Test</Link>
-          <Link to="/host/addHost">addHost</Link>
-          <br></br>
-          <Link to="/admin/bookList">adminLink</Link>
-          <StripeList></StripeList>
           <Routes>
             <Route path="/test" element={<Test />} />
 
