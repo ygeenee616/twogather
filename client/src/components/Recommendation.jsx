@@ -39,23 +39,38 @@ const CardWrap = styled.div`
 `;
 
 export default function Recommendation() {
+  let props = [];
+  for (let i = 1; i <= 4; i++) {
+    props.push({
+      className: "recomCard",
+      src: exData.src,
+      tag: exData.tag,
+      title: exData.title,
+      address: exData.address,
+      price: exData.price,
+      review: exData.review,
+    });
+  }
+  console.log(props);
+
   const rendering = () => {
-    const result = [];
-    for (let i = 1; i <= 4; i++) {
-      result.push(
+    const result = props.map((item) => {
+      return (
         <ProductCard
           className="recomCard"
-          src={exData.src}
-          tag={exData.tag}
-          title={exData.title}
-          address={exData.address}
-          price={exData.price}
-          review={exData.review}
+          src={item.src}
+          tag={item.tag}
+          title={item.title}
+          address={item.address}
+          price={item.price}
+          review={item.review}
         ></ProductCard>
       );
-    }
+    });
     return result;
   };
+
+  console.log(rendering());
   return (
     <RecomWrap>
       <RecomTitle>오늘의 추천 공간</RecomTitle>
