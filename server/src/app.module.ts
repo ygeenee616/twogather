@@ -1,10 +1,13 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
+import { User } from './users/entities/users.entity';
+import { CatModule } from './cat/cat.module';
+import { LoggerMiddleware } from './logger.middleware';
 
 @Module({
   imports: [
@@ -30,11 +33,17 @@ import * as Joi from 'joi';
       database: process.env.DB_NAME,
       synchronize: true,
       logging: true,
-      entities: [__dirname + '/entities/*{.ts,.js}'],
+      entities: [User],
+      autoLoadEntities: true,
     }),
     UsersModule,
+    CatModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('');
+  }
+}
