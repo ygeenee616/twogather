@@ -61,6 +61,7 @@ const Item = styled.div`
 
 const ButtonBox = styled.div`
   width: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,6 +70,7 @@ const ButtonBox = styled.div`
 
 const Button = styled.div`
   width:  2.5rem;
+
   display: flex;
   justify-content: center;
   align-items: center;
