@@ -1,13 +1,15 @@
 import logo from "./logo.svg";
 import "./App.css";
-import AddSpace from "./pages/hostPage/addHostPage";
+import AddSpace from "./pages/addHostPage";
 import HostBookList from "./pages/hostPage/hostBookListPage";
 import HostHome from "./pages/hostPage/hostHome";
-import AddHost from "./pages/hostPage/addHostPage";
-import AdminPage from "./pages/hostPage/addHostPage";
+import AddHostPage from "./pages/addHostPage";
+import AddSpacePage from "./pages/addSpacePage";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import AdminBookList from "./pages/adminBookList";
+import StripeList from "./components/stripeList";
 import "./App.css";
-import { Test, Home, Hom } from "./pages/test";
+import { Test } from "./pages/test";
 
 function App() {
   return (
@@ -17,6 +19,9 @@ function App() {
           <Link to="/host">HostHome</Link>
           <Link to="/test">Test</Link>
           <Link to="/host/addHost">addHost</Link>
+          <br></br>
+          <Link to="/admin/bookList">adminLink</Link>
+          <StripeList></StripeList>
           <Routes>
             <Route path="/test" element={<Test />} />
 
@@ -31,17 +36,17 @@ function App() {
 
             <Route path="/admin" element={<AdminHome />} />
             <Route path="/admin/userList" element={<AdminUserList />} />
-            <Route path="/admin/bookList" element={<AdminBookList />} />
+
             <Route
               path="/admin/bookList/bookDetail/:bookId"
               element={<AdminBookDetail />}
             />
                 */}
-                
-            <Route path="/host/addHost" element={<AddHost />} />
+            <Route path="/admin/bookList" element={<AdminBookList />} />
+            <Route path="/host/addHost" element={<AddHostPage />} />
             <Route path="/host/*" element={<HostHome />} />
 
-            <Route path="/host/addSpace" element={<AddSpace />} />
+            <Route path="/host/addSpace" element={<AddSpacePage />} />
             <Route path="/host/bookList" element={<HostBookList />} />
             {/*
             <Route path="/host/spaceList" element={<HostSpaceList />} />

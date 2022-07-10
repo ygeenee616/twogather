@@ -2,45 +2,26 @@ import React, { useState, memo } from "react";
 import styled from "styled-components";
 import { ImBin } from "react-icons/im";
 import { RiEdit2Fill } from "react-icons/ri";
-function BookListItem({ item, cols }) {
+function ListItem({ item, columnTemplete }) {
   const { booker, bookMembers, bookedRoom, price, phoneNumber, date } = item;
 
   return (
-    <ItemList>
+    <ItemList templete={columnTemplete}>
       <Item className="booker">{booker}</Item>
       <Item className="bookedRoom">{bookedRoom}</Item>
       <Item className="bookMembers">{bookMembers}</Item>
       <Item className="price">{price}</Item>
       <Item className="phoneNumber">{phoneNumber}</Item>
       <Item className="date">{date}</Item>
-      <Item>
-        <ButtonBox>
-          <Button
-            className="btnModify"
-            type="button"
-            backGroundColor="#BBD3F2"
-            color="white"
-          >
-            <RiEdit2Fill className="modify" size={"1.5rem"}></RiEdit2Fill>
-          </Button>
-          <Button
-            className="btnDelete"
-            type="button"
-            backGroundColor="#BBD3F2"
-            color="white"
-          >
-            <ImBin class="delete"></ImBin>
-          </Button>
-        </ButtonBox>
-      </Item>
+      <Item></Item>
     </ItemList>
   );
 }
-
+// 1fr 2fr 1fr 1fr 2fr 1fr 1.2fr;
 const ItemList = styled.div`
   display: grid;
 
-  grid-template-columns: 1fr 2fr 1fr 1fr 2fr 1fr 1.2fr;
+  grid-template-columns: ${(props) => props.templete};
 
   column-gap: 3px;
   border-bottom: 1px solid #bbd3f2;
@@ -112,4 +93,4 @@ const Button = styled.div`
   }
 `;
 
-export default BookListItem;
+export default ListItem;

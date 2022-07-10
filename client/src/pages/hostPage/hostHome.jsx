@@ -2,8 +2,8 @@ import React, { useState, memo } from "react";
 import styled from "styled-components";
 import Chart from "../../components/chart";
 import { Routes, Route, BrowserRouter, Link } from "react-router-dom";
-import userLogo from "../assets/images/user.png";
-import AdminPage from "./addHostPage";
+import userLogo from "../../assets/images/user.png";
+import AdminPage from ".././addHostPage";
 import { Test, Home, Hom } from "../test";
 import HostBookList from "./hostBookListPage";
 

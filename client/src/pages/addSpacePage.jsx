@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Postcode from "../components/adminComponents/Postcode";
 import PostcodePopup from "../components/adminComponents/PostcodePopup";
 
-function AdminPage() {
+function AddSpacePage() {
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
 
@@ -317,4 +317,4 @@ const ButtonBox = styled.div`
 const Hr = styled.hr`
   border: 2px #8daef2 solid;
 `;
-export default AdminPage;
+export default AddSpacePage;
