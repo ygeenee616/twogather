@@ -92,6 +92,7 @@ export default function Detail({title, hashTag, contents}) {
           <SelectRoom />
           <MyDatePicker />
           <MyTimePicker />
+          <Guide>*최소 예약시간은 1시간입니다.</Guide>
           <Personnel>
             예약 인원:
             <input type='number' value={person}
@@ -197,6 +198,12 @@ const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`
+
+const Guide = styled.div`
+  width: 100%;
+  font-size: 0.7rem;
+  color: red;
 `
 
 const Personnel = styled.div`
