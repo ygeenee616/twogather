@@ -1,9 +1,10 @@
 import logo from "./logo.svg";
 import "./App.css";
-import AddSpace from "./pages/adminPage";
+import AddSpace from "./pages/addHostPage";
 import HostBookList from "./pages/hostBookListPage";
 import HostHome from "./pages/hostHome";
-import AdminPage from "./pages/adminPage";
+import AddHost from "./pages/addHostPage";
+import AdminPage from "./pages/addHostPage";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 import { Test, Home, Hom } from "./pages/test";
@@ -14,6 +15,8 @@ function App() {
       {
         <BrowserRouter>
           <Link to="/host">HostHome</Link>
+          <Link to="/test">Test</Link>
+          <Link to="/host/addHost">addHost</Link>
           <Routes>
             {/*
             <Route path="/login" element={<LoginForm />} />
@@ -31,14 +34,11 @@ function App() {
               path="/admin/bookList/bookDetail/:bookId"
               element={<AdminBookDetail />}
             />
+                */}
             <Route path="/host/addHost" element={<AddHost />} />
-            }
-          */}
 
             <Route path="/host/*" element={<HostHome />} />
-
             <Route path="/test" element={<Test />} />
-
             <Route path="/host/addSpace" element={<AddSpace />} />
             <Route path="/host/bookList" element={<HostBookList />} />
             {/*

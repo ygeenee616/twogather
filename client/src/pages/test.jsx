@@ -1,40 +1,31 @@
 import { BrowserRouter, Outlet, Routes, Route, Link } from "react-router-dom";
 import Chart from "../components/chart";
 
-import AdminPage from "./adminPage";
+import AdminPage from "./addHostPage";
 import * as React from "react";
 
 export function Test() {
   return (
     <>
-      <Routes>
-        <Route path="/test/apple" element={<Hom />} />;
-      </Routes>
+      {/* <header>
+        <h1>{this.props.title}</h1>
+        {this.props.sub}
+      </header> */}
+      <Nav title="hi" desc="ㅎㅇ" compo={AdminPage}></Nav>
       <hr />
     </>
   );
 }
-function Nav() {
+function Nav(props) {
   return (
     <>
-      <Link to="/test/apple">hi</Link>;
+      <h2>
+        {props.title}
+        {props.desc}
+      </h2>
+      {props.AdminPage()}
     </>
   );
 }
 
-function Hom() {
-  return (
-    <div>
-      <h2>Hom</h2>
-    </div>
-  );
-}
-
-function Home() {
-  return (
-    <div>
-      <h2>Home</h2>
-    </div>
-  );
-}
-export { Test as default, Home };
+export default Test;
