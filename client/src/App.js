@@ -1,10 +1,10 @@
 import logo from "./logo.svg";
 import "./App.css";
-import AddSpace from "./pages/addHostPage";
-import HostBookList from "./pages/hostBookListPage";
-import HostHome from "./pages/hostHome";
-import AddHost from "./pages/addHostPage";
-import AdminPage from "./pages/addHostPage";
+import AddSpace from "./pages/hostPage/addHostPage";
+import HostBookList from "./pages/hostPage/hostBookListPage";
+import HostHome from "./pages/hostPage/hostHome";
+import AddHost from "./pages/hostPage/addHostPage";
+import AdminPage from "./pages/hostPage/addHostPage";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 import { Test, Home, Hom } from "./pages/test";
@@ -18,6 +18,8 @@ function App() {
           <Link to="/test">Test</Link>
           <Link to="/host/addHost">addHost</Link>
           <Routes>
+            <Route path="/test" element={<Test />} />
+
             {/*
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register/:userType" element={<RegisterForm />} />
@@ -35,10 +37,10 @@ function App() {
               element={<AdminBookDetail />}
             />
                 */}
+                
             <Route path="/host/addHost" element={<AddHost />} />
-
             <Route path="/host/*" element={<HostHome />} />
-            <Route path="/test" element={<Test />} />
+
             <Route path="/host/addSpace" element={<AddSpace />} />
             <Route path="/host/bookList" element={<HostBookList />} />
             {/*

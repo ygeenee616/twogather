@@ -1,7 +1,7 @@
 import { BrowserRouter, Outlet, Routes, Route, Link } from "react-router-dom";
 import Chart from "../components/chart";
 
-import AdminPage from "./addHostPage";
+import AdminPage from "./hostPage/addHostPage";
 import * as React from "react";
 
 export function Test() {
