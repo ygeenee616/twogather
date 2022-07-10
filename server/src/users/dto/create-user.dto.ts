@@ -1,27 +1,32 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreateUserDto {
-  @IsNumber()
-  id: number;
+  @IsString()
+  readonly nickname: string;
 
   @IsString()
-  nickname: string;
+  readonly email: string;
 
   @IsString()
-  email: string;
+  readonly password: string;
 
   @IsString()
-  password: string;
+  @IsOptional()
+  readonly name: string;
 
   @IsString()
-  name: string;
+  @IsOptional()
+  readonly sex: string;
 
   @IsString()
-  sex: string;
+  @IsOptional()
+  readonly profileImage: string;
 
   @IsString()
-  profileImage: string;
+  @IsOptional()
+  readonly phoneNumber: string;
 
   @IsString()
-  phoneNumber: string;
+  @IsOptional()
+  readonly businessNumber: string;
 }

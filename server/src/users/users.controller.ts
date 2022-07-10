@@ -3,11 +3,8 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
-  HttpStatus,
   Param,
   Post,
-  Query,
   Res,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -18,24 +15,43 @@ import { Response } from 'express';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post(':id')
-  create(@Body() createUserDto: CreateUserDto) {
-    this.usersService.create(createUserDto);
+  @Post()
+  create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
+    try {
+      this.usersService.create(createUserDto);
+      res.json({
+        data: 'Post success',
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 
   @Get()
   findAll() {
-    const users: Promise<User[]> = this.usersService.findAll();
-    return users;
+    try {
+      const users: Promise<User[]> = this.usersService.findAll();
+      return users;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  @Get(':id')
+  @Get('/:id')
   findOneById(@Param('id') id: number): Promise<User> {
-    return this.usersService.findOne(id);
+    try {
+      return this.usersService.findOne(id);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  @Delete(':id')
+  @Delete('/:id')
   remote(@Param('id') id: number) {
-    this.usersService.remove(id);
+    try {
+      this.usersService.remove(id);
+    } catch (error) {
+      error;
+    }
   }
 }
