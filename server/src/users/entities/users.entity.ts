@@ -26,6 +26,6 @@ export class User {
   @Column({ type: 'varchar', length: 45, nullable: true })
   phoneNumber: string;
 
-  @Column({ type: 'varchar', length: 45, nullable: true })
+  @Column({ type: 'varchar', length: 45, nullable: true, unique: true })
   businessNumber: string;
 }

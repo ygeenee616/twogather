@@ -16,12 +16,9 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
+  create(@Body() createUserDto: CreateUserDto): Promise<User> {
     try {
-      this.usersService.create(createUserDto);
-      res.json({
-        data: 'Post success',
-      });
+      return this.usersService.create(createUserDto);
     } catch (error) {
       throw error;
     }
