@@ -2,7 +2,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
-import store from "./store/Store";
+import store from "./Store";
 
 import Detail from "./pages/Detail";
 import Book from "./pages/Book";
