@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/users/entities/users.entity';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Space {
@@ -19,4 +20,8 @@ export class Space {
 
   @Column({ type: 'varchar', length: 200, nullable: true })
   intro: string;
+
+  @OneToOne((type) => User)
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
+  user: User;
 }
