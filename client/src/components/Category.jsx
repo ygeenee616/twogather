@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import partyIcon from "../assets/images/partyIcon.PNG";
-import studyIcon from "../assets/images/studyIcon.PNG";
-import meetingIcon from "../assets/images/meetingIcon.PNG";
-import danceIcon from "../assets/images/danceIcon.PNG";
-import cameraIcon from "../assets/images/cameraIcon.PNG";
+import partyIcon from "../assets/images/partyIcon.png";
+import studyIcon from "../assets/images/studyIcon.png";
+import meetingIcon from "../assets/images/meetingIcon.png";
+import danceIcon from "../assets/images/danceIcon.png";
+import cameraIcon from "../assets/images/cameraIcon.png";
 
 const CategoryButton = ({ img, title }) => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
+  const handleGoToListByCategoryClick = () => {
     navigate(`/list/${title}`);
   };
   return (
-    <ButtonWrap onClick={handleClick}>
+    <ButtonWrap onClick={handleGoToListByCategoryClick}>
       <div className="imgWrap">
         <img src={img} alt={title} />
       </div>
