@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import reviewImg from "../assets/images/reviewIcon.png";
 
@@ -6,7 +7,6 @@ const productTags = (tag) => {
   let result = "";
   let resultStr = "";
   for (let i = 0; i < tag.length; i++) {
-    //result.push(<SubTag>{tag[i]}&nbsp;</SubTag>);
     resultStr += tag[i];
   }
   if (resultStr.length >= 20) {
@@ -67,6 +67,7 @@ const Price = styled.span`
 `;
 
 export default function ProductCard({
+  //id,
   src,
   tag,
   title,
@@ -74,8 +75,13 @@ export default function ProductCard({
   price,
   review,
 }) {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/detail/1`);
+  };
+  //후에 아이디 넣기 지금은 임의로  1로 고정
   return (
-    <CardWrap>
+    <CardWrap onClick={handleClick}>
       <div style={{ overflow: "hidden" }}>
         <ProductImg className="productImg" src={src} />
       </div>

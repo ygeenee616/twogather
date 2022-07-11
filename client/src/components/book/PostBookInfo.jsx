@@ -9,7 +9,6 @@ PostBookInfo.defaultProps = {
   hostEmail : "host@naver.com"
 }
 
-
 export default function PostBookInfo(props) {
   return (
     <div style={{width: '100%'}}>

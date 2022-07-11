@@ -32,9 +32,15 @@ export function MyTimePicker() {
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
 
+  // 첫 렌더링시 endTime이 startTime보다 1시간 크게
+  // useEffect(() => {
+  //   const end = endTime.setHours(startTime.getHours() + 1)
+  //   setEndTime(end)
+  // }, [])
+
   // 시간 포맷팅
   const timeToString = (time) => {
-    return time.getHours() + ":" + time.getMinutes().toString().padStart(2, '0')
+    return time.getHours()
   }
 
   // 시간 필터 - 과거 시간은 선택 불가
@@ -49,9 +55,9 @@ export function MyTimePicker() {
     console.log(timeToString(startTime), timeToString(endTime))
   }, [startTime, endTime])
 
-
   return (
-    <span className="timePicker">
+    <div className="timePicker">
+
       <DatePicker
         locale={ko}
         selected={startTime}
@@ -61,10 +67,10 @@ export function MyTimePicker() {
         showTimeSelectOnly
         timeIntervals={60}
         timeCaption="시간"
-        dateFormat="aa hh시"
+        dateFormat="HH시 부터"
       />
 
-      <p className="bookInfo"> ~ </p>
+      <span className="bookInfo"> ~ </span>
 
       <DatePicker
         locale={ko}
@@ -75,8 +81,8 @@ export function MyTimePicker() {
         showTimeSelectOnly
         timeIntervals={60}
         timeCaption="시간"
-        dateFormat="aa hh시"
+        dateFormat="HH시 까지"
       />
-    </span>
+    </div>
   )
 }

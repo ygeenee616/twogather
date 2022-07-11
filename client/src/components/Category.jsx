@@ -10,11 +10,11 @@ import cameraIcon from "../assets/images/cameraIcon.PNG";
 const CategoryButton = ({ img, title }) => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
+  const handleGoToListByCategoryClick = () => {
     navigate(`/list/${title}`);
   };
   return (
-    <ButtonWrap onClick={handleClick}>
+    <ButtonWrap onClick={handleGoToListByCategoryClick}>
       <div className="imgWrap">
         <img src={img} alt={title} />
       </div>
