@@ -51,12 +51,12 @@ export default function Recommendation() {
       review: exData.review,
     });
   }
-  console.log(props);
 
   const rendering = () => {
-    const result = props.map((item) => {
+    const result = props.map((item, i) => {
       return (
         <ProductCard
+          key={i}
           className="recomCard"
           src={item.src}
           tag={item.tag}
@@ -70,7 +70,6 @@ export default function Recommendation() {
     return result;
   };
 
-  console.log(rendering());
   return (
     <RecomWrap>
       <RecomTitle>오늘의 추천 공간</RecomTitle>
