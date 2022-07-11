@@ -7,7 +7,6 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { User } from './users/entities/users.entity';
 import { LoggerMiddleware } from './logger.middleware';
-import { HostInfosModule } from './host_infos/host_infos.module';
 
 @Module({
   imports: [
@@ -37,7 +36,6 @@ import { HostInfosModule } from './host_infos/host_infos.module';
       autoLoadEntities: true,
     }),
     UsersModule,
-    HostInfosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
