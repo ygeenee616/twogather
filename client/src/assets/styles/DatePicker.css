@@ -1,7 +1,6 @@
 .react-datepicker {
-  border-radius: 0.2rem;
   font-size: 0.7rem;
-  padding: 10px 5px;
+  /* padding: 10px 5px; */
   margin: 20px 0;
   border: none;
 }
@@ -14,10 +13,6 @@
 
 .react-datepicker__header:not(.react-datepicker__header--has-time-select) {
   border-top-right-radius: 0.2rem;
-}
-
-.react-datepicker__navigation {
-  top: 13px;
 }
 
 .react-datepicker__navigation-icon::before {
@@ -36,13 +31,15 @@
 }
 
 .react-datepicker__day--selected, .react-datepicker__day--keyboard-selected,
-.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected {
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected,
+.react-datepicker__time-container {
   background-color: #8DAEF2;
 }
 
 .react-datepicker__day:hover, .react-datepicker__day--selected:hover,
 .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item:hover,
-.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected:hover {
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected:hover,
+.react-datepicker__time-box {
   background-color: #BBD3FE;
   color: #FFF;
 }
@@ -55,6 +52,10 @@
   border: 2px solid #8DAEF2;
   border-radius: 5px;
   text-align: center;
+}
+
+.react-datepicker__time-list-item  react-datepicker__time-list-item--disabled {
+  text-decoration: line-through;
 }
 
 .timePicker {
