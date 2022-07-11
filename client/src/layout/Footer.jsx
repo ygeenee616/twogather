@@ -6,7 +6,7 @@ const FooterWrap = styled.div`
   background-color: #f2f2f2;
   width: 100vw;
   height: 35vh;
-  .footerLogo {
+  span:nth-child(1) {
     position: relative;
     left: 6vw;
     top: 8vh;
@@ -32,7 +32,9 @@ const Text = styled.div`
 export default function Footer() {
   return (
     <FooterWrap>
-      <Logo className="footerLogo" />
+      <span>
+        <Logo />
+      </span>
       <Line />
       <TextLine>
         <Text color={"#a0a0a0"}>상호명&nbsp;&nbsp;</Text>

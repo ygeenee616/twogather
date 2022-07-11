@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import ReservationListItem from "./reservationListItem";
-function reservationPage() {
+import ReservationListItem from "./BookListItem";
+function BookList({ columnNames, column }) {
   const data = [
     {
       booker: "강예정",
@@ -44,16 +44,17 @@ function reservationPage() {
 
         <ReservationForm>
           <List>
-            <Header>예약자</Header>
-            <Header>예약방</Header>
-            <Header>예약인원</Header>
-            <Header>예약금액</Header>
-            <Header>전화번호</Header>
-            <Header>예약시간</Header>
-            <Header>관리</Header>
+            {columnNames.map((name) => {
+              return <Header>{name}</Header>;
+            })}
           </List>
           {data.map((item) => {
-            return <ReservationListItem item={item}></ReservationListItem>;
+            return (
+              <ReservationListItem
+                item={item}
+                cols={column}
+              ></ReservationListItem>
+            );
           })}
         </ReservationForm>
       </Container>
@@ -127,4 +128,4 @@ const List = styled.div`
   column-gap: 3px;
 `;
 
-export default reservationPage;
+export default BookList;

@@ -1,10 +1,10 @@
 import React, { useState, useRef } from "react";
 import "../assets/styles/adminPage.css";
 import styled from "styled-components";
-import Postcode from "../components/adminpage/Postcode";
-import PostcodePopup from "../components/adminpage/PostcodePopup";
+import Postcode from "../components/adminComponents/Postcode";
+import PostcodePopup from "../components/adminComponents/PostcodePopup";
 
-function AdminPage() {
+function AddSpacePage() {
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
 
@@ -83,12 +83,15 @@ function AdminPage() {
     <Main>
       <SpaceForm>
         <InputBox>
-          공간 정보를 입력해주세요
-          <Hr></Hr>
+          <Title>
+            공간 정보를 입력해주세요
+            <Hr></Hr>
+          </Title>
         </InputBox>
         <InputBox>
           <StyledLabel>공간명</StyledLabel>
           <StyledInput
+            type="text"
             name="spaceName"
             value={spaceState.spaceName}
             onChange={handleChangeState}
@@ -113,6 +116,7 @@ function AdminPage() {
         <InputBox>
           <StyledLabel>공간 한 줄 소개</StyledLabel>
           <StyledInput
+            type="text"
             name="spaceShortIntro"
             value={spaceState.spaceShortIntro}
             onChange={handleChangeState}
@@ -122,6 +126,7 @@ function AdminPage() {
         <InputBox>
           <StyledLabel>공간 소개</StyledLabel>
           <StyledTextArea
+            type="text"
             rows={"10"}
             name="spaceIntro"
             value={spaceState.spaceIntro}
@@ -132,6 +137,7 @@ function AdminPage() {
         <InputBox>
           <StyledLabel>예약 시 주의사항</StyledLabel>
           <StyledTextArea
+            type="text"
             name="caution"
             value={spaceState.caution}
             onChange={handleChangeState}
@@ -141,6 +147,7 @@ function AdminPage() {
         <InputBox>
           <StyledLabel>웹사이트 주소</StyledLabel>
           <StyledInput
+            type="text"
             name="webAddress"
             value={spaceState.webAddress}
             onChange={handleChangeState}
@@ -208,7 +215,6 @@ const Main = styled.div`
 `;
 
 const SpaceForm = styled.form`
-  margin: 0 auto;
   margin-top: 100px;
   width: 100%;
   height: 100%;
@@ -217,6 +223,7 @@ const SpaceForm = styled.form`
 //////////////////////////////////////////////////
 const StyledLabel = styled.div`
   color: #8daef2;
+  text-align: start;
   font-family: system-ui;
   margin-bottom: 10px;
   font-size: 1rem;
@@ -245,6 +252,8 @@ const StyledTextArea = styled.textarea`
 
 const InputBox = styled.div`
   padding: 10px;
+
+  text-align: start;
   width: 80%;
   margin: 0 auto;
 `;
@@ -292,6 +301,11 @@ const StyledButton = styled.button`
   }
 `;
 
+const Title = styled.h1`
+  color: #8daef2;
+  text-align: center;
+`;
+
 const ButtonBox = styled.div`
   margin: 0 auto;
   margin-top: 30px;
@@ -303,4 +317,4 @@ const ButtonBox = styled.div`
 const Hr = styled.hr`
   border: 2px #8daef2 solid;
 `;
-export default AdminPage;
+export default AddSpacePage;
