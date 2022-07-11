@@ -6,22 +6,21 @@ import {
   Param,
   Post,
   Res,
+  UseFilters,
 } from '@nestjs/common';
+import { HttpExceptionFilter } from 'src/http-exception.filter';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/users.entity';
 import { UsersService } from './users.service';
-import { Response } from 'express';
+
+@UseFilters(HttpExceptionFilter)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    try {
-      return this.usersService.create(createUserDto);
-    } catch (error) {
-      throw error;
-    }
+    return this.usersService.create(createUserDto);
   }
 
   @Get()
