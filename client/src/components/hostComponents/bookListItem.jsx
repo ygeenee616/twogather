@@ -2,9 +2,9 @@ import React, { useState, memo } from "react";
 import styled from "styled-components";
 import { ImBin } from "react-icons/im";
 import { RiEdit2Fill } from "react-icons/ri";
-function ReservationListItem({ item }) {
+function BookListItem({ item, cols }) {
   const { booker, bookMembers, bookedRoom, price, phoneNumber, date } = item;
-  console.log(item);
+
   return (
     <ItemList>
       <Item className="booker">{booker}</Item>
@@ -51,21 +51,26 @@ const ItemList = styled.div`
 const Item = styled.div`
   background-color: white;
   font-size: 1rem;
-  line-height: 3.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  height: 50%;
+  height: 3.4rem;
   margin: 0;
 `;
 
 const ButtonBox = styled.div`
   width: 100%;
+
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 5px;
 `;
 
 const Button = styled.div`
   width:  2.5rem;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -107,4 +112,4 @@ const Button = styled.div`
   }
 `;
 
-export default ReservationListItem;
+export default BookListItem;

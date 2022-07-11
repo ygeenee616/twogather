@@ -1,15 +1,24 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AddSpace from "./pages/addHostPage";
+import HostBookList from "./pages/hostPage/hostBookListPage";
+import HostHome from "./pages/hostPage/hostHome";
+import AddHostPage from "./pages/addHostPage";
+import AddSpacePage from "./pages/addSpacePage";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import AdminBookList from "./pages/adminBookList";
+import StripeList from "./components/stripeList";
 import "./App.css";
-import Home from "./pages/home";
+import Home from "./pages/Home";
 import ProductList from "./pages/productList";
 import Notice from "./pages/Notice";
+import { Test } from "./pages/test";
 import LoginForm from "./pages/LoginForm";
 import RegisterForm from "./pages/RegisterForm";
 import MyPage from "./pages/MyPage";
 import Detail from "./pages/detail";
 import Book from "./pages/Book";
+ß;
 import Modal from "./components/Modal";
 
 function App() {
@@ -41,6 +50,13 @@ function App() {
           <Route path="/host/updateSpace" element={<UpdateSpace />} /> */}
 
           <Route path="/list/:searchInput" element={<ProductList />} />
+
+          <Route path="/admin/bookList" element={<AdminBookList />} />
+          <Route path="/host/addHost" element={<AddHostPage />} />
+          <Route path="/host/*" element={<HostHome />} />
+
+          <Route path="/host/addSpace" element={<AddSpacePage />} />
+          <Route path="/host/bookList" element={<HostBookList />} />
           <Route path="/detail/:spaceId" element={<Detail />} />
           <Route path="/book" element={<Book />} />
 
