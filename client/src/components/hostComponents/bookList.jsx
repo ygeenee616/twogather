@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import ReservationListItem from "./bookListItem";
+import ReservationListItem from "./BookListItem";
 function BookList({ columnNames, column }) {
   const data = [
     {

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { RiEdit2Fill } from "react-icons/ri";
-import ListItem from "./listItem";
-import StripeLayout from "./stripeLayout";
+import ListItem from "./ListItem";
+import StripeLayout from "./StripeLayout";
 function StripeList({ data, mainTitle }) {
   const mockHeader = [
     "예약자",

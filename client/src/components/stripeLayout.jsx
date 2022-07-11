@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { RiEdit2Fill } from "react-icons/ri";
-import ListItem from "./listItem";
+import ListItem from "./ListItem";
 function StripeLayout({ datas, headers, mainTitle, columnTemplete }) {
   return (
     <>

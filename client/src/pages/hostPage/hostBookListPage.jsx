@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import BookList from "../../components/hostComponents/bookList";
+import BookList from "../../components/hostComponents/BookList";
 function HostBookList() {
   const columnNames = [
     "예약자",

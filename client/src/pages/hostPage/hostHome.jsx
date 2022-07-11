@@ -1,11 +1,11 @@
 import React, { useState, memo } from "react";
 import styled from "styled-components";
-import Chart from "../../components/chart";
+import Chart from "../../components/Chart";
 import { Routes, Route, BrowserRouter, Link } from "react-router-dom";
 import userLogo from "../../assets/images/user.png";
-import AdminPage from ".././addHostPage";
+import AdminPage from "../AddHostPage";
 import { Test, Home, Hom } from "../test";
-import HostBookList from "./hostBookListPage";
+import HostBookList from "./HostBookListPage";
 
 const name = "강예정";
 function HostHome() {
@@ -93,7 +93,8 @@ const Header = styled.div`
 
 const Content = styled.div`
   background-color: #f2f2f2;
-  padding: 5%;
+  padding: 3%;
+ 
   margin: 0 auto;
   width: 60vw;
   height: 70vh;
