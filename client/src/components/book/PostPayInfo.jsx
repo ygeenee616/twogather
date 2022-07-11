@@ -9,9 +9,15 @@ PostPayInfo.defaultProps = {
   pay: 2000,
 }
 
-export default function PostPayInfo({date, startTime, endTime, personnel, pay}) {
+export default function PostPayInfo({
+  date,
+  startTime,
+  endTime,
+  personnel,
+  pay
+}) {
   const useTime = endTime - startTime;
-  const totalPay = 2000 * personnel * useTime;
+  const totalPay = pay * personnel * useTime;
 
   return (
     <Container>
