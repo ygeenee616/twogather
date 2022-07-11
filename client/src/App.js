@@ -9,7 +9,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import AdminBookList from "./pages/adminBookList";
 import StripeList from "./components/stripeList";
 import "./App.css";
-import Home from "./pages/home";
+import Home from "./pages/Home";
 import ProductList from "./pages/productList";
 import Notice from "./pages/Notice";
 import { Test } from "./pages/test";
@@ -18,6 +18,7 @@ import RegisterForm from "./pages/RegisterForm";
 import MyPage from "./pages/MyPage";
 import Detail from "./pages/detail";
 import Book from "./pages/Book";
+ß;
 import Modal from "./components/Modal";
 
 function App() {
