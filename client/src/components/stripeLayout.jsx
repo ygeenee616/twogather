@@ -1,59 +1,31 @@
-import React, { useState } from "react";
 import styled from "styled-components";
-import ReservationListItem from "./reservationListItem";
-function reservationPage() {
-  const data = [
-    {
-      booker: "강예정",
-      bookedRoom: "파티파티룸",
-      bookMembers: "5",
-      price: "5000",
-      phoneNumber: "010-3000-2000",
-      date: "1월18일",
-    },
-    {
-      booker: "강예쩡",
-      bookedRoom: "파티파티룸",
-      bookMembers: "5",
-      price: "5000",
-      phoneNumber: "010-3000-2000",
-      date: "1월18일",
-      modify: false,
-    },
-
-    {
-      booker: "탱구",
-      bookedRoom: "파티파티룸",
-      bookMembers: "5",
-      price: "5000",
-      phoneNumber: "010-3000-2000",
-      date: "1월18일",
-      modify: false,
-    },
-  ];
-
+import { RiEdit2Fill } from "react-icons/ri";
+import ListItem from "./listItem";
+function StripeLayout({ datas, headers, mainTitle, columnTemplete }) {
   return (
     <>
       <Container>
         <ReservationHeader>
           <TitleName>
-            <RoomName className="roomName">파티파티룸2</RoomName>
-            <Title className="title">예약내역</Title>
+            <MainTitle className="roomName">{mainTitle}</MainTitle>
+            <Title className="title"></Title>
           </TitleName>
         </ReservationHeader>
 
         <ReservationForm>
           <List>
-            <Header>예약자</Header>
-            <Header>예약방</Header>
-            <Header>예약인원</Header>
-            <Header>예약금액</Header>
-            <Header>전화번호</Header>
-            <Header>예약시간</Header>
-            <Header>관리</Header>
+            {headers.map((name) => {
+              return <Header>{name}</Header>;
+            })}
           </List>
-          {data.map((item) => {
-            return <ReservationListItem item={item}></ReservationListItem>;
+          {datas.map((item) => {
+            return (
+              <ListItem
+                item={item}
+                columnTemplete={columnTemplete}
+                //"1fr 2fr 1fr 1fr 2fr 1fr 1.2fr"
+              ></ListItem>
+            );
           })}
         </ReservationForm>
       </Container>
@@ -99,7 +71,7 @@ const Title = styled.span`
   margin: 10px;
 `;
 
-const RoomName = styled.span`
+const MainTitle = styled.span`
   font-size: 1.8rem;
   font-weight: 700;
   color: #8daef2;
@@ -127,4 +99,4 @@ const List = styled.div`
   column-gap: 3px;
 `;
 
-export default reservationPage;
+export default StripeLayout;
