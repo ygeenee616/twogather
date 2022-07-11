@@ -4,9 +4,8 @@ import styled from "styled-components";
 import logoImg from "../assets/images/logo.png";
 import searchIcon from "../assets/images/searchIcon.PNG";
 
-const Logo = () => {
+export const Logo = () => {
   const navigate = useNavigate();
-
   const handleClick = () => {
     navigate("/");
   };
@@ -32,23 +31,31 @@ const Search = () => {
 const HostPage = () => {
   return (
     <TextWrap>
-      <a href="/">공간등록 및 관리</a>
+      <div>공간등록 및 관리</div>
     </TextWrap>
   );
 };
 
 const Notice = () => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/notice");
+  };
   return (
-    <TextWrap style={{ marginLeft: "27vw" }}>
-      <a href="/">공지사항</a>
+    <TextWrap onClick={handleClick}>
+      <div>공지사항</div>
     </TextWrap>
   );
 };
 
 const Login = () => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/login");
+  };
   return (
-    <TextWrap>
-      <a href="/">로그인</a>
+    <TextWrap onClick={handleClick}>
+      <div>로그인</div>
     </TextWrap>
   );
 };
@@ -56,15 +63,14 @@ const Login = () => {
 const Logout = () => {
   return (
     <TextWrap>
-      <a href="/">로그아웃</a>
+      <div>로그아웃</div>
     </TextWrap>
   );
 };
 
 const TextWrap = styled.div`
   margin-left: 2vw;
-  a {
-    text-decoration: none;
+  div {
     color: black;
     font-size: 1.5vw;
     font-weight: bold;
@@ -110,13 +116,20 @@ const HeaderWrap = styled.div`
   margin: 4vh 6vw;
 `;
 
+const RightWrap = styled.div`
+  display: flex;
+  margin-left: auto;
+`;
+
 export default function Header() {
   return (
     <HeaderWrap>
       <Logo className="headerLogo" />
       <Search />
-      <Notice />
-      <Login />
+      <RightWrap>
+        <Notice />
+        <Login />
+      </RightWrap>
     </HeaderWrap>
   );
 }
