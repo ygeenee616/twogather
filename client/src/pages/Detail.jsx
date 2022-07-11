@@ -27,11 +27,37 @@ Detail.defaultProps = {
       "지하인 관계로 자연광은 들어오지 않지만 자연광 연출을 위해 커튼 안쪽에 조명이 설치되어 있습니다.\n",
     ],
     review: [
-      "너무 만족스러웠습니다 공간도 이뻤어요 생각보다 넓네요 \n",
-      "쾌적하고 좋았습니다. 인상깊어요 \n",
-      "예약할 때도 사장님께서 배려해주시고, 장소 너무 깔끔히 되어있어서 잘 사용하였습니다!ㅎㅎ 다음 촬영 때도 또 사용하고 싶은 장소입니다~~😊 \n",
+      {
+        id: "강예정",
+        content: "너무 만족스러웠습니다 공간도 이뻤어요 생각보다 넓네요 \n",
+      },
+      {
+        id: "김미지",
+        content: "쾌적하고 좋았습니다. 인상깊어요 \n",
+      },
+      {
+        id: "나해란",
+        content:
+          "예약할 때도 사장님께서 배려해주시고, 장소 너무 깔끔히 되어있어서 잘 사용하였습니다!ㅎㅎ 다음 촬영 때도 또 사용하고 싶은 장소입니다~~😊 \n",
+      },
     ],
-    qna: "냉방 가능한가요?\n",
+    qna: [
+      {
+        id: "남연진",
+        question: "냉방 가능한가요? \n",
+        answer: "네 가능합니다^^ \n",
+      },
+      {
+        id: "김태훈",
+        question: "의자 10개 가능한가요? \n",
+        answer: "넵 가능합니다^^ \n",
+      },
+      {
+        id: "장종원",
+        question: "몇명까지 수용 가능한가요? \n",
+        answer: "10명까지 가능합니다! \n",
+      },
+    ],
   },
 };
 
@@ -85,11 +111,26 @@ export default function Detail({ title, hashTag, contents }) {
               </TabContent>
               <TabContent className="tab3">
                 <h2>후기</h2>
-                <p>{contents.review}</p>
+                {contents.review.map((item, i) => {
+                  return (
+                    <div key={i} className="itemBox">
+                      <p className="itemUser">{item.id}</p>
+                      <p className="itemContent">{item.content}</p>
+                    </div>
+                  );
+                })}
               </TabContent>
               <TabContent className="tab4">
                 <h2>Q&A</h2>
-                <p>{contents.qna}</p>
+                {contents.qna.map((item, i) => {
+                  return (
+                    <div key={i} className="itemBox">
+                      <p className="itemUser">{item.id}</p>
+                      <p className="itemContent">{item.question}</p>
+                      <p className="itemContent">↪ {item.answer}</p>
+                    </div>
+                  );
+                })}
               </TabContent>
             </div>
           </TabContainer>
@@ -201,6 +242,18 @@ const TabContent = styled.div`
 
   & + div {
     border-top: 2px solid #bbd3f2;
+  }
+
+  & .itemBox + .itemBox {
+    border-top: 1px solid #f2f2f2;
+  }
+
+  & .itemUser + .itemUser {
+    font-weight: bold;
+  }
+
+  & .itemContent {
+    margin-left: 7%;
   }
 
   p {
