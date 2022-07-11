@@ -1,4 +1,4 @@
-import { Space } from 'src/spaces/entities/space.entity';
+import { Space } from 'src/spaces/entities/spaces.entity';
 import {
   Column,
   Entity,

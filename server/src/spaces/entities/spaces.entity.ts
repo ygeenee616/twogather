@@ -1,13 +1,6 @@
-import { User } from 'src/users/entities/users.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+@Entity()
 export class Space {
   @PrimaryGeneratedColumn()
   id: number;

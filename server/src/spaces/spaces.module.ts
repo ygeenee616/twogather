@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SpacesService } from './spaces.service';
 import { SpacesController } from './spaces.controller';
-import { Space } from './entities/space.entity';
+import { Space } from './entities/spaces.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({

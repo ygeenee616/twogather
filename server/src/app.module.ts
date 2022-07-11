@@ -12,6 +12,7 @@ import { RoomsModule } from './rooms/rooms.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { SpacesModule } from './spaces/spaces.module';
+import { Space } from './spaces/entities/spaces.entity';
 
 @Module({
   imports: [
@@ -37,7 +38,7 @@ import { SpacesModule } from './spaces/spaces.module';
       database: process.env.DB_NAME,
       synchronize: true,
       logging: true,
-      entities: [User],
+      entities: [User, Space],
       autoLoadEntities: true,
     }),
     UsersModule,
