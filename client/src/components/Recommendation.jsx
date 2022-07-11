@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ProductCard from "./ProductCard";
-import exImg from "../assets/images/ex1.png";
+import exImg1 from "../assets/images/ex1.png";
+import exImg2 from "../assets/images/ex2.png";
 
 const exData = {
-  src: exImg,
+  src: [exImg1, exImg2],
   tag: [
     "#강남모임공간",
     "#강남파티룸",

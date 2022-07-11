@@ -8,7 +8,7 @@ import exImg2 from "../assets/images/ex2.png";
 
 const ex1 = [
   {
-    src: exImg1,
+    src: [exImg1, exImg2],
     tag: [
       "#강남모임공간",
       "#강남파티룸",
@@ -24,7 +24,7 @@ const ex1 = [
 ];
 const ex2 = [
   {
-    src: exImg2,
+    src: [exImg2, exImg1],
     tag: [
       "#강남모임공간",
       "#강남파티룸",
