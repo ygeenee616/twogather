@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logoImg from "../assets/images/logo.png";
-import searchIcon from "../assets/images/searchIcon.PNG";
+import searchIcon from "../assets/images/searchIcon.png";
 
 export const Logo = () => {
   const navigate = useNavigate();
