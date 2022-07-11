@@ -45,7 +45,7 @@ const ItemList = styled.div`
   column-gap: 3px;
   border-bottom: 1px solid #bbd3f2;
   &:last-child {
-    border-bottom: none;
+    border-bottom: 2px solid #8daef2;
   }
 `;
 const Item = styled.div`
@@ -86,6 +86,7 @@ const Button = styled.div`
 
     .modify {
       &:hover {
+        transition-duration:0.2s;
         transform: scale(1.3);
       }
     }
@@ -93,9 +94,9 @@ const Button = styled.div`
 
   &.btnDelete{
     background-color:#D80907;
-
     .delete {
       &:hover {
+        transition-duration:0.2s;
         transform: scale(1.4);
       }
     }

@@ -81,13 +81,11 @@ const ReservationHeader = styled.div`
 
 const ReservationForm = styled.div`
   margin: 0 auto;
+  padding: 10px 0;
   border-top: 2px solid #8daef2;
-  border-bottom: 2px solid #8daef2;
-  padding: 10px;
 
   width: 100%;
   height: 100%;
-  padding-bottom: 0;
 `;
 
 const TitleName = styled.div`

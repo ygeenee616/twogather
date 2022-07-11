@@ -2,18 +2,13 @@ import React, { useState, memo } from "react";
 import styled from "styled-components";
 import { ImBin } from "react-icons/im";
 import { RiEdit2Fill } from "react-icons/ri";
-function ListItem({ item, columnTemplete }) {
-  const { booker, bookMembers, bookedRoom, price, phoneNumber, date } = item;
+function ListItem({ item, columnTemplete, keys }) {
 
   return (
     <ItemList templete={columnTemplete}>
-      <Item className="booker">{booker}</Item>
-      <Item className="bookedRoom">{bookedRoom}</Item>
-      <Item className="bookMembers">{bookMembers}</Item>
-      <Item className="price">{price}</Item>
-      <Item className="phoneNumber">{phoneNumber}</Item>
-      <Item className="date">{date}</Item>
-      <Item></Item>
+      {keys.map((key) => {
+        return <Item>{item[key]}</Item>;
+      })}
     </ItemList>
   );
 }
@@ -26,7 +21,7 @@ const ItemList = styled.div`
   column-gap: 3px;
   border-bottom: 1px solid #bbd3f2;
   &:last-child {
-    border-bottom: none;
+    border-bottom: 2px solid #8daef2;
   }
 `;
 const Item = styled.div`
@@ -58,15 +53,18 @@ const Button = styled.div`
   height: 2.5rem;
   border-radius: 5px;
   font-size: 1rem;
+
   &:last-child {
     margin-left: 5px;
   }
 
   &.btnModify{
     background-color:#86B7CA;
+    transition-duration: 0.3s;
 
     .modify {
       &:hover {
+        transition-duration:0.2s;
         transform: scale(1.3);
       }
     }
@@ -74,9 +72,10 @@ const Button = styled.div`
 
   &.btnDelete{
     background-color:#D80907;
-
+    transition-duration: 0.3s;
     .delete {
       &:hover {
+        transition-duration:0.2s;
         transform: scale(1.4);
       }
     }
