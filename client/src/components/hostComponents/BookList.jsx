@@ -1,30 +1,59 @@
+import React, { useState } from "react";
 import styled from "styled-components";
-import { RiEdit2Fill } from "react-icons/ri";
-import ListItem from "./listItem";
-function StripeLayout({ datas, headers, mainTitle, columnTemplete }) {
+import ReservationListItem from "./BookListItem";
+function BookList({ columnNames, column }) {
+  const data = [
+    {
+      booker: "강예정",
+      bookedRoom: "파티파티룸",
+      bookMembers: "5",
+      price: "5000",
+      phoneNumber: "010-3000-2000",
+      date: "1월18일",
+    },
+    {
+      booker: "강예쩡",
+      bookedRoom: "파티파티룸",
+      bookMembers: "5",
+      price: "5000",
+      phoneNumber: "010-3000-2000",
+      date: "1월18일",
+      modify: false,
+    },
+
+    {
+      booker: "탱구",
+      bookedRoom: "파티파티룸",
+      bookMembers: "5",
+      price: "5000",
+      phoneNumber: "010-3000-2000",
+      date: "1월18일",
+      modify: false,
+    },
+  ];
+
   return (
     <>
       <Container>
         <ReservationHeader>
           <TitleName>
-            <MainTitle className="roomName">{mainTitle}</MainTitle>
-            <Title className="title"></Title>
+            <RoomName className="roomName">파티파티룸2</RoomName>
+            <Title className="title">예약내역</Title>
           </TitleName>
         </ReservationHeader>
 
         <ReservationForm>
           <List>
-            {headers.map((name) => {
+            {columnNames.map((name) => {
               return <Header>{name}</Header>;
             })}
           </List>
-          {datas.map((item) => {
+          {data.map((item) => {
             return (
-              <ListItem
+              <ReservationListItem
                 item={item}
-                columnTemplete={columnTemplete}
-                //"1fr 2fr 1fr 1fr 2fr 1fr 1.2fr"
-              ></ListItem>
+                cols={column}
+              ></ReservationListItem>
             );
           })}
         </ReservationForm>
@@ -71,7 +100,7 @@ const Title = styled.span`
   margin: 10px;
 `;
 
-const MainTitle = styled.span`
+const RoomName = styled.span`
   font-size: 1.8rem;
   font-weight: 700;
   color: #8daef2;
@@ -99,4 +128,4 @@ const List = styled.div`
   column-gap: 3px;
 `;
 
-export default StripeLayout;
+export default BookList;

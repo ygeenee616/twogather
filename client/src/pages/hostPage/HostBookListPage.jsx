@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import BookList from "../components/hostComponents/bookList";
-function AdminBookList() {
+import BookList from "../../components/hostComponents/BookList";
+function HostBookList() {
   const columnNames = [
     "예약자",
     "예약방",
@@ -14,4 +14,4 @@ function AdminBookList() {
   return <BookList column="7" columnNames={columnNames}></BookList>;
 }
 
-export default AdminBookList;
+export default HostBookList;
