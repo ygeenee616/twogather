@@ -5,13 +5,13 @@ PostBookInfo.defaultProps = {
   placeName: "스튜디오 709",
   hostName: "홍길동",
   businessNum: "123-45-67890",
-  hostPhone : "010-0214-6564",
-  hostEmail : "host@naver.com"
-}
+  hostPhone: "010-0214-6564",
+  hostEmail: "host@naver.com",
+};
 
 export default function PostBookInfo(props) {
   return (
-    <div style={{width: '100%'}}>
+    <div style={{ width: "100%" }}>
       <Container>
         <Header>호스트 정보</Header>
 
@@ -39,7 +39,7 @@ export default function PostBookInfo(props) {
 
       <Container>
         <Header>환불 정책</Header>
-        
+
         <Content>
           <div>공간 사용 7일 전</div>
           <div>100% 환불</div>
@@ -58,24 +58,23 @@ export default function PostBookInfo(props) {
         </Content>
       </Container>
     </div>
-  )
-
+  );
 }
 
 const Container = styled.div`
   width: 100%;
   margin-bottom: 40px;
-`
+`;
 
 const Header = styled.div`
   width: 100%;
-  border-bottom: 4px solid #A8C1E8;
+  border-bottom: 4px solid #a8c1e8;
   padding: 20px 0;
   text-align: left;
   font-size: 2.2rem;
   font-weight: bold;
   margin: 0;
-`
+`;
 
 const Content = styled.div`
   width: 100%;
@@ -84,11 +83,11 @@ const Content = styled.div`
   padding: 10px 0;
   font-size: 0.9rem;
 
-  &+& {
-    border-top: 1px solid #F2F2F2;
+  & + & {
+    border-top: 1px solid #f2f2f2;
   }
 
   & div:first-child {
     width: 30%;
   }
-`
+`;
