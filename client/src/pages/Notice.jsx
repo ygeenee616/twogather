@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
 import Header from "../layout/Header";
@@ -45,12 +46,16 @@ export default function Notice() {
   const [page, setPage] = useState(1);
   const limit = 10;
   const offset = (page - 1) * limit;
+  const nav = useNavigate();
 
   return (
     <div>
       <Header />
       <NoticeWrap>
         <NoticeTitle>공지사항</NoticeTitle>
+        <ButtonGoToAddNotice onClick={() => nav("/addNotice")}>
+          공지사항 추가
+        </ButtonGoToAddNotice>
         <NoticeTable>{renderData({ offset, limit })}</NoticeTable>
       </NoticeWrap>
       <Pagination
@@ -126,4 +131,18 @@ const NoticeTable = styled.div`
   width: 100%;
   height: 100%;
   padding-bottom: 0;
+`;
+
+const ButtonGoToAddNotice = styled.button`
+  background-color: white;
+  border: 2px solid #8daef2;
+  font-size: 1.4rem;
+  border-radius: 10px;
+  width: 20%;
+  height: 6vh;
+  font-weight: 600;
+  color: #8daef2;
+  cursor: pointer;
+  margin-left: auto;
+  margin: 0 0 1% auto;
 `;
