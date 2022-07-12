@@ -12,7 +12,7 @@ export class SpaceImage {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 200 })
   imageUrl: string;
 
   @ManyToOne(() => Space)
