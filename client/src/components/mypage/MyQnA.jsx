@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 
 function MyQnA() {
-    const total_page = qnaList.length;
+    const total_page = 10;
     const limit_page = 5;
     const page_number = 0 ;
     const posts_per_page = 5; 
@@ -21,10 +21,9 @@ function MyQnA() {
                     <td className="registered-on"> 작성일 </td>
                     <td className="replyed"> 답변유무 </td>
                 </QnATableHead>
-                
-                
+                <QnA></QnA>  
             </QnATable>
-            <Pagination total={total_page_page} limit={limit_page} page={page_number} setPage={}></Pagination>
+            <Pagination total={total_page} limit={limit_page} page={page_number} setPage={posts_per_page}></Pagination>
         </QnADiv>       
     );
 }
@@ -50,22 +49,14 @@ const QnADiv = styled.div`
 
 const QnATable = styled.table`
     border-top: 2px;
+    margin: 0 15vw;
 `
 
 const QnATableHead = styled.thead`
-    
+    font-weight: bold;
+    background-color: #BBD3F2; 
+    opacity: 0.5;
 `
 
-const QnaTR = () => {
-    return (
-        <>
-            <td>딘 어게인 성수 - 샤워 생일파티</td>
-            <td style={{text-overflow: 'ellipsis'}}>개수</td>
-        </>
-    )
-}
-
-const QnaDetail =styled.div`
-`
 
 export default MyQnA;

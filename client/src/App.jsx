@@ -4,7 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import LoginForm from "./pages/LoginForm";
 import RegisterForm from "./pages/RegisterForm"
-import MyPage from 
+import MyPage from "./pages/MyPage"
+import AddReview from "./pages/AddReview"
 
 function App() {
   return (

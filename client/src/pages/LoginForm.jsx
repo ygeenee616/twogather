@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from 'react-redux';
-import { validateEmail, useScript } from "../assets/utils/usefulFunction";
+import { validateEmail, useScript } from "../assets/utils/UsefulFunction"
 import styled from "styled-components";
 import {
   Container,
@@ -22,7 +22,7 @@ function LoginForm() {
   const [password, setPassword] =useState("")
 
 
-  
+
 
   return (
     <Container>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { validateEmail,validatePassword, } from "../../assets/utils/usefulFunction";
+import { validateEmail,validatePassword } from "../../assets/utils/UsefulFunction"
 
 
 
