@@ -15,6 +15,8 @@ import { SpacesModule } from './spaces/spaces.module';
 import { Space } from './spaces/entities/spaces.entity';
 import { Room } from './rooms/entities/room.entity';
 import { Qna } from './qnas/entities/qna.entity';
+import { SpaceImagesModule } from './space_images/space_images.module';
+import { SpaceImage } from './space_images/entities/space_image.entity';
 
 @Module({
   imports: [
@@ -40,7 +42,7 @@ import { Qna } from './qnas/entities/qna.entity';
       database: process.env.DB_NAME,
       synchronize: true,
       logging: true,
-      entities: [User, Space, Room, Qna],
+      entities: [User, Space, Room, Qna, SpaceImage],
       autoLoadEntities: true,
     }),
     UsersModule,
@@ -48,6 +50,7 @@ import { Qna } from './qnas/entities/qna.entity';
     RoomsModule,
     ReviewsModule,
     SpacesModule,
+    SpaceImagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
