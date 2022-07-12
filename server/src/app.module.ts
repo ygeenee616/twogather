@@ -14,6 +14,7 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { SpacesModule } from './spaces/spaces.module';
 import { Space } from './spaces/entities/spaces.entity';
 import { Room } from './rooms/entities/room.entity';
+import { Qna } from './qnas/entities/qna.entity';
 
 @Module({
   imports: [
@@ -39,7 +40,7 @@ import { Room } from './rooms/entities/room.entity';
       database: process.env.DB_NAME,
       synchronize: true,
       logging: true,
-      entities: [User, Space, Room],
+      entities: [User, Space, Room, Qna],
       autoLoadEntities: true,
     }),
     UsersModule,
