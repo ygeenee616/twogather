@@ -18,8 +18,6 @@ export class UsersService {
       throw error;
     }
   }
-  a;
-
   async findAll(): Promise<User[]> {
     return this.usersRepository.find();
   }
