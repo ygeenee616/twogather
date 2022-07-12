@@ -8,47 +8,55 @@ import StripeLayout from "./components/StripeLayout";
 import StripeList from "./components/StripeList";
 import HostBookList from "./pages/hostPage/HostBookListPage";
 import AdminUserList from "./pages/AdminUserList";
+import AdminHome from "./pages/AdminHome";
+import { Provider } from "react-redux";
+import store from "./Store";
+
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<StripeList />}></Route>
-          <Route path="/host/bookList" element={<HostBookList />} />
-          <Route path="/host" element={<HostHome />} />
-          <Route path="/host/addHost" element={<AddHost />} />
-          <Route path="/admin/userList" element={<AdminUserList />} />
-          {/* <Route path="/login" element={<LoginForm />} />
-          <Route path="/register/:userType" element={<RegisterForm />} />
-          <Route path="/myPage" element={<MyPage/>}/>
-          <Route path="/myPage/addReview" element={<AddReview />} />
+    <Provider store={store}>
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<StripeList />}></Route>
+            <Route path="/host/bookList" element={<HostBookList />} />
+            <Route path="/host" element={<HostHome />} />
+            <Route path="/host/addHost" element={<AddHost />} />
+            <Route path="/admin/userList" element={<AdminUserList />} />
+            <Route path="/admin" element={<AdminHome />} />
+            {/* <Route path="/login" element={<LoginForm />} />
+            <Route path="/register/:userType" element={<RegisterForm />} />
+            <Route path="/myPage" element={<MyPage />} />
+            <Route path="/myPage/addReview" element={<AddReview />} />
 
-         <Route path="/" element={<Modal />}></Route>
-          <Route path="/notice" element={<Notice />} />
-          <Route path="/addNotice" element={<AddNotice />} />
+            <Route path="/notice" element={<Notice />} />
+            <Route path="/addNotice" element={<AddNotice />} />
 
-          <Route path="/admin" element={<AdminHome />} />
-          <Route path="/admin/bookList" element={<AdminBookList />} />
-          <Route
-            path="/admin/bookList/bookDetail/:bookId"
-            element={<AdminBookDetail />} />
+            <Route path="/admin" element={<AdminHome />} />
+            <Route path="/admin/userList" element={<AdminUserList />} />
+            <Route path="/admin/bookList" element={<AdminBookList />} />
+            <Route
+              path="/admin/bookList/bookDetail/:bookId"
+              element={<AdminBookDetail />}
+            />
 
-          <Route path="/host" element={<HostHome />} />
-          <Route path="/host/addHost" element={<AddHost />} />
-          <Route path="/host/addSpace" element={<AddSpace />} />
- 
-          <Route path="/host/spaceList" element={<HostSpaceList />} />
-          <Route path="/host/updateSpace" element={<UpdateSpace />} />
+            <Route path="/host" element={<HostHome />} />
+            <Route path="/host/addHost" element={<AddHost />} />
+            <Route path="/host/addSpace" element={<AddSpace />} />
+            <Route path="/host/bookList" element={<HostBookList />} />
+            <Route path="/host/spaceList" element={<HostSpaceList />} />
+            <Route path="/host/updateSpace" element={<UpdateSpace />} />
 
-          <Route path="/list/:searchInput" element={<ProductList />} />
-          <Route path="/detail/:spaceId" element={<Detail />} />
-          <Route path="/book" element={<Book />} />
+            <Route path="/list/:searchInput" element={<ProductList />} />
+            <Route path="/detail/:spaceId" element={<Detail />} />
+            <Route path="/book" element={<Book />} />
 
-          <Route path="/" element={<Home />} />
-          <Route path="*" element={<NotFound />} />  */}
-        </Routes>
-      </BrowserRouter>
-    </div>
+            <Route path="/" element={<Home />} />
+            <Route path="*" element={<NotFound />} /> */}
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </Provider>
   );
 }
 

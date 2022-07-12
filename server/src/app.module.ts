@@ -7,7 +7,12 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { User } from './users/entities/users.entity';
 import { LoggerMiddleware } from './logger.middleware';
-import { HostInfosModule } from './host_infos/host_infos.module';
+import { QnasModule } from './qnas/qnas.module';
+import { RoomsModule } from './rooms/rooms.module';
+import { ReviewsModule } from './reviews/reviews.module';
+import { ReservationsModule } from './reservations/reservations.module';
+import { SpacesModule } from './spaces/spaces.module';
+import { Space } from './spaces/entities/spaces.entity';
 
 @Module({
   imports: [
@@ -33,11 +38,15 @@ import { HostInfosModule } from './host_infos/host_infos.module';
       database: process.env.DB_NAME,
       synchronize: true,
       logging: true,
-      entities: [User],
+      entities: [User, Space],
       autoLoadEntities: true,
     }),
     UsersModule,
-    HostInfosModule,
+    QnasModule,
+    RoomsModule,
+    ReviewsModule,
+    ReservationsModule,
+    SpacesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

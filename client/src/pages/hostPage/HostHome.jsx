@@ -2,11 +2,10 @@ import React, { useState, memo } from "react";
 import styled from "styled-components";
 import Chart from "../../components/Chart";
 import { Routes, Route, BrowserRouter, Link } from "react-router-dom";
-import userLogo from "../../assets/images/user.png";
 import AdminPage from "../AddHostPage";
-// import { Test, Home, Hom } from "../test";
 import HostBookList from "./HostBookListPage";
 import { FaUserCircle } from "react-icons/fa";
+import AdminUserList from "../AdminUserList";
 
 const name = "강예정";
 function HostHome() {
@@ -23,6 +22,7 @@ function HostHome() {
     { idx: 3, menuName: "공지사항", stateName: "manageNotice" },
     { idx: 4, menuName: "Q & A관리", stateName: "manageQA" },
   ];
+
   return (
     <>
       <Container>
@@ -55,9 +55,9 @@ function HostHome() {
           {content === "Greetings" ? (
             <Greetings></Greetings>
           ) : content === "manageBooked" ? (
-            <HB></HB>
+            <HostBookList></HostBookList> //추후 공간내역이 들어가야함
           ) : (
-            <AdminPage></AdminPage>
+            <HostBookList></HostBookList>
           )}
         </Content>
       </Container>
