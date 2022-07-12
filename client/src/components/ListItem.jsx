@@ -2,17 +2,42 @@ import React, { useState, memo } from "react";
 import styled from "styled-components";
 import { ImBin } from "react-icons/im";
 import { RiEdit2Fill } from "react-icons/ri";
-function ListItem({ item, columnTemplete, keys }) {
-
+function ListItem({ item, columnTemplete, keys, listName }) {
+  console.log(listName);
   return (
     <ItemList templete={columnTemplete}>
       {keys.map((key) => {
         return <Item>{item[key]}</Item>;
       })}
+      {listName === "User" ? <ButtonsBox></ButtonsBox> : ""}
     </ItemList>
   );
 }
 // 1fr 2fr 1fr 1fr 2fr 1fr 1.2fr;
+
+function ButtonsBox() {
+  return (
+    <ButtonBox>
+      <Button
+        className="btnModify"
+        type="button"
+        backGroundColor="#BBD3F2"
+        color="white"
+      >
+        <RiEdit2Fill className="modify" size={"1.5rem"}></RiEdit2Fill>
+      </Button>
+      <Button
+        className="btnDelete"
+        type="button"
+        backGroundColor="#BBD3F2"
+        color="white"
+      >
+        <ImBin class="delete"></ImBin>
+      </Button>
+    </ButtonBox>
+  );
+}
+
 const ItemList = styled.div`
   display: grid;
 
@@ -37,7 +62,6 @@ const Item = styled.div`
 
 const ButtonBox = styled.div`
   width: 100%;
-
   display: flex;
   justify-content: center;
   align-items: center;

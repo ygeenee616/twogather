@@ -22,7 +22,7 @@ function AdminUserList() {
     },
     {
       nickname: "강예정",
-      email: "파티파티룸",
+      email: "aa@aaa.com",
       phoneNumber: "010-3000-2000",
       sns: "5000",
       role: "admin",

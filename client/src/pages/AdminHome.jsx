@@ -4,8 +4,10 @@ import Chart from "../components/Chart";
 import AdminPage from "./AddHostPage";
 import AdminUserList from "./AdminUserList";
 import HostBookList from "./hostPage/HostBookListPage";
+import AdminBookList from "./AdminBookList";
 import { FaUserCircle } from "react-icons/fa";
 import { FaUserTie } from "react-icons/fa";
+import Notice from "./Notice";
 
 const name = "강예정";
 function HostHome() {
@@ -55,9 +57,11 @@ function HostHome() {
           {content === "Greetings" ? (
             <Greetings></Greetings>
           ) : content === "manageBooked" ? (
-            <HostBookList></HostBookList>
+            <AdminBookList></AdminBookList>
           ) : content === "manageUsers" ? (
             <AdminUserList></AdminUserList>
+          ) : content === "manageNotice" ? (
+            <Notice></Notice>
           ) : (
             <div></div>
           )}

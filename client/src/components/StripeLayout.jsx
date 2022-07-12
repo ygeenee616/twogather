@@ -1,15 +1,23 @@
 import styled from "styled-components";
 import { RiEdit2Fill } from "react-icons/ri";
 import ListItem from "./ListItem";
-function StripeLayout({ datas, headers, mainTitle, columnTemplete, keys }) {
-  console.log(headers);
+function StripeLayout({
+  datas,
+  headers,
+  mainTitle,
+  columnTemplete,
+  keys,
+  title,
+  listName,
+}) {
+  console.log(datas);
   return (
     <>
       <Container>
         <ReservationHeader>
           <TitleName>
             <MainTitle className="roomName">{mainTitle}</MainTitle>
-            <Title className="title"></Title>
+            {title ? <Title className="title">{title}</Title> : ""}
           </TitleName>
         </ReservationHeader>
 
@@ -25,6 +33,7 @@ function StripeLayout({ datas, headers, mainTitle, columnTemplete, keys }) {
                 item={item}
                 columnTemplete={columnTemplete}
                 keys={keys}
+                listName={listName}
                 //"1fr 2fr 1fr 1fr 2fr 1fr 1.2fr"
               ></ListItem>
             );
@@ -56,7 +65,6 @@ const ReservationForm = styled.div`
   margin: 0 auto;
   padding: 10px 0;
   border-top: 2px solid #8daef2;
-
   width: 100%;
   height: 100%;
 `;

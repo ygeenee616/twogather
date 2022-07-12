@@ -1,59 +1,34 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import ReservationListItem from "./BookListItem";
-function BookList({ columnNames, column }) {
-  const data = [
-    {
-      booker: "강예정",
-      bookedRoom: "파티파티룸",
-      bookMembers: "5",
-      price: "5000",
-      phoneNumber: "010-3000-2000",
-      date: "1월18일",
-    },
-    {
-      booker: "강예쩡",
-      bookedRoom: "파티파티룸",
-      bookMembers: "5",
-      price: "5000",
-      phoneNumber: "010-3000-2000",
-      date: "1월18일",
-      modify: false,
-    },
-
-    {
-      booker: "탱구",
-      bookedRoom: "파티파티룸",
-      bookMembers: "5",
-      price: "5000",
-      phoneNumber: "010-3000-2000",
-      date: "1월18일",
-      modify: false,
-    },
-  ];
+import ListItem from "../ListItem";
+function BookList({ datas, headers, mainTitle, columnTemplete, keys, title }) {
+  console.log(datas);
+  console.log(keys);
 
   return (
     <>
       <Container>
         <ReservationHeader>
           <TitleName>
-            <RoomName className="roomName">파티파티룸2</RoomName>
-            <Title className="title">예약내역</Title>
+            <MainTitle className="roomName">{mainTitle}</MainTitle>
+            {title ? <Title className="title">{title}</Title> : ""}
           </TitleName>
         </ReservationHeader>
 
         <ReservationForm>
-          <List>
-            {columnNames.map((name) => {
+          <List templete={columnTemplete}>
+            {headers.map((name) => {
               return <Header>{name}</Header>;
             })}
           </List>
-          {data.map((item) => {
+          {datas.map((item, idx) => {
             return (
-              <ReservationListItem
+              <ListItem
                 item={item}
-                cols={column}
-              ></ReservationListItem>
+                columnTemplete={columnTemplete}
+                keys={keys}
+                //"1fr 2fr 1fr 1fr 2fr 1fr 1.2fr"
+              ></ListItem>
             );
           })}
         </ReservationForm>
@@ -98,7 +73,7 @@ const Title = styled.span`
   margin: 10px;
 `;
 
-const RoomName = styled.span`
+const MainTitle = styled.span`
   font-size: 1.8rem;
   font-weight: 700;
   color: #8daef2;
@@ -121,7 +96,7 @@ const Header = styled.div`
 
 const List = styled.div`
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr 1fr 2fr 1fr 1.2fr;
+  grid-template-columns: ${(props) => props.templete};
   border-bottom: 2px solid #8daef2;
   column-gap: 3px;
 `;
