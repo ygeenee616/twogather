@@ -8,7 +8,7 @@ import "./../../assets/styles/DatePicker.css";
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
 export function MyDatePicker() {
-  const [startDate, setStartDate] = useState(new Date());
+  const [date, setDate] = useState(new Date());
 
   // 날짜 포맷팅
   const dateToString = (date) => {
@@ -21,13 +21,13 @@ export function MyDatePicker() {
     );
   };
 
-  console.log(dateToString(startDate));
+  console.log(dateToString(date));
 
   return (
     <DatePicker
       locale={ko}
-      selected={startDate}
-      onChange={(date) => setStartDate(date)}
+      selected={date}
+      onChange={(date) => setDate(date)}
       minDate={new Date()} // 이전 날짜는 선택 불가
       inline
     />
@@ -37,12 +37,6 @@ export function MyDatePicker() {
 export function MyTimePicker() {
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
-
-  // 첫 렌더링시 endTime이 startTime보다 1시간 크게
-  // useEffect(() => {
-  //   const end = endTime.setHours(startTime.getHours() + 1)
-  //   setEndTime(end)
-  // }, [])
 
   // 시간 포맷팅
   const timeToString = (time) => {
