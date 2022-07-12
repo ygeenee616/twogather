@@ -1,17 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import GetBookInfo from "../components/book/GetBookInfo";
 import PostBookInfo from "../components/book/PostBookInfo";
 import BookInfo from "../components/book/BookInfo";
+import BookerInfo from "../components/book/BookerInfo";
 import ToTop from "../components/ToTop";
 
 export default function Book() {
   return (
     <FullContainer>
-      <GetBookInfo />
-      <PostBookInfo />
       <BookInfo />
-      <Button>예약 완료</Button>
+      <BookerInfo />
+      <PostBookInfo />
+      <Button>취소하기</Button>
       <ToTop />
     </FullContainer>
   );
@@ -26,7 +26,7 @@ const FullContainer = styled.div`
 `;
 
 const Button = styled.button`
-  width: 40%;
+  width: 30%;
   padding: 5px;
   margin: 20px 0;
   border-radius: 10px;
@@ -39,5 +39,6 @@ const Button = styled.button`
 
   &:hover {
     box-shadow: 2px 2px 5px -1px #a6a9b6;
+    transition: 0.3s;
   }
 `;

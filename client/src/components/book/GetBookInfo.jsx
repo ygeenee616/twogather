@@ -89,7 +89,7 @@ const Input = styled.input`
   background-color: #f6f6f6;
   border: none;
   padding: 5px;
-  width: 80%;
+  width: 70%;
 
   &:focus {
     outline: red;
