@@ -5,26 +5,11 @@ import { RiEdit2Fill } from "react-icons/ri";
 import { FaUserSlash } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 
-UserInfo.defaultProps = {
-  userName: "김미지",
-  commentNum: "1863회",
-  reportedNum: "100회",
-};
-
 function ListItem({ item, columnTemplete, keys, listName }) {
-  const [viewInfo, setViewInfo] = useState(false);
-
-  function handleClick() {
-    if (listName === "USER") {
-      //유저이름을 받아와서 api출력
-      viewInfo ? setViewInfo(false) : setViewInfo(true);
-    }
-  }
-
   return (
-    <ItemList onClick={handleClick} templete={columnTemplete}>
+    <ItemList templete={columnTemplete}>
       {keys.map((key) => {
-        return <Item onClick={handleClick}>{item[key]}</Item>;
+        return <Item>{item[key]}</Item>;
       })}
       {listName === "BOOK" ? (
         <BookedButtonBox></BookedButtonBox>
@@ -37,19 +22,6 @@ function ListItem({ item, columnTemplete, keys, listName }) {
   );
 }
 // 1fr 2fr 1fr 1fr 2fr 1fr 1.2fr;
-
-function UserInfo({ userName, commentNum, reportedNum, viewInfo }) {
-  return (
-    <UserProfile viewInfo={viewInfo}>
-      <UserImg>
-        <FaUserCircle size={"15%"} color="lightgrey"></FaUserCircle>
-      </UserImg>
-      <UserName>{userName}</UserName>
-      <div className="userName">댓글 횟수 : {commentNum}</div>
-      <div className="userInfo">신고 횟수 : {reportedNum}</div>
-    </UserProfile>
-  );
-}
 
 function BookedButtonBox() {
   return (
@@ -203,7 +175,7 @@ const Button = styled.div`
 `;
 
 const UserProfile = styled.div`
-  display: ${(props) => (props.viewInfo ? "flex" : "none")};
+  ${({ viewinfo }) => (viewinfo ? "display: block" : "display: none")}
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -226,4 +198,4 @@ const UserName = styled.div`
   margin-bottom: 1%;
 `;
 
-export { ListItem as default, UserInfo };
+export default ListItem;

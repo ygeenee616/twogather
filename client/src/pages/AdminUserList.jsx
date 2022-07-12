@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import StripeList from "../components/StripeList";
 import StripeLayout from "../components/StripeLayout";
-import { UserInfo } from "../components/StripeListItem";
+
 function AdminUserList() {
   const data = [
     {
@@ -54,7 +54,7 @@ function AdminUserList() {
         </TitleName>
       </ReservationHeader>
 
-      <UserInfo></UserInfo>
+
       <StripeLayout
         datas={data}
         headers={headers}

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import StripeLayout from "../components/StripeLayout";
+import AdminBookDetail from "./AdminBookDetail";
 function AdminBookList() {
   const data = [
     {
@@ -68,7 +69,7 @@ function AdminBookList() {
         headers={headers}
         columnTemplete={columnTemplete}
         keys={keys}
-        listName="USER"
+        listName="BOOK"
       ></StripeLayout>
     </>
   );
