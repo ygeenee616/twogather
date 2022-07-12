@@ -1,28 +1,38 @@
 import styled from "styled-components";
 import { RiEdit2Fill } from "react-icons/ri";
-import ListItem from "./ListItem";
-function StripeLayout({ datas, headers, mainTitle, columnTemplete }) {
+import ListItem from "./StripeListItem";
+function StripeLayout({
+  datas,
+  headers,
+  mainTitle,
+  columnTemplete,
+  keys,
+  title,
+  listName,
+}) {
   return (
     <>
       <Container>
         <ReservationHeader>
           <TitleName>
             <MainTitle className="roomName">{mainTitle}</MainTitle>
-            <Title className="title"></Title>
+            {title ? <Title className="title">{title}</Title> : ""}
           </TitleName>
         </ReservationHeader>
 
         <ReservationForm>
-          <List>
+          <List templete={columnTemplete}>
             {headers.map((name) => {
               return <Header>{name}</Header>;
             })}
           </List>
-          {datas.map((item) => {
+          {datas.map((item, idx) => {
             return (
               <ListItem
                 item={item}
                 columnTemplete={columnTemplete}
+                keys={keys}
+                listName={listName}
                 //"1fr 2fr 1fr 1fr 2fr 1fr 1.2fr"
               ></ListItem>
             );
@@ -52,13 +62,10 @@ const ReservationHeader = styled.div`
 
 const ReservationForm = styled.div`
   margin: 0 auto;
+  padding: 10px 0;
   border-top: 2px solid #8daef2;
-  border-bottom: 2px solid #8daef2;
-  padding: 10px;
-
   width: 100%;
   height: 100%;
-  padding-bottom: 0;
 `;
 
 const TitleName = styled.div`
@@ -94,7 +101,7 @@ const Header = styled.div`
 
 const List = styled.div`
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr 1fr 2fr 1fr 1.2fr;
+  grid-template-columns: ${(props) => props.templete};
   border-bottom: 2px solid #8daef2;
   column-gap: 3px;
 `;
