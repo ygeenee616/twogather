@@ -6,6 +6,7 @@ import AdminPage from "../AddHostPage";
 import HostBookList from "./HostBookListPage";
 import { FaUserCircle } from "react-icons/fa";
 import AdminUserList from "../AdminUserList";
+import StripeLayout from "../../components/StripeLayout";
 
 const name = "강예정";
 function HostHome() {
@@ -16,10 +17,10 @@ function HostHome() {
   }
 
   const array = [
-    { idx: 0, menuName: "차트보기", stateName: "Greetings" },
-    { idx: 1, menuName: "예약관리", stateName: "manageBooked" },
-    { idx: 2, menuName: "공간관리", stateName: "manageSpace" },
-    { idx: 3, menuName: "공지사항", stateName: "manageNotice" },
+    { idx: 0, menuName: "공지사항", stateName: "manageNotice" },
+    { idx: 1, menuName: "차트보기", stateName: "Greetings" },
+    { idx: 2, menuName: "예약관리", stateName: "manageBooked" },
+    { idx: 3, menuName: "공간관리", stateName: "manageSpace" },
     { idx: 4, menuName: "Q & A관리", stateName: "manageQA" },
   ];
 
@@ -31,7 +32,7 @@ function HostHome() {
             <Img>
               <FaUserCircle size={"50%"} color="lightgrey"></FaUserCircle>
             </Img>
-            <Role>관리자</Role>
+            <Role>Host</Role>
             <ManageNav>
               {array.map((obj) => {
                 return (
@@ -57,7 +58,7 @@ function HostHome() {
           ) : content === "manageBooked" ? (
             <HostBookList></HostBookList> //추후 공간내역이 들어가야함
           ) : (
-            <HostBookList></HostBookList>
+            ""
           )}
         </Content>
       </Container>

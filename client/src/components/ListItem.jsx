@@ -2,6 +2,7 @@ import React, { useState, memo } from "react";
 import styled from "styled-components";
 import { ImBin } from "react-icons/im";
 import { RiEdit2Fill } from "react-icons/ri";
+import { ImBlocked } from "react-icons/im";
 function ListItem({ item, columnTemplete, keys, listName }) {
   console.log(listName);
   return (
@@ -9,13 +10,19 @@ function ListItem({ item, columnTemplete, keys, listName }) {
       {keys.map((key) => {
         return <Item>{item[key]}</Item>;
       })}
-      {listName === "User" ? <ButtonsBox></ButtonsBox> : ""}
+      {listName === "BOOK" ? (
+        <BookedButtonBox></BookedButtonBox>
+      ) : listName === "USER" ? (
+        <UserBlockButtonBox></UserBlockButtonBox>
+      ) : (
+        ""
+      )}
     </ItemList>
   );
 }
 // 1fr 2fr 1fr 1fr 2fr 1fr 1.2fr;
 
-function ButtonsBox() {
+function BookedButtonBox() {
   return (
     <ButtonBox>
       <Button
@@ -33,6 +40,21 @@ function ButtonsBox() {
         color="white"
       >
         <ImBin class="delete"></ImBin>
+      </Button>
+    </ButtonBox>
+  );
+}
+
+function UserBlockButtonBox() {
+  return (
+    <ButtonBox className="blockBox">
+      <Button
+        className="btnBlock"
+        type="button"
+        backGroundColor="#BBD3F2"
+        color="white"
+      >
+        <ImBlocked class="block"></ImBlocked>
       </Button>
     </ButtonBox>
   );
@@ -61,11 +83,15 @@ const Item = styled.div`
 `;
 
 const ButtonBox = styled.div`
-  width: 100%;
   display: flex;
+  margin: 0 auto;
   justify-content: center;
   align-items: center;
   padding: 5px;
+
+  &.blockBox {
+    padding: 0;
+  }
 `;
 
 const Button = styled.div`
@@ -85,26 +111,53 @@ const Button = styled.div`
   &.btnModify{
     background-color:#86B7CA;
     transition-duration: 0.3s;
-
     .modify {
-      &:hover {
-        transition-duration:0.2s;
-        transform: scale(1.3);
+    }
+    &:hover {
+      .modify{
+        transition-duration:0.3s;
+        transform: scale(1.4);
       }
+    }
+
+
     }
   }
 
   &.btnDelete{
     background-color:#D80907;
-    transition-duration: 0.3s;
     .delete {
-      &:hover {
-        transition-duration:0.2s;
-        transform: scale(1.4);
+      transform: scale(1.3);
+    }
+
+    &:hover {
+      .delete{
+        transition-duration:0.3s;
+        transform: scale(1.5);
       }
     }
   }
+
+  &.btnBlock{
+    margin:0;
+    background-color:#D80907;
+    transition-duration: 0.3s;
+
+    .block {
+      transform: scale(1.3);
+    }
+    &:hover {
+      .block{
+
+        transition-duration:0.2s;
+        transform: scale(1.5);
+
+      }
+    }
+
   }
+
+}
 
 
  

@@ -51,10 +51,9 @@ function AdminBookList() {
     "예약시간",
     "관리",
   ];
-  const mainTitle = "유저정보";
-  const columnTemplete = "1fr 2fr 1fr 1fr 2fr 1fr 1.2fr";
+  const mainTitle = "전체예약내역";
+  const columnTemplete = "1fr 2fr 1.2fr 1.2fr 2fr 1fr 1.2fr";
 
-  console.log(data);
   return (
     <>
       <StripeLayout
@@ -63,7 +62,7 @@ function AdminBookList() {
         mainTitle={mainTitle}
         columnTemplete={columnTemplete}
         keys={keys}
-        listName="User"
+        listName="BOOK"
       ></StripeLayout>
     </>
   );
