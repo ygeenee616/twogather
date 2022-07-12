@@ -7,46 +7,140 @@ import Footer from "../layout/Footer.jsx";
 import Pagination from "../components/Pagination";
 
 const exData = [
-  { id: 1, title: "1번째 공지사항", content: "입니다." },
-  { id: 2, title: "2번째 공지사항", content: "입니다." },
-  { id: 3, title: "3번째 공지사항", content: "입니다." },
-  { id: 4, title: "4번째 공지사항", content: "입니다." },
-  { id: 5, title: "5번째 공지사항", content: "입니다." },
-  { id: 6, title: "6번째 공지사항", content: "입니다." },
-  { id: 7, title: "7번째 공지사항", content: "입니다." },
-  { id: 8, title: "8번째 공지사항", content: "입니다." },
-  { id: 9, title: "9번째 공지사항", content: "입니다." },
-  { id: 10, title: "10번째 공지사항", content: "입니다." },
-  { id: 11, title: "11번째 공지사항", content: "입니다." },
-  { id: 12, title: "12번째 공지사항", content: "입니다." },
-  { id: 13, title: "13번째 공지사항", content: "입니다." },
-  { id: 14, title: "14번째 공지사항", content: "입니다." },
-  { id: 15, title: "15번째 공지사항", content: "입니다." },
-  { id: 16, title: "16번째 공지사항", content: "입니다." },
+  {
+    id: 1,
+    title: "1번째 공지사항",
+    writtenDate: "2022-07-11",
+    content: "입니다.",
+  },
+  {
+    id: 2,
+    title: "2번째 공지사항",
+    writtenDate: "2022-07-11",
+    content: "입니다.",
+  },
+  {
+    id: 3,
+    title: "3번째 공지사항",
+    writtenDate: "2022-07-11",
+    content: "입니다.",
+  },
+  {
+    id: 4,
+    title: "4번째 공지사항",
+    writtenDate: "2022-07-11",
+    content: "입니다.",
+  },
+  {
+    id: 5,
+    title: "5번째 공지사항",
+    writtenDate: "2022-07-11",
+    content: "입니다.",
+  },
+  {
+    id: 6,
+    title: "6번째 공지사항",
+    writtenDate: "2022-07-11",
+    content: "입니다.",
+  },
+  {
+    id: 7,
+    title: "7번째 공지사항",
+    writtenDate: "2022-07-11",
+    content: "입니다.",
+  },
+  {
+    id: 8,
+    title: "8번째 공지사항",
+    writtenDate: "2022-07-11",
+    content: "입니다.",
+  },
+  {
+    id: 9,
+    title: "9번째 공지사항",
+    writtenDate: "2022-07-11",
+    content: "입니다.",
+  },
+  {
+    id: 10,
+    title: "10번째 공지사항",
+    writtenDate: "2022-07-11",
+    content: "입니다.",
+  },
+  {
+    id: 11,
+    title: "11번째 공지사항",
+    writtenDate: "2022-07-11",
+    content: "입니다.",
+  },
+  {
+    id: 12,
+    title: "12번째 공지사항",
+    writtenDate: "2022-07-11",
+    content: "입니다.",
+  },
+  {
+    id: 13,
+    title: "13번째 공지사항",
+    writtenDate: "2022-07-11",
+    content: "입니다.",
+  },
+  {
+    id: 14,
+    title: "14번째 공지사항",
+    writtenDate: "2022-07-11",
+    content: "입니다.",
+  },
+  {
+    id: 15,
+    title: "15번째 공지사항",
+    writtenDate: "2022-07-11",
+    content: "입니다.",
+  },
+  {
+    id: 16,
+    title: "16번째 공지사항",
+    writtenDate: "2022-07-11",
+    content: "입니다.",
+  },
 ];
 
 const reversedData = exData.reverse();
-
-const renderData = ({ offset, limit }) => {
-  return reversedData.slice(offset, offset + limit).map((cur, i) => {
-    return (
-      <Item key={i}>
-        <Line>
-          <div>공지사항</div>
-          <div>{cur.title}</div>
-          <IoIosArrowDown />
-        </Line>
-        <Content>{cur.content}</Content>
-      </Item>
-    );
-  });
-};
 
 export default function Notice() {
   const [page, setPage] = useState(1);
   const limit = 10;
   const offset = (page - 1) * limit;
   const nav = useNavigate();
+  const [clickedNumber, setClickedNumber] = useState(0);
+
+  const handleClickToNoticeDetail = (e) => {
+    const stringClass = e.target.className;
+    const numberClass =
+      typeof stringClass === "object"
+        ? Number(stringClass.baseVal)
+        : Number(stringClass.replace(/[^0-9]/g, ""));
+    numberClass === clickedNumber
+      ? setClickedNumber(0)
+      : setClickedNumber(numberClass);
+    console.log(clickedNumber);
+  };
+
+  const renderData = ({ offset, limit }) => {
+    return reversedData.slice(offset, offset + limit).map((cur, i) => {
+      return (
+        <Item key={i} className={cur.id} onClick={handleClickToNoticeDetail}>
+          <Line className={cur.id}>
+            <div className={cur.id}>공지사항</div>
+            <div className={cur.id}>{cur.title}</div>
+            <div className={cur.id}>{cur.writtenDate}</div>
+            <IoIosArrowDown className={cur.id} />
+          </Line>
+          <Content className={`content${cur.id}`}>{cur.content}</Content>
+        </Item>
+      );
+    });
+  };
 
   return (
     <div>
@@ -56,7 +150,9 @@ export default function Notice() {
         <ButtonGoToAddNotice onClick={() => nav("/addNotice")}>
           공지사항 추가
         </ButtonGoToAddNotice>
-        <NoticeTable>{renderData({ offset, limit })}</NoticeTable>
+        <NoticeTable clickedNumber={clickedNumber}>
+          {renderData({ offset, limit })}
+        </NoticeTable>
       </NoticeWrap>
       <Pagination
         total={exData.length}
@@ -106,6 +202,7 @@ const Content = styled.div`
   padding: 3vh 12.6vw;
   border: 1px solid #8daef2;
   border-top: none;
+  display: none;
 `;
 
 const NoticeWrap = styled.div`
@@ -131,6 +228,9 @@ const NoticeTable = styled.div`
   width: 100%;
   height: 100%;
   padding-bottom: 0;
+  .content${({ clickedNumber }) => clickedNumber} {
+    display: block;
+  }
 `;
 
 const ButtonGoToAddNotice = styled.button`
