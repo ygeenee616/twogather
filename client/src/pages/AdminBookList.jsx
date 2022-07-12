@@ -52,19 +52,46 @@ function AdminBookList() {
   ];
   const mainTitle = "전체예약내역";
   const columnTemplete = "1fr 2fr 1.2fr 1.2fr 2fr 1fr 1.2fr";
+  const title = "";
 
   return (
     <>
+      <ReservationHeader>
+        <TitleName>
+          <MainTitle>{mainTitle}</MainTitle>
+          {title ? <Title className="title">{title}</Title> : ""}
+        </TitleName>
+      </ReservationHeader>
+
       <StripeLayout
         datas={data}
         headers={headers}
-        mainTitle={mainTitle}
         columnTemplete={columnTemplete}
         keys={keys}
-        listName="BOOK"
+        listName="USER"
       ></StripeLayout>
     </>
   );
 }
-
 export default AdminBookList;
+
+const ReservationHeader = styled.div`
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  margin: 10%;
+`;
+const TitleName = styled.div`
+  border-bottom: 2px solid #8daef2;
+`;
+const Title = styled.span`
+  font-size: 1.2rem;
+  line-height: 35px;
+  margin: 10px;
+`;
+
+const MainTitle = styled.span`
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #8daef2;
+`;

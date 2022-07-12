@@ -10,7 +10,7 @@ import { FaUserTie } from "react-icons/fa";
 import Notice from "./Notice";
 
 const name = "강예정";
-function HostHome() {
+function AdminHome() {
   const [content, setContent] = useState("Greetings");
 
   function menuClick(props) {
@@ -178,4 +178,4 @@ const Greeting = styled.div`
   justify-content: center;
   align-items: center;
 `;
-export default HostHome;
+export default AdminHome;

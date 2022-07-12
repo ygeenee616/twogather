@@ -3,11 +3,28 @@ import styled from "styled-components";
 import { ImBin } from "react-icons/im";
 import { RiEdit2Fill } from "react-icons/ri";
 import { FaUserSlash } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
+
+UserInfo.defaultProps = {
+  userName: "김미지",
+  commentNum: "1863회",
+  reportedNum: "100회",
+};
+
 function ListItem({ item, columnTemplete, keys, listName }) {
+  const [viewInfo, setViewInfo] = useState(false);
+
+  function handleClick() {
+    if (listName === "USER") {
+      //유저이름을 받아와서 api출력
+      viewInfo ? setViewInfo(false) : setViewInfo(true);
+    }
+  }
+
   return (
-    <ItemList templete={columnTemplete}>
+    <ItemList onClick={handleClick} templete={columnTemplete}>
       {keys.map((key) => {
-        return <Item>{item[key]}</Item>;
+        return <Item onClick={handleClick}>{item[key]}</Item>;
       })}
       {listName === "BOOK" ? (
         <BookedButtonBox></BookedButtonBox>
@@ -20,6 +37,19 @@ function ListItem({ item, columnTemplete, keys, listName }) {
   );
 }
 // 1fr 2fr 1fr 1fr 2fr 1fr 1.2fr;
+
+function UserInfo({ userName, commentNum, reportedNum, viewInfo }) {
+  return (
+    <UserProfile viewInfo={viewInfo}>
+      <UserImg>
+        <FaUserCircle size={"15%"} color="lightgrey"></FaUserCircle>
+      </UserImg>
+      <UserName>{userName}</UserName>
+      <div className="userName">댓글 횟수 : {commentNum}</div>
+      <div className="userInfo">신고 횟수 : {reportedNum}</div>
+    </UserProfile>
+  );
+}
 
 function BookedButtonBox() {
   return (
@@ -63,15 +93,20 @@ const ItemList = styled.div`
   display: grid;
 
   grid-template-columns: ${(props) => props.templete};
-
+  cursor: pointer;
   column-gap: 3px;
   border-bottom: 1px solid #bbd3f2;
   &:last-child {
     border-bottom: 2px solid #8daef2;
   }
+  &:hover {
+    background-color: lightgrey;
+    &.Item {
+      background-color: lightgrey;
+    }
+  }
 `;
 const Item = styled.div`
-  background-color: white;
   font-size: 1rem;
   display: flex;
   justify-content: center;
@@ -164,8 +199,31 @@ const Button = styled.div`
   background-color: ${(props) => props.backGroundColor};
   color: ${(props) => props.color};
   cursor: pointer;
-  :hover {
-  }
+
 `;
 
-export default ListItem;
+const UserProfile = styled.div`
+  display: ${(props) => (props.viewInfo ? "flex" : "none")};
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const UserImg = styled.div`
+  display: flex;
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+`;
+
+const UserName = styled.div`
+  font-size: 1.5rem;
+  color: #8daef2;
+  text-align: center;
+  width: 15%;
+  border-bottom: 2px solid #8daef2;
+  margin-bottom: 1%;
+`;
+
+export { ListItem as default, UserInfo };
