@@ -12,7 +12,11 @@ import { RoomsModule } from './rooms/rooms.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { SpacesModule } from './spaces/spaces.module';
+import { HashtagsModule } from './hashtags/hashtags.module';
 import { Space } from './spaces/entities/spaces.entity';
+import { Hashtag } from './hashtags/entities/hashtag.entity';
+import { Review } from './reviews/entities/review.entity';
+import { Reservation } from './reservations/entities/reservation.entity';
 
 @Module({
   imports: [
@@ -38,7 +42,7 @@ import { Space } from './spaces/entities/spaces.entity';
       database: process.env.DB_NAME,
       synchronize: true,
       logging: true,
-      entities: [User, Space],
+      entities: [User, Space, Hashtag, Review, Reservation],
       autoLoadEntities: true,
     }),
     UsersModule,
@@ -47,6 +51,7 @@ import { Space } from './spaces/entities/spaces.entity';
     ReviewsModule,
     ReservationsModule,
     SpacesModule,
+    HashtagsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
