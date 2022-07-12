@@ -9,7 +9,6 @@ import { User } from './users/entities/users.entity';
 import { LoggerMiddleware } from './logger.middleware';
 import { QnasModule } from './qnas/qnas.module';
 import { RoomsModule } from './rooms/rooms.module';
-import { ReviewsModule } from './reviews/reviews.module';
 
 import { SpacesModule } from './spaces/spaces.module';
 import { Space } from './spaces/entities/spaces.entity';
@@ -50,7 +49,6 @@ import { RoomImage } from './room_images/entities/room_image.entity';
     UsersModule,
     QnasModule,
     RoomsModule,
-    ReviewsModule,
     SpacesModule,
     SpaceImagesModule,
     RoomImagesModule,
