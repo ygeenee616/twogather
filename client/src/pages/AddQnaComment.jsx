@@ -1,12 +1,14 @@
 import {CommentTitle, CommentInfo, CommentInput, AddCommentBtnDiv  } from "../components/addComment/CommentForm"
 import styled from "styled-components"
 
-function AddReview() {
+function AddQnaComment() {
     return <ReviewContainer>
         <CommentTitle> 이용후기 등록 </CommentTitle>
         <CommentInfo></CommentInfo>
-        <CommentInput commentType="QnA 답변 등록" placeholder="답변을 작성해주세요. (200자 이내)"></CommentInput>
-        <AddCommentBtnDiv></AddCommentBtnDiv>
+        <form>
+            <CommentInput commentType="QnA 답변 등록" placeholder="답변을 작성해주세요. (200자 이내)"></CommentInput>
+            <AddCommentBtnDiv></AddCommentBtnDiv>
+        </form>
     </ReviewContainer>
 }
 
@@ -18,4 +20,4 @@ const ReviewContainer = styled.div`
     align-items:center;
 `
 
-export default AddReview;
+export default AddQnaComment;

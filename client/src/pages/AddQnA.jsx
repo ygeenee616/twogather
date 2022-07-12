@@ -5,8 +5,10 @@ function AddQnA() {
     return <QnAContainer>
         <CommentTitle> QnA 등록 </CommentTitle>
         <CommentInfo></CommentInfo>
-        <CommentInput commentType="QnA 등록" placeholder="이용후기를 작성해주세요. (200자 이내)"></CommentInput>
-        <AddCommentBtnDiv></AddCommentBtnDiv>
+        <form>
+            <CommentInput commentType="QnA 등록" placeholder="이용후기를 작성해주세요. (200자 이내)"></CommentInput>
+            <AddCommentBtnDiv></AddCommentBtnDiv>
+        </form>
     </QnAContainer>
 }
 

@@ -1,9 +1,12 @@
 import styled from "styled-components"
 
+
+// 이용후기 작성, QnA 작성, QnA 답변 과 같은 페이지 타이틀
 export const CommentTitle = styled.h1`
     color: #BBD3F2;
 `
 
+// 게시물 정보
 export const CommentInfo = () => {
     return (<CommentInfoContainer>
         <table className="comment-info">
@@ -23,6 +26,7 @@ export const CommentInfo = () => {
     </CommentInfoContainer>)
 }
 
+// 입력란
 export const CommentInput = ({commentType, placeholder}) => {
     return <div>
         <h4 style={{color: '#BBD3F2'}}>{commentType}</h4>
@@ -31,7 +35,9 @@ export const CommentInput = ({commentType, placeholder}) => {
 }
 
 export const StarDiv = () => {
-
+    return <div>
+        <span>별점: </span>
+    </div>
 }
 
 export const AddCommentBtnDiv = () => {
@@ -69,4 +75,3 @@ const BtnContainer = styled.div`
         }
     }
 `
-

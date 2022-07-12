@@ -5,8 +5,10 @@ function AddReview() {
     return <ReviewContainer>
         <CommentTitle> 이용후기 등록 </CommentTitle>
         <CommentInfo></CommentInfo>
-        <CommentInput commentType="이용후기 등록" placeholder="이용후기를 작성해주세요. (200자 이내)"></CommentInput>
-        <AddCommentBtnDiv></AddCommentBtnDiv>
+        <form>
+            <CommentInput commentType="이용후기 등록" placeholder="이용후기를 작성해주세요. (200자 이내)"></CommentInput>
+            <AddCommentBtnDiv></AddCommentBtnDiv>
+        </form>
     </ReviewContainer>
 }
 

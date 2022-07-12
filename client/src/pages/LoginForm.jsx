@@ -17,11 +17,10 @@ function LoginForm() {
   const navigate = useNavigate();
   const params = useParams();
 
-
+  const user = useSelector((state) => state.user.value);
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] =useState("")
-
-
 
 
   return (

@@ -6,6 +6,9 @@ import LoginForm from "./pages/LoginForm";
 import RegisterForm from "./pages/RegisterForm"
 import MyPage from "./pages/MyPage"
 import AddReview from "./pages/AddReview"
+import AddQnA from "./pages/AddQnA";
+import AddQnaComment from "./pages/AddQnaComment"
+import Detail from './pages/Detail'
 
 function App() {
   return (
@@ -16,6 +19,9 @@ function App() {
           <Route path="/register/:userType" element={<RegisterForm />} />
           <Route path="/myPage" element={<MyPage/>}/>
           <Route path="/myPage/addReview" element={<AddReview />} />
+          <Route path="/myPage/addQna" element={<AddQnA />} />
+          <Route path="/myPage/addQnaComment" element={<AddQnaComment />} />
+          <Route path="/detail/:spaceId" element={<Detail />} />
 {/* 
           <Route path="/notice" element={<Notice />} />
           <Route path="/addNotice" element={<AddNotice />} />

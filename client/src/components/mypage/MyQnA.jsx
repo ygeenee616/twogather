@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import QnA from "./QnA";
+import QnaComponent from "./QnaComponent.jsx";
 import Pagination from "../Pagination";
 import { useState } from 'react';
 
@@ -21,7 +21,7 @@ function MyQnA() {
                     <td className="registered-on"> 작성일 </td>
                     <td className="replyed"> 답변유무 </td>
                 </QnATableHead>
-                <QnA></QnA>  
+                <QnaComponent></QnaComponent>  
             </QnATable>
             <Pagination total={total_page} limit={limit_page} page={page_number} setPage={posts_per_page}></Pagination>
         </QnADiv>       

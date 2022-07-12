@@ -1,6 +1,11 @@
 import styled from "styled-components";
+import { useSelector } from 'react-redux';
 
 function MyProfile() {
+
+  const user = useSelector((state) => state.user.value);
+
+
   return (
 
     <ProfileDiv>
