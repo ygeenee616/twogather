@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import ProductCard from "./productCard";
+import ProductCard from "./ProductCard";
 import exImg from "../assets/images/ex1.png";
 
 const exData = {
