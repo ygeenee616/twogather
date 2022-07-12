@@ -4,16 +4,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./Store";
 
-import Detail from "./pages/Detail";
-import Book from "./pages/Book";
-
 function App() {
   return (
     <Provider store={store}>
       <div className="App">
-        <BrowserRouter>
+        {/* <BrowserRouter>
           <Routes>
-            {/* <Route path="/login" element={<LoginForm />} />
+            <Route path="/login" element={<LoginForm />} />
             <Route path="/register/:userType" element={<RegisterForm />} />
             <Route path="/myPage" element={<MyPage />} />
             <Route path="/myPage/addReview" element={<AddReview />} />
@@ -41,9 +38,9 @@ function App() {
             <Route path="/book" element={<Book />} />
 
             <Route path="/" element={<Home />} />
-            <Route path="*" element={<NotFound />} /> */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
-        </BrowserRouter>
+        </BrowserRouter> */}
       </div>
     </Provider>
   );
