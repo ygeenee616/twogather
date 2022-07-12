@@ -1,9 +1,9 @@
 import React, { useState, memo } from "react";
 import styled from "styled-components";
 import Chart from "../components/Chart";
-import AdminPage from "./AddHostPage";
+import AdminPage from "./AddHost";
 import AdminUserList from "./AdminUserList";
-import HostBookList from "./hostPage/HostBookListPage";
+import HostBookList from "./HostBookList";
 import AdminBookList from "./AdminBookList";
 import { FaUserCircle } from "react-icons/fa";
 import { FaUserTie } from "react-icons/fa";

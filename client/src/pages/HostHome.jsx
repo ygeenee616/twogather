@@ -1,12 +1,10 @@
 import React, { useState, memo } from "react";
 import styled from "styled-components";
-import Chart from "../../components/Chart";
-import { Routes, Route, BrowserRouter, Link } from "react-router-dom";
-import AdminPage from "../AddHostPage";
-import HostBookList from "./HostBookListPage";
+import Chart from "../components/Chart";
+
+import HostBookList from "./HostBookList";
 import { FaUserCircle } from "react-icons/fa";
-import AdminUserList from "../AdminUserList";
-import StripeLayout from "../../components/StripeLayout";
+import StripeLayout from "../components/StripeLayout";
 
 const name = "강예정";
 function HostHome() {
@@ -75,13 +73,6 @@ function Greetings() {
   );
 }
 
-function HB() {
-  return (
-    <>
-      <HostBookList></HostBookList>
-    </>
-  );
-}
 
 const Role = styled.p`
   font-size: 1.2rem;
@@ -157,7 +148,6 @@ const Profile = styled.div`
   align-items: center;
   flex-direction: column;
 `;
-// const d = styled(Content)
 
 const Label = styled.span`
   font-size: 2rem;

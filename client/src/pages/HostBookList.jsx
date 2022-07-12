@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import BookList from "../../components/hostComponents/BookList";
-import StripeLayout from "../../components/StripeLayout";
+import StripeLayout from "../components/StripeLayout";
 function HostBookList() {
   const data = [
     {
@@ -64,7 +63,7 @@ function HostBookList() {
         title={title}
         columnTemplete={columnTemplete}
         keys={keys}
-        listName="User"
+        listName="BOOK"
       ></StripeLayout>
     </>
   );

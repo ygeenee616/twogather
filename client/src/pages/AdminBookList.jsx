@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import BookList from "../components/hostComponents/BookList";
 import StripeLayout from "../components/StripeLayout";
 function AdminBookList() {
   const data = [

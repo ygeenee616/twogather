@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import Postcode from "../components/adminComponents/Postcode";
-import PostcodePopup from "../components/adminComponents/PostcodePopup";
+import Postcode from "../components/admin/Postcode";
+import PostcodePopup from "../components/admin/PostcodePopup";
 
 function AddSpacePage() {
   const [imageSrc, setImageSrc] = useState("");

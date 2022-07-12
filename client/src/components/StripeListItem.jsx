@@ -2,9 +2,8 @@ import React, { useState, memo } from "react";
 import styled from "styled-components";
 import { ImBin } from "react-icons/im";
 import { RiEdit2Fill } from "react-icons/ri";
-import { ImBlocked } from "react-icons/im";
+import { FaUserSlash } from "react-icons/fa";
 function ListItem({ item, columnTemplete, keys, listName }) {
-  console.log(listName);
   return (
     <ItemList templete={columnTemplete}>
       {keys.map((key) => {
@@ -54,7 +53,7 @@ function UserBlockButtonBox() {
         backGroundColor="#BBD3F2"
         color="white"
       >
-        <ImBlocked class="block"></ImBlocked>
+        <FaUserSlash class="block"></FaUserSlash>
       </Button>
     </ButtonBox>
   );
