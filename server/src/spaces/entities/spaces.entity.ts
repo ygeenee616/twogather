@@ -28,6 +28,6 @@ export class Space {
   intro: string;
 
   @OneToOne(() => User)
-  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'hostId', referencedColumnName: 'id' })
   user: User;
 }

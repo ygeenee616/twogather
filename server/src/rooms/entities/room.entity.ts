@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+@Entity()
 export class Room {
   @PrimaryGeneratedColumn()
   id: number;
@@ -15,16 +16,13 @@ export class Room {
   @Column({ type: 'varchar', length: 45 })
   name: string;
 
-  @Column({ type: 'int', length: 200 })
+  @Column({ type: 'int' })
   capacity: number;
 
-  @Column({ type: 'int', length: 200 })
+  @Column({ type: 'int' })
   price: number;
 
-  @Column({ type: 'varchar', length: 600 })
-  description: number;
-
-  @OneToOne((type) => Space)
-  @JoinColumn({ name: 'spaceId2', referencedColumnName: 'id' })
+  @ManyToOne(() => Space)
+  @JoinColumn({ name: 'spaceId', referencedColumnName: 'id' })
   space: Space;
 }
