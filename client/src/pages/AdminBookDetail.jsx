@@ -1,16 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-import PostBookInfo from "../components/book/PostBookInfo";
+import HostInfo from "../components/book/HostInfo";
 import BookInfo from "../components/book/BookInfo";
-import BookerInfo from "../components/book/BookerInfo";
+import PostBookerInfo from "../components/book/PostBookerInfo";
 import ToTop from "../components/ToTop";
 
 export default function Book() {
   return (
     <FullContainer>
       <BookInfo />
-      <BookerInfo />
-      <PostBookInfo />
+      <PostBookerInfo />
+      <HostInfo />
       <Button>취소하기</Button>
       <ToTop />
     </FullContainer>

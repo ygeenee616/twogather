@@ -3,6 +3,8 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./Store";
+import Book from "./pages/Book";
+import AdminBookDetail from "./pages/AdminBookDetail";
 
 function App() {
   return (
@@ -10,6 +12,8 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Routes>
+            <Route path="/" element={<Book />} />
+            <Route path="/admin" element={<AdminBookDetail />} />
             {/* <Route path="/login" element={<LoginForm />} />
             <Route path="/register/:userType" element={<RegisterForm />} />
             <Route path="/myPage" element={<MyPage />} />

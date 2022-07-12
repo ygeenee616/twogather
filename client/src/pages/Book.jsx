@@ -1,15 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import GetBookInfo from "../components/book/GetBookInfo";
-import PostBookInfo from "../components/book/PostBookInfo";
+import GetBookerInfo from "../components/book/GetBookerInfo";
+import HostInfo from "../components/book/HostInfo";
 import BookInfo from "../components/book/BookInfo";
 import ToTop from "../components/ToTop";
 
 export default function Book() {
   return (
     <FullContainer>
-      <GetBookInfo />
-      <PostBookInfo />
+      <GetBookerInfo />
+      <HostInfo />
       <BookInfo />
       <Button>예약 완료</Button>
       <ToTop />
@@ -26,7 +26,7 @@ const FullContainer = styled.div`
 `;
 
 const Button = styled.button`
-  width: 40%;
+  width: 30%;
   padding: 5px;
   margin: 20px 0;
   border-radius: 10px;

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-BookerInfo.defaultProps = {
+PostBookerInfo.defaultProps = {
   name: "강예정",
   phone: "01012345678",
   email: "abc@naver.com",
@@ -9,7 +9,13 @@ BookerInfo.defaultProps = {
   request: "의자 4개 준비 부탁드립니다.",
 };
 
-export default function BookerInfo({ name, phone, email, purpose, request }) {
+export default function PostBookerInfo({
+  name,
+  phone,
+  email,
+  purpose,
+  request,
+}) {
   return (
     <Container>
       <Header>예약자 정보</Header>
@@ -42,15 +48,11 @@ export default function BookerInfo({ name, phone, email, purpose, request }) {
 const Container = styled.div`
   width: 100%;
   margin-bottom: 40px;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 40px;
 `;
 
 const Header = styled.div`
   border-bottom: 4px solid #a8c1e8;
   padding: 20px 0;
-  // text-align: left;
   font-size: 2.2rem;
   font-weight: bold;
   margin: 0;
