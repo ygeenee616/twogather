@@ -4,15 +4,16 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Req,
-  Res,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/users.entity';
 import { UsersService } from './users.service';
 
@@ -26,14 +27,9 @@ export class UsersController {
   }
 
   @Post('/sign-in')
-  @UseGuards(AuthGuard())
-  async login(
-    @Req() req,
-    @Res() res,
-    @Body(ValidationPipe) userData: AuthCredentialDto,
-  ) {
+  async login(@Req() req, @Body(ValidationPipe) userData: AuthCredentialDto) {
     const accessToken = await this.usersService.login(userData);
-    res.json({ accessToken: accessToken });
+    return accessToken;
   }
   @Get()
   findAll() {
@@ -44,6 +40,14 @@ export class UsersController {
       throw error;
     }
   }
+
+  // 내 정보조회
+  @Get('/info')
+  @UseGuards(AuthGuard())
+  findMyInfo(@Req() req) {
+    return req.user;
+  }
+
   @Get('/:id')
   findOneById(@Param('id') id: number): Promise<User> {
     return this.usersService.findOne(id);
@@ -54,12 +58,21 @@ export class UsersController {
     return this.usersService.findOneByEmail(email);
   }
 
+  @Patch()
+  @UseGuards(AuthGuard())
+  updateUserInfo(@Req() req, @Body() userData: UpdateUserDto) {
+    const updatedUser = this.usersService.update(req.user.id, userData);
+    return updatedUser;
+  }
+
   @Delete('/:id')
   remote(@Param('id') id: number) {
-    try {
-      this.usersService.remove(id);
-    } catch (error) {
-      error;
-    }
+    this.usersService.remove(id);
+  }
+
+  @Delete()
+  @UseGuards(AuthGuard())
+  withdrawal(@Req() req) {
+    return this.usersService.remove(req.user.id);
   }
 }
