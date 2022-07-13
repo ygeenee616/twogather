@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import {
-  validateEmail,
-  validatePassword,
-} from "../../assets/utils/UsefulFunction";
+import { validateEmail,validatePassword } from "../../assets/utils/UsefulFunction"
+
+
 
 function Register() {
   const [nickname, setNickname] = useState("");

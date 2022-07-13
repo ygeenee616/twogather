@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from 'react-redux';
 import { validateEmail, useScript } from "../assets/utils/UsefulFunction";
+import { login } from '../slices/UserSlice'
 import styled from "styled-components";
 import {
   Container,
@@ -10,14 +10,26 @@ import {
   FormDiv,
   FormTitle,
   UserBtn,
-} from "../components/UserForm";
+} from "../components/register/UserForm";
 
 function LoginForm() {
+  const user = useSelector((store) => store.user);
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const params = useParams();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleLogin = () => {
+    setEmail('');
+    setPassword('');
+
+    dispatch(login({
+      email: email
+    }));
+  }
 
   return (
     <Container>
@@ -41,7 +53,7 @@ function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
               ></input>
             </LoginInputDiv>
-            <LoginButton>LOGIN</LoginButton>
+            <LoginButton onClick={()=>handleLogin()}>LOGIN</LoginButton>
           </LoginDiv>
 
           <SocialLoginDiv>
