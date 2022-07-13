@@ -29,7 +29,7 @@ export class UsersController {
   @Post('/sign-in')
   async login(@Req() req, @Body(ValidationPipe) userData: AuthCredentialDto) {
     const accessToken = await this.usersService.login(userData);
-    return accessToken;
+    return { accessToken: accessToken };
   }
   @Get()
   findAll() {
@@ -48,16 +48,19 @@ export class UsersController {
     return req.user;
   }
 
+  // admin 기능
   @Get('/:id')
   findOneById(@Param('id') id: number): Promise<User> {
     return this.usersService.findOne(id);
   }
 
+  // admin 기능
   @Get('/email/:email')
   findOneByEmail(@Param('email') email: string): Promise<User> {
     return this.usersService.findOneByEmail(email);
   }
 
+  //마이페이지 수정
   @Patch()
   @UseGuards(AuthGuard())
   updateUserInfo(@Req() req, @Body() userData: UpdateUserDto) {
