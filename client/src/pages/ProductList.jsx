@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Header from "../layout/Header";
 import Pagination from "../components/Pagination";
 import ProductCard from "../components/ProductCard";
 import exImg1 from "../assets/images/ex1.png";
@@ -78,7 +77,6 @@ export default function ProductList() {
   const offset = (page - 1) * limit;
   return (
     <div>
-      <Header />
       <BottomWrap>
         <SelectorWrap>
           <Selector about="카테고리" />

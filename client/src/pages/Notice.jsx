@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
-import Header from "../layout/Header";
-import Footer from "../layout/Footer.jsx";
 import Pagination from "../components/Pagination";
 
 const exData = [
@@ -144,7 +142,6 @@ export default function Notice() {
 
   return (
     <div>
-      <Header />
       <NoticeWrap>
         <NoticeTitle>공지사항</NoticeTitle>
         <ButtonGoToAddNotice onClick={() => nav("/addNotice")}>
@@ -160,7 +157,6 @@ export default function Notice() {
         page={page}
         setPage={setPage}
       />
-      <Footer />
     </div>
   );
 }
