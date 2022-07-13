@@ -3,6 +3,10 @@ import styled from "styled-components";
 import Header from "../layout/Header";
 import Pagination from "../components/Pagination";
 import ProductCard from "../components/ProductCard";
+import CategorySelector from "../components/list/CategorySelector";
+import LocalSelector from "../components/list/LocalSelector";
+import DateSelector from "../components/list/DateSelector";
+import SelecotrResetBtn from "../components/list/SelectorResetBtn";
 import exImg1 from "../assets/images/ex1.png";
 import exImg2 from "../assets/images/ex2.png";
 
@@ -63,14 +67,6 @@ const renderData = ({ offset, limit }) => {
     ));
 };
 
-const Selector = ({ about, clickEvent }) => {
-  return (
-    <SelectButton onClick={clickEvent}>
-      <About>{about}</About>
-    </SelectButton>
-  );
-};
-
 export default function ProductList() {
   const [page, setPage] = useState(1);
   const limit = 12;
@@ -80,10 +76,10 @@ export default function ProductList() {
       <Header />
       <BottomWrap>
         <SelectorWrap>
-          <Selector about="카테고리" />
-          <Selector about="지역" />
-          <Selector about="날짜" />
-          <Selector about="필터 초기화" />
+          <CategorySelector />
+          <LocalSelector />
+          <DateSelector />
+          <SelecotrResetBtn />
         </SelectorWrap>
         <ProductWrap>{renderData({ offset, limit })}</ProductWrap>
 
@@ -109,18 +105,9 @@ const ProductWrap = styled.div`
   gap: 1vw;
 `;
 
-const SelectButton = styled.button`
-  all: unset;
-  width: 13vw;
-  height: 5vh;
-  margin: 1vh 0 6vh 0;
-  border: 1px solid #8daef2;
-  border-radius: 10px;
-  cursor: pointer;
-  & + & {
-    margin-left: 1vw;
-  }
-  &:nth-child(4) {
+const SelectorWrap = styled.div`
+  display: flex;
+  button:nth-child(4) {
     width: 9vw;
     margin-left: auto;
     div {
@@ -128,11 +115,4 @@ const SelectButton = styled.button`
       text-align: center;
     }
   }
-`;
-const SelectorWrap = styled.div`
-  display: flex;
-`;
-const About = styled.div`
-  color: #8daef2;
-  margin-left: 10%;
 `;
