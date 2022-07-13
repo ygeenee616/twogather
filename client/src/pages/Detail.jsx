@@ -144,7 +144,6 @@ export default function Detail({ title, hashTag, contents }) {
         <RightContainer>
           <SelectRoom />
           <MyDatePicker />
-          {/* <MyTimePicker /> */}
 
           <Personnel>
             예약 인원:
