@@ -35,7 +35,6 @@ import { Review } from './reviews/entities/review.entity';
         DB_NAME: Joi.string().required(),
         DB_CHARSET: Joi.string().required(),
         DB_TIMEZONE: Joi.string().required(),
-        JWT_SECRET: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
