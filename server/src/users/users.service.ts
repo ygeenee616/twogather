@@ -1,26 +1,92 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EntityMetadataNotFoundError, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/users.entity';
+import * as bcrypt from 'bcryptjs';
+import { AuthCredentialDto } from './dto/auth-credential.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+    private jwtService: JwtService,
+  ) {}
+
+  // 유저 생성
+  async register(userData: CreateUserDto): Promise<User> {
+    const newUser: User = this.usersRepository.create(userData);
+    const salt: string = await bcrypt.genSalt();
+    const { password } = newUser;
+    const hashedPassword = await bcrypt.hash(password, salt);
+    newUser.password = hashedPassword;
+    try {
+      await this.usersRepository.save(newUser);
+      newUser.password = null;
+      return newUser;
+    } catch (error) {
+      if (error.code === 'ER_DUP_ENTRY') {
+        throw new ConflictException('이미 존재하는 이메일입니다. ');
+      } else {
+        throw new InternalServerErrorException();
+      }
+      throw error;
+    }
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async login(userData: AuthCredentialDto): Promise<string> {
+    const { email, password } = userData;
+    const user = await this.usersRepository.findOneBy({ email });
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const payload = { email };
+
+      const accessToken = await this.jwtService.sign(payload);
+      return accessToken;
+    } else {
+      throw new UnauthorizedException('잘못된 이메일 또는 비밀번호 입니다.');
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findAll(): Promise<User[]> {
+    return this.usersRepository.find();
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  // id로 유저 조회
+  async findOne(id: number): Promise<User> {
+    try {
+      return await this.usersRepository.findOneByOrFail({
+        id,
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  // email로 유저 조회
+  async findOneByEmail(email: string): Promise<User> {
+    try {
+      console.log('service: ', email);
+      return this.usersRepository.findOneBy({ email });
+    } catch (error) {
+      throw new NotFoundException();
+    }
+  }
+
+  async update(id: number, user: User): Promise<void> {
+    await this.usersRepository.update(id, user);
+  }
+
+  async remove(id: number): Promise<void> {
+    await this.usersRepository.delete(id);
   }
 }
