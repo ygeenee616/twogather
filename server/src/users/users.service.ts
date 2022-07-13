@@ -58,7 +58,11 @@ export class UsersService {
   }
   // 유저 전체 조회
   async findAll(): Promise<User[]> {
-    return await this.usersRepository.find();
+    try {
+      return await this.usersRepository.find();
+    } catch (error) {
+      throw error;
+    }
   }
 
   // id로 유저 조회
@@ -73,27 +77,32 @@ export class UsersService {
   }
 
   // email로 유저 조회
-  async findOneByEmail(email: string): Promise<User> {
+  async findOneByEmail(email: string) {
     try {
-      console.log('service: ', email);
-      return this.usersRepository.findOneBy({ email });
-    } catch (error) {
-      throw new NotFoundException();
-    }
-  }
-
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    try {
-      await this.usersRepository.update(id, updateUserDto);
-      return await this.usersRepository.findOneBy({ id });
+      console.log(email);
+      return await this.usersRepository.findOneBy({ email });
     } catch (error) {
       throw error;
     }
   }
 
+  // 유저 갱신
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    try {
+      const updateUser = await this.usersRepository.update(id, updateUserDto);
+      console.log(updateUser);
+      return await this.usersRepository.findOneBy({ id });
+    } catch (error) {
+      throw error;
+    }
+  }
+  // 유저 삭제
   async remove(id: number): Promise<void> {
     try {
-      await this.usersRepository.delete(id);
+      const deleteUser = await this.usersRepository.delete(id);
+      if (!deleteUser.affected) {
+        throw new NotFoundException({ description: '삭제할 유저가 없습니다.' });
+      }
     } catch (error) {
       throw error;
     }

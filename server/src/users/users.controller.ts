@@ -20,10 +20,10 @@ import {
   ApiTags,
   ApiOperation,
   ApiResponse,
-  ApiCreatedResponse,
+  ApiBasicAuth,
 } from '@nestjs/swagger';
-import { access } from 'fs';
-
+import { UserResExample } from './user.swagger.example';
+const userResExample = new UserResExample();
 @Controller('api/users')
 @ApiTags('유저 API')
 export class UsersController {
@@ -36,15 +36,17 @@ export class UsersController {
   })
   @ApiResponse({
     status: 201,
-    description: '유저 생성 완료(입력값 외 null값).',
-    type: User,
+    description: '유저 생성 완료',
+    schema: {
+      example: userResExample.signup,
+    },
   })
-  async signup(@Body(ValidationPipe) createUserDto: CreateUserDto) {
-    const newUser: Promise<User> = this.usersService.register(createUserDto);
+  async signUp(@Body(ValidationPipe) createUserDto: CreateUserDto) {
+    const newUser = await this.usersService.register(createUserDto);
     return {
       status: 201,
       description: '유저 생성 완료(입력값 외 null값).',
-      data: newUser,
+      success: true,
     };
   }
 
@@ -72,19 +74,14 @@ export class UsersController {
   @ApiResponse({
     status: 200,
     description: '전체 유저 조회',
-    type: Array<User>,
   })
-  async findAll() {
-    try {
-      const users: Promise<User[]> = this.usersService.findAll();
-      return {
-        statusCode: 200,
-        message: '유저 조회 성공',
-        data: users,
-      };
-    } catch (error) {
-      throw error;
-    }
+  async getAll() {
+    const users = await this.usersService.findAll();
+    return {
+      statusCode: 200,
+      message: '유저 조회 성공',
+      data: users,
+    };
   }
 
   // 내 정보조회
@@ -95,11 +92,13 @@ export class UsersController {
   })
   @ApiResponse({ status: 200, description: '내 정보 조회', type: User })
   @UseGuards(AuthGuard())
-  findMyInfo(@Req() req) {
+  async getMyInfo(@Req() req) {
+    console.log(req.user);
+    const user = await this.usersService.findOne(req.user.id);
     return {
       statusCode: 200,
       message: '내 정보 조회 성공',
-      data: req.users,
+      data: user,
     };
   }
 
@@ -110,8 +109,8 @@ export class UsersController {
     description: '특정 유저를 조회한다.',
   })
   @ApiResponse({ status: 200, description: '특정 유저 조회', type: User })
-  findOneById(@Param('id') id: number): Promise<User> {
-    return this.usersService.findOne(id);
+  async getOneById(@Param('id') id: number): Promise<User> {
+    return await this.usersService.findOne(id);
   }
 
   // admin 기능
@@ -120,9 +119,35 @@ export class UsersController {
     summary: 'email로 조회 API',
     description: 'email로 특정 유저를 조회한다.',
   })
-  @ApiResponse({ status: 200, description: '이메일로 조회 성공', type: User })
-  findOneByEmail(@Param('email') email: string): Promise<User> {
-    return this.usersService.findOneByEmail(email);
+  @ApiResponse({
+    status: 200,
+    description: '이메일로 조회 성공',
+    schema: {
+      example: {
+        status: 200,
+        description: '이메일로 조회 성공',
+        data: {
+          id: 41,
+          nickname: 'test678',
+          email: 'test678@naver.com',
+          password:
+            '$2a$10$NWv0JutXwYJUaA8oUX45weRdBNuTpO3AjjlizhdSpUDcwjNwV2k7q',
+          name: null,
+          sex: null,
+          profileImage: null,
+          phoneNumber: null,
+          businessNumber: null,
+          businessName: null,
+          businessAddress: null,
+          accountNumber: null,
+        },
+      },
+    },
+  })
+  async getOneByEmail(@Param('email') email: string) {
+    const user = await this.usersService.findOneByEmail(email);
+    console.log(user);
+    return { status: 200, description: '이메일로 조회 성공', data: user };
   }
 
   //마이페이지 수정
@@ -132,7 +157,7 @@ export class UsersController {
     summary: '내 정보 수정 API',
     description: '내 정보를 수정한다.',
   })
-  @ApiResponse({ status: 201, description: '내 정보 수정 성공', type: User })
+  @ApiResponse({ status: 201, description: '내 정보 수정 성공' })
   updateUserInfo(@Req() req, @Body(ValidationPipe) userData: UpdateUserDto) {
     const updatedUser = this.usersService.update(req.user.id, userData);
     return { status: 201, description: '내 정보 수정 성공', data: updatedUser };
@@ -144,14 +169,26 @@ export class UsersController {
     summary: '특정 유저 삭제 API',
     description: '특정 유저를 삭제한다.',
   })
-  @ApiResponse({ status: 201, description: '특정 유저 삭제 성공' })
-  removeUser(@Param('id') id: number) {
-    return this.usersService.remove(id);
+  @ApiResponse({
+    status: 201,
+    description: '특정 유저 삭제 성공',
+    schema: {
+      example: { success: true },
+    },
+  })
+  async removeUser(@Param('id') id: number) {
+    await this.usersService.remove(id);
+    return {
+      status: 201,
+      description: '특정 유저 삭제 성공',
+      success: true,
+    };
   }
 
   // 회원 탈퇴
   @Delete()
   @UseGuards(AuthGuard())
+  @ApiBasicAuth()
   @ApiOperation({
     summary: '회원 탈퇴 API',
     description: '회원 탈퇴를 진행한다.',
@@ -161,7 +198,12 @@ export class UsersController {
     description: '회원 탈퇴 성공',
     type: User,
   })
-  withdrawal(@Req() req) {
-    return this.usersService.remove(req.user.id);
+  async withdrawal(@Req() req) {
+    await this.usersService.remove(req.user.id);
+    return {
+      status: 201,
+      description: '특정 유저 삭제 성공',
+      success: true,
+    };
   }
 }
