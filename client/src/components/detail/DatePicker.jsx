@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./../../assets/styles/DatePicker.css";
+
+import TimePicker from "./TimePicker";
+import axios from "axios";
+import { ca } from "date-fns/locale";
 // CSS Modules, react-datepicker-cssmodules.css
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
 export function MyDatePicker() {
   const [date, setDate] = useState(new Date());
+  const [startTime, setStartTime] = useState(0);
+  const [endTime, setEndTime] = useState(1);
+  const [caution, setCaution] = useState(false);
 
   // 날짜 포맷팅
   const dateToString = (date) => {
@@ -21,67 +29,140 @@ export function MyDatePicker() {
     );
   };
 
-  console.log(dateToString(date));
+  useEffect(() => {
+    console.log(startTime, endTime);
+  }, [startTime, endTime]);
 
-  return (
-    <DatePicker
-      locale={ko}
-      selected={date}
-      onChange={(date) => setDate(date)}
-      minDate={new Date()} // 이전 날짜는 선택 불가
-      inline
-    />
-  );
-}
+  const handleDateChange = async (date) => {
+    setDate(date);
+    console.log(dateToString(date));
+    // 클릭한 date에 따른 예약 내역
+    const req = await axios.get("/dummyBook.json");
+    const data = await req.data.books;
+    console.log(data);
 
-export function MyTimePicker() {
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
+    let bookedTime = [];
+    data.forEach((item) => {
+      for (let t = item.startTime; t <= item.endTime; t++) {
+        bookedTime.push(t);
+      }
+    });
+    console.log(bookedTime);
 
-  // 시간 포맷팅
-  const timeToString = (time) => {
-    return time.getHours();
+    const disableList = document.querySelectorAll(
+      ".react-datepicker__time-list-item "
+    );
+    console.log(disableList);
+    console.log(new Date().getHours() == 2);
   };
 
-  // 시간 필터 - 과거 시간은 선택 불가
-  const filterPassedTime = (time) => {
-    const currentDate = new Date();
-    const selectedDate = new Date(time);
+  // 시간 필터
+  const filterPassedTime = (bookedTime) => {
+    const currentDate = new Date().getHours();
+
+    const selectedDate = new Date();
 
     return currentDate.getTime() < selectedDate.getTime();
   };
 
-  useEffect(() => {
-    console.log(timeToString(startTime), timeToString(endTime));
-  }, [startTime, endTime]);
+  // 시간 테이블
+  const timeTable = [];
+  for (let i = 0; i < 24; i++) {
+    timeTable.push(i);
+  }
+
+  console.log(dateToString(date));
 
   return (
-    <div className="timePicker">
+    <>
       <DatePicker
         locale={ko}
-        selected={startTime}
-        onChange={(date) => setStartTime(date)}
-        filterTime={filterPassedTime}
-        showTimeSelect
-        showTimeSelectOnly
-        timeIntervals={60}
-        timeCaption="시간"
-        dateFormat="HH시 부터"
+        selected={date}
+        onChange={(date) => handleDateChange(date)}
+        minDate={new Date()} // 이전 날짜는 선택 불가
+        inline
       />
 
-      <span className="bookInfo"> ~ </span>
+      <div className="timePicker">
+        <TimeSelect
+          name="timeTable"
+          size="2"
+          onChange={(e) => setStartTime(Number(e.target.value))}
+        >
+          {timeTable.map((time, i) => {
+            return (
+              <option key={i} name={time} value={time} className="time">
+                {time}:00
+              </option>
+            );
+          })}
+        </TimeSelect>
 
-      <DatePicker
-        locale={ko}
-        selected={endTime}
-        onChange={(date) => setEndTime(date)}
-        filterTime={filterPassedTime}
-        showTimeSelect
-        showTimeSelectOnly
-        timeIntervals={60}
-        timeCaption="시간"
-        dateFormat="HH시 까지"
-      />
-    </div>
+        <span className="bookInfo"> ~ </span>
+
+        <TimeSelect
+          name="timeTable"
+          size="2"
+          onChange={(e) => {
+            if (startTime <= Number(e.target.value)) {
+              setEndTime(Number(e.target.value));
+              setCaution(false);
+            } else {
+              setCaution(true);
+            }
+          }}
+        >
+          {timeTable.map((time, i) => {
+            return (
+              <option key={i} name={time} value={time} className="time">
+                {time}:00
+              </option>
+            );
+          })}
+        </TimeSelect>
+      </div>
+      <Guide caution={caution}>
+        <p>*최소 예약시간은 1시간입니다.</p>
+        <p className="caution">*시간 설정이 잘못되었습니다.</p>
+      </Guide>
+    </>
   );
 }
+
+const TimeSelect = styled.select`
+  width: 100px;
+  border: 2px solid #8daef2;
+  border-radius: 5px;
+  text-align: center;
+
+  &:focus {
+    outline: none;
+  }
+
+  & > option {
+    padding: 3px;
+    text-align: center;
+  }
+
+  & > option:checked {
+    background-color: #8daef2;
+  }
+
+  & > option:hover {
+    background-color: #bbd3fe;
+  }
+`;
+
+const Guide = styled.div`
+  width: 100%;
+  font-size: 0.7rem;
+  color: red;
+
+  & p {
+    margin: 0;
+  }
+
+  & .caution {
+    ${({ caution }) => (caution ? `display: block;` : `display: none;`)};
+  }
+`;
