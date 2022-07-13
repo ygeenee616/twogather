@@ -22,15 +22,18 @@ const handleDateChange = async (date) => {
   });
   console.log(bookedTime);
 
-  const disabled = [];
-  let timeList = document.querySelectorAll(".time");
-  timeList.forEach((t) => {
-    disabled.push(Number(t.value));
-  });
-  console.log(disabled);
+  let startTimeList = document.querySelectorAll(".startTime");
+  let endTimeList = document.querySelectorAll(".endTime");
 
-  console.log("필터" + disabled.filter((x) => bookedTime.includes(x)));
-  // timeList.forEach;
+  bookedTime.forEach((num) => {
+    startTimeList[num].disabled = true;
+    startTimeList[num].classList.add("disable");
+    startTimeList[num].style.textDecoration = "line-through";
+
+    endTimeList[num].disabled = true;
+    endTimeList[num].classList.add("disable");
+    endTimeList[num].style.textDecoration = "line-through";
+  });
 };
 
 // DatePicker + TimePicker
@@ -50,6 +53,10 @@ export function MyDatePicker({ bookedTime }) {
       date.getDate().toString().padStart(2, "0")
     );
   };
+
+  useEffect(() => {
+    handleDateChange();
+  }, []);
 
   useEffect(() => {
     console.log(dateToString(date), startTime, endTime);
@@ -86,9 +93,12 @@ export function MyDatePicker({ bookedTime }) {
               : setCaution(true);
           }}
         >
+          <option className="disable" disabled>
+            시작 시간
+          </option>
           {timeTable.map((time, i) => {
             return (
-              <option key={i} name={time} value={time} className="time">
+              <option key={i} name={time} value={time} className="startTime">
                 {time}:00
               </option>
             );
@@ -108,9 +118,12 @@ export function MyDatePicker({ bookedTime }) {
               : setCaution(true);
           }}
         >
+          <option className="disable" disabled>
+            종료 시간
+          </option>
           {timeTable.map((time, i) => {
             return (
-              <option key={i} name={time} value={time} className="time">
+              <option key={i} name={time} value={time} className="endTime">
                 {time}:00
               </option>
             );
@@ -132,7 +145,7 @@ const TimeSelect = styled.select`
   text-align: center;
 
   & > option {
-    padding: 7px;
+    padding: 5px;
     text-align: center;
   }
 
@@ -143,16 +156,16 @@ const TimeSelect = styled.select`
   & > option:hover {
     background-color: #bbd3fe;
   }
+
+  & .disable:hover {
+    background-color: transparent;
+  }
 `;
 
 const Guide = styled.div`
   width: 100%;
   font-size: 0.7rem;
   color: red;
-
-  & p {
-    margin: 0;
-  }
 
   & .caution {
     ${({ caution }) => (caution ? `display: block;` : `display: none;`)};
