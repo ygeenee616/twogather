@@ -29,6 +29,7 @@ const userResExample = new UserResExample();
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  // 회원가입
   @Post('/sign-up')
   @ApiOperation({
     summary: '회원가입 API',
@@ -38,7 +39,7 @@ export class UsersController {
     status: 201,
     description: '유저 생성 완료',
     schema: {
-      example: userResExample.signup,
+      example: userResExample.signUp,
     },
   })
   async signUp(@Body(ValidationPipe) createUserDto: CreateUserDto) {
@@ -50,18 +51,22 @@ export class UsersController {
     };
   }
 
+  // 로그인
   @Post('/sign-in')
   @ApiOperation({ summary: '로그인 API', description: '로그인한다.' })
   @ApiResponse({
     status: 200,
     description: '로그인 성공, access token 발급.',
-    type: String,
+    schema: {
+      example: userResExample.signIn,
+    },
   })
-  async login(@Req() req, @Body(ValidationPipe) userData: AuthCredentialDto) {
+  async signIn(@Req() req, @Body(ValidationPipe) userData: AuthCredentialDto) {
     const accessToken = await this.usersService.login(userData);
     return {
       statusCode: 200,
       message: '로그인 성공',
+      success: true,
       accessToken: accessToken,
     };
   }
@@ -74,11 +79,15 @@ export class UsersController {
   @ApiResponse({
     status: 200,
     description: '전체 유저 조회',
+    schema: {
+      example: userResExample.getAll,
+    },
   })
   async getAll() {
     const users = await this.usersService.findAll();
     return {
       statusCode: 200,
+      success: true,
       message: '유저 조회 성공',
       data: users,
     };
@@ -90,13 +99,20 @@ export class UsersController {
     summary: '내 정보 조회 API',
     description: '내 정보를 조회한다.',
   })
-  @ApiResponse({ status: 200, description: '내 정보 조회', type: User })
+  @ApiResponse({
+    status: 200,
+    description: '내 정보 조회',
+    schema: {
+      example: userResExample.getMyInfo,
+    },
+  })
   @UseGuards(AuthGuard())
   async getMyInfo(@Req() req) {
     console.log(req.user);
     const user = await this.usersService.findOne(req.user.id);
     return {
       statusCode: 200,
+      success: true,
       message: '내 정보 조회 성공',
       data: user,
     };
@@ -108,9 +124,21 @@ export class UsersController {
     summary: '특정 유저 조회 API',
     description: '특정 유저를 조회한다.',
   })
-  @ApiResponse({ status: 200, description: '특정 유저 조회', type: User })
-  async getOneById(@Param('id') id: number): Promise<User> {
-    return await this.usersService.findOne(id);
+  @ApiResponse({
+    status: 200,
+    description: '특정 유저 조회',
+    schema: {
+      example: userResExample.getOneById,
+    },
+  })
+  async getOneById(@Param('id') id: number) {
+    const user = await this.usersService.findOne(id);
+    return {
+      statusCode: 200,
+      success: true,
+      message: '특정 유저 정보 조회 성공',
+      data: user,
+    };
   }
 
   // admin 기능
@@ -123,31 +151,18 @@ export class UsersController {
     status: 200,
     description: '이메일로 조회 성공',
     schema: {
-      example: {
-        status: 200,
-        description: '이메일로 조회 성공',
-        data: {
-          id: 41,
-          nickname: 'test678',
-          email: 'test678@naver.com',
-          password:
-            '$2a$10$NWv0JutXwYJUaA8oUX45weRdBNuTpO3AjjlizhdSpUDcwjNwV2k7q',
-          name: null,
-          sex: null,
-          profileImage: null,
-          phoneNumber: null,
-          businessNumber: null,
-          businessName: null,
-          businessAddress: null,
-          accountNumber: null,
-        },
-      },
+      example: userResExample.getOneByEmail,
     },
   })
   async getOneByEmail(@Param('email') email: string) {
     const user = await this.usersService.findOneByEmail(email);
     console.log(user);
-    return { status: 200, description: '이메일로 조회 성공', data: user };
+    return {
+      status: 200,
+      success: true,
+      description: '이메일로 조회 성공',
+      data: user,
+    };
   }
 
   //마이페이지 수정
@@ -157,9 +172,18 @@ export class UsersController {
     summary: '내 정보 수정 API',
     description: '내 정보를 수정한다.',
   })
-  @ApiResponse({ status: 201, description: '내 정보 수정 성공' })
-  updateUserInfo(@Req() req, @Body(ValidationPipe) userData: UpdateUserDto) {
-    const updatedUser = this.usersService.update(req.user.id, userData);
+  @ApiResponse({
+    status: 201,
+    description: '내 정보 수정 성공',
+    schema: {
+      example: userResExample.updateUserInfo,
+    },
+  })
+  async updateUserInfo(
+    @Req() req,
+    @Body(ValidationPipe) userData: UpdateUserDto,
+  ) {
+    const updatedUser = await this.usersService.update(req.user.id, userData);
     return { status: 201, description: '내 정보 수정 성공', data: updatedUser };
   }
 
@@ -173,7 +197,7 @@ export class UsersController {
     status: 201,
     description: '특정 유저 삭제 성공',
     schema: {
-      example: { success: true },
+      example: userResExample.removeUser,
     },
   })
   async removeUser(@Param('id') id: number) {
@@ -196,13 +220,15 @@ export class UsersController {
   @ApiResponse({
     status: 201,
     description: '회원 탈퇴 성공',
-    type: User,
+    schema: {
+      example: userResExample.wihdrawal,
+    },
   })
   async withdrawal(@Req() req) {
     await this.usersService.remove(req.user.id);
     return {
       status: 201,
-      description: '특정 유저 삭제 성공',
+      description: '회원 탈퇴 성공',
       success: true,
     };
   }
