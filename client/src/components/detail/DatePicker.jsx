@@ -6,7 +6,6 @@ import { ko } from "date-fns/esm/locale";
 import "react-datepicker/dist/react-datepicker.css";
 import "./../../assets/styles/DatePicker.css";
 
-import TimePicker from "./TimePicker";
 import axios from "axios";
 import { ca } from "date-fns/locale";
 // CSS Modules, react-datepicker-cssmodules.css
@@ -87,7 +86,14 @@ export function MyDatePicker() {
         <TimeSelect
           name="timeTable"
           size="2"
-          onChange={(e) => setStartTime(Number(e.target.value))}
+          onChange={(e) => {
+            if (endTime >= Number(e.target.value)) {
+              setStartTime(Number(e.target.value));
+              setCaution(false);
+            } else {
+              setCaution(true);
+            }
+          }}
         >
           {timeTable.map((time, i) => {
             return (
@@ -122,8 +128,7 @@ export function MyDatePicker() {
         </TimeSelect>
       </div>
       <Guide caution={caution}>
-        <p>*최소 예약시간은 1시간입니다.</p>
-        <p className="caution">*시간 설정이 잘못되었습니다.</p>
+        <p className="caution">*최소 예약시간은 1시간입니다.</p>
       </Guide>
     </>
   );
