@@ -1,19 +1,18 @@
 import {
   ConflictException,
-  HttpException,
-  HttpStatus,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityMetadataNotFoundError, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/users.entity';
 import * as bcrypt from 'bcryptjs';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { JwtService } from '@nestjs/jwt';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -47,6 +46,7 @@ export class UsersService {
   async login(userData: AuthCredentialDto): Promise<string> {
     const { email, password } = userData;
     const user = await this.usersRepository.findOneBy({ email });
+    console.log(user);
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload = { email };
 
@@ -82,11 +82,20 @@ export class UsersService {
     }
   }
 
-  async update(id: number, user: User): Promise<void> {
-    await this.usersRepository.update(id, user);
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    try {
+      await this.usersRepository.update(id, updateUserDto);
+      return await this.usersRepository.findOneBy({ id });
+    } catch (error) {
+      throw error;
+    }
   }
 
   async remove(id: number): Promise<void> {
-    await this.usersRepository.delete(id);
+    try {
+      await this.usersRepository.delete(id);
+    } catch (error) {
+      throw error;
+    }
   }
 }
