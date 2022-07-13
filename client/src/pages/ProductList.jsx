@@ -59,6 +59,7 @@ const renderData = ({ offset, limit }) => {
         address={exData.address}
         price={exData.price}
         review={exData.review}
+        link={`/detail/1`}
       />
     ));
 };

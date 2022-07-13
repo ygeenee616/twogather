@@ -37,7 +37,7 @@ export default function ProductCard({
   return (
     <CardWrap>
       <ImageSliderWrap>
-        <ProductImageSlider images={src} id={1} />
+        <ProductImageSlider images={src} link={link} />
       </ImageSliderWrap>
       <ProductInfo onClick={handleClick}>
         <Line>

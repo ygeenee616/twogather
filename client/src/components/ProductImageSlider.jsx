@@ -4,7 +4,7 @@ import styled from "styled-components";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-export default function ImageSlider({ images, id }) {
+export default function ImageSlider({ images, link }) {
   const settings = {
     dots: false,
     infinite: true,
@@ -24,7 +24,7 @@ export default function ImageSlider({ images, id }) {
           {images.map((image) => {
             return (
               <div>
-                <img src={image} onClick={() => navigate(`/detail/1`)} />
+                <img src={image} onClick={() => navigate(link)} />
               </div>
             );
           })}

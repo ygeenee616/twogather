@@ -86,7 +86,6 @@ const SubContainer = styled.div`
   flex-direction: column;
   height: 100%;
 
-  position: sticky;
   margin: 0 auto;
   min-height: 100%;
 `;
@@ -138,8 +137,8 @@ const Content = styled.div`
   padding: 50px;
   border-left: 1px solid #f2f2f2;
   margin: 5% auto;
-  width: 60vw;
-  height: 80vh;
+  width: 60%;
+  height: 80%;
   border-radius: 20px;
 `;
 
