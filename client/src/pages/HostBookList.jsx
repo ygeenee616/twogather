@@ -56,6 +56,13 @@ function HostBookList() {
 
   return (
     <>
+      <ReservationHeader>
+        <TitleName>
+          <MainTitle>{mainTitle}</MainTitle>
+          {title ? <Title className="title">{title}</Title> : ""}
+        </TitleName>
+      </ReservationHeader>
+
       <StripeLayout
         datas={data}
         headers={headers}
@@ -70,3 +77,29 @@ function HostBookList() {
 }
 
 export default HostBookList;
+
+const ReservationHeader = styled.div`
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  margin: 10%;
+`;
+const TitleName = styled.div`
+  border-bottom: 2px solid #8daef2;
+`;
+const Title = styled.span`
+  font-size: 1.2rem;
+  line-height: 35px;
+  margin: 10px;
+`;
+
+const MainTitle = styled.span`
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #8daef2;
+`;
+
+const BookBox = styled.div`
+  width: 80%;
+  height: 80%;
+`;

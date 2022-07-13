@@ -65,6 +65,7 @@ export default function Recommendation() {
           address={item.address}
           price={item.price}
           review={item.review}
+          link={"/detail/1"}
         ></ProductCard>
       );
     });

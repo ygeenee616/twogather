@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Header from "../layout/Header";
 import Pagination from "../components/Pagination";
 import ProductCard from "../components/ProductCard";
 import CategorySelector from "../components/list/CategorySelector";
@@ -63,6 +62,7 @@ const renderData = ({ offset, limit }) => {
         address={exData.address}
         price={exData.price}
         review={exData.review}
+        link={`/detail/1`}
       />
     ));
 };
@@ -73,7 +73,6 @@ export default function ProductList() {
   const offset = (page - 1) * limit;
   return (
     <div>
-      <Header />
       <BottomWrap>
         <SelectorWrap>
           <CategorySelector />

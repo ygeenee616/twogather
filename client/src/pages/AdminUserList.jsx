@@ -44,17 +44,20 @@ function AdminUserList() {
   const keys = ["nickname", "email", "phoneNumber", "sns", "role", "date"];
   const mainTitle = "유저정보";
   const columnTemplete = "1fr 2fr 1.5fr 1fr 1fr 1.5fr 1fr";
-
+  const title = "";
   return (
     <>
-      <div className="userProfile">
-        <div className="userImage"></div>
-        <div className="userName"></div>
-      </div>
+      <ReservationHeader>
+        <TitleName>
+          <MainTitle>{mainTitle}</MainTitle>
+          {title ? <Title className="title">{title}</Title> : ""}
+        </TitleName>
+      </ReservationHeader>
+
+
       <StripeLayout
         datas={data}
         headers={headers}
-        mainTitle={mainTitle}
         columnTemplete={columnTemplete}
         keys={keys}
         listName="USER"
@@ -64,3 +67,24 @@ function AdminUserList() {
 }
 
 export default AdminUserList;
+
+const ReservationHeader = styled.div`
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  margin: 10%;
+`;
+const TitleName = styled.div`
+  border-bottom: 2px solid #8daef2;
+`;
+const Title = styled.span`
+  font-size: 1.2rem;
+  line-height: 35px;
+  margin: 10px;
+`;
+
+const MainTitle = styled.span`
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #8daef2;
+`;

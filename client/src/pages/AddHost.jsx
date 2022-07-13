@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Postcode from "../components/admin/Postcode";
 import PostcodePopup from "../components/admin/PostcodePopup";
 
-function AddHostPage() {
+function AddHost() {
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
 
@@ -270,4 +270,4 @@ const ButtonBox = styled.div`
 const Hr = styled.hr`
   border: 2px #8daef2 solid;
 `;
-export default AddHostPage;
+export default AddHost;

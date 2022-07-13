@@ -27,16 +27,17 @@ export default function ProductCard({
   address,
   price,
   review,
+  link,
 }) {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate(`/detail/1`);
+    navigate(link);
   };
   //후에 아이디 넣기 지금은 임의로  1로 고정
   return (
     <CardWrap>
       <ImageSliderWrap>
-        <ProductImageSlider images={src} id={1} />
+        <ProductImageSlider images={src} link={link} />
       </ImageSliderWrap>
       <ProductInfo onClick={handleClick}>
         <Line>
