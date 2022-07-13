@@ -107,7 +107,7 @@ export function MyDatePicker() {
           size="3"
           onClick={(e) => {
             setStartTime(Number(e.target.value));
-            handleTimeChange(startTime, endTime);
+            handleTimeChange(Number(e.target.value), endTime);
             Number(e.target.value) < endTime
               ? setCaution(false)
               : setCaution(true);
@@ -132,7 +132,7 @@ export function MyDatePicker() {
           size="3"
           onClick={(e) => {
             setEndTime(Number(e.target.value));
-            handleTimeChange(startTime, endTime);
+            handleTimeChange(startTime, Number(e.target.value));
             startTime < Number(e.target.value)
               ? setCaution(false)
               : setCaution(true);
