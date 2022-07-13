@@ -23,6 +23,7 @@ import {
 } from '@nestjs/swagger';
 import { UserResExample } from './user.swagger.example';
 const userResExample = new UserResExample();
+
 @Controller('api/users')
 @ApiTags('유저 API')
 export class UsersController {
@@ -183,6 +184,7 @@ export class UsersController {
     @Body(ValidationPipe) userData: UpdateUserDto,
   ) {
     const updatedUser = await this.usersService.update(req.user.id, userData);
+
     return { status: 201, description: '내 정보 수정 성공', data: updatedUser };
   }
 
