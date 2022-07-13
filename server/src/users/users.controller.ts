@@ -14,7 +14,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/users.entity';
 import { UsersService } from './users.service';
 import {
   ApiTags,
