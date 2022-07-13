@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ProductCard from "./ProductCard";
-import exImg from "../assets/images/ex1.png";
+import exImg1 from "../assets/images/ex1.png";
+import exImg2 from "../assets/images/ex2.png";
 
 const exData = {
-  src: exImg,
+  src: [exImg1, exImg2],
   tag: [
     "#강남모임공간",
     "#강남파티룸",
@@ -51,12 +52,12 @@ export default function Recommendation() {
       review: exData.review,
     });
   }
-  console.log(props);
 
   const rendering = () => {
-    const result = props.map((item) => {
+    const result = props.map((item, i) => {
       return (
         <ProductCard
+          key={i}
           className="recomCard"
           src={item.src}
           tag={item.tag}
@@ -70,7 +71,6 @@ export default function Recommendation() {
     return result;
   };
 
-  console.log(rendering());
   return (
     <RecomWrap>
       <RecomTitle>오늘의 추천 공간</RecomTitle>

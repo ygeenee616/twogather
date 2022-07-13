@@ -152,7 +152,7 @@ function Register() {
       >
         가입하기
       </RegisterBtn>
-    </ RegisterDiv>
+    </RegisterDiv>
   );
 }
 

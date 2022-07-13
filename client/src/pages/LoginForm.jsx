@@ -12,7 +12,6 @@ import {
   UserBtn,
 } from "../components/register/UserForm";
 
-
 function LoginForm() {
   const user = useSelector((store) => store.user);
 
@@ -20,10 +19,8 @@ function LoginForm() {
   const navigate = useNavigate();
   const params = useParams();
 
-
   const [email, setEmail] = useState("");
-  const [password, setPassword] =useState("")
-
+  const [password, setPassword] = useState("");
 
   const handleLogin = () => {
     setEmail('');
@@ -37,8 +34,7 @@ function LoginForm() {
   return (
     <Container>
       <FormDiv>
-      
-        <ContentsDiv >
+        <ContentsDiv>
           <FormTitle>로그인</FormTitle>
           <LoginDiv className="login-form">
             <LoginInputDiv>
@@ -47,19 +43,18 @@ function LoginForm() {
                 className="email"
                 placeholder="이메일"
                 value={email}
-                onChange={(e)=>setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
               ></input>
               <input
                 type="password"
                 className="password"
                 placeholder="패스워드"
                 value={password}
-                onChange={(e)=>setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
               ></input>
             </LoginInputDiv>
             <LoginButton onClick={()=>handleLogin()}>LOGIN</LoginButton>
           </LoginDiv>
-
 
           <SocialLoginDiv>
             <SocialLoginBtn className="kakao-login">
@@ -75,7 +70,15 @@ function LoginForm() {
           <LoginFooterDiv>
             <tr>
               <QuestionTD>회원이 아니신가요?</QuestionTD>
-              <LinkTD><a onClick={() => { navigate('/register/user')}}>회원가입</a></LinkTD>
+              <LinkTD>
+                <a
+                  onClick={() => {
+                    navigate("/register/user");
+                  }}
+                >
+                  회원가입
+                </a>
+              </LinkTD>
             </tr>
             <tr>
               <QuestionTD>비밀번호를 잊으셨나요?</QuestionTD>
@@ -96,7 +99,7 @@ const LoginDiv = styled.form`
   input {
     width: 11rem;
     padding: 0.6rem;
-    margin:  0.6rem 0.4rem;
+    margin: 0.6rem 0.4rem;
     border: solid #d9d9d9;
     border-radius: 10px;
   }
@@ -105,7 +108,7 @@ const LoginDiv = styled.form`
 const LoginInputDiv = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 
 const LoginButton = styled.button`
   height: 7rem;
