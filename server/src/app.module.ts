@@ -32,6 +32,7 @@ import { RoomImage } from './room_images/entities/room_image.entity';
         DB_NAME: Joi.string().required(),
         DB_CHARSET: Joi.string().required(),
         DB_TIMEZONE: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
