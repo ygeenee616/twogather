@@ -54,6 +54,7 @@ export class UsersController {
       accessToken: accessToken,
     };
   }
+
   @Get()
   @ApiOperation({
     summary: '유저 목록 조회 API',
