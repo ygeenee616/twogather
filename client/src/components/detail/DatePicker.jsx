@@ -8,13 +8,14 @@ import "./../../assets/styles/DatePicker.css";
 
 import axios from "axios";
 import { ca } from "date-fns/locale";
+import { set } from "date-fns";
 // CSS Modules, react-datepicker-cssmodules.css
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
 export function MyDatePicker() {
   const [date, setDate] = useState(new Date());
-  const [startTime, setStartTime] = useState(0);
-  const [endTime, setEndTime] = useState(1);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
   const [caution, setCaution] = useState(false);
 
   // 날짜 포맷팅
@@ -87,12 +88,10 @@ export function MyDatePicker() {
           name="timeTable"
           size="2"
           onChange={(e) => {
-            if (endTime >= Number(e.target.value)) {
-              setStartTime(Number(e.target.value));
-              setCaution(false);
-            } else {
-              setCaution(true);
-            }
+            setStartTime(Number(e.target.value));
+            Number(e.target.value) < endTime
+              ? setCaution(false)
+              : setCaution(true);
           }}
         >
           {timeTable.map((time, i) => {
@@ -110,12 +109,10 @@ export function MyDatePicker() {
           name="timeTable"
           size="2"
           onChange={(e) => {
-            if (startTime <= Number(e.target.value)) {
-              setEndTime(Number(e.target.value));
-              setCaution(false);
-            } else {
-              setCaution(true);
-            }
+            setEndTime(Number(e.target.value));
+            startTime < Number(e.target.value)
+              ? setCaution(false)
+              : setCaution(true);
           }}
         >
           {timeTable.map((time, i) => {
