@@ -9,12 +9,12 @@ import { User } from './users/entities/users.entity';
 import { LoggerMiddleware } from './logger.middleware';
 import { QnasModule } from './qnas/qnas.module';
 import { RoomsModule } from './rooms/rooms.module';
-
 import { SpacesModule } from './spaces/spaces.module';
+import { SpaceImagesModule } from './space_images/space_images.module';
 import { Space } from './spaces/entities/spaces.entity';
 import { Room } from './rooms/entities/rooms.entity';
 import { Qna } from './qnas/entities/qna.entity';
-import { SpaceImagesModule } from './space_images/space_images.module';
+
 import { SpaceImage } from './space_images/entities/space_image.entity';
 import { RoomImagesModule } from './room_images/room_images.module';
 import { RoomImage } from './room_images/entities/room_image.entity';
@@ -50,13 +50,13 @@ import { Review } from './reviews/entities/review.entity';
       entities: [
         User,
         Space,
+        Hashtag,
+        Review,
+        Reservation,
         Room,
         Qna,
         SpaceImage,
         RoomImage,
-        Reservation,
-        Hashtag,
-        Review,
       ],
       autoLoadEntities: true,
     }),
