@@ -30,7 +30,7 @@ import Footer from "./layout/Footer";
 function App() {
   return (
     <Provider store={Store}>
-      <div className="App">
+      <div className="App" style={{ overflowX: "hidden" }}>
         <BrowserRouter>
           <Header></Header>
           {/* <Routes>
