@@ -12,12 +12,15 @@ import { RoomsModule } from './rooms/rooms.module';
 
 import { SpacesModule } from './spaces/spaces.module';
 import { Space } from './spaces/entities/spaces.entity';
-import { Room } from './rooms/entities/room.entity';
+import { Room } from './rooms/entities/rooms.entity';
 import { Qna } from './qnas/entities/qna.entity';
 import { SpaceImagesModule } from './space_images/space_images.module';
 import { SpaceImage } from './space_images/entities/space_image.entity';
 import { RoomImagesModule } from './room_images/room_images.module';
 import { RoomImage } from './room_images/entities/room_image.entity';
+import { Reservation } from './reservations/entities/reservation.entity';
+import { Hashtag } from './hashtags/entities/hashtag.entity';
+import { Review } from './reviews/entities/review.entity';
 
 @Module({
   imports: [
@@ -44,7 +47,17 @@ import { RoomImage } from './room_images/entities/room_image.entity';
       database: process.env.DB_NAME,
       synchronize: true,
       logging: true,
-      entities: [User, Space, Room, Qna, SpaceImage, RoomImage],
+      entities: [
+        User,
+        Space,
+        Room,
+        Qna,
+        SpaceImage,
+        RoomImage,
+        Reservation,
+        Hashtag,
+        Review,
+      ],
       autoLoadEntities: true,
     }),
     UsersModule,
