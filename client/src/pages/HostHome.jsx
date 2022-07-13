@@ -1,7 +1,7 @@
 import React, { useState, memo } from "react";
 import styled from "styled-components";
 import Chart from "../components/Chart";
-
+import HostSpaceList from "./hostPage/HostSpaceList";
 import HostBookList from "./HostBookList";
 import { FaUserCircle } from "react-icons/fa";
 import StripeLayout from "../components/StripeLayout";
@@ -55,6 +55,8 @@ function HostHome() {
             <Greetings></Greetings>
           ) : content === "manageBooked" ? (
             <HostBookList></HostBookList> //추후 공간내역이 들어가야함
+          ) : content === "manageSpace" ? (
+            <HostSpaceList></HostSpaceList> //추후 공간내역이 들어가야함
           ) : (
             ""
           )}
@@ -72,7 +74,6 @@ function Greetings() {
     </>
   );
 }
-
 
 const Role = styled.p`
   font-size: 1.2rem;

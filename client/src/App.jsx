@@ -13,6 +13,12 @@ import store from "./Store";
 import Detail from "./pages/Detail";
 import Notice from "./pages/Notice";
 import AddSpace from "./pages/AddSpace";
+import HostSpaceList from "./pages/hostPage/HostSpaceList";
+import HostUpdateSpace from "./pages/HostUpdateSpace";
+import "./App.css";
+import { Route, BrowserRouter, Routes } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./Store";
 
 function App() {
   return (
