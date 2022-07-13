@@ -1,27 +1,26 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 
+
+const initialState = {
+  nickname: "",
+  email: "",
+  useType: "user",    // user host admin
+  isLoading: true,
+
+}
+
 export const userSlice = createSlice({
   name: "user",
-  initialState: {
-    value:{
-        nickname: "",
-        email: "",
-        useType: "user",    // user host admin
-    },
-
-    // isFetching: false,
-    // isSuccess: false,
-    // isError: false,
-    // errorMessage: "",
-  },
+  initialState,
   reducers: {
     login: (state, action) => {
-        state.value = action.payload
+        state = action.payload
     }
-},
+  },
   extraReducers: {
     // Extra reducer comes here
   },
 })
 
+export const { login } = userSlice.actions;
 export default userSlice.reducer;

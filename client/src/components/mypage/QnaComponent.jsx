@@ -17,8 +17,8 @@ function QnaComponent() {
                 <td>2020-02-02</td>
                 <td>답변 대기중 <button style={deleteBtnstyle}>삭제</button></td>
             </tr>
-            <QnaTR>
-                <td rowSpan={4}>
+            <QnaTR rowSpan={4}>
+                <td >
                     <h2>Q. </h2> <span>개인 노트북 빔프로젝트에 연결해서 사용가능한가요?</span>
                     <h2>A. </h2> <span>네, 가능합니다.</span>
                 </td>
