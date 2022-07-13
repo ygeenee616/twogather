@@ -2,8 +2,8 @@ import styled from "styled-components";
 import React, { useState, memo } from "react";
 import { RiEdit2Fill, RiExternalLinkFill } from "react-icons/ri";
 import ListItem from "./StripeListItem";
-import { FaUserCircle } from "react-icons/fa";
 import AdminBookDetail from "../pages/AdminBookDetail";
+import UserInfo from "../components/UserInfo";
 UserInfo.defaultProps = {
   userName: "김미지",
   commentNum: "1863회",
@@ -51,17 +51,6 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
         </ReservationForm>
       </Container>
     </>
-  );
-}
-
-function UserInfo({ userName, commentNum, reportedNum, viewInfo }) {
-  return (
-    <UserProfile viewInfo={viewInfo}>
-      <FaUserCircle size={"40%"} color="lightgrey"></FaUserCircle>
-      <UserName>{userName}</UserName>
-      <div className="userName">댓글 횟수 : {commentNum}</div>
-      <div className="userInfo">신고 횟수 : {reportedNum}</div>
-    </UserProfile>
   );
 }
 
@@ -124,30 +113,6 @@ const List = styled.div`
   column-gap: 3px;
 `;
 
-const UserProfile = styled.div`
-
-  display: ${(props) => (props.viewInfo ? "flex;" : "none;")}
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-
-  animation-duration: 0.5s;
-  animation-name: fadeInDown;
-
-  @keyframes fadeInDown {
-    0% {
-      height: 0%;
-      opacity: 0;
-      transform: translate3d(0, -10%, 0);
-    }
-    to {
-      height: 100%;
-      opacity: 1;
-      transform: translate3d(0, -0%, 0);
-    }
-  }
-`;
-
 const UserBox = styled.div`
   margin-bottom: 10%;
   justify-content: center;
@@ -167,16 +132,6 @@ const UserBox = styled.div`
   }
 
     }
-`;
-
-const UserName = styled.div`
-  font-size: 1.5rem;
-  color: #8daef2;
-  text-align: center;
-  width: 100%
-  margin-top: 10%;
-  border-bottom: 2px solid #8daef2;
-  margin-bottom: 1%;
 `;
 
 export default StripeLayout;

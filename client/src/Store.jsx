@@ -1,11 +1,8 @@
-import { configureStore } from "@reduxjs/toolkit";
-import bookSlice from "./slices/BookSlice";
+import { configureStore } from "@reduxjs/toolkit"
+import  userReducer  from "./slices/UserSlice"
 
-// slice 안에 있는 reducer를 모아 store를 생성
-const store = configureStore({
+export default configureStore({
   reducer: {
-    book: bookSlice.reducer,
+    user: userReducer,
   },
-});
-
-export default store;
+}) 

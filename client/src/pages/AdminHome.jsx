@@ -80,14 +80,6 @@ function Greetings() {
   );
 }
 
-function HB() {
-  return (
-    <>
-      <HostBookList></HostBookList>
-    </>
-  );
-}
-
 const Role = styled.p`
   font-size: 1.2rem;
   margin: 10%;

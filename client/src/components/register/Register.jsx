@@ -1,9 +1,15 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+<<<<<<< HEAD
 import {
   validateEmail,
   validatePassword,
 } from "../../assets/utils/UsefulFunction";
+=======
+import { validateEmail,validatePassword } from "../../assets/utils/UsefulFunction"
+
+
+>>>>>>> 83a0084a27d9d32b8ea66a55b5d2bbc095c01903
 
 function Register() {
   const [nickname, setNickname] = useState("");
