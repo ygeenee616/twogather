@@ -1,18 +1,40 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
+import axios from "axios";
 import { ko } from "date-fns/esm/locale";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./../../assets/styles/DatePicker.css";
 
-import axios from "axios";
-import { ca } from "date-fns/locale";
-import { set } from "date-fns";
-// CSS Modules, react-datepicker-cssmodules.css
-// import 'react-datepicker/dist/react-datepicker-cssmodules.css';
+// 날짜 선택시 해당 날짜의 예약 내역 가져오는 함수
+const handleDateChange = async (date) => {
+  // 클릭한 date에 따른 예약 내역
+  const req = await axios.get("/dummyBook.json");
+  const data = await req.data.books;
+  console.log(data);
 
-export function MyDatePicker() {
+  let bookedTime = [];
+  data.forEach((item) => {
+    for (let t = item.startTime; t <= item.endTime; t++) {
+      bookedTime.push(t);
+    }
+  });
+  console.log(bookedTime);
+
+  const disabled = [];
+  let timeList = document.querySelectorAll(".time");
+  timeList.forEach((t) => {
+    disabled.push(Number(t.value));
+  });
+  console.log(disabled);
+
+  console.log("필터" + disabled.filter((x) => bookedTime.includes(x)));
+  // timeList.forEach;
+};
+
+// DatePicker + TimePicker
+export function MyDatePicker({ bookedTime }) {
   const [date, setDate] = useState(new Date());
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
@@ -30,40 +52,8 @@ export function MyDatePicker() {
   };
 
   useEffect(() => {
-    console.log(startTime, endTime);
-  }, [startTime, endTime]);
-
-  const handleDateChange = async (date) => {
-    setDate(date);
-    console.log(dateToString(date));
-    // 클릭한 date에 따른 예약 내역
-    const req = await axios.get("/dummyBook.json");
-    const data = await req.data.books;
-    console.log(data);
-
-    let bookedTime = [];
-    data.forEach((item) => {
-      for (let t = item.startTime; t <= item.endTime; t++) {
-        bookedTime.push(t);
-      }
-    });
-    console.log(bookedTime);
-
-    const disableList = document.querySelectorAll(
-      ".react-datepicker__time-list-item "
-    );
-    console.log(disableList);
-    console.log(new Date().getHours() == 2);
-  };
-
-  // 시간 필터
-  const filterPassedTime = (bookedTime) => {
-    const currentDate = new Date().getHours();
-
-    const selectedDate = new Date();
-
-    return currentDate.getTime() < selectedDate.getTime();
-  };
+    console.log(dateToString(date), startTime, endTime);
+  }, [date, startTime, endTime]);
 
   // 시간 테이블
   const timeTable = [];
@@ -71,14 +61,15 @@ export function MyDatePicker() {
     timeTable.push(i);
   }
 
-  console.log(dateToString(date));
-
   return (
     <>
       <DatePicker
         locale={ko}
         selected={date}
-        onChange={(date) => handleDateChange(date)}
+        onChange={(date) => {
+          setDate(date);
+          handleDateChange(date);
+        }}
         minDate={new Date()} // 이전 날짜는 선택 불가
         inline
       />
@@ -86,7 +77,8 @@ export function MyDatePicker() {
       <div className="timePicker">
         <TimeSelect
           name="timeTable"
-          size="2"
+          size="3"
+          bookedTime={bookedTime}
           onChange={(e) => {
             setStartTime(Number(e.target.value));
             Number(e.target.value) < endTime
@@ -107,7 +99,8 @@ export function MyDatePicker() {
 
         <TimeSelect
           name="timeTable"
-          size="2"
+          size="3"
+          bookedTime={bookedTime}
           onChange={(e) => {
             setEndTime(Number(e.target.value));
             startTime < Number(e.target.value)
@@ -133,16 +126,13 @@ export function MyDatePicker() {
 
 const TimeSelect = styled.select`
   width: 100px;
-  border: 2px solid #8daef2;
-  border-radius: 5px;
+  border: none;
+  outline: 2px solid #8daef2;
+  border-radius: 10px;
   text-align: center;
 
-  &:focus {
-    outline: none;
-  }
-
   & > option {
-    padding: 3px;
+    padding: 7px;
     text-align: center;
   }
 
