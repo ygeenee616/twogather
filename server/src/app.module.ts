@@ -11,6 +11,7 @@ import { QnasModule } from './qnas/qnas.module';
 import { RoomsModule } from './rooms/rooms.module';
 
 import { SpacesModule } from './spaces/spaces.module';
+import { HashtagsModule } from './hashtags/hashtags.module';
 import { Space } from './spaces/entities/spaces.entity';
 import { Room } from './rooms/entities/rooms.entity';
 import { Qna } from './qnas/entities/qna.entity';
@@ -64,8 +65,11 @@ import { Review } from './reviews/entities/review.entity';
     QnasModule,
     RoomsModule,
     SpacesModule,
+    HashtagsModule,
     SpaceImagesModule,
     RoomImagesModule,
+    ReviewsModule,
+    ReservationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
