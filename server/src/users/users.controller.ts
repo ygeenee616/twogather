@@ -74,7 +74,7 @@ export class UsersController {
     description: '전체 유저 조회',
     type: Array<User>,
   })
-  findAll() {
+  async findAll() {
     try {
       const users: Promise<User[]> = this.usersService.findAll();
       return {

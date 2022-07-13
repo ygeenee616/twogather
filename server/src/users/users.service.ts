@@ -56,9 +56,9 @@ export class UsersService {
       throw new UnauthorizedException('잘못된 이메일 또는 비밀번호 입니다.');
     }
   }
-
+  // 유저 전체 조회
   async findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+    return await this.usersRepository.find();
   }
 
   // id로 유저 조회
