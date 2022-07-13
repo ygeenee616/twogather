@@ -113,7 +113,7 @@ const SearchWrap = styled.div`
 
 const HeaderWrap = styled.div`
   display: flex;
-  max-width: 100%
+  max-width: 100%;
   padding: 3% 6%;
 `;
 
