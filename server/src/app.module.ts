@@ -38,6 +38,7 @@ import { ReservationsModule } from './reservations/reservations.module';
         DB_NAME: Joi.string().required(),
         DB_CHARSET: Joi.string().required(),
         DB_TIMEZONE: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
