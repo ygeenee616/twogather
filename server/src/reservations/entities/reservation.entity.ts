@@ -1,10 +1,9 @@
-import { Room } from 'src/rooms/entities/room.entity';
+import { Room } from 'src/rooms/entities/rooms.entity';
 import { User } from 'src/users/entities/users.entity';
 import {
   Column,
   Entity,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,

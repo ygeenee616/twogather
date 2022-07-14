@@ -1,41 +1,33 @@
-import { IsOptional, IsString } from 'class-validator';
-import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
+import {
+  IsEmail,
+  IsOptional,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateUserDto {
-  @IsString()
-  @ApiProperty({ description: '닉네임' })
-  readonly nickname: string;
-
-  @IsString()
+  @IsEmail()
   @ApiProperty({ description: '이메일' })
   readonly email: string;
 
   @IsString()
-  @ApiProperty({ description: '비밀번호' })
+  @MinLength(4)
+  @MaxLength(20)
+  @ApiProperty({ description: '비밀번호(4~20자)' })
   readonly password: string;
 
   @IsString()
-  @IsOptional()
-  @ApiPropertyOptional({ description: '이름' })
-  readonly name: string;
-
+  @MinLength(4)
+  @MaxLength(20)
+  @Matches(/^[a-zA-Z0-9]*$/, {
+    message: '닉네임은 영어 대/소문자, 숫자만 가능합니다',
+  })
   @IsString()
-  @IsOptional()
-  @ApiPropertyOptional({ description: '성별' })
-  readonly sex: string;
-
-  @IsString()
-  @IsOptional()
-  @ApiPropertyOptional({ description: '프로필 이미지 URL' })
-  readonly profileImage: string;
-
-  @IsString()
-  @IsOptional()
-  @ApiPropertyOptional({ description: '휴대번호' })
-  readonly phoneNumber: string;
-
-  @IsString()
-  @IsOptional()
-  @ApiPropertyOptional({ description: '사업자 등록번호' })
-  readonly businessNumber: string;
+  @MinLength(4)
+  @MaxLength(20)
+  @ApiProperty({ description: '닉네임(4~20자, 영문 대소문자, 숫자만 가능)' })
+  readonly nickname: string;
 }
