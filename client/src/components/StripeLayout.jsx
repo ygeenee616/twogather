@@ -76,7 +76,7 @@ const ReservationForm = styled.div`
     @keyframes fadeInDown {
     0% {
       opacity: 1;
-      transform: translate3d(0, 10%, 0);
+      transform: translate3d(0, -10%, 0);
     }
     to {
       opacity: 1;
