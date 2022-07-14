@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./Store";
 
+//////와아앙아앙아아
 function App() {
   return (
     <Provider store={store}>
