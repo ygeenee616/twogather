@@ -10,13 +10,7 @@ function ListItem({ item, columnTemplete, keys, listName }) {
       {keys.map((key) => {
         return <Item>{item[key]}</Item>;
       })}
-      {listName === "BOOK" ? (
-        <BookedButtonBox></BookedButtonBox>
-      ) : listName === "USER" ? (
-        <UserBlockButtonBox></UserBlockButtonBox>
-      ) : (
-        ""
-      )}
+      {listName === "BOOK" ? <BookedButtonBox></BookedButtonBox> : ""}
     </ItemList>
   );
 }
