@@ -10,6 +10,7 @@ import {
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
+
 import { AuthGuard } from '@nestjs/passport';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,6 +23,8 @@ import {
   ApiBasicAuth,
 } from '@nestjs/swagger';
 import { UserResExample } from './user.swagger.example';
+import { GetUser } from 'src/custom.decorator';
+import { User } from './entities/users.entity';
 const userResExample = new UserResExample();
 
 @Controller('api/users')
@@ -71,6 +74,7 @@ export class UsersController {
     };
   }
 
+  // 유저 목록 조회
   @Get()
   @ApiOperation({
     summary: '유저 목록 조회 API',
@@ -107,14 +111,13 @@ export class UsersController {
     },
   })
   @UseGuards(AuthGuard())
-  async getMyInfo(@Req() req) {
-    console.log(req.user);
-    const user = await this.usersService.findOne(req.user.id);
+  async getMyInfo(@GetUser() user: User) {
+    const userInfo = await this.usersService.findOne(user.id);
     return {
       statusCode: 200,
       success: true,
       message: '내 정보 조회 성공',
-      data: user,
+      data: userInfo,
     };
   }
 
@@ -156,7 +159,6 @@ export class UsersController {
   })
   async getOneByEmail(@Param('email') email: string) {
     const user = await this.usersService.findOneByEmail(email);
-    console.log(user);
     return {
       status: 200,
       success: true,
