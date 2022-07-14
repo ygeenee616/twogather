@@ -1,0 +1,21 @@
+#!/bin/sh
+ssh ubuntu@13.125.250.237 <<EOF
+    cd ~/twogather
+    git pull origin dev
+    curl -o-   https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh    | bash
+    . ~/.nvm/nvm.sh
+    nvm install 16.2.0
+    npm install -g typescript
+    npm install -g ts-node
+    npm install -g pm2
+    cd ~/twogather/client
+    npm install
+    pm2 install typescript
+    pm2 restart ecosystem.client.config.js
+    cd ~/twogather/server
+    npm install
+    pm2 install typescript
+    pm2 restart ecosystem.server.config.js
+    exit
+EOF
+
