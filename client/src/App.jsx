@@ -3,6 +3,7 @@ import { Route, BrowserRouter, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import Store from "./Store";
 import styled from "styled-components";
+import ScrollToTop from "./components/ScrollToTop";
 import LoginForm from "./pages/LoginForm";
 import RegisterForm from "./pages/RegisterForm";
 import MyPage from "./pages/MyPage";
@@ -32,6 +33,7 @@ function App() {
     <Provider store={Store}>
       <div className="App" style={{ overflowX: "hidden" }}>
         <BrowserRouter>
+          <ScrollToTop />
           <Header></Header>
           {/* <Routes>
             <Route path="/login" element={<LoginForm />} />

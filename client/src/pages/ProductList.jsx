@@ -101,7 +101,7 @@ const ProductWrap = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  gap: 1vw;
+  gap: 2%;
 `;
 
 const SelectorWrap = styled.div`
