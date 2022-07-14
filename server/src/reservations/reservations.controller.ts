@@ -13,9 +13,8 @@ import { ReservationsService } from './reservations.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUser } from 'src/custom.decorator';
 import { User } from 'src/users/entities/users.entity';
-import { SpacesService } from 'src/spaces/spaces.service';
+import { GetUser } from 'src/custom.decorator';
 
 @Controller('api/reservations')
 export class ReservationsController {
@@ -27,7 +26,6 @@ export class ReservationsController {
     @GetUser() user: User,
     @Body() createReservationDto: CreateReservationDto,
   ) {
-    const { spaceId } = createReservationDto;
     const newReservation = await this.reservationsService.create(
       createReservationDto,
       user,
