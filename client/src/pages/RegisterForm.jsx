@@ -13,16 +13,10 @@ function RegisterForm() {
 
   return (
     <Container>
-      
       <FormDiv>
-        <PageTitle>회원가입</PageTitle>
         <ContentsDiv>
-            <div>
-              <UserBtn value="USER" onClick={()=> navigate('/register/user')} clicked={params.userType === 'user'}>
-                USER
-              </UserBtn>
-              <UserBtn value="HOST" onClick={()=> navigate('/register/host')} clicked={params.userType === 'host'}>HOST</UserBtn>
-            </div>
+          <PageTitle>회원가입</PageTitle>
+
           <SocialRegisterDiv>
             <SocialRegisterBtn className="kakao">
               <img src="/images/kakaoLogo.png" alt="KAKAO" />
