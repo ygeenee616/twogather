@@ -1,20 +1,20 @@
 import React from "react";
-import styled from 'styled-components';
-import GetBookInfo from "../components/book/GetBookInfo";
-import PostBookInfo from "../components/book/PostBookInfo";
-import PostPayInfo from "../components/book/PostPayInfo";
+import styled from "styled-components";
+import GetBookerInfo from "../components/book/GetBookerInfo";
+import HostInfo from "../components/book/HostInfo";
+import BookInfo from "../components/book/BookInfo";
 import ToTop from "../components/ToTop";
 
 export default function Book() {
   return (
     <FullContainer>
-      <GetBookInfo />
-      <PostBookInfo />
-      <PostPayInfo />
+      <GetBookerInfo />
+      <HostInfo />
+      <BookInfo />
       <Button>예약 완료</Button>
       <ToTop />
     </FullContainer>
-  )
+  );
 }
 
 const FullContainer = styled.div`
@@ -23,21 +23,21 @@ const FullContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-`
+`;
 
 const Button = styled.button`
-  width: 40%;
+  width: 30%;
   padding: 5px;
   margin: 20px 0;
   border-radius: 10px;
   border: none;
-  background: #8DAEF2;
+  background: #8daef2;
   color: #fff;
   position: absolute;
   bottom: -60px;
   right: 0;
 
   &:hover {
-    box-shadow: 2px 2px 5px -1px #A6A9B6;
+    box-shadow: 2px 2px 5px -1px #a6a9b6;
   }
-`
+`;
