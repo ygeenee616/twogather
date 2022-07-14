@@ -3,8 +3,9 @@ import styled from "styled-components";
 import Pagination from "../components/Pagination";
 import ProductCard from "../components/ProductCard";
 import CategorySelector from "../components/list/CategorySelector";
-import LocalSelector from "../components/list/LocalSelector";
+import CategoryModal from "../components/list/CategoryModal";
 import DateSelector from "../components/list/DateSelector";
+import DateModal from "../components/list/DateModal";
 import SelecotrResetBtn from "../components/list/SelectorResetBtn";
 import exImg1 from "../assets/images/ex1.png";
 import exImg2 from "../assets/images/ex2.png";
@@ -69,27 +70,54 @@ const renderData = ({ offset, limit }) => {
 
 export default function ProductList() {
   const [page, setPage] = useState(1);
+  const [categoryModalDisplay, setcategoryModalDisplay] = useState("none");
+  const [DateModalDisplay, setDateModalDisplay] = useState("none");
   const limit = 12;
   const offset = (page - 1) * limit;
-  return (
-    <div>
-      <BottomWrap>
-        <SelectorWrap>
-          <CategorySelector />
-          <LocalSelector />
-          <DateSelector />
-          <SelecotrResetBtn />
-        </SelectorWrap>
-        <ProductWrap>{renderData({ offset, limit })}</ProductWrap>
 
-        <Pagination
-          total={exData.length}
-          limit={limit}
-          page={page}
-          setPage={setPage}
-        />
-      </BottomWrap>
-    </div>
+  //selector toggle 하나씩만되도록
+  const handelClickSelector = (e) => {
+    const clickedClass = e.target.className.split(" ")[2];
+    console.log(clickedClass);
+    if (clickedClass === "Category") {
+      categoryModalDisplay === "flex"
+        ? setcategoryModalDisplay("none")
+        : setcategoryModalDisplay("flex");
+      setDateModalDisplay("none");
+    } else if (clickedClass === "Date") {
+      DateModalDisplay === "flex"
+        ? setDateModalDisplay("none")
+        : setDateModalDisplay("flex");
+      setcategoryModalDisplay("none");
+    }
+  };
+
+  return (
+    <BottomWrap>
+      <SelectorWrap>
+        <CategoryWrap>
+          <div onClick={handelClickSelector}>
+            <CategorySelector />
+          </div>
+          <CategoryModal display={categoryModalDisplay} />
+        </CategoryWrap>
+        <DateWrap>
+          <div onClick={handelClickSelector}>
+            <DateSelector />
+          </div>
+          <DateModal display={DateModalDisplay} />
+        </DateWrap>
+        <SelecotrResetBtn />
+      </SelectorWrap>
+      <ProductWrap>{renderData({ offset, limit })}</ProductWrap>
+
+      <Pagination
+        total={exData.length}
+        limit={limit}
+        page={page}
+        setPage={setPage}
+      />
+    </BottomWrap>
   );
 }
 
@@ -106,7 +134,7 @@ const ProductWrap = styled.div`
 
 const SelectorWrap = styled.div`
   display: flex;
-  button:nth-child(4) {
+  button:nth-child(3) {
     width: 9vw;
     margin-left: auto;
     div {
@@ -115,3 +143,10 @@ const SelectorWrap = styled.div`
     }
   }
 `;
+
+const CategoryWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const DateWrap = styled(CategoryWrap)``;

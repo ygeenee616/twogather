@@ -1,18 +1,20 @@
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
 
-export default function CategorySelector() {
-  const handleClickCategorySelectBtn = () => {};
+export default function CategorySelector({ category }) {
   return (
-    <SelectButton onClick={handleClickCategorySelectBtn}>
-      <About>카테고리</About>
+    <SelectButton className="Category">
+      <About>{category}</About>
       <IoIosArrowDown />
     </SelectButton>
   );
 }
 
-const SelectButton = styled.button`
-  all: unset;
+CategorySelector.defaultProps = {
+  category: "카테고리",
+};
+
+const SelectButton = styled.div`
   width: 13vw;
   height: 5vh;
   margin: 1vh 0 6vh 0;

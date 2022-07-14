@@ -2,17 +2,15 @@ import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
 
 export default function DateSelector() {
-  const handleClickDateSelectBtn = () => {};
   return (
-    <SelectButton onClick={handleClickDateSelectBtn}>
+    <SelectButton className="Date">
       <About>날짜</About>
       <IoIosArrowDown />
     </SelectButton>
   );
 }
 
-const SelectButton = styled.button`
-  all: unset;
+const SelectButton = styled.div`
   width: 13vw;
   height: 5vh;
   margin: 1vh 0 6vh 1vw;
