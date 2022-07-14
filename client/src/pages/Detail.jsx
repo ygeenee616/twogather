@@ -8,60 +8,6 @@ import { MyDatePicker } from "../components/detail/DatePicker";
 import ToTop from "../components/ToTop";
 import axios from "axios";
 
-Detail.defaultProps = {
-  title1: "스튜디오 709",
-  hashTag1: ["#스튜디오", "#촬영대관"],
-  contents1: {
-    introduce: [
-      "1호점과 다른 컨셉으로 공간을 채운 24평 규모의 렌탈스튜디오 홈스윗홈 2호점입니다. \n",
-      "방문해주시는 게스트분들의 인원에 따른 추가요금 없이 전액 무료로 지원하고 있습니다. (최대 수용인원 약 20명) \n",
-      "저희 스튜디오는 촬영하시는 컨셉을 위해 크게 3개의 섹션을 한 공간안에 구성하였습니다. \n",
-      "*대형러그와 쇼파를 배치한 아늑한 느낌의 거실 공간 \n",
-      "*편안한 느낌의 우드활용과 메이플&화이트 조합의 침실 공간 \n",
-      "*깨끗한 올화이트 가구와 핑크 소품들로 포인트를 준 파우더룸 공간 \n",
-    ],
-    notice: [
-      "안전 및 도난 방지를 위하여 CCTV 가 작동중입니다.\n",
-      "전문 촬영팀을 위한 가성비 공간으로 기본적으로 제공하는 촬영장비는 없습니다.\n",
-      "퇴실후 항상 정리 및 내부 소독 진행 합니다(예약시간이 붙어있는 경우는 불가하니 양해 부탁드립니다)\n",
-      "기존의 가구 및 소품등 구조를 필요에 의해 변경하신 경우 마감시간 전에 원상복구 해주세요. 다음 게스트님에게 피해가 됩니다.\n",
-      "지하인 관계로 자연광은 들어오지 않지만 자연광 연출을 위해 커튼 안쪽에 조명이 설치되어 있습니다.\n",
-    ],
-    review: [
-      {
-        id: "강예정",
-        content: "너무 만족스러웠습니다 공간도 이뻤어요 생각보다 넓네요 \n",
-      },
-      {
-        id: "김미지",
-        content: "쾌적하고 좋았습니다. 인상깊어요 \n",
-      },
-      {
-        id: "나해란",
-        content:
-          "예약할 때도 사장님께서 배려해주시고, 장소 너무 깔끔히 되어있어서 잘 사용하였습니다!ㅎㅎ 다음 촬영 때도 또 사용하고 싶은 장소입니다~~😊 \n",
-      },
-    ],
-    qna: [
-      {
-        id: "남연진",
-        question: "냉방 가능한가요? \n",
-        answer: "네 가능합니다^^ \n",
-      },
-      {
-        id: "김태훈",
-        question: "의자 10개 가능한가요? \n",
-        answer: "넵 가능합니다^^ \n",
-      },
-      {
-        id: "장종원",
-        question: "몇명까지 수용 가능한가요? \n",
-        answer: "10명까지 가능합니다! \n",
-      },
-    ],
-  },
-};
-
 // 탭 스크롤 함수
 function changeTab(props) {
   const thisContent = document.querySelector(`.${props}`);
@@ -79,7 +25,6 @@ export default function Detail() {
         const space = await req.data.space;
         setData(space);
         console.log(space);
-        // currData.current = data;
       } catch (err) {
         console.log(err);
       }
@@ -87,13 +32,11 @@ export default function Detail() {
     getData();
   }, []);
 
-  console.log(data);
   const title = data.title;
   const hashTag = data.hashTag;
   const contents = data.contents;
   const rooms = data.rooms;
   const images = data.images;
-  console.log(title, hashTag, contents, rooms, images);
 
   return (
     data && (
@@ -109,7 +52,7 @@ export default function Detail() {
 
         <DetailContainer>
           <LeftContainer>
-            <ImageSlider />
+            <ImageSlider images={images} />
             <TabContainer>
               <Tabs>
                 <TabTitle id="tab1" onClick={(e) => changeTab(e.target.id)}>
@@ -164,7 +107,7 @@ export default function Detail() {
           </LeftContainer>
 
           <RightContainer>
-            <Dropbox />
+            <Dropbox rooms={rooms} />
             <MyDatePicker />
 
             <Personnel>
@@ -214,7 +157,7 @@ const HashTag = styled.span`
   background-color: #9ba3eb;
   color: white;
   border-radius: 20px;
-  padding: 0 5px;
+  padding: 0 10px;
   margin-right: 10px;
 `;
 
