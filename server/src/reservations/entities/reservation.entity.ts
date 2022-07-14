@@ -1,44 +1,37 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Room } from 'src/rooms/entities/rooms.entity';
+import { Space } from 'src/spaces/entities/spaces.entity';
 import { User } from 'src/users/entities/users.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Reservation {
   @PrimaryGeneratedColumn()
-  @ApiProperty({ description: 'primary key Id' })
+  @ApiProperty({ description: 'id' })
   id: number;
 
-  @Column({ type: 'varchar', length: 10, nullable: false })
-  @ApiProperty({ description: '예약 시작 시간' })
-  startTime: string;
+  @Column({ type: 'int', nullable: false })
+  @ApiProperty({ description: '시작 시간' })
+  startTime: number;
 
-  @Column({ type: 'varchar', length: 10, nullable: false })
-  @ApiProperty({ description: '예약 종료 시간' })
-  endTime: string;
+  @Column({ type: 'int', nullable: false })
+  @ApiProperty({ description: '종료 시간' })
+  endTime: number;
 
   @Column({ type: 'date', nullable: false })
   @ApiProperty({ description: '예약 날짜' })
   date: Date;
 
-  @Column({ type: 'datetime', nullable: false })
-  @ApiProperty({ description: '해당 컬럼 생성 시간' })
+  @Column({ type: 'int', nullable: false })
+  @ApiProperty({ description: '예약 인원' })
+  personnel: number;
+
+  @Column({ type: 'timestamp', default: () => 'NOW()' })
   createdTime: Date;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
-  @ApiProperty({ description: '예약한 유저의 Id' })
+  @ManyToOne((type) => User, (user) => user.reservations, {
+    onDelete: 'CASCADE',
+    eager: false,
+  })
   user: User;
-
-  @OneToOne(() => Room)
-  @JoinColumn({ name: 'roomId', referencedColumnName: 'id' })
-  @ApiProperty({ description: '예약한 room의 Id' })
-  room: Room;
 }

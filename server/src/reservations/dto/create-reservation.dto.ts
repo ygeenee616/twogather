@@ -1,18 +1,23 @@
-import { IsString } from 'class-validator';
-import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
-
+import { ApiProperty } from '@nestjs/swagger';
+import { IsDateString, IsNumber, IsString } from 'class-validator';
 export class CreateReservationDto {
-  @IsString()
-  @ApiProperty({ description: '예약 시작 시간' })
-  readonly startTime: string;
+  @IsNumber()
+  @ApiProperty({ description: '시작 시간' })
+  startTime: number;
 
-  @IsString()
-  @ApiProperty({ description: '예약 종료 시간' })
-  readonly endTime: string;
+  @IsNumber()
+  @ApiProperty({ description: '종료 시간' })
+  endTime: number;
 
+  @IsDateString()
   @ApiProperty({ description: '예약 날짜' })
-  readonly date: Date;
+  date: Date;
 
-  @ApiProperty({ description: '해당 칼럼 생성 시간' })
-  readonly createdTime: Date;
+  @IsNumber()
+  @ApiProperty({ description: '예약 인원' })
+  personnel: number;
+
+  @IsNumber()
+  @ApiProperty({ description: '공간 ID' })
+  spaceId: number;
 }

@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 
 import { ReservationsService } from './reservations.service';
@@ -13,24 +14,31 @@ import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
 import { Reservation } from './entities/reservation.entity';
+import { AuthGuard } from '@nestjs/passport';
+import { User } from 'src/users/entities/users.entity';
+import { GetUser } from 'src/custom.decorator';
 
-@Controller('reservations')
+@Controller('api/reservations')
 @ApiTags('예약 API')
-@ApiHeader({
-  name: 'authorization',
-  description: 'Auth token',
-}) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
 export class ReservationsController {
   constructor(private readonly reservationsService: ReservationsService) {}
 
   @Post()
-  @ApiOperation({
-    summary: '예약 생성 API',
-    description: '예약을 생성한다.',
-  })
-  @ApiResponse({ status: 201, description: '생성된 예약', type: Reservation })
-  create(@Body() createReservationDto: CreateReservationDto) {
-    return this.reservationsService.create(createReservationDto);
+  @UseGuards(AuthGuard())
+  async reserve(
+    @GetUser() user: User,
+    @Body() createReservationDto: CreateReservationDto,
+  ) {
+    const newReservation = await this.reservationsService.create(
+      createReservationDto,
+      user,
+    );
+    return {
+      status: 200,
+      success: true,
+      description: '예약 성공',
+      data: newReservation,
+    };
   }
 
   @Get()

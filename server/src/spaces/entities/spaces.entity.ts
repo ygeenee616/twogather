@@ -1,8 +1,10 @@
+import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { User } from 'src/users/entities/users.entity';
 import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
