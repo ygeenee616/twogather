@@ -6,16 +6,13 @@ import {
   Patch,
   Param,
   Delete,
-  UseFilters,
 } from '@nestjs/common';
 import { HashtagsService } from './hashtags.service';
 import { CreateHashtagDto } from './dto/create-hashtag.dto';
 import { UpdateHashtagDto } from './dto/update-hashtag.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
-import { HttpExceptionFilter } from 'src/http-exception.filter';
 import { Hashtag } from './entities/hashtag.entity';
 
-@UseFilters(HttpExceptionFilter)
 @Controller('hashtags')
 @ApiTags('해시태그 API')
 @ApiHeader({

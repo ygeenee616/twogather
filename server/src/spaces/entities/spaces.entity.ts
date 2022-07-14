@@ -3,10 +3,12 @@ import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
+import { Hashtag } from 'src/hashtags/entities/hashtag.entity';
 
 @Entity()
 export class Space {
@@ -38,4 +40,8 @@ export class Space {
   @JoinColumn({ name: 'hostId', referencedColumnName: 'id' })
   @ApiProperty({ description: 'FK. user의 Id' })
   user: User;
+
+  @OneToMany(() => Hashtag, (hashtag) => hashtag.space)
+  @ApiProperty({ description: 'hastag와의 관계' })
+  hashtag: Hashtag;
 }

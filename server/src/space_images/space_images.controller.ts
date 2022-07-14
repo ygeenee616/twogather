@@ -6,16 +6,13 @@ import {
   Patch,
   Param,
   Delete,
-  UseFilters,
 } from '@nestjs/common';
 import { SpaceImagesService } from './space_images.service';
 import { CreateSpaceImageDto } from './dto/create-space_image.dto';
 import { UpdateSpaceImageDto } from './dto/update-space_image.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
-import { HttpExceptionFilter } from 'src/http-exception.filter';
 import { SpaceImage } from './entities/space_image.entity';
 
-@UseFilters(HttpExceptionFilter)
 @Controller('space-images')
 @ApiTags('공간 이미지 API')
 @ApiHeader({

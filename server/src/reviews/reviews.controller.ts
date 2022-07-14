@@ -6,16 +6,13 @@ import {
   Patch,
   Param,
   Delete,
-  UseFilters,
 } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
-import { HttpExceptionFilter } from 'src/http-exception.filter';
 import { Review } from './entities/review.entity';
 
-@UseFilters(HttpExceptionFilter)
 @Controller('reviews')
 @ApiTags('리뷰 API')
 @ApiHeader({

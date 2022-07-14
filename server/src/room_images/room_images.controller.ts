@@ -6,16 +6,13 @@ import {
   Patch,
   Param,
   Delete,
-  UseFilters,
 } from '@nestjs/common';
 import { RoomImagesService } from './room_images.service';
 import { CreateRoomImageDto } from './dto/create-room_image.dto';
 import { UpdateRoomImageDto } from './dto/update-room_image.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
-import { HttpExceptionFilter } from 'src/http-exception.filter';
 import { RoomImage } from './entities/room_image.entity';
 
-@UseFilters(HttpExceptionFilter)
 @Controller('room-images')
 @ApiTags('룸 이미지 API')
 @ApiHeader({

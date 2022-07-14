@@ -2,6 +2,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -18,7 +19,7 @@ export class Hashtag {
   @ApiProperty({ description: '해시태그' })
   tag: string;
 
-  @ManyToOne(() => Space)
+  @ManyToOne((type) => Space, (space) => space.id, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'spaceId', referencedColumnName: 'id' })
   @ApiProperty({ description: 'hashtag의 FK. space의 Id' })
   space: Space;
