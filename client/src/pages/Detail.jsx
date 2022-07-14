@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import ImageSlider from "../components/detail/ImageSlider";
 import Map from "../components/detail/Map";
-import SelectRoom from "../components/detail/SelectRoom";
+import Dropbox from "../components/detail/DropBox";
 import { MyDatePicker } from "../components/detail/DatePicker";
 import ToTop from "../components/ToTop";
 import axios from "axios";
@@ -142,7 +142,7 @@ export default function Detail({ title, hashTag, contents }) {
         </LeftContainer>
 
         <RightContainer>
-          <SelectRoom />
+          <Dropbox />
           <MyDatePicker />
 
           <Personnel>
