@@ -21,9 +21,9 @@ export default function ImageSlider({ images, link }) {
     <Container>
       <div>
         <StyledSlider {...settings}>
-          {images.map((image) => {
+          {images.map((image, i) => {
             return (
-              <div>
+              <div key={i}>
                 <img src={image} onClick={() => navigate(link)} />
               </div>
             );
@@ -58,6 +58,7 @@ const StyledSlider = styled(Slider)`
 
     .slick-track {
       overflow-x: hidden;
+      overflow-y: hidden;
 
       .slick-slide img {
         width: 100%;
@@ -97,8 +98,8 @@ const StyledSlider = styled(Slider)`
       );
       visibility: visible;
     }
-    // .slick-slide img {
-    //   transform: scale(1.1, 1.1);
-    // }
+    .slick-slide img {
+      transform: scale(1.1);
+    }
   }
 `;

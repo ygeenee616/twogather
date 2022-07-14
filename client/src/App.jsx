@@ -2,7 +2,7 @@ import "./App.css";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import Store from "./Store";
-import styled from "styled-components";
+import ScrollToTop from "./components/ScrollToTop";
 import LoginForm from "./pages/LoginForm";
 import RegisterForm from "./pages/RegisterForm";
 import MyPage from "./pages/MyPage";
@@ -19,7 +19,6 @@ import HostHome from "./pages/HostHome";
 import HostBookList from "./pages/HostBookList";
 import HostSpaceList from "./pages/hostPage/HostSpaceList";
 import HostUpdateSpace from "./pages/HostUpdateSpace";
-
 import ProductList from "./pages/ProductList";
 import Detail from "./pages/Detail";
 import Book from "./pages/Book";
@@ -27,11 +26,13 @@ import Home from "./pages/Home";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
 
+/// 야호
 function App() {
   return (
     <Provider store={Store}>
-      <div className="App">
+      <div className="App" style={{ overflowX: "hidden" }}>
         <BrowserRouter>
+          <ScrollToTop />
           <Header></Header>
           <Routes>
             <Route path="/login" element={<LoginForm />} />
@@ -51,7 +52,6 @@ function App() {
             />
 
             <Route path="/host" element={<HostHome />} />
-
             {/* <Route path="/host/addHost" element={<AddHost />} /> */}
             {/* <Route path="/host/addSpace" element={<AddSpace />} /> */}
             <Route path="/host/bookList" element={<HostBookList />} />

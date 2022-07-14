@@ -10,4 +10,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   controllers: [SpacesController],
   providers: [SpacesService],
 })
-export class SpacesModule {}
+export class SpacesModule {
+  constructor(private spacesService: SpacesService) {}
+}

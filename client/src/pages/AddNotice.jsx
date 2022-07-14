@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Header from "../layout/Header";
-import Footer from "../layout/Footer";
 
 export default function AddNotice() {
   return (
     <div>
-      <Header />
       <AddNoticeWrap>
         <Title>공지사항 추가</Title>
         <SubTitle>제목</SubTitle>
@@ -20,7 +17,6 @@ export default function AddNotice() {
           </Button>
         </ButtonWrap>
       </AddNoticeWrap>
-      <Footer />
     </div>
   );
 }
