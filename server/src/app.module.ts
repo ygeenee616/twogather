@@ -9,20 +9,18 @@ import { User } from './users/entities/users.entity';
 import { LoggerMiddleware } from './logger.middleware';
 import { QnasModule } from './qnas/qnas.module';
 import { RoomsModule } from './rooms/rooms.module';
-
 import { SpacesModule } from './spaces/spaces.module';
-import { HashtagsModule } from './hashtags/hashtags.module';
-import { Space } from './spaces/entities/spaces.entity';
-import { Hashtag } from './hashtags/entities/hashtag.entity';
-import { Review } from './reviews/entities/review.entity';
-import { Reservation } from './reservations/entities/reservation.entity';
-import { Room } from './rooms/entities/room.entity';
-import { Qna } from './qnas/entities/qna.entity';
 import { SpaceImagesModule } from './space_images/space_images.module';
+import { Space } from './spaces/entities/spaces.entity';
+import { Room } from './rooms/entities/rooms.entity';
+import { Qna } from './qnas/entities/qna.entity';
+
 import { SpaceImage } from './space_images/entities/space_image.entity';
 import { RoomImagesModule } from './room_images/room_images.module';
 import { RoomImage } from './room_images/entities/room_image.entity';
-import { ReviewsModule } from './reviews/reviews.module';
+import { Reservation } from './reservations/entities/reservation.entity';
+import { Hashtag } from './hashtags/entities/hashtag.entity';
+import { Review } from './reviews/entities/review.entity';
 import { ReservationsModule } from './reservations/reservations.module';
 
 @Module({
@@ -52,13 +50,13 @@ import { ReservationsModule } from './reservations/reservations.module';
       entities: [
         User,
         Space,
-        Hashtag,
-        Review,
-        Reservation,
         Room,
         Qna,
         SpaceImage,
         RoomImage,
+        Reservation,
+        Hashtag,
+        Review,
       ],
       autoLoadEntities: true,
     }),
@@ -66,10 +64,8 @@ import { ReservationsModule } from './reservations/reservations.module';
     QnasModule,
     RoomsModule,
     SpacesModule,
-    HashtagsModule,
     SpaceImagesModule,
     RoomImagesModule,
-    ReviewsModule,
     ReservationsModule,
   ],
   controllers: [AppController],
