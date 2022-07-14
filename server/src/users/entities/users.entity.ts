@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
+import { Space } from 'src/spaces/entities/spaces.entity';
 
 @Entity()
 export class User {
@@ -66,4 +67,9 @@ export class User {
     eager: true,
   })
   reservations: Reservation[];
+
+  @OneToMany((type) => Space, (spaces) => spaces.user, {
+    eager: true,
+  })
+  spaces: Space[];
 }
