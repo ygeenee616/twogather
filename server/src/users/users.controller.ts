@@ -109,7 +109,6 @@ export class UsersController {
   })
   @UseGuards(AuthGuard())
   async getMyInfo(@Req() req) {
-    console.log(req.user);
     const user = await this.usersService.findOne(req.user.id);
     return {
       statusCode: 200,

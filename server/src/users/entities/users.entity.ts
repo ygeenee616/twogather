@@ -7,6 +7,10 @@ export class User {
   @ApiProperty({ description: 'id' })
   id: number;
 
+  @Column({ type: 'boolean', default: false })
+  @ApiPropertyOptional({ description: '관리자 여부' })
+  isAdmin: boolean;
+
   @Column({ type: 'varchar', length: 45, nullable: false, unique: true })
   @ApiProperty({ description: '닉네임' })
   nickname: string;

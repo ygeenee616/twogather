@@ -46,10 +46,8 @@ export class UsersService {
   async login(userData: AuthCredentialDto): Promise<string> {
     const { email, password } = userData;
     const user = await this.usersRepository.findOneBy({ email });
-    console.log(user);
     if (user && (await bcrypt.compare(password, user.password))) {
-      const payload = { email };
-
+      const payload = { isAdmin: user.isAdmin, email: email };
       const accessToken = await this.jwtService.sign(payload);
       return accessToken;
     } else {
