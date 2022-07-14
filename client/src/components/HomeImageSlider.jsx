@@ -9,17 +9,17 @@ HomeImageSlider.defaultProps = {
     {
       id: 1,
       title: "스튜디오",
-      url: "https://images.unsplash.com/photo-1471341971476-ae15ff5dd4ea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80",
+      url: "https://img.shareit.kr:13443/main/top-banner/2022-06-28/4cc5bbec-2e67-43d5-a16d-7fd005e85ee6.png",
     },
     {
       id: 2,
-      title: "스터디룸",
-      url: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
+      title: "연습실",
+      url: "https://img.shareit.kr:13443/main/top-banner/2022-07-08/618ab39c-715d-436e-b875-b7d86c17451f.png",
     },
     {
       id: 3,
       title: "파티룸",
-      url: "https://images.unsplash.com/photo-1513151233558-d860c5398176?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
+      url: "https://img.shareit.kr:13443/main/top-banner/2022-06-28/ab1e0c4d-a5e7-4de5-8b6a-5ad49fc82f0c.png",
     },
   ],
 };
@@ -57,7 +57,6 @@ export default function HomeImageSlider({ images }) {
 
 const Container = styled.div`
   max-width: 100%;
-  max-height: 62vh;
 `;
 
 const StyledSlider = styled(Slider)`

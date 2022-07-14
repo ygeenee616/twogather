@@ -65,14 +65,16 @@ const SubTag = styled.span`
   font-size: 0.7vw;
 `;
 
-const CardWrap = styled.button`
+const CardWrap = styled.div`
   all: unset;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   width: auto;
   overflow: hidden;
-  border: 1px solid #bfbfbf;
+  box-shadow: 3px 3px 5px #bfbfbf;
+  border-radius: 10px;
+  // border: 1px solid #bfbfbf;
 `;
 
 const ProductInfo = styled.div`

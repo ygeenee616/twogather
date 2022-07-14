@@ -30,13 +30,10 @@ const RecomWrap = styled.div`
 `;
 
 const CardWrap = styled.div`
-  display: flex;
-  justify-content: space-between;
-  button {
-    & + button {
-      margin-left: 1vw;
-    }
-  }
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 2%;
 `;
 
 export default function Recommendation() {
@@ -75,7 +72,7 @@ export default function Recommendation() {
   return (
     <RecomWrap>
       <RecomTitle>오늘의 추천 공간</RecomTitle>
-      <CardWrap>{rendering()}</CardWrap>
+      <CardWrap className="card">{rendering()}</CardWrap>
     </RecomWrap>
   );
 }
