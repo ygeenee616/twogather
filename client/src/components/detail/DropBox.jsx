@@ -6,29 +6,29 @@ import { FcHome, FcConferenceCall } from "react-icons/fc";
 Dropbox.defaultProps = {
   rooms: [
     {
-      id: 1,
+      id: "room1",
       title: "ROOM1",
       pay: 2000,
       image:
-        "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165499379_cb3435826a2e97ca0881d27c3809abd2.jpg?type=m&w=900&h=900&autorotate=true&quality=90",
+        "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165666149_3349f35a71f72e769413ec0259916966.jpeg?type=m&w=900&h=900&autorotate=true&quality=90",
       roomType: "회의실",
       people: 3,
     },
     {
-      id: 2,
+      id: "room2",
       title: "ROOM2",
       pay: 2500,
       image:
-        "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165656778_49d6c018a651d91bab751a4f642e438f.jpg?type=m&w=900&h=900&autorotate=true&quality=90",
+        "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165666153_16799d2af43e00dd7b3826057da2dc32.jpeg?type=m&w=900&h=900&autorotate=true&quality=90",
       roomType: "회의실",
       people: 4,
     },
     {
-      id: 3,
+      id: "room3",
       title: "ROOM3",
       pay: 3100,
       image:
-        "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165656779_ae06739167b0424f0a2995ff7e5825a5.jpg?type=m&w=900&h=900&autorotate=true&quality=90",
+        "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165666165_088b1880c43ad29ed310de168672f70e.jpeg?type=m&w=900&h=900&autorotate=true&quality=90",
       roomType: "회의실",
       people: 6,
     },
@@ -109,10 +109,11 @@ const RoomItem = styled.summary`
   font-size: 0.7rem;
   border-top: 2px solid #8daef2;
   padding: 5px 0;
+  transition: all 0.3s;
 
   & img {
     width: 50%;
-    border-radius: 10px;
+    border-radius: 15px;
     padding: 5px 0;
   }
 `;
@@ -124,6 +125,8 @@ const RoomLabel = styled.div`
 `;
 
 const Dropdown = styled.div`
+  padding-bottom: 10px;
+  transition: all 0.3s;
   & div {
     margin: 0 10%;
     display: flex;

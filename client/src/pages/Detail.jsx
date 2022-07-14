@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import ImageSlider from "../components/detail/ImageSlider";
@@ -9,9 +9,9 @@ import ToTop from "../components/ToTop";
 import axios from "axios";
 
 Detail.defaultProps = {
-  title: "스튜디오 709",
-  hashTag: ["#스튜디오", "#촬영대관"],
-  contents: {
+  title1: "스튜디오 709",
+  hashTag1: ["#스튜디오", "#촬영대관"],
+  contents1: {
     introduce: [
       "1호점과 다른 컨셉으로 공간을 채운 24평 규모의 렌탈스튜디오 홈스윗홈 2호점입니다. \n",
       "방문해주시는 게스트분들의 인원에 따른 추가요금 없이 전액 무료로 지원하고 있습니다. (최대 수용인원 약 20명) \n",
@@ -68,102 +68,125 @@ function changeTab(props) {
   thisContent.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
-export default function Detail({ title, hashTag, contents }) {
+export default function Detail() {
+  const [data, setData] = useState(0);
   const [person, setPerson] = useState(0);
 
-  // const req = await axios.get("/dummyBook.json");
-  // console.log(req.data.books);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const req = await axios.get("/dummyDetail.json");
+        const space = await req.data.space;
+        setData(space);
+        console.log(space);
+        // currData.current = data;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getData();
+  }, []);
+
+  console.log(data);
+  const title = data.title;
+  const hashTag = data.hashTag;
+  const contents = data.contents;
+  const rooms = data.rooms;
+  const images = data.images;
+  console.log(title, hashTag, contents, rooms, images);
 
   return (
-    <FullContainer>
-      <DetailHeader>
-        <Title>[{title}]</Title>
-        <div style={{ margin: "20px 0" }}>
-          {hashTag.map((tag, i) => (
-            <HashTag key={i}>{tag}</HashTag>
-          ))}
-        </div>
-      </DetailHeader>
+    data && (
+      <FullContainer>
+        <DetailHeader>
+          <Title>[{title}]</Title>
+          <div style={{ margin: "20px 0" }}>
+            {hashTag.map((tag, i) => (
+              <HashTag key={i}>{tag}</HashTag>
+            ))}
+          </div>
+        </DetailHeader>
 
-      <DetailContainer>
-        <LeftContainer>
-          <ImageSlider />
-          <TabContainer>
-            <Tabs>
-              <TabTitle id="tab1" onClick={(e) => changeTab(e.target.id)}>
-                공간소개
-              </TabTitle>
-              <TabTitle id="tab2" onClick={(e) => changeTab(e.target.id)}>
-                유의사항
-              </TabTitle>
-              <TabTitle id="tab3" onClick={(e) => changeTab(e.target.id)}>
-                후기
-              </TabTitle>
-              <TabTitle id="tab4" onClick={(e) => changeTab(e.target.id)}>
-                Q & A
-              </TabTitle>
-            </Tabs>
+        <DetailContainer>
+          <LeftContainer>
+            <ImageSlider />
+            <TabContainer>
+              <Tabs>
+                <TabTitle id="tab1" onClick={(e) => changeTab(e.target.id)}>
+                  공간소개
+                </TabTitle>
+                <TabTitle id="tab2" onClick={(e) => changeTab(e.target.id)}>
+                  유의사항
+                </TabTitle>
+                <TabTitle id="tab3" onClick={(e) => changeTab(e.target.id)}>
+                  후기
+                </TabTitle>
+                <TabTitle id="tab4" onClick={(e) => changeTab(e.target.id)}>
+                  Q & A
+                </TabTitle>
+              </Tabs>
 
-            <div className="tab-box">
-              <TabContent className="tab1">
-                <h2>공간소개</h2>
-                <p>{contents.introduce}</p>
-              </TabContent>
-              <TabContent className="tab2">
-                <h2>유의사항</h2>
-                <p>{contents.notice}</p>
-              </TabContent>
-              <TabContent className="tab3">
-                <h2>후기</h2>
-                {contents.review.map((item, i) => {
-                  return (
-                    <div key={i} className="itemBox">
-                      <p className="itemUser">{item.id}</p>
-                      <p className="itemContent">{item.content}</p>
-                    </div>
-                  );
-                })}
-              </TabContent>
-              <TabContent className="tab4">
-                <h2>Q&A</h2>
-                {contents.qna.map((item, i) => {
-                  return (
-                    <div key={i} className="itemBox">
-                      <p className="itemUser">{item.id}</p>
-                      <p className="itemContent">{item.question}</p>
-                      <p className="itemContent">↪ {item.answer}</p>
-                    </div>
-                  );
-                })}
-              </TabContent>
-            </div>
-          </TabContainer>
-          <Map />
-        </LeftContainer>
+              <div className="tab-box">
+                <TabContent className="tab1">
+                  <h2>공간소개</h2>
+                  <p>{contents.introduce}</p>
+                </TabContent>
+                <TabContent className="tab2">
+                  <h2>유의사항</h2>
+                  <p>{contents.notice}</p>
+                </TabContent>
+                <TabContent className="tab3">
+                  <h2>후기</h2>
+                  {contents.review.map((item, i) => {
+                    return (
+                      <div key={i} className="itemBox">
+                        <p className="itemUser">{item.id}</p>
+                        <p className="itemContent">{item.content}</p>
+                      </div>
+                    );
+                  })}
+                </TabContent>
+                <TabContent className="tab4">
+                  <h2>Q&A</h2>
+                  {contents.qna.map((item, i) => {
+                    return (
+                      <div key={i} className="itemBox">
+                        <p className="itemUser">{item.id}</p>
+                        <p className="itemContent">{item.question}</p>
+                        <p className="itemContent">↪ {item.answer}</p>
+                      </div>
+                    );
+                  })}
+                </TabContent>
+              </div>
+            </TabContainer>
+            <Map />
+          </LeftContainer>
 
-        <RightContainer>
-          <Dropbox />
-          <MyDatePicker />
+          <RightContainer>
+            <Dropbox />
+            <MyDatePicker />
 
-          <Personnel>
-            예약 인원:
-            <input
-              type="number"
-              value={person}
-              onChange={(e) => setPerson(e.target.value)}
-            />
-            명
-          </Personnel>
-          <Button>
-            <Link to="/book" className="move">
-              예약하기
-            </Link>
-          </Button>
-        </RightContainer>
+            <Personnel>
+              예약 인원:
+              <input
+                type="number"
+                value={person}
+                onChange={(e) => setPerson(e.target.value)}
+              />
+              명
+            </Personnel>
+            <Button>
+              <Link to="/book" className="move">
+                예약하기
+              </Link>
+            </Button>
+          </RightContainer>
 
-        <ToTop />
-      </DetailContainer>
-    </FullContainer>
+          <ToTop />
+        </DetailContainer>
+      </FullContainer>
+    )
   );
 }
 
