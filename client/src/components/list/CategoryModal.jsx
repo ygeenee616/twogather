@@ -40,14 +40,14 @@ const ModalWrap = styled.div`
 
 const StyledLink = styled(Link)`
   all: unset;
-  font-size: 1rem;
+  font-size: 0.9rem;
   //text-align: center;
-  padding: 2.5% 13%;
+  padding: 2.9% 13%;
 
   & + & {
     border-top: 1px solid #8daef2;
   }
   &: hover {
-    background-color: #f2f2f2;
+    background-color: #bbd3fe;
   }
 `;
