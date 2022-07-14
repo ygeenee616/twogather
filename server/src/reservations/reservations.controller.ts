@@ -6,19 +6,38 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 
 import { ReservationsService } from './reservations.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/custom.decorator';
+import { User } from 'src/users/entities/users.entity';
+import { SpacesService } from 'src/spaces/spaces.service';
 
-@Controller('reservations')
+@Controller('api/reservations')
 export class ReservationsController {
   constructor(private readonly reservationsService: ReservationsService) {}
 
   @Post()
-  create(@Body() createReservationDto: CreateReservationDto) {
-    return this.reservationsService.create(createReservationDto);
+  @UseGuards(AuthGuard())
+  async reserve(
+    @GetUser() user: User,
+    @Body() createReservationDto: CreateReservationDto,
+  ) {
+    const { spaceId } = createReservationDto;
+    const newReservation = await this.reservationsService.create(
+      createReservationDto,
+      user,
+    );
+    return {
+      status: 200,
+      success: true,
+      description: '예약 성공',
+      data: newReservation,
+    };
   }
 
   @Get()
