@@ -1,13 +1,24 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export default function CategoryModal({ display }) {
   return (
     <ModalWrap display={display}>
-      <ListItem>파티룸</ListItem>
-      <ListItem>스터디룸</ListItem>
-      <ListItem>회의실</ListItem>
-      <ListItem>연습실</ListItem>
-      <ListItem>스튜디오</ListItem>
+      <StyledLink to="/list/파티룸" onClick={{ display: "none" }}>
+        파티룸
+      </StyledLink>
+      <StyledLink to="/list/스터디룸" onClick={{ display: "none" }}>
+        스터디룸
+      </StyledLink>
+      <StyledLink to="/list/회의실" onClick={{ display: "none" }}>
+        회의실
+      </StyledLink>
+      <StyledLink to="/list/연습실" onClick={{ display: "none" }}>
+        연습실
+      </StyledLink>
+      <StyledLink to="/list/스튜디오" onClick={{ display: "none" }}>
+        스튜디오
+      </StyledLink>
     </ModalWrap>
   );
 }
@@ -27,7 +38,8 @@ const ModalWrap = styled.div`
   overflow: hidden;
 `;
 
-const ListItem = styled.div`
+const StyledLink = styled(Link)`
+  all: unset;
   font-size: 1rem;
   //text-align: center;
   padding: 2.5% 13%;

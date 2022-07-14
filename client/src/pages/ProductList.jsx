@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Pagination from "../components/Pagination";
 import ProductCard from "../components/ProductCard";
@@ -74,6 +75,7 @@ export default function ProductList() {
   const [DateModalDisplay, setDateModalDisplay] = useState("none");
   const limit = 12;
   const offset = (page - 1) * limit;
+  const { searchInput } = useParams();
 
   //selector toggle 하나씩만되도록
   const handelClickSelector = (e) => {
@@ -97,7 +99,7 @@ export default function ProductList() {
       <SelectorWrap>
         <CategoryWrap>
           <div onClick={handelClickSelector}>
-            <CategorySelector />
+            <CategorySelector category={searchInput} />
           </div>
           <CategoryModal display={categoryModalDisplay} />
         </CategoryWrap>
