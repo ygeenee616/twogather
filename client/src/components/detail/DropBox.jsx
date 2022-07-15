@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { HiChevronDown } from "react-icons/hi";
 import { FcHome, FcConferenceCall } from "react-icons/fc";
 
-export default function Dropbox({ rooms }) {
+export default function Dropbox({ rooms, currPeople }) {
   return (
     <RoomList>
       <p>세부 공간 선택</p>
@@ -17,11 +17,14 @@ export default function Dropbox({ rooms }) {
                 id="select"
                 name="room"
                 value={item.id}
-                onClick={(e) => console.log(e.target.value)}
+                onClick={(e) => {
+                  currPeople.current = item.people;
+                  console.log(currPeople.current);
+                }}
               />
               <RoomLabel>
                 <span>{item.title}</span>
-                <span>시간당 {item.pay}</span>
+                <span>시간당 {item.pay} ₩</span>
               </RoomLabel>
               <img src={item.image} />
               <HiChevronDown />
