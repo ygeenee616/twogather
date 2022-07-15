@@ -191,7 +191,7 @@ const TimeSelect = styled.select`
 
 const Guide = styled.div`
   width: 100%;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   color: red;
 
   & .lessTime {
