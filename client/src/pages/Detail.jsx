@@ -156,6 +156,8 @@ const RightContainer = styled.div`
 `;
 
 const Personnel = styled.div`
+  width: 100%;
+
   & .OverPeople {
     font-size: 0.8rem;
     color: red;
@@ -166,7 +168,6 @@ const Personnel = styled.div`
 const InputPeople = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;
   margin: 10px 0;
 
   & > input {
@@ -176,7 +177,7 @@ const InputPeople = styled.div`
     border-radius: 5px;
     text-align: center;
     padding: 0;
-    margin: 0;
+    margin: 0 10px;
   }
 
   /* 스피너 제거 */
