@@ -19,7 +19,6 @@ export default function Detail() {
   const acceptPeople = useRef(0);
   // 예약 가능 여부
   const possible = useRef(false);
-  // const [possible, setPossible] = useState(false);
 
   const navigate = useNavigate();
 
@@ -31,12 +30,7 @@ export default function Detail() {
     Number(acceptPeople.current) >= Number(inputPeople.current)
       ? (possible.current = true)
       : (possible.current = false);
-    console.log(possible.current);
   }
-
-  // function okBook(e) {
-  //   possible && navigate("/book");
-  // }
 
   useEffect(() => {
     const getData = async () => {
@@ -60,8 +54,6 @@ export default function Detail() {
 
   useEffect(() => {
     inputPeople.current = people;
-
-    console.log(inputPeople.current);
   }, [people]);
 
   return (
@@ -102,9 +94,7 @@ export default function Detail() {
                 />
                 명
               </InputPeople>
-              <p className="OverPeople">
-                * 예약 인원이 수용 가능 인원을 초과하였습니다.
-              </p>
+              <p className="OverPeople">* 예약 정보를 제대로 입력해주세요.</p>
             </Personnel>
             <Button
               possible={possible.current}

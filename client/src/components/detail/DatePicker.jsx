@@ -68,7 +68,6 @@ export function MyDatePicker() {
     for (let n = Number(startTime); n <= Number(endTime); n++) {
       newBookTime.push(n);
     }
-    console.log("new:" + newBookTime + ", book:" + booked);
     const filtering = newBookTime.filter((x) => booked.includes(x));
     filtering.length > 0 ? setOverlap(true) : setOverlap(false);
   };
