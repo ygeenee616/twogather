@@ -113,7 +113,7 @@ export default function ProductList() {
           </div>
           <DateModal display={DateModalDisplay} />
         </DateWrap>
-        <SelecotrResetBtn />
+        <SelecotrResetBtn category={searchInput} />
       </SelectorWrap>
       <ProductWrap>{renderData({ offset, limit })}</ProductWrap>
 
