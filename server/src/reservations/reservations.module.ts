@@ -7,14 +7,16 @@ import { UsersModule } from 'src/users/users.module';
 import { SpacesModule } from 'src/spaces/spaces.module';
 import { SpacesService } from 'src/spaces/spaces.service';
 import { Space } from 'src/spaces/entities/spaces.entity';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Reservation, Space]),
     UsersModule,
     SpacesModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
-  exports: [TypeOrmModule],
+  exports: [TypeOrmModule, PassportModule],
   controllers: [ReservationsController],
   providers: [ReservationsService, SpacesService],
 })

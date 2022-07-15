@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SpacesService } from 'src/spaces/spaces.service';
 import { Repository } from 'typeorm';
@@ -27,18 +27,59 @@ export class RoomsService {
   }
 
   async findAll() {
-    return `This action returns all rooms`;
+    return await this.roomsRepository.find({
+      relations: {
+        space: true,
+      },
+      order: {
+        id: 'DESC',
+      },
+      // cache:true, 캐시는 할 지 말지.
+    });
   }
 
+  // roomId로 특정 room 조회
   async findOne(id: number) {
-    return `This action returns a #${id} room`;
+    try {
+      const room = await this.roomsRepository.findOne({
+        where: {
+          id,
+        },
+        relations: {
+          space: true,
+        },
+        // cache: true,
+      });
+      if (room === null) {
+        throw new NotFoundException('존재하지 않는 room입니다.');
+      }
+      return room;
+    } catch (error) {
+      throw error;
+    }
   }
 
+  // roomId로 room 수정
   async update(id: number, updateRoomDto: UpdateRoomDto) {
-    return `This action updates a #${id} room`;
+    try {
+      const updatedRoom = await this.roomsRepository.update(id, updateRoomDto);
+      return updatedRoom.affected === 1;
+    } catch (error) {
+      throw error;
+    }
   }
 
+  // room 삭제
   async remove(id: number) {
-    return `This action removes a #${id} room`;
+    try {
+      const deletedRoom = await this.roomsRepository.delete(id);
+      if (!deletedRoom.affected) {
+        throw new NotFoundException({
+          description: '삭제할 room이 없습니다.',
+        });
+      }
+    } catch (error) {
+      throw error;
+    }
   }
 }

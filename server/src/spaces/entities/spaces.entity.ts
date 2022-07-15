@@ -10,6 +10,8 @@ import {
 import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
 import { Hashtag } from 'src/hashtags/entities/hashtag.entity';
 import { Room } from 'src/rooms/entities/rooms.entity';
+import { Qna } from 'src/qnas/entities/qna.entity';
+import { SpaceImage } from 'src/space_images/entities/space_image.entity';
 
 @Entity()
 export class Space {
@@ -45,10 +47,20 @@ export class Space {
   user: User;
 
   @OneToMany(() => Hashtag, (hashtag) => hashtag.space, { eager: true })
-  @ApiProperty({ description: 'hastag와의 관계' })
+  @ApiPropertyOptional({ description: 'hastag와의 관계' })
   hashtags: Hashtag[];
 
   @OneToMany(() => Room, (room) => room.space, { eager: true })
-  @ApiProperty({ description: 'room과의 관계' })
+  @ApiPropertyOptional({ description: 'room과의 관계' })
   rooms: Room[];
+
+  @OneToMany(() => Qna, (qna) => qna.space, { eager: true })
+  @ApiPropertyOptional({ description: 'qna와의 관계' })
+  qnas: Qna[];
+
+  @OneToMany(() => SpaceImage, (spaceImage) => spaceImage.space, {
+    eager: true,
+  })
+  @ApiPropertyOptional({ description: 'spaceImage와의 관계' })
+  spaceImages: SpaceImage[];
 }
