@@ -10,19 +10,33 @@ import ToTop from "../components/ToTop";
 import axios from "axios";
 
 export default function Detail() {
+  // api 데이터
   const [data, setData] = useState(0);
+  // 사용자 예약 인원
   const [people, setPeople] = useState(0);
-  const currPeople = useRef(0);
-  const [possible, setPossible] = useState();
+  const inputPeople = useRef(people);
+  // 선택한 룸의 수용 가능 인원
+  const acceptPeople = useRef(0);
+  // 예약 가능 여부
+  const possible = useRef(false);
+  // const [possible, setPossible] = useState(false);
+
   const navigate = useNavigate();
 
+  // 수용 가능 인원보다 예약 인원이 많으면 예약 불가
   function makeReservation(e) {
     e.preventDefault();
-    Number(currPeople.current) >= Number(people)
-      ? setPossible("true")
-      : setPossible("false");
-    possible && navigate("/book");
+    Number(acceptPeople.current) !== 0 &&
+    Number(inputPeople.current) !== 0 &&
+    Number(acceptPeople.current) >= Number(inputPeople.current)
+      ? (possible.current = true)
+      : (possible.current = false);
+    console.log(possible.current);
   }
+
+  // function okBook(e) {
+  //   possible && navigate("/book");
+  // }
 
   useEffect(() => {
     const getData = async () => {
@@ -45,9 +59,9 @@ export default function Detail() {
   const images = data.images;
 
   useEffect(() => {
-    console.log(people);
+    inputPeople.current = people;
 
-    // console.log(possible);
+    console.log(inputPeople.current);
   }, [people]);
 
   return (
@@ -70,23 +84,34 @@ export default function Detail() {
           </LeftContainer>
 
           <RightContainer>
-            <Dropbox rooms={rooms} currPeople={currPeople} />
+            <Dropbox rooms={rooms} acceptPeople={acceptPeople} />
             <MyDatePicker />
-            <Personnel>
-              예약 인원:
-              <input
-                type="number"
-                value={people}
-                onChange={(e) => {
-                  setPeople(e.target.value);
-                }}
-              />
-              명
+            <Personnel possible={possible.current}>
+              <InputPeople>
+                예약 인원:
+                <input
+                  type="number"
+                  value={people}
+                  onChange={(e) => {
+                    if (e.target.value !== "" || e.target.value !== 0) {
+                      setPeople(e.target.value);
+                      inputPeople.current = e.target.value;
+                      makeReservation(e);
+                    }
+                  }}
+                />
+                명
+              </InputPeople>
+              <p className="OverPeople">
+                * 예약 인원이 수용 가능 인원을 초과하였습니다.
+              </p>
             </Personnel>
-            <p className="OverPeople" possible={possible}>
-              * 예약 인원이 수용 가능 인원을 초과하였습니다.
-            </p>
-            <Button onClick={(e) => makeReservation(e)}>예약하기</Button>
+            <Button
+              possible={possible.current}
+              onClick={() => possible.current && navigate("/book")}
+            >
+              예약하기
+            </Button>
           </RightContainer>
 
           <ToTop />
@@ -138,15 +163,17 @@ const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  & .OverPeople {
-    font-size: 0.7rem;
-    color: red;
-    ${({ possible }) => (possible ? `display: block;` : `display: none;`)};
-  }
 `;
 
 const Personnel = styled.div`
+  & .OverPeople {
+    font-size: 0.8rem;
+    color: red;
+    ${({ possible }) => (possible ? `display: none;` : `display: block;`)};
+  }
+`;
+
+const InputPeople = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -181,16 +208,19 @@ const Button = styled.button`
   padding: 5px;
   border-radius: 10px;
   border: none;
-  background: #8daef2;
-  transition: all 0.3s;
-  color: #fff;
 
-  &:hover {
-    box-shadow: 2px 2px 5px -1px #a6a9b6;
-  }
-
-  // & .move {
-  //   text-decoration: none;
-  //   color: #fff;
-  // }
+  ${({ possible }) =>
+    possible
+      ? `
+      background: #8daef2;
+      transition: all 0.3s;
+      color: #fff;
+      &:hover {
+        box-shadow: 2px 2px 5px -1px #a6a9b6;
+      }
+      `
+      : `
+      background: #DFDFDE;
+      color: #fff;
+      `};
 `;

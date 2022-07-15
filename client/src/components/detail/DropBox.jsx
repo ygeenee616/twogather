@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { HiChevronDown } from "react-icons/hi";
 import { FcHome, FcConferenceCall } from "react-icons/fc";
 
-export default function Dropbox({ rooms, currPeople }) {
+export default function Dropbox({ rooms, acceptPeople }) {
   // 첫번째 input이 default checked 값
   // console.log(document.getElementsByClassName(0));
   // console.log((document.getElementsByClassName(0).checked = true));
@@ -23,10 +23,9 @@ export default function Dropbox({ rooms, currPeople }) {
                 className={i}
                 value={item.id}
                 onClick={(e) => {
-                  currPeople.current = item.people;
-                  console.log(currPeople.current);
+                  acceptPeople.current = item.people;
+                  console.log(acceptPeople.current);
                 }}
-                defaultChecked
               />
               <RoomLabel>
                 <span>{item.title}</span>
