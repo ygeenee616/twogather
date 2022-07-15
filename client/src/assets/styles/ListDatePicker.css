@@ -1,0 +1,51 @@
+.react-datepicker {
+  font-size: 0.7rem;
+  margin: 20px 0;
+  border: none;
+}
+
+.react-datepicker__header {
+  border-top-left-radius: 0.2rem;
+  background-color: rgba(0, 0, 0, 0);
+  border-bottom: none;
+}
+
+.react-datepicker__header:not(.react-datepicker__header--has-time-select) {
+  border-top-right-radius: 0.2rem;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: #000;
+}
+
+.react-datepicker__day-names {
+  font-weight: bold;
+  margin-top: 12px;
+  margin-bottom: -20px;
+}
+
+.react-datepicker__day,
+.react-datepicker__day:hover,
+.react-datepicker__day--selected,
+.react-datepicker__day--selected:hover {
+  border-radius: 1rem;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #8daef2;
+}
+
+.react-datepicker__day:hover,
+.react-datepicker__day--selected:hover {
+  background-color: #bbd3fe;
+  color: #fff;
+}
+
+.bookInfo {
+  text-align: center;
+}
+
+.react-datepicker__navigation-icon--next {
+  margin: 0 20px 0 auto;
+}
