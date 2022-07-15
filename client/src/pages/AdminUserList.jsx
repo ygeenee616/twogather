@@ -1,8 +1,22 @@
 import styled from "styled-components";
 import StripeList from "../components/StripeList";
 import StripeLayout from "../components/StripeLayout";
-
+import axios from "axios";
+import * as api from "../api";
+import { useState, useEffect } from "react";
 function AdminUserList() {
+  const [users, setUsers] = useState();
+  useEffect(() => {
+    async function getData() {
+      const response = await api.get('api/users');
+      const data = response;
+      setUsers(data);
+      console.log(response);
+    }
+    getData();
+  }, []);
+
+
   const data = [
     {
       nickname: "강예정",
