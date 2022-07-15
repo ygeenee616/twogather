@@ -1,11 +1,17 @@
 import React from "react";
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 import GetBookerInfo from "../components/book/GetBookerInfo";
 import HostInfo from "../components/book/HostInfo";
 import BookInfo from "../components/book/BookInfo";
 import ToTop from "../components/ToTop";
 
 export default function Book() {
+  const location = useLocation();
+
+  const people = location.state.people;
+
+  console.log("예약인원" + people);
   return (
     <FullContainer>
       <GetBookerInfo />

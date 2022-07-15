@@ -9,12 +9,47 @@ import { MyDatePicker } from "../components/detail/DatePicker";
 import ToTop from "../components/ToTop";
 import axios from "axios";
 
+// 날짜 선택시 해당 날짜의 예약 내역 가져오는 함수
+const handleDateChange = async (date) => {
+  // 클릭한 date에 따른 예약 내역
+  const req = await axios.get("/dummyBook.json");
+  const data = await req.data.books;
+
+  // 예약 내역이 있는 시간 배열
+  let bookedTime = [];
+  data.map((item) => {
+    for (let t = item.startTime; t <= item.endTime; t++) {
+      bookedTime.push(t);
+    }
+  });
+
+  let startTimeList = document.querySelectorAll(".startTime");
+  let endTimeList = document.querySelectorAll(".endTime");
+
+  bookedTime.forEach((num) => {
+    startTimeList[num].disabled = true;
+    startTimeList[num].classList.add("disable");
+    startTimeList[num].style.textDecoration = "line-through";
+
+    endTimeList[num].disabled = true;
+    endTimeList[num].classList.add("disable");
+    endTimeList[num].style.textDecoration = "line-through";
+  });
+};
+
 export default function Detail() {
-  // api 데이터
+  // api 데이터 state
   const [data, setData] = useState(0);
-  // 사용자 예약 인원
+  // 사용자 예약 인원 state
   const [people, setPeople] = useState(0);
   const inputPeople = useRef(people);
+  // 데이트피커 state
+  const [date, setDate] = useState(new Date());
+  const [startTime, setStartTime] = useState(0);
+  const [endTime, setEndTime] = useState(0);
+  const [lessTime, setLessTime] = useState(false);
+  const [overlap, setOverlap] = useState(false);
+
   // 선택한 룸의 수용 가능 인원
   const acceptPeople = useRef(0);
   // 예약 가능 여부
@@ -31,6 +66,44 @@ export default function Detail() {
       ? (possible.current = true)
       : (possible.current = false);
   }
+
+  // date 선택시 적용 함수
+  function onChangeDate(date) {
+    setDate(date);
+    handleDateChange(date);
+  }
+
+  // startTime 선택시 적용 함수
+  function onClickStartTime(e) {
+    setStartTime(Number(e.target.value));
+    handleTimeChange(Number(e.target.value), endTime);
+    Number(e.target.value) < endTime ? setLessTime(false) : setLessTime(true);
+  }
+
+  // endTime 선택시 적용 함수
+  function onClickEndTime(e) {
+    setEndTime(Number(e.target.value));
+    handleTimeChange(startTime, Number(e.target.value));
+    startTime < Number(e.target.value) ? setLessTime(false) : setLessTime(true);
+  }
+
+  // 예약 시작 시간과 종료 시간 사이에 이미 예약된 시간이 있을 시 처리하는 함수
+  const handleTimeChange = (startTime, endTime) => {
+    let disableList = document.querySelectorAll(".disable");
+
+    let booked = [];
+    disableList.forEach((list) => {
+      booked.push(Number(list.value));
+    });
+    booked = booked.slice(booked.length / 2);
+
+    let newBookTime = [];
+    for (let n = Number(startTime); n <= Number(endTime); n++) {
+      newBookTime.push(n);
+    }
+    const filtering = newBookTime.filter((x) => booked.includes(x));
+    filtering.length > 0 ? setOverlap(true) : setOverlap(false);
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -77,7 +150,16 @@ export default function Detail() {
 
           <RightContainer>
             <Dropbox rooms={rooms} acceptPeople={acceptPeople} />
-            <MyDatePicker />
+            <MyDatePicker
+              date={date}
+              startTime={startTime}
+              endTime={endTime}
+              lessTime={lessTime}
+              overlap={overlap}
+              onChangeDate={onChangeDate}
+              onClickStartTime={onClickStartTime}
+              onClickEndTime={onClickEndTime}
+            />
             <Personnel possible={possible.current}>
               <InputPeople>
                 예약 인원:
@@ -98,7 +180,14 @@ export default function Detail() {
             </Personnel>
             <Button
               possible={possible.current}
-              onClick={() => possible.current && navigate("/book")}
+              onClick={() =>
+                possible.current &&
+                navigate("/book", {
+                  state: {
+                    people: people,
+                  },
+                })
+              }
             >
               예약하기
             </Button>
