@@ -1,12 +1,9 @@
-import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { User } from 'src/users/entities/users.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -30,7 +27,10 @@ export class Space {
   @Column({ type: 'varchar', length: 200, nullable: true })
   intro: string;
 
-  @OneToOne(() => User)
+  @ManyToOne(() => User, (user) => user.spaces, {
+    onDelete: 'CASCADE',
+    eager: false,
+  })
   @JoinColumn({ name: 'hostId', referencedColumnName: 'id' })
   user: User;
 }
