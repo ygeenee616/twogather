@@ -29,7 +29,6 @@ import Home from "./pages/Home";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
 
-/// 야호
 function App() {
   return (
     <Provider store={Store}>
@@ -39,12 +38,9 @@ function App() {
           <Header></Header>
           <Routes>
             <Route path="/login" element={<LoginForm />} />
-            <Route path="/register" element={<RegisterForm />} />
-            <Route path="/registerComplete" element={<RegisterComplete />} />
+            <Route path="/register/:userType" element={<RegisterForm />} />
             <Route path="/myPage" element={<MyPage />} />
-            <Route path="/myPage/addReview" element={<AddReview />} />
-            <Route path="/myPage/addQnA" element={<AddQnA />} />
-            <Route path="/myPage/addQnaComment" element={<AddQnaComment />} />
+            {/* <Route path="/myPage/addReview" element={<AddReview />} /> */}
 
             <Route path="/notice" element={<Notice />} />
             <Route path="/addNotice" element={<AddNotice />} />
@@ -64,13 +60,12 @@ function App() {
             <Route path="/host/spaceList" element={<HostSpaceList />} />
             {/* <Route path="/host/updateSpace" element={<UpdateSpace />} /> */}
 
-            {/* <Route path="/list/:searchInput" element={<ProductList />} />
+            <Route path="/list/:searchInput" element={<ProductList />} />
             <Route path="/detail/:spaceId" element={<Detail />} />
             <Route path="/book" element={<Book />} />
 
             <Route path="/" element={<Home />} />
-
-            <Routes path="*" element={<NotFound />} /> */}
+            {/* <Route path="*" element={<NotFound />} /> */}
           </Routes>
           <Footer></Footer>
         </BrowserRouter>
