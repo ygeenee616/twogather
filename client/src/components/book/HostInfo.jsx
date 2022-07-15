@@ -1,15 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-HostInfo.defaultProps = {
-  placeName: "스튜디오 709",
-  hostName: "홍길동",
-  businessNum: "123-45-67890",
-  hostPhone: "010-0214-6564",
-  hostEmail: "host@naver.com",
-};
-
-export default function HostInfo(props) {
+export default function HostInfo({ host }) {
   return (
     <div style={{ width: "100%" }}>
       <Container>
@@ -17,23 +9,23 @@ export default function HostInfo(props) {
 
         <Content>
           <div>공간 상호</div>
-          <div>{props.placeName}</div>
+          <div>{host.placeName}</div>
         </Content>
         <Content>
           <div>대표자명</div>
-          <div>{props.hostName}</div>
+          <div>{host.hostName}</div>
         </Content>
         <Content>
           <div>사업자 번호</div>
-          <div>{props.businessNum}</div>
+          <div>{host.businessNum}</div>
         </Content>
         <Content>
           <div>연락처</div>
-          <div>{props.hostPhone}</div>
+          <div>{host.hostPhone}</div>
         </Content>
         <Content>
           <div>이메일</div>
-          <div>{props.hostEmail}</div>
+          <div>{host.hostEmail}</div>
         </Content>
       </Container>
 

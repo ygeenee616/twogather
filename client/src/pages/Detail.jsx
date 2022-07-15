@@ -83,6 +83,7 @@ export default function Detail() {
   const address = data.address;
   const rooms = data.rooms;
   const images = data.images;
+  const host = data.host;
 
   // 룸 선택시 적용하는 DropBox 함수
   function checkSelectRoom(eId, eClass) {
@@ -221,6 +222,7 @@ export default function Detail() {
                     startTime: startTime,
                     endTime: endTime,
                     room: room.current,
+                    host: host,
                   },
                 })
               }

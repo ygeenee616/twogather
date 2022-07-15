@@ -8,17 +8,18 @@ import ToTop from "../components/ToTop";
 
 export default function Book() {
   const location = useLocation();
-
+  // detail로 부터 받은 예약 정보
   const people = location.state.people;
   const date = location.state.date;
   const startTime = location.state.startTime;
   const endTime = location.state.endTime;
   const room = location.state.room;
+  const host = location.state.host;
 
   return (
     <FullContainer>
       <GetBookerInfo />
-      <HostInfo />
+      <HostInfo host={host} />
       <BookInfo
         room={room}
         people={people}

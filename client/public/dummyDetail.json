@@ -94,6 +94,13 @@
         "id": 4,
         "url": "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165224700_ec07e9f8d997b50ce92b096f3fe0911e.jpg?type=m&w=900&h=900&autorotate=true&quality=90"
       }
-    ]
+    ],
+    "host": {
+      "placeName": "스튜디오 카이브",
+      "hostName": "김미지",
+      "businessNum": "123-45-67890",
+      "hostPhone": "010-1111-2222",
+      "hostEmail": "kinunknown@naver.com"
+    }
   }
 }
