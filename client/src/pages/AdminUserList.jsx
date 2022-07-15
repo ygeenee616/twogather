@@ -8,10 +8,9 @@ function AdminUserList() {
   const [users, setUsers] = useState("");
   useEffect(() => {
     async function getData() {
-      const response = await api.get('api/users');
+      const response = await api.get("api/users");
       const datas = response.data;
       setUsers(datas.data);
-
     }
     getData();
   }, []);
@@ -24,22 +23,24 @@ function AdminUserList() {
   const columnTemplete = "1fr 2fr 1.5fr 1fr 1fr 1.5fr";
   const title = "";
   return (
-    users && <>
-      <ReservationHeader>
-        <TitleName>
-          <MainTitle>{mainTitle}</MainTitle>
-          {title ? <Title className="title">{title}</Title> : ""}
-        </TitleName>
-      </ReservationHeader>
+    users && (
+      <>
+        <ReservationHeader>
+          <TitleName>
+            <MainTitle>{mainTitle}</MainTitle>
+            {title ? <Title className="title">{title}</Title> : ""}
+          </TitleName>
+        </ReservationHeader>
 
-      <StripeLayout
-        datas={users}
-        headers={headers}
-        columnTemplete={columnTemplete}
-        keys={keys}
-        listName="USER"
-      ></StripeLayout>
-    </>
+        <StripeLayout
+          datas={users}
+          headers={headers}
+          columnTemplete={columnTemplete}
+          keys={keys}
+          listName="USER"
+        ></StripeLayout>
+      </>
+    )
   );
 }
 

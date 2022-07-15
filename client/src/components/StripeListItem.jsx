@@ -4,12 +4,26 @@ import { FaUserSlash } from "react-icons/fa";
 import BookedButtonBox from "./BookedButtonBox";
 import UserBlockButtonBox from "./UserBlockButtonBox";
 
-function ListItem({ item, columnTemplete, keys, listName }) {
+function ListItem({ item, columnTemplete, keys, listName, id }) {
+  function stopCapturing(e) {
+    console.log("test2");
+    console.log(id);
+    // console.log(Number(a.replace(/[^0-9]/g, "")));
+    e.stopPropagation();
+  }
+
   return (
-    <ItemList templete={columnTemplete}>
+    <ItemList onClick={stopCapturing} templete={columnTemplete} className="10">
       {keys.map((key) => {
-        return <Item>{
-          key === "role" ? (item["businessNumber"] === null ? "User" : "Host") : item[key]}</Item>;
+        return (
+          <Item>
+            {key === "role"
+              ? item["businessNumber"] === null
+                ? "User"
+                : "Host"
+              : item[key]}
+          </Item>
+        );
       })}
       {listName === "BOOK" ? <BookedButtonBox></BookedButtonBox> : ""}
     </ItemList>
