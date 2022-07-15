@@ -15,6 +15,9 @@ export const FormDiv = styled.div`
   height: wrap-content;
   border: none;
   text-align: center;
+  @media only screen and (max-width: 600px) {
+    width: 25rem;
+  }
 `;
 
 export const ContentsDiv = styled.div`
@@ -27,6 +30,9 @@ export const ContentsDiv = styled.div`
   border-radius: 10px;
   text-align: center;
   margin: 0 0 5rem 0;
+  @media only screen and (max-width: 600px) {
+    width: 25rem;
+  }
 `;
 
 export const PageTitle = styled.div`

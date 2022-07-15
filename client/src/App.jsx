@@ -5,8 +5,11 @@ import Store from "./Store";
 import ScrollToTop from "./components/ScrollToTop";
 import LoginForm from "./pages/LoginForm";
 import RegisterForm from "./pages/RegisterForm";
+import RegisterComplete from "./pages/RegisterComplete";
 import MyPage from "./pages/MyPage";
-// import AddReview
+import AddReview from "./pages/AddReview";
+import AddQnA from "./pages/AddQnA";
+import AddQnaComment from "./pages/AddQnaComment";
 import Notice from "./pages/Notice";
 import AddNotice from "./pages/AddNotice";
 import AdminHome from "./pages/AdminHome";
@@ -36,9 +39,12 @@ function App() {
           <Header></Header>
           <Routes>
             <Route path="/login" element={<LoginForm />} />
-            <Route path="/register/:userType" element={<RegisterForm />} />
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="/registerComplete" element={<RegisterComplete />} />
             <Route path="/myPage" element={<MyPage />} />
-            {/* <Route path="/myPage/addReview" element={<AddReview />} /> */}
+            <Route path="/myPage/addReview" element={<AddReview />} />
+            <Route path="/myPage/addQnA" element={<AddQnA />} />
+            <Route path="/myPage/addQnaComment" element={<AddQnaComment />} />
 
             <Route path="/notice" element={<Notice />} />
             <Route path="/addNotice" element={<AddNotice />} />

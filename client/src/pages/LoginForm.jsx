@@ -171,7 +171,7 @@ const SocialLoginBtn = styled.button`
   display: flex;
   flex-direction: row;
   height: 3rem;
-  width: 8rem;
+  width: 10rem;
   background-color: white;
   border: solid #d9d9d9;
   border-radius: 10px;
@@ -186,7 +186,7 @@ const SocialLoginBtn = styled.button`
     width: 2rem;
     height: 2rem;
     border-radius: 5rem;
-    margin: 0.3rem 0.2rem 0 0;
+    margin: 0.3rem 1rem 0 0;
   }
 `;
 const LoginFooterDiv = styled.table`
