@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import queryString from "query-string";
 import styled from "styled-components";
 import Pagination from "../components/Pagination";
 import ProductCard from "../components/ProductCard";
@@ -76,11 +77,13 @@ export default function ProductList() {
   const limit = 12;
   const offset = (page - 1) * limit;
   const { searchInput } = useParams();
+  const { search } = window.location;
+  const { date } = queryString.parse(search);
+  console.log(date);
 
   //selector toggle 하나씩만되도록
   const handelClickSelector = (e) => {
     const clickedClass = e.target.className.split(" ")[2];
-    console.log(clickedClass);
     if (clickedClass === "Category") {
       categoryModalDisplay === "flex"
         ? setcategoryModalDisplay("none")
@@ -109,7 +112,7 @@ export default function ProductList() {
           </div>
           <DateModal display={DateModalDisplay} />
         </DateWrap>
-        <SelecotrResetBtn />
+        <SelecotrResetBtn category={searchInput} />
       </SelectorWrap>
       <ProductWrap>{renderData({ offset, limit })}</ProductWrap>
 

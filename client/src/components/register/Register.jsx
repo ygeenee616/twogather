@@ -51,11 +51,11 @@ function Register() {
 
     if(isFormValid){
       try {
-        const data = {email, password};
+        const data = {email, password, nickname};
         // "/apiusers/sign-in" 엔드포인트로 post요청함.
-        const res = await Api.post("/api/users/sign-up", data);
+        const res = await Api.post("api/users/sign-up", data);
 
-        navigate("/", { replace: true });
+        navigate("/", { replace: true, state: {nickname} });
 
       } catch (err) {
 

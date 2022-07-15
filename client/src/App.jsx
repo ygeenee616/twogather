@@ -38,9 +38,12 @@ function App() {
           <Header></Header>
           <Routes>
             <Route path="/login" element={<LoginForm />} />
-            <Route path="/register/:userType" element={<RegisterForm />} />
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="/registerComplete" element={<RegisterComplete/>} />
             <Route path="/myPage" element={<MyPage />} />
-            {/* <Route path="/myPage/addReview" element={<AddReview />} /> */}
+            <Route path="/myPage/addReview" element={<AddReview />} />
+            <Route path="/myPage/addQnA" element={<AddQnA />} />
+            <Route path="/myPage/addQnaCommnet" element={<AddQnaComment />} />
 
             <Route path="/notice" element={<Notice />} />
             <Route path="/addNotice" element={<AddNotice />} />

@@ -41,7 +41,6 @@ const QnADiv = styled.div`
     text-align: left;
     font-size: 1.5rem;
     color: #8daef2;
-    margin: 0 15vw;
   }
 `;
 
@@ -49,7 +48,6 @@ const QnADiv = styled.div`
 
 const QnATable = styled.table`
     border-top: 2px;
-    margin: 0 15vw;
 `
 
 const QnATableHead = styled.thead`

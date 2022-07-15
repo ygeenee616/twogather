@@ -36,6 +36,8 @@ export default function ImageSlider({ images }) {
 
 const Container = styled.div`
   max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
 `;
 
 const StyledSlider = styled(Slider)`
