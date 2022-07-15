@@ -7,7 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { Hashtag } from 'src/hashtags/entities/hashtag.entity';
 
 @Entity()
@@ -40,7 +40,6 @@ export class Space {
     onDelete: 'CASCADE',
     eager: false,
   })
-  @JoinColumn({ name: 'hostId', referencedColumnName: 'id' })
   user: User;
 
   @OneToMany(() => Hashtag, (hashtag) => hashtag.space, { eager: true })

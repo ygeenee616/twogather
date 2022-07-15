@@ -1,5 +1,4 @@
 import {
-  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -31,15 +30,17 @@ export class SpacesService {
 
   // 전체 공간 목록 조회
   async findAll(): Promise<Space[]> {
-    return await this.spacesRepository.find({
-      relations: {
-        user: true,
-      },
-      order: {
-        id: 'DESC',
-      },
-      cache: true,
-    });
+    try {
+      return await this.spacesRepository.find({
+        relations: {
+          user: true,
+        },
+        order: {
+          id: 'DESC',
+        },
+        cache: true,
+      });
+    } catch (error) {}
   }
 
   // id로 공간 조회
