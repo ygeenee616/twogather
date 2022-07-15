@@ -1,7 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 
-export default function GetBookerInfo() {
+export default function GetBookerInfo({
+  name,
+  phone,
+  email,
+  purpose,
+  request,
+  onChangeName,
+  onChangePhone,
+  onChangeEmail,
+  onChangePurpose,
+  onChangeRequest,
+}) {
   return (
     <Container>
       <Header>
@@ -13,7 +24,12 @@ export default function GetBookerInfo() {
           <label htmlFor="inputName">
             <span style={{ color: "red" }}>*</span> 이름 :
           </label>
-          <Input type="text" id="inputName" placeholder="홍길동"></Input>
+          <Input
+            type="text"
+            id="inputName"
+            placeholder="홍길동"
+            onChange={(e) => onChangeName(e.target.value)}
+          ></Input>
         </Content>
         <Content>
           <label htmlFor="inputPhone">
@@ -23,6 +39,7 @@ export default function GetBookerInfo() {
             type="number"
             id="inputPhone"
             placeholder="숫자만 입력. ex)01012345678"
+            onChange={(e) => onChangePhone(e.target.value)}
           ></Input>
         </Content>
         <Content>
@@ -33,6 +50,7 @@ export default function GetBookerInfo() {
             type="text"
             id="inputEmail"
             placeholder="abc@naver.com"
+            onChange={(e) => onChangeEmail(e.target.value)}
           ></Input>
         </Content>
         <Content>
@@ -41,6 +59,7 @@ export default function GetBookerInfo() {
             type="text"
             id="inputPurpose"
             placeholder="공간의 사용 목적을 입력해주세요"
+            onChange={(e) => onChangePurpose(e.target.value)}
           ></Input>
         </Content>
         <Content>
@@ -49,6 +68,7 @@ export default function GetBookerInfo() {
             type="text"
             id="inputRequest"
             placeholder="호스트에게 요청할 사항이 있다면 남겨주세요"
+            onChange={(e) => onChangeRequest(e.target.value)}
           ></Input>
         </Content>
       </div>
