@@ -2,21 +2,40 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 export default function CategoryModal({ display }) {
+  const { search } = window.location;
+  const params = new URLSearchParams(search);
+  const stringParams = `?${params.toString()}`;
+
   return (
     <ModalWrap display={display}>
-      <StyledLink to="/list/파티룸" onClick={{ display: "none" }}>
+      <StyledLink
+        to={`/list/파티룸${stringParams}`}
+        onClick={{ display: "none" }}
+      >
         파티룸
       </StyledLink>
-      <StyledLink to="/list/스터디룸" onClick={{ display: "none" }}>
+      <StyledLink
+        to={`/list/스터디룸${stringParams}`}
+        onClick={{ display: "none" }}
+      >
         스터디룸
       </StyledLink>
-      <StyledLink to="/list/회의실" onClick={{ display: "none" }}>
+      <StyledLink
+        to={`/list/회의실${stringParams}`}
+        onClick={{ display: "none" }}
+      >
         회의실
       </StyledLink>
-      <StyledLink to="/list/연습실" onClick={{ display: "none" }}>
+      <StyledLink
+        to={`/list/연습실${stringParams}`}
+        onClick={{ display: "none" }}
+      >
         연습실
       </StyledLink>
-      <StyledLink to="/list/스튜디오" onClick={{ display: "none" }}>
+      <StyledLink
+        to={`/list/스튜디오${stringParams}`}
+        onClick={{ display: "none" }}
+      >
         스튜디오
       </StyledLink>
     </ModalWrap>
