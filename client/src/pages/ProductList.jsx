@@ -78,9 +78,8 @@ export default function ProductList() {
   const offset = (page - 1) * limit;
   const { searchInput } = useParams();
   const { search } = window.location;
-  const queryObj = queryString.parse(search);
-  const { date, startTime, endTime } = queryObj;
-  console.log(date, startTime, endTime);
+  const { date } = queryString.parse(search);
+  console.log(date);
 
   //selector toggle 하나씩만되도록
   const handelClickSelector = (e) => {
