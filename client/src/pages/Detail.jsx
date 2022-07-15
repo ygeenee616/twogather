@@ -40,14 +40,18 @@ const handleDateChange = async (date) => {
 export default function Detail() {
   // api 데이터 state
   const [data, setData] = useState(0);
+  // 선택한 룸
+  const room = useRef({ id: "", title: "" });
   // 사용자 예약 인원 state
   const [people, setPeople] = useState(0);
-  const inputPeople = useRef(people);
+  const refPeople = useRef(people);
   // 데이트피커 state
   const [date, setDate] = useState(new Date());
   const [startTime, setStartTime] = useState(0);
   const [endTime, setEndTime] = useState(0);
-  const [lessTime, setLessTime] = useState(false);
+  // 예약 최소 시간
+  const [lessTime, setLessTime] = useState(true);
+  // 예약 중복 내역
   const [overlap, setOverlap] = useState(false);
 
   // 선택한 룸의 수용 가능 인원
@@ -76,22 +80,44 @@ export default function Detail() {
   const title = data.title;
   const hashTag = data.hashTag;
   const contents = data.contents;
+  const address = data.address;
   const rooms = data.rooms;
   const images = data.images;
 
-  // 예약 인원이 수용 가능 인원에 충족하는지 검사하는 함수
+  // 룸 선택시 적용하는 DropBox 함수
+  function checkSelectRoom(eId, eClass) {
+    room.current = {
+      id: eId,
+      title: eClass,
+    };
+    console.log(room.current);
+  }
+
+  // 예약 정보를 제대로 입력했을 때만 예약 버튼을 활성화하는 함수
   function checkPeople(e) {
     e.preventDefault();
     Number(acceptPeople.current) !== 0 &&
-    Number(inputPeople.current) !== 0 &&
-    Number(acceptPeople.current) >= Number(inputPeople.current)
+    Number(refPeople.current) !== 0 &&
+    Number(acceptPeople.current) >= Number(refPeople.current) &&
+    lessTime === false &&
+    overlap === false
       ? (possible.current = true)
       : (possible.current = false);
   }
 
+  // 날짜 포맷팅
+  function dateToNumber(date) {
+    const formatDate = Number(
+      date.getFullYear() +
+        (date.getMonth() + 1).toString().padStart(2, "0") +
+        date.getDate().toString().padStart(2, "0")
+    );
+    return formatDate;
+  }
+
   // date 선택시 적용하는 DatePicker 함수
   function onChangeDate(date) {
-    setDate(date);
+    setDate(dateToNumber(date));
     handleDateChange(date);
   }
 
@@ -110,7 +136,7 @@ export default function Detail() {
   }
 
   // 예약 시작 시간과 종료 시간 사이에 이미 예약된 시간이 있을 시 주의를 주는 함수
-  const handleTimeChange = (startTime, endTime) => {
+  function handleTimeChange(startTime, endTime) {
     let disableList = document.querySelectorAll(".disable");
 
     let booked = [];
@@ -125,10 +151,10 @@ export default function Detail() {
     }
     const filtering = newBookTime.filter((x) => booked.includes(x));
     filtering.length > 0 ? setOverlap(true) : setOverlap(false);
-  };
+  }
 
   useEffect(() => {
-    inputPeople.current = people;
+    refPeople.current = people;
   }, [people]);
 
   return (
@@ -147,11 +173,15 @@ export default function Detail() {
           <LeftContainer>
             <ImageSlider images={images} />
             <Tab contents={contents} />
-            <Map />
+            <Map title={title} address={address} />
           </LeftContainer>
 
           <RightContainer>
-            <Dropbox rooms={rooms} acceptPeople={acceptPeople} />
+            <Dropbox
+              rooms={rooms}
+              acceptPeople={acceptPeople}
+              checkSelectRoom={checkSelectRoom}
+            />
             <MyDatePicker
               date={date}
               startTime={startTime}
@@ -171,7 +201,7 @@ export default function Detail() {
                   onChange={(e) => {
                     if (e.target.value !== "" || e.target.value !== 0) {
                       setPeople(e.target.value);
-                      inputPeople.current = e.target.value;
+                      refPeople.current = e.target.value;
                       checkPeople(e);
                     }
                   }}
@@ -190,6 +220,7 @@ export default function Detail() {
                     date: date,
                     startTime: startTime,
                     endTime: endTime,
+                    room: room.current,
                   },
                 })
               }

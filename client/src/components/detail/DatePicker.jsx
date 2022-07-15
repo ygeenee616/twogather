@@ -7,17 +7,6 @@ import { ko } from "date-fns/esm/locale";
 import "react-datepicker/dist/react-datepicker.css";
 import "./../../assets/styles/DatePicker.css";
 
-// 날짜 포맷팅
-const dateToString = (date) => {
-  return (
-    date.getFullYear() +
-    "-" +
-    (date.getMonth() + 1).toString().padStart(2, "0") +
-    "-" +
-    date.getDate().toString().padStart(2, "0")
-  );
-};
-
 // DatePicker + TimePicker
 export function MyDatePicker({
   date,
@@ -29,10 +18,6 @@ export function MyDatePicker({
   onClickStartTime,
   onClickEndTime,
 }) {
-  useEffect(() => {
-    console.log(dateToString(date), startTime, endTime);
-  }, [date, startTime, endTime]);
-
   // timePicker options
   const timeTable = [];
   for (let i = 0; i < 24; i++) {
@@ -45,7 +30,7 @@ export function MyDatePicker({
         locale={ko}
         selected={date}
         onChange={(date) => {
-          onChangeDate(dateToString(date));
+          onChangeDate(date);
         }}
         minDate={new Date()} // 이전 날짜는 선택 불가
         inline
