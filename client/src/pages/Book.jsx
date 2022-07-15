@@ -1,16 +1,31 @@
 import React from "react";
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 import GetBookerInfo from "../components/book/GetBookerInfo";
 import HostInfo from "../components/book/HostInfo";
 import BookInfo from "../components/book/BookInfo";
 import ToTop from "../components/ToTop";
 
 export default function Book() {
+  const location = useLocation();
+
+  const people = location.state.people;
+  const date = location.state.date;
+  const startTime = location.state.startTime;
+  const endTime = location.state.endTime;
+  const room = location.state.room;
+
   return (
     <FullContainer>
       <GetBookerInfo />
       <HostInfo />
-      <BookInfo />
+      <BookInfo
+        room={room}
+        people={people}
+        date={date}
+        startTime={startTime}
+        endTime={endTime}
+      />
       <Button>예약 완료</Button>
       <ToTop />
     </FullContainer>
