@@ -4,7 +4,7 @@ import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 import "react-datepicker/dist/react-datepicker.css";
-import "../../assets/styles/ListDatePicker.css";
+import "../../assets/styles/DatePicker.css";
 
 export default function ListDatePicker() {
   const [date, setDate] = useState(new Date());
