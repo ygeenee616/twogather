@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import GetBookerInfo from "../components/book/GetBookerInfo";
@@ -16,9 +16,51 @@ export default function Book() {
   const room = location.state.room;
   const host = location.state.host;
 
+  const name = useRef("");
+  const phone = useRef("");
+  const email = useRef("");
+  const purpose = useRef("");
+  const request = useRef("");
+
+  // 이름 입력 함수
+  function onChangeName(e) {
+    name.current = e;
+  }
+
+  // 전화번호 입력 함수
+  function onChangePhone(e) {
+    phone.current = e;
+  }
+
+  // 이메일 입력 함수
+  function onChangeEmail(e) {
+    email.current = e;
+  }
+
+  // 사용 목적 입력 함수
+  function onChangePurpose(e) {
+    purpose.current = e;
+  }
+
+  // 요청 사항 입력 함수
+  function onChangeRequest(e) {
+    request.current = e;
+  }
+
   return (
     <FullContainer>
-      <GetBookerInfo />
+      <GetBookerInfo
+        name={name}
+        phone={phone}
+        email={email}
+        purpose={purpose}
+        request={request}
+        onChangeName={onChangeName}
+        onChangePhone={onChangePhone}
+        onChangeEmail={onChangeEmail}
+        onChangePurpose={onChangePurpose}
+        onChangeRequest={onChangeRequest}
+      />
       <HostInfo host={host} />
       <BookInfo
         room={room}
