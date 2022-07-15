@@ -77,6 +77,19 @@ export class SpacesService {
     }
   }
 
+  // space 수정
+  async update(id: number, UpdateSpaceDto: UpdateSpaceDto) {
+    try {
+      const updatedSpace = await this.spacesRepository.update(
+        id,
+        UpdateSpaceDto,
+      );
+      return updatedSpace;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // join 된 userId로 생성한 Spaces 목록 가져오기
   // 아직 확실하지 않음. 어떻게 써야할 지. join 해야해서
   async findOneByUserId(user): Promise<Space[]> {
