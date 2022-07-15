@@ -32,7 +32,7 @@ export class SpacesService {
         user: true,
       },
       order: {
-        id: 'ASC',
+        id: 'DESC',
       },
       cache: true,
     });

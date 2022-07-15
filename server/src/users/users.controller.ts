@@ -227,8 +227,8 @@ export class UsersController {
       example: userResExample.wihdrawal,
     },
   })
-  async withdrawal(@Req() req) {
-    await this.usersService.remove(req.user.id);
+  async withdrawal(@GetUser() user) {
+    await this.usersService.remove(user.id);
     return {
       status: 201,
       description: '회원 탈퇴 성공',

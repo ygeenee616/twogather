@@ -13,7 +13,6 @@ import { SpacesService } from './spaces.service';
 import { CreateSpaceDto } from './dto/create-space.dto';
 import { UpdateSpaceDto } from './dto/update-space.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
-import { Space } from './entities/spaces.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { SpaceResExample } from './space.swagger.example';
 import { GetUser } from 'src/custom.decorator';
