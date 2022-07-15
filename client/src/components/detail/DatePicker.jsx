@@ -89,7 +89,7 @@ export function MyDatePicker() {
   }
 
   return (
-    <>
+    <div style={{ width: "100%" }}>
       <DatePicker
         locale={ko}
         selected={date}
@@ -154,7 +154,7 @@ export function MyDatePicker() {
         <p className="lessTime">*최소 예약시간은 1시간입니다.</p>
         <p className="overlap">*중복 예약 내역이 있습니다.</p>
       </Guide>
-    </>
+    </div>
   );
 }
 
