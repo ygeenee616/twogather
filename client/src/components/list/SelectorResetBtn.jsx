@@ -16,8 +16,8 @@ export default function SelecotrResetBtn({ category }) {
 
 const Button = styled.button`
   all: unset;
-  width: 13vw;
-  height: 5vh;
+  width: 120px;
+  height: 40px;
   margin: 1vh 0 6vh 0;
   border: 1px solid #8daef2;
   border-radius: 10px;
@@ -32,4 +32,5 @@ const Button = styled.button`
 
 const About = styled.div`
   color: #8daef2;
+  font-weight: 600;
 `;
