@@ -51,9 +51,7 @@ function LoginForm() {
         console.log("로그인에 실패하였습니다.", err);
         setAlertMsg("아이디 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해주세요.")
       }
-
     }
-
     console.log(user);
     
   };
