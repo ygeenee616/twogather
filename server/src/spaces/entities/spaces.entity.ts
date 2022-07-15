@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
 import { Hashtag } from 'src/hashtags/entities/hashtag.entity';
+import { Room } from 'src/rooms/entities/rooms.entity';
 
 @Entity()
 export class Space {
@@ -46,4 +47,8 @@ export class Space {
   @OneToMany(() => Hashtag, (hashtag) => hashtag.space, { eager: true })
   @ApiProperty({ description: 'hastag와의 관계' })
   hashtags: Hashtag[];
+
+  @OneToMany(() => Room, (room) => room.space, { eager: true })
+  @ApiProperty({ description: 'room과의 관계' })
+  rooms: Room[];
 }

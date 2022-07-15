@@ -13,23 +13,29 @@ import { UpdateRoomDto } from './dto/update-room.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
 import { Room } from './entities/rooms.entity';
 
-@Controller('rooms')
+@Controller('api/rooms')
 @ApiTags('룸 API')
-@ApiHeader({
-  name: 'authorization',
-  description: 'Auth token',
-}) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
+// @ApiHeader({
+//   name: 'authorization',
+//   description: 'Auth token',
+// }) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
 export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
+  // room 생성
   @Post()
   @ApiOperation({
     summary: 'room 생성 API',
     description: 'room을 생성한다.',
   })
   @ApiResponse({ status: 201, description: '생성된 room', type: Room })
-  create(@Body() createRoomDto: CreateRoomDto) {
-    return this.roomsService.create(createRoomDto);
+  async create(@Body() createRoomDto: CreateRoomDto, @Body() spaceId: number) {
+    const newRoom = await this.roomsService.create(createRoomDto, spaceId);
+    return {
+      status: 201,
+      description: 'room 생성완료',
+      success: true,
+    };
   }
 
   @Get()
@@ -42,8 +48,13 @@ export class RoomsController {
     description: '전체 room 목록',
     type: Room,
   })
-  findAll() {
-    return this.roomsService.findAll();
+  async findAll() {
+    const rooms = await this.roomsService.findAll();
+    return {
+      status: 200,
+      description: '전체 room 조회',
+      data: rooms,
+    };
   }
 
   @Get(':id')

@@ -31,8 +31,10 @@ export class Room {
   @ApiProperty({ description: '상세설명' })
   description: string;
 
-  @ManyToOne(() => Space)
+  @ManyToOne(() => Space, (space) => space.rooms, {
+    onDelete: 'CASCADE',
+    eager: false,
+  })
   @JoinColumn({ name: 'spaceId', referencedColumnName: 'id' })
-  @ApiProperty({ description: 'FK. space의 Id' })
   space: Space;
 }
