@@ -5,7 +5,6 @@ export default function DateModal({ display }) {
   return (
     <ModalWrap display={display}>
       <ListDatePicker />
-      <ApplyDateButton>날짜 적용하기</ApplyDateButton>
     </ModalWrap>
   );
 }
@@ -26,14 +25,4 @@ const ModalWrap = styled.div`
   .datePicker {
     background-color: #f2f2f2;
   }
-`;
-
-const ApplyDateButton = styled.button`
-  all: unset;
-  width: 100%;
-  height: 10%;
-  color: white;
-  text-align: center;
-  font-weight: 600;
-  background-color: #8daef2;
 `;

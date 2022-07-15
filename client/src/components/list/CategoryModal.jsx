@@ -42,7 +42,7 @@ const StyledLink = styled(Link)`
   all: unset;
   font-size: 0.9rem;
   //text-align: center;
-  padding: 2.9% 13%;
+  padding: 3% 13%;
 
   & + & {
     border-top: 1px solid #8daef2;
