@@ -26,6 +26,7 @@ import Home from "./pages/Home";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
 
+/// 야호
 function App() {
   return (
     <Provider store={Store}>
@@ -57,12 +58,13 @@ function App() {
             <Route path="/host/spaceList" element={<HostSpaceList />} />
             {/* <Route path="/host/updateSpace" element={<UpdateSpace />} /> */}
 
-            <Route path="/list/:searchInput" element={<ProductList />} />
+            {/* <Route path="/list/:searchInput" element={<ProductList />} />
             <Route path="/detail/:spaceId" element={<Detail />} />
             <Route path="/book" element={<Book />} />
 
             <Route path="/" element={<Home />} />
-            {/* <Route path="*" element={<NotFound />} /> */}
+
+            <Routes path="*" element={<NotFound />} /> */}
           </Routes>
           <Footer></Footer>
         </BrowserRouter>
