@@ -51,7 +51,7 @@ export function MyDatePicker() {
   const [date, setDate] = useState(new Date());
   const [startTime, setStartTime] = useState(0);
   const [endTime, setEndTime] = useState(0);
-  const [caution, setCaution] = useState(false);
+  const [lessTime, setLessTime] = useState(false);
   const [overlap, setOverlap] = useState(false);
 
   // 예약 시작 시간과 종료 시간 사이에 이미 예약된 시간이 있을 시 처리하는 함수
@@ -109,8 +109,8 @@ export function MyDatePicker() {
             setStartTime(Number(e.target.value));
             handleTimeChange(Number(e.target.value), endTime);
             Number(e.target.value) < endTime
-              ? setCaution(false)
-              : setCaution(true);
+              ? setLessTime(false)
+              : setLessTime(true);
           }}
         >
           <option className="title" disabled>
@@ -134,8 +134,8 @@ export function MyDatePicker() {
             setEndTime(Number(e.target.value));
             handleTimeChange(startTime, Number(e.target.value));
             startTime < Number(e.target.value)
-              ? setCaution(false)
-              : setCaution(true);
+              ? setLessTime(false)
+              : setLessTime(true);
           }}
         >
           <option className="title" disabled>
@@ -150,8 +150,8 @@ export function MyDatePicker() {
           })}
         </TimeSelect>
       </div>
-      <Guide caution={caution} overlap={overlap}>
-        <p className="caution">*최소 예약시간은 1시간입니다.</p>
+      <Guide lessTime={lessTime} overlap={overlap}>
+        <p className="lessTime">*최소 예약시간은 1시간입니다.</p>
         <p className="overlap">*중복 예약 내역이 있습니다.</p>
       </Guide>
     </>
@@ -159,7 +159,7 @@ export function MyDatePicker() {
 }
 
 const TimeSelect = styled.select`
-  width: 100px;
+  width: 45%;
   border: none;
   outline: 2px solid #8daef2;
   border-radius: 10px;
@@ -194,8 +194,8 @@ const Guide = styled.div`
   font-size: 0.7rem;
   color: red;
 
-  & .caution {
-    ${({ caution }) => (caution ? `display: block;` : `display: none;`)};
+  & .lessTime {
+    ${({ lessTime }) => (lessTime ? `display: block;` : `display: none;`)};
   }
 
   & .overlap {

@@ -5,8 +5,11 @@ import Store from "./Store";
 import ScrollToTop from "./components/ScrollToTop";
 import LoginForm from "./pages/LoginForm";
 import RegisterForm from "./pages/RegisterForm";
+import RegisterComplete from "./pages/RegisterComplete";
 import MyPage from "./pages/MyPage";
-// import AddReview
+import AddReview from "./pages/AddReview";
+import AddQnA from "./pages/AddQnA";
+import AddQnaComment from "./pages/AddQnaComment";
 import Notice from "./pages/Notice";
 import AddNotice from "./pages/AddNotice";
 import AdminHome from "./pages/AdminHome";
@@ -26,7 +29,6 @@ import Home from "./pages/Home";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
 
-/// 야호
 function App() {
   return (
     <Provider store={Store}>
