@@ -74,17 +74,17 @@ export default function Detail() {
   }
 
   // startTime 선택시 적용 함수
-  function onClickStartTime(e) {
-    setStartTime(Number(e.target.value));
-    handleTimeChange(Number(e.target.value), endTime);
-    Number(e.target.value) < endTime ? setLessTime(false) : setLessTime(true);
+  function onClickStartTime(time) {
+    setStartTime(Number(time));
+    handleTimeChange(Number(time), endTime);
+    Number(time) < endTime ? setLessTime(false) : setLessTime(true);
   }
 
   // endTime 선택시 적용 함수
-  function onClickEndTime(e) {
-    setEndTime(Number(e.target.value));
-    handleTimeChange(startTime, Number(e.target.value));
-    startTime < Number(e.target.value) ? setLessTime(false) : setLessTime(true);
+  function onClickEndTime(time) {
+    setEndTime(Number(time));
+    handleTimeChange(startTime, Number(time));
+    startTime < Number(time) ? setLessTime(false) : setLessTime(true);
   }
 
   // 예약 시작 시간과 종료 시간 사이에 이미 예약된 시간이 있을 시 처리하는 함수
