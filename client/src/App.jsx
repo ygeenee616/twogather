@@ -17,7 +17,7 @@ import AdminUserList from "./pages/AdminUserList";
 import AdminBookList from "./pages/AdminBookList";
 import AdminBookDetail from "./pages/AdminBookDetail";
 import HostHome from "./pages/HostHome";
-// import AddHost
+import AddHost from "./pages/AddHost";
 // import AddSpace
 import HostBookList from "./pages/HostBookList";
 import HostSpaceList from "./pages/hostPage/HostSpaceList";
@@ -39,7 +39,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
-            <Route path="/registerComplete" element={<RegisterComplete/>} />
+            <Route path="/registerComplete" element={<RegisterComplete />} />
             <Route path="/myPage" element={<MyPage />} />
             <Route path="/myPage/addReview" element={<AddReview />} />
             <Route path="/myPage/addQnA" element={<AddQnA />} />
@@ -56,8 +56,8 @@ function App() {
               element={<AdminBookDetail />}
             />
 
+            <Route path="/host/addHost" element={<AddHost />} />
             <Route path="/host" element={<HostHome />} />
-            {/* <Route path="/host/addHost" element={<AddHost />} /> */}
             {/* <Route path="/host/addSpace" element={<AddSpace />} /> */}
             <Route path="/host/bookList" element={<HostBookList />} />
             <Route path="/host/spaceList" element={<HostSpaceList />} />

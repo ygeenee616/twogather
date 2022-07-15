@@ -63,7 +63,7 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
 const Container = styled.div`
   margin: 0 auto;
   width: 80%;
-  height: 100%;
+
   display: flex;
   flex-direction: column;
   margin-top: 50px;

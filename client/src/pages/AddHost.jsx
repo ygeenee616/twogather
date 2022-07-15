@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import Postcode from "../components/admin/Postcode";
 import PostcodePopup from "../components/admin/PostcodePopup";
-
+import * as Api from "../api";
 function AddHost() {
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
@@ -13,11 +13,9 @@ function AddHost() {
     companyRegisNumber: "",
     contactInfo: "", //연락처
     email: "", //이메일
-    bankAccountNum: {
-      bankName: "",
-      accountNum: "",
-      name: "",
-    },
+    bankName: "",
+    bankAccount: "",
+    name: "",
   });
 
   const handleChangeState = (e) => {
@@ -29,6 +27,9 @@ function AddHost() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    //포스트 요청시 데이터 새로 넘겨주기 합성해서
+    const accountNumber = `${hostInfo.bankName} ${hostInfo.bankAccount} ${hostInfo.name}`;
+    console.log(accountNumber);
     console.log(hostInfo);
   };
 
@@ -41,7 +42,7 @@ function AddHost() {
 
   return (
     <Main>
-      <SpaceForm>
+      <SpaceForm onSubmit={handleSubmit}>
         <InputBox className="title">
           <Title>
             Host에 대한 정보를 입력해주세요
@@ -56,6 +57,7 @@ function AddHost() {
             name="businessName"
             value={hostInfo.businessName}
             onChange={handleChangeState}
+            required={"required"}
           ></StyledInput>
         </InputBox>
 
@@ -67,6 +69,7 @@ function AddHost() {
             width={"40%"}
             value={hostInfo.representativeName}
             onChange={handleChangeState}
+            required
           ></StyledInput>
         </InputBox>
 
@@ -78,6 +81,7 @@ function AddHost() {
             name="companyRegisNumber"
             value={hostInfo.companyRegisNumber}
             onChange={handleChangeState}
+            required
           ></StyledInput>
         </InputBox>
 
@@ -85,11 +89,12 @@ function AddHost() {
           <StyledLabel>연락처</StyledLabel>
           <StyledInput
             width={"40%"}
-            type="text"
+            type="tel"
             name="contactInfo"
             placeholder="숫자만 입력해 주세요"
             value={hostInfo.contactInfo}
             onChange={handleChangeState}
+            required
           ></StyledInput>
         </InputBox>
 
@@ -101,6 +106,7 @@ function AddHost() {
             name="email"
             value={hostInfo.email}
             onChange={handleChangeState}
+            required
           ></StyledInput>
         </InputBox>
 
@@ -113,8 +119,9 @@ function AddHost() {
               type="text"
               name="bankName"
               placeholder="은행"
-              value={hostInfo.bankAccountNum.bankName}
+              value={hostInfo.bankName}
               onChange={handleChangeState}
+              required
             ></StyledInput>
             <StyledInput
               className="account"
@@ -122,8 +129,9 @@ function AddHost() {
               placeholder="계좌번호"
               width={"40%"}
               name="bankAccount"
-              value={hostInfo.bankAccountNum.accountNum}
+              value={hostInfo.accountNum}
               onChange={handleChangeState}
+              required
             ></StyledInput>
             <StyledInput
               className="account"
@@ -131,8 +139,9 @@ function AddHost() {
               placeholder="소유주"
               type="text"
               name="name"
-              value={hostInfo.bankAccountNum.name}
+              value={hostInfo.name}
               onChange={handleChangeState}
+              required
             ></StyledInput>
           </div>
         </InputBox>
@@ -146,16 +155,19 @@ function AddHost() {
           >
             등록취소
           </StyledButton>
+          {/* /*네비게이트 설정하기 */}
           <StyledButton
             className="inc"
-            onClick={handleSubmit}
             color="white"
             backGroundColor="#8daef2"
             name="register"
             className="register"
+            type="submit"
+            value="submit"
           >
             Host등록
           </StyledButton>
+          {/* {포스트 요청하기 } */}
         </ButtonBox>
       </SpaceForm>
     </Main>

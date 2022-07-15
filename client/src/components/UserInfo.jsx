@@ -40,7 +40,7 @@ const UserProfile = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
+margin : 0 auto;
   animation-duration: 0.5s;
   animation-name: fadeInDown;
 
