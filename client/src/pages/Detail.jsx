@@ -171,7 +171,7 @@ const InputPeople = styled.div`
   margin: 10px 0;
 
   & > input {
-    width: 50%;
+    width: 30%;
     max-height: 22px;
     border: 2px solid #8daef2;
     border-radius: 5px;
