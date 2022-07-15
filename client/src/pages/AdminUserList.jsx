@@ -14,8 +14,6 @@ function AdminUserList() {
     }
     getData();
   }, []);
-  console.log(users);
-  // key === "role" ? (item["businessNumber"] !== null ? "Host" : "User") :
 
   const headers = ["닉네임", "E-Mail", "전화번호", "성별", "Role", "가입날짜"];
   const keys = ["nickname", "email", "phoneNumber", "sex", "role", "date"];

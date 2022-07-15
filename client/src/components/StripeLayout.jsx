@@ -13,15 +13,13 @@ UserInfo.defaultProps = {
 function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
   const [viewInfo, setViewInfo] = useState(false);
   const [bookInfo, setBookInfo] = useState(false);
+  const [userId, setUserId] = useState();
 
-  function handleClick(e) {
-    console.log("test");
-
-    const a = e.target.className;
-    console.log(Number(a.replace(/[^0-9]/g, "")));
+  function handleClick(id) {
     if (listName === "USER") {
       //유저이름을 받아와서 api출력
       setViewInfo(!viewInfo);
+      setUserId(id);
     }
   }
 
@@ -30,7 +28,7 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
       <Container>
         <UserContainer>
           <UserBox viewInfo={viewInfo}>
-            <UserInfo viewInfo={viewInfo}></UserInfo>
+            <UserInfo userId={userId} viewInfo={viewInfo}></UserInfo>
           </UserBox>
         </UserContainer>
         <ReservationForm viewInfo={viewInfo}>
@@ -42,7 +40,7 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
           {datas.map((item, idx) => {
             return (
               //클릭한 항목의 데이터 받아와서 해당 id에 맞는 user출력하기
-              <ListContainer onClick={handleClick} id={item.id} className="10">
+              <ListContainer>
                 <ListItem
                   className="10"
                   item={item}
@@ -50,7 +48,7 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
                   keys={keys}
                   listName={listName}
                   id={item.id}
-                  onClick={handleClick}
+                  handleClick={handleClick}
                   //"1fr 2fr 1fr 1fr 2fr 1fr 1.2fr"
                 ></ListItem>
               </ListContainer>

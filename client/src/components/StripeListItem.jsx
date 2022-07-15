@@ -1,19 +1,20 @@
-import React, { useState, memo } from "react";
+import React, { useState, memo, useRef } from "react";
 import styled from "styled-components";
 import { FaUserSlash } from "react-icons/fa";
 import BookedButtonBox from "./BookedButtonBox";
 import UserBlockButtonBox from "./UserBlockButtonBox";
 
-function ListItem({ item, columnTemplete, keys, listName, id }) {
+function ListItem({ item, columnTemplete, keys, listName, id, handleClick }) {
+  const userId = useRef(0);
+
   function stopCapturing(e) {
-    console.log("test2");
-    console.log(id);
-    // console.log(Number(a.replace(/[^0-9]/g, "")));
+    userId.current = id;
+    handleClick(userId.current);
     e.stopPropagation();
   }
 
   return (
-    <ItemList onClick={stopCapturing} templete={columnTemplete} className="10">
+    <ItemList onClick={stopCapturing} templete={columnTemplete}>
       {keys.map((key) => {
         return (
           <Item>
