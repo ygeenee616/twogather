@@ -1,44 +1,30 @@
 import styled from "styled-components";
 import StripeList from "../components/StripeList";
 import StripeLayout from "../components/StripeLayout";
-
+import axios from "axios";
+import * as api from "../api";
+import { useState, useEffect } from "react";
 function AdminUserList() {
-  const data = [
-    {
-      nickname: "강예정",
-      email: "파티파티룸",
-      phoneNumber: "010-3000-2000",
-      sns: "5000",
-      role: "admin",
-      date: "1월18일",
-      block: false,
-    },
-    {
-      nickname: "강예정",
-      email: "파티파티룸",
-      phoneNumber: "010-3000-2000",
-      sns: "5000",
-      role: "admin",
-      date: "1월18일",
-      block: false,
-    },
-    {
-      nickname: "강예정",
-      email: "aa@aaa.com",
-      phoneNumber: "010-3000-2000",
-      sns: "5000",
-      role: "admin",
-      date: "1월18일",
-      block: false,
-    },
-  ];
-  const headers = ["닉네임", "E-Mail", "전화번호", "SNS", "Role", "가입날짜"];
-  const keys = ["nickname", "email", "phoneNumber", "sns", "role", "date"];
+  const [users, setUsers] = useState("");
+  useEffect(() => {
+    async function getData() {
+      const response = await api.get('api/users');
+      const datas = response.data;
+      setUsers(datas.data);
+
+    }
+    getData();
+  }, []);
+  console.log(users);
+  // key === "role" ? (item["businessNumber"] !== null ? "Host" : "User") :
+
+  const headers = ["닉네임", "E-Mail", "전화번호", "성별", "Role", "가입날짜"];
+  const keys = ["nickname", "email", "phoneNumber", "sex", "role", "date"];
   const mainTitle = "유저정보";
   const columnTemplete = "1fr 2fr 1.5fr 1fr 1fr 1.5fr";
   const title = "";
   return (
-    <>
+    users && <>
       <ReservationHeader>
         <TitleName>
           <MainTitle>{mainTitle}</MainTitle>
@@ -47,7 +33,7 @@ function AdminUserList() {
       </ReservationHeader>
 
       <StripeLayout
-        datas={data}
+        datas={users}
         headers={headers}
         columnTemplete={columnTemplete}
         keys={keys}
