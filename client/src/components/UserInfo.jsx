@@ -1,6 +1,6 @@
 import { FaUserCircle } from "react-icons/fa";
 import styled from "styled-components";
-
+import UserBlockButtonBox from "./UserBlockButtonBox";
 export default function UserInfo({
   userName,
   commentNum,
@@ -11,6 +11,7 @@ export default function UserInfo({
     <UserProfile viewInfo={viewInfo}>
       <FaUserCircle size={"40%"} color="lightgrey"></FaUserCircle>
       <UserName>{userName}</UserName>
+      <UserBlockButtonBox></UserBlockButtonBox>
       <div className="userName">댓글 횟수 : {commentNum}</div>
       <div className="userInfo">신고 횟수 : {reportedNum}</div>
     </UserProfile>
@@ -36,7 +37,7 @@ const UserProfile = styled.div`
     to {
       height: 100%;
       opacity: 1;
-      transform: translate3d(0, -0%, 0);
+      transform: translate3d(0, 0%, 0);
     }
   }
 `;
@@ -45,7 +46,7 @@ const UserName = styled.div`
   font-size: 1.5rem;
   color: #8daef2;
   text-align: center;
-  width: 100%
+  width: 50%;
   margin-top: 10%;
   border-bottom: 2px solid #8daef2;
   margin-bottom: 1%;
