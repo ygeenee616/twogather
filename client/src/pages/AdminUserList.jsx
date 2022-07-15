@@ -32,18 +32,10 @@ function AdminUserList() {
       block: false,
     },
   ];
-  const headers = [
-    "닉네임",
-    "E-Mail",
-    "전화번호",
-    "SNS",
-    "Role",
-    "가입날짜",
-    "차단",
-  ];
+  const headers = ["닉네임", "E-Mail", "전화번호", "SNS", "Role", "가입날짜"];
   const keys = ["nickname", "email", "phoneNumber", "sns", "role", "date"];
   const mainTitle = "유저정보";
-  const columnTemplete = "1fr 2fr 1.5fr 1fr 1fr 1.5fr 1fr";
+  const columnTemplete = "1fr 2fr 1.5fr 1fr 1fr 1.5fr";
   const title = "";
   return (
     <>
@@ -53,7 +45,6 @@ function AdminUserList() {
           {title ? <Title className="title">{title}</Title> : ""}
         </TitleName>
       </ReservationHeader>
-
 
       <StripeLayout
         datas={data}
