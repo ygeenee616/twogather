@@ -8,7 +8,8 @@ function ListItem({ item, columnTemplete, keys, listName }) {
   return (
     <ItemList templete={columnTemplete}>
       {keys.map((key) => {
-        return <Item>{item[key]}</Item>;
+        return <Item>{
+          key === "role" ? (item["businessNumber"] === null ? "User" : "Host") : item[key]}</Item>;
       })}
       {listName === "BOOK" ? <BookedButtonBox></BookedButtonBox> : ""}
     </ItemList>
