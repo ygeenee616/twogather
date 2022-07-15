@@ -38,9 +38,8 @@ function LoginForm() {
         const data = {email, password};
         // "/apiusers/sign-in" 엔드포인트로 post요청함.
         const res = await Api.post("api/users/sign-in", data);
-
         // JWT 토큰은 유저 정보의 token임.
-        const jwtToken = res.accessToken;
+        const jwtToken = res.data.accessToken;
         // sessionStorage에 "userToken"이라는 키로 JWT 토큰을 저장함.
         localStorage.setItem("userToken", jwtToken);
         // dispatch 함수를 이용해 로그인 성공 상태로 만듦.

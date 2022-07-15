@@ -36,17 +36,20 @@ const HostPage = () => {
   );
 };
 
-const Notice = () => {
+
+const HeaderTag = ({name, target}) => {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("/notice");
+ 
+    navigate(target);
   };
   return (
     <TextWrap onClick={handleClick}>
-      <div>공지사항</div>
+      <div>{name}</div>
     </TextWrap>
   );
 };
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -127,8 +130,11 @@ export default function Header() {
       <Logo className="headerLogo" />
       <Search />
       <RightWrap>
-        <Notice />
+        {localStorage.getItem('userToken')!=='' ? <HeaderTag name="호스트등록하기" target="/addHost" /> : `` }
+        {localStorage.getItem('userToken')!=='' ? <HeaderTag name="마이페이지" target="/mypage" /> : `` }
+        <HeaderTag name="공지사항" target="/notice" />
         <Login />
+
       </RightWrap>
     </HeaderWrap>
   );

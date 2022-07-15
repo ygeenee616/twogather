@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import { useSelector } from 'react-redux';
+import { useState } from "react"
 
 
 function MyProfile() {
   const user = useSelector((state) => state.user);
+  const [editNickname, setEditNickname] = useState(true);
 
   // 로그인이 안되어 있을 경우
   return (
@@ -11,10 +13,10 @@ function MyProfile() {
     <ProfileDiv>
       <ProfileImgDiv>
         <img src="/images/duck.png" alt="프로필 사진" />
-        <ProfileImgEditBtn>프로필 수정</ProfileImgEditBtn>
+        <ProfileImgEditBtn>프로필 수정 </ProfileImgEditBtn>
       </ProfileImgDiv>
       <ProfileInfo>
-        <tr> <Nickname colSpan='2'> {user.nickname} </Nickname>  </tr>
+        <tr> <Nickname colSpan='2'> {user.nickname} <a href="#" onClick={()=> {setEditNickname(!editNickname)}}>수정</a> </Nickname>  </tr>
         <tr>
           <InfoTag>이메일</InfoTag>
           <InfoTD> {user.email} </InfoTD>
