@@ -10,13 +10,13 @@ export default function GetBookerInfo() {
       </Header>
       <div>
         <Content>
-          <label for="inputName">
+          <label htmlFor="inputName">
             <span style={{ color: "red" }}>*</span> 이름 :
           </label>
           <Input type="text" id="inputName" placeholder="홍길동"></Input>
         </Content>
         <Content>
-          <label for="inputPhone">
+          <label htmlFor="inputPhone">
             <span style={{ color: "red" }}>*</span> 연락처 :
           </label>
           <Input
@@ -26,7 +26,7 @@ export default function GetBookerInfo() {
           ></Input>
         </Content>
         <Content>
-          <label for="inputEmail">
+          <label htmlFor="inputEmail">
             <span style={{ color: "red" }}>*</span> 이메일 :
           </label>
           <Input
@@ -36,7 +36,7 @@ export default function GetBookerInfo() {
           ></Input>
         </Content>
         <Content>
-          <label for="inputPurpose">사용 목적 :</label>
+          <label htmlFor="inputPurpose">사용 목적 :</label>
           <Input
             type="text"
             id="inputPurpose"
@@ -44,7 +44,7 @@ export default function GetBookerInfo() {
           ></Input>
         </Content>
         <Content>
-          <label for="inputRequest">요청 사항 :</label>
+          <label htmlFor="inputRequest">요청 사항 :</label>
           <Input
             type="text"
             id="inputRequest"
