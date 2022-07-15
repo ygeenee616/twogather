@@ -38,12 +38,15 @@ export class Space {
   @ApiProperty({ description: 'space 소개' })
   intro: string;
 
-  @OneToOne(() => User)
-  @JoinColumn({ name: 'hostId', referencedColumnName: 'id' })
-  @ApiProperty({ description: 'FK. user의 Id' })
+  @ManyToOne(() => User, (user) => user.id, {
+    onDelete: 'CASCADE',
+    eager: false,
+  })
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
+  // @ApiProperty({ description: 'FK. user의 Id' })
   user: User;
 
-  @OneToMany(() => Hashtag, (hashtag) => hashtag.space)
+  @OneToMany(() => Hashtag, (hashtag) => hashtag.space, { eager: true })
   @ApiProperty({ description: 'hastag와의 관계' })
-  hashtag: Hashtag;
+  hashtags: Hashtag[];
 }

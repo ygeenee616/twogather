@@ -19,7 +19,10 @@ export class Hashtag {
   @ApiProperty({ description: '해시태그' })
   tag: string;
 
-  @ManyToOne((type) => Space, (space) => space.id, { onDelete: 'CASCADE' })
+  @ManyToOne((type) => Space, (space) => space.id, {
+    onDelete: 'CASCADE',
+    eager: false,
+  })
   @JoinColumn({ name: 'spaceId', referencedColumnName: 'id' })
   @ApiProperty({ description: 'hashtag의 FK. space의 Id' })
   space: Space;
