@@ -15,11 +15,11 @@ export default function BookInfo({
   date,
   startTime,
   endTime,
-  personnel,
+  people,
   pay,
 }) {
   const useTime = endTime - startTime;
-  const totalPay = pay * personnel * useTime;
+  const totalPay = pay * people * useTime;
 
   return (
     <Container>
@@ -34,14 +34,14 @@ export default function BookInfo({
           <div>{date}</div>
         </Info>
         <Info>
-          <div>예약 날짜</div>
+          <div>예약 시간</div>
           <div>
             {startTime}시 ~ {endTime}시
           </div>
         </Info>
         <Info>
           <div>예약 인원</div>
-          <div>{personnel}명</div>
+          <div>{people}명</div>
         </Info>
         <Info>
           <div>결제 금액</div>

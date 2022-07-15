@@ -29,11 +29,6 @@ export function MyDatePicker({
   onClickStartTime,
   onClickEndTime,
 }) {
-  // // 첫 렌더링 시 오늘 날짜 선택되게
-  // useEffect(() => {
-  //   handleDateChange();
-  // }, []);
-
   useEffect(() => {
     console.log(dateToString(date), startTime, endTime);
   }, [date, startTime, endTime]);
@@ -50,7 +45,7 @@ export function MyDatePicker({
         locale={ko}
         selected={date}
         onChange={(date) => {
-          onChangeDate(date);
+          onChangeDate(dateToString(date));
         }}
         minDate={new Date()} // 이전 날짜는 선택 불가
         inline

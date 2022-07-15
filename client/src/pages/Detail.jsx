@@ -57,8 +57,30 @@ export default function Detail() {
 
   const navigate = useNavigate();
 
-  // 수용 가능 인원보다 예약 인원이 많으면 예약 불가
-  function makeReservation(e) {
+  // api 데이터 받아오는 함수
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const req = await axios.get("/dummyDetail.json");
+        const space = await req.data.space;
+        setData(space);
+        console.log(space);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getData();
+  }, []);
+
+  // 받아온 데이터를 각각 변수에 저장
+  const title = data.title;
+  const hashTag = data.hashTag;
+  const contents = data.contents;
+  const rooms = data.rooms;
+  const images = data.images;
+
+  // 예약 인원이 수용 가능 인원에 충족하는지 검사하는 함수
+  function checkPeople(e) {
     e.preventDefault();
     Number(acceptPeople.current) !== 0 &&
     Number(inputPeople.current) !== 0 &&
@@ -67,27 +89,27 @@ export default function Detail() {
       : (possible.current = false);
   }
 
-  // date 선택시 적용 함수
+  // date 선택시 적용하는 DatePicker 함수
   function onChangeDate(date) {
     setDate(date);
     handleDateChange(date);
   }
 
-  // startTime 선택시 적용 함수
+  // startTime 선택시 적용하는 DatePicker 함수
   function onClickStartTime(time) {
     setStartTime(Number(time));
     handleTimeChange(Number(time), endTime);
     Number(time) < endTime ? setLessTime(false) : setLessTime(true);
   }
 
-  // endTime 선택시 적용 함수
+  // endTime 선택시 적용하는 DatePicker 함수
   function onClickEndTime(time) {
     setEndTime(Number(time));
     handleTimeChange(startTime, Number(time));
     startTime < Number(time) ? setLessTime(false) : setLessTime(true);
   }
 
-  // 예약 시작 시간과 종료 시간 사이에 이미 예약된 시간이 있을 시 처리하는 함수
+  // 예약 시작 시간과 종료 시간 사이에 이미 예약된 시간이 있을 시 주의를 주는 함수
   const handleTimeChange = (startTime, endTime) => {
     let disableList = document.querySelectorAll(".disable");
 
@@ -104,26 +126,6 @@ export default function Detail() {
     const filtering = newBookTime.filter((x) => booked.includes(x));
     filtering.length > 0 ? setOverlap(true) : setOverlap(false);
   };
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const req = await axios.get("/dummyDetail.json");
-        const space = await req.data.space;
-        setData(space);
-        console.log(space);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getData();
-  }, []);
-
-  const title = data.title;
-  const hashTag = data.hashTag;
-  const contents = data.contents;
-  const rooms = data.rooms;
-  const images = data.images;
 
   useEffect(() => {
     inputPeople.current = people;
@@ -170,7 +172,7 @@ export default function Detail() {
                     if (e.target.value !== "" || e.target.value !== 0) {
                       setPeople(e.target.value);
                       inputPeople.current = e.target.value;
-                      makeReservation(e);
+                      checkPeople(e);
                     }
                   }}
                 />
@@ -185,6 +187,9 @@ export default function Detail() {
                 navigate("/book", {
                   state: {
                     people: people,
+                    date: date,
+                    startTime: startTime,
+                    endTime: endTime,
                   },
                 })
               }

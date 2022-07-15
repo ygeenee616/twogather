@@ -10,13 +10,16 @@ export default function Book() {
   const location = useLocation();
 
   const people = location.state.people;
+  const date = location.state.date;
+  const startTime = location.state.startTime;
+  const endTime = location.state.endTime;
 
-  console.log("예약인원" + people);
+  console.log("예약내용" + date, startTime, endTime);
   return (
     <FullContainer>
       <GetBookerInfo />
       <HostInfo />
-      <BookInfo />
+      <BookInfo people={people} startTime={startTime} endTime={endTime} />
       <Button>예약 완료</Button>
       <ToTop />
     </FullContainer>
