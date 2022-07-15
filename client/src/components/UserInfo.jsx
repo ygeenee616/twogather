@@ -1,18 +1,34 @@
+import { useState, useEffect, useRef } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import styled from "styled-components";
 import UserBlockButtonBox from "./UserBlockButtonBox";
+import * as api from "../api";
 export default function UserInfo({
   userName,
   commentNum,
   reportedNum,
   viewInfo,
+  userId,
 }) {
+  const [userInfo, setUserInfo] = useState("");
+
+  useEffect(() => {
+    async function getData() {
+      const response = await api.get(`api/users/${userId}`);
+      setUserInfo(response.data.data);
+    }
+    getData();
+  }, [userId]);
+
   return (
     <UserProfile viewInfo={viewInfo}>
       <FaUserCircle size={"40%"} color="lightgrey"></FaUserCircle>
-      <UserName>{userName}</UserName>
+      <UserName>{userInfo.name ? userInfo.name : "유저2"}</UserName>
       <UserBlockButtonBox></UserBlockButtonBox>
-      <div className="userName">댓글 횟수 : {commentNum}</div>
+
+      <div className="userName">
+        예약횟수 : {userInfo.reserbations ? userInfo.reserbations.length : 0}회
+      </div>
       <div className="userInfo">신고 횟수 : {reportedNum}</div>
     </UserProfile>
   );
