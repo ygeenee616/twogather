@@ -16,7 +16,7 @@ export class Space {
   @ApiProperty({ description: 'primary key Id' })
   id: number;
 
-  @Column({ type: 'varchar', length: 45, nullable: false, unique: true })
+  @Column({ type: 'varchar', length: 45, nullable: false })
   @ApiProperty({ description: 'space의 카테고리' })
   type: string;
 

@@ -6,7 +6,6 @@ import {
   Param,
   Delete,
   UseGuards,
-  Req,
   Patch,
 } from '@nestjs/common';
 import { SpacesService } from './spaces.service';
@@ -16,49 +15,48 @@ import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { SpaceResExample } from './space.swagger.example';
 import { GetUser } from 'src/custom.decorator';
+import { User } from 'src/users/entities/users.entity';
 const spaceResExample = new SpaceResExample();
 
 @Controller('api/spaces')
-@ApiTags('space API')
-@ApiHeader({
-  name: 'authorization',
-  description: 'Auth token',
-}) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
+@ApiTags('공간 API')
 @Controller('api/spaces')
 export class SpacesController {
   constructor(private readonly spacesService: SpacesService) {}
 
   // space 등록
   @Post()
+  @UseGuards(AuthGuard())
   @ApiOperation({
-    summary: 'space 생성 API',
-    description: 'space를 생성한다.',
+    summary: '공간 등록 API',
+    description: '새로운 공간 등록(로그인한 호스트 유저만 가능).',
   })
   @ApiResponse({
     status: 201,
-    description: '생성된 space',
+    description: '새로운 공간 등록 완료',
     schema: {
       example: spaceResExample.create,
     },
   })
-  @UseGuards(AuthGuard())
   async create(@GetUser() user, @Body() createSpaceDto: CreateSpaceDto) {
     const newSpace = await this.spacesService.create(createSpaceDto, user);
     return {
       status: 201,
-      description: 'space 생성 완료',
+      description: '새로운 공간 등록 완료',
       success: true,
+      data: newSpace,
     };
   }
 
+  // 전체 공간 목록 조회
   @Get()
   @ApiOperation({
-    summary: 'space findAll API',
-    description: '전체 space 조회',
+    summary: '전체 공간 목록 조회 API',
+    description: '전체 공간 목록 조회(공간 목록 전체보기 페이지)',
   })
   @ApiResponse({
     status: 200,
-    description: '전체 space 조회',
+    description: '전체 공간 목록 조회',
     schema: {
       example: spaceResExample.findAll,
     },
@@ -67,66 +65,95 @@ export class SpacesController {
     const spaces = await this.spacesService.findAll();
     return {
       status: 200,
-      description: '전체 space 조회',
+      description: '전체 공간 목록 조회 성공',
+      success: true,
+      data: spaces,
+    };
+  }
+  // type으로 공간 목록 조회
+  @Get('/type/:type')
+  @ApiOperation({
+    summary: '공간 유형으로 공간 목록 조회 API',
+    description:
+      '공간 유형으로 공간 목록 조회(공간 목록 전체보기 페이지, 타입별 조회 성공)',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '유형별 공간 목록 조회',
+    schema: {
+      example: spaceResExample.findByType,
+    },
+  })
+  async findByType(@Param('type') type: string) {
+    console.log(type);
+    const spaces = await this.spacesService.findByType(type);
+    return {
+      status: 200,
+      description:
+        '공간 유형으로 공간 목록 조회(공간 목록 전체보기 페이지, 타입별 조회 성공)',
+      success: true,
       data: spaces,
     };
   }
 
-  // 로그인 한 사람의 생성한 모든 space 조회
-  @Get('/lists')
+  // 내 공간 목록 조회
+  @Get('/host')
   @ApiOperation({
-    summary: '내가 생성한 space 목록조회 API',
-    description: '내가 생성한 모든 space 조회',
+    summary: '내가 생성한 공간 목록 조회 API',
+    description: '내가 생성한 공간 목록 조회',
   })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
+  }) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
   @ApiResponse({
     status: 200,
-    description: '내가 생성한 모든 space 조회',
+    description: '내가 생성한 공간 목록 조회 성공',
     schema: {
-      example: spaceResExample.getMySpaces,
+      example: spaceResExample.findMySpaces,
     },
   })
   @UseGuards(AuthGuard())
-  async getMySpaces(@Req() req) {
-    const spaces = await this.spacesService.findOneByUserId(req.user.id);
+  async findMySpaces(@GetUser() user: User) {
+    console.log(user.id);
+    const spaces = await this.spacesService.findOneByUser(user.id);
     return {
       status: 200,
       success: true,
-      message: '내가 생성한 모든 space 조회 성공',
+      description: '내가 생성한 공간 목록 조회 성공',
       data: spaces,
     };
   }
 
-  // 상세보기 눌렀을 때?
+  // 공간 ID로 조회(공간 상세보기)
   @Get(':id')
   @ApiOperation({
-    summary: '특정 space 찾는 API',
-    description: 'space ID로 특정 space 불러온다.',
+    summary: '공간 ID로 조회 API',
+    description: '공간 ID로 조회하기',
   })
   @ApiResponse({
     status: 200,
-    description: '특정 space',
-    schema: {
-      example: spaceResExample.findOne,
-    },
+    description: 'ID로 공간 조회 성공',
+    schema: {},
   })
   async findOne(@Param('id') id: number) {
     const space = await this.spacesService.findOne(+id);
     return {
       status: 200,
       success: true,
-      message: '특정 space 조회 성공',
+      description: 'ID로 공간 조회 성공',
       data: space,
     };
   }
-
+  // ID로 특정 공간 정보 수정
   @Patch(':id')
   @ApiOperation({
-    summary: '특정 space 수정 API',
-    description: '특정 space 정보 수정',
+    summary: 'ID로 특정 공간 정보 수정 API',
+    description: 'ID로 특정 공간 정보 수정',
   })
   @ApiResponse({
     status: 201,
-    description: '특정 space 정보 수정 성공',
+    description: 'ID로 특정 공간 정보 수정 성공',
     schema: {
       example: spaceResExample.updateSpace,
     },
@@ -135,32 +162,97 @@ export class SpacesController {
     @Param('id') id: number,
     @Body() updateSpaceDto: UpdateSpaceDto,
   ) {
-    const updatedSpace = await this.spacesService.update(+id, updateSpaceDto);
+    const updatedSpace = await this.spacesService.update(id, updateSpaceDto);
 
     return {
       status: 201,
-      description: 'space 정보 수정 성공',
-      data: updatedSpace,
+      description: 'ID로 특정 공간 정보 수정',
+      success: true,
+      data: { affected: updatedSpace },
     };
   }
 
+  // 내 공간 정보 수정
+  @Patch('host/:id')
+  @UseGuards(AuthGuard())
+  @ApiOperation({
+    summary: '내 공간 정보 수정 API',
+    description: '내 공간 정보 수정',
+  })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
+  }) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
+  @ApiResponse({
+    status: 201,
+    description: '내 공간 정보 수정 성공',
+    schema: {
+      example: spaceResExample.updateMySpace,
+    },
+  })
+  async updateMySpace(
+    @GetUser() user: User,
+    @Param('id') id,
+    @Body() updateSpaceDto: UpdateSpaceDto,
+  ) {
+    const updatedSpace = await this.spacesService.updateMySpace(
+      user.id,
+      id,
+      updateSpaceDto,
+    );
+    return {
+      status: 201,
+      description: '내 공간 정보 수정 성공',
+      success: true,
+      data: { affected: updatedSpace },
+    };
+  }
+
+  // 특정 공간 삭제
   @Delete(':id')
   @ApiOperation({
-    summary: '특정 space 삭제 API',
-    description: 'space ID로 특정 space를 삭제한다.',
+    summary: '특정 공간 삭제 API',
+    description: 'ID로 특정 공간을 삭제한다.',
   })
   @ApiResponse({
     status: 201,
-    description: '특정 space 삭제 성공',
+    description: 'ID로 특정 공간 삭제 성공',
     schema: {
       example: spaceResExample.removeSpace,
     },
   })
   async removeSpace(@Param('id') id: number) {
-    await this.spacesService.remove(+id);
+    await this.spacesService.remove(id);
     return {
       status: 201,
-      description: '특정 space 삭제 성공',
+      description: 'ID로 특정 공간 삭제 성공',
+      success: true,
+    };
+  }
+
+  // 내 공간 삭제
+  @Delete('host/:id')
+  @UseGuards(AuthGuard())
+  @ApiOperation({
+    summary: '내 공간 삭제 API',
+    description: 'ID로 특정 공간을 삭제한다.',
+  })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
+  }) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
+  @ApiResponse({
+    status: 201,
+    description: '내 공간 삭제 성공',
+    schema: {
+      example: spaceResExample.removeMySpace,
+    },
+  })
+  async removeMySpace(@GetUser() user: User, @Param('id') id: number) {
+    await this.spacesService.remove(id);
+    return {
+      status: 201,
+      description: '내 공간 삭제 성공',
       success: true,
     };
   }
