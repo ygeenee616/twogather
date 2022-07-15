@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import {  useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { Container, ContentsDiv, FormDiv, FormTitle, UserBtn, Line } from "../components/register/UserForm";
+import { Container, ContentsDiv, FormDiv, PageTitle, UserBtn, Line } from "../components/register/UserForm";
 import Register from "../components/register/Register";
 
 function RegisterForm() {
@@ -13,16 +13,10 @@ function RegisterForm() {
 
   return (
     <Container>
-      
       <FormDiv>
-        <FormTitle>회원가입</FormTitle>
         <ContentsDiv>
-            <div>
-              <UserBtn value="USER" onClick={()=> navigate('/register/user')} clicked={params.userType === 'user'}>
-                USER
-              </UserBtn>
-              <UserBtn value="HOST" onClick={()=> navigate('/register/host')} clicked={params.userType === 'host'}>HOST</UserBtn>
-            </div>
+          <PageTitle>회원가입</PageTitle>
+
           <SocialRegisterDiv>
             <SocialRegisterBtn className="kakao">
               <img src="/images/kakaoLogo.png" alt="KAKAO" />
@@ -80,8 +74,6 @@ const SocialRegisterBtn = styled.button`
     margin: 0.4rem;
   }
 `;
-
-
 
 
 

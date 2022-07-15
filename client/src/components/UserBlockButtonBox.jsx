@@ -18,7 +18,7 @@ export default function UserBlockButtonBox() {
 
 const ButtonBox = styled.div`
   display: flex;
-  margin: 0 auto;
+  margin: 5% auto;
   justify-content: center;
   align-items: center;
   padding: 5px;

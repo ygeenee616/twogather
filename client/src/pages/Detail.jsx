@@ -16,7 +16,9 @@ function changeTab(props) {
 
 export default function Detail() {
   const [data, setData] = useState(0);
-  const [person, setPerson] = useState(0);
+  const [people, setPeople] = useState(0);
+  const currPeople = useRef(0);
+  const [possible, setPossible] = useState();
 
   useEffect(() => {
     const getData = async () => {
@@ -37,6 +39,14 @@ export default function Detail() {
   const contents = data.contents;
   const rooms = data.rooms;
   const images = data.images;
+
+  useEffect(() => {
+    console.log(people);
+    // Number(currPeople.current) >= Number(people)
+    //   ? setPossible(true)
+    //   : setPossible(false);
+    // console.log(possible);
+  }, [people]);
 
   return (
     data && (
@@ -107,18 +117,22 @@ export default function Detail() {
           </LeftContainer>
 
           <RightContainer>
-            <Dropbox rooms={rooms} />
+            <Dropbox rooms={rooms} currPeople={currPeople} />
             <MyDatePicker />
-
             <Personnel>
               예약 인원:
               <input
                 type="number"
-                value={person}
-                onChange={(e) => setPerson(e.target.value)}
+                value={people}
+                onChange={(e) => {
+                  setPeople(e.target.value);
+                }}
               />
               명
             </Personnel>
+            <p className="OverPeople" possible={possible}>
+              * 예약 인원이 수용 가능 인원을 초과하였습니다.
+            </p>
             <Button>
               <Link to="/book" className="move">
                 예약하기
@@ -235,6 +249,12 @@ const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  & .OverPeople {
+    font-size: 0.7rem;
+    color: red;
+    ${({ possible }) => (possible ? `display: block;` : `display: none;`)};
+  }
 `;
 
 const Personnel = styled.div`
@@ -273,6 +293,7 @@ const Button = styled.button`
   border-radius: 10px;
   border: none;
   background: #8daef2;
+  transition: all 0.3s;
 
   &:hover {
     box-shadow: 2px 2px 5px -1px #a6a9b6;
