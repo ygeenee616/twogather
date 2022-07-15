@@ -50,23 +50,22 @@ const Notice = () => {
 
 const Login = () => {
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate("/login");
+  const handleLoginClick = () => {
+    if(localStorage.getItem('userToken')===''){
+      navigate("/login");
+    }
+    else {
+      localStorage.setItem('userToken', '');
+      navigate("/");
+    }
   };
   return (
-    <TextWrap onClick={handleClick}>
-      <div>로그인</div>
+    <TextWrap onClick={handleLoginClick}>
+      <div>{!localStorage.getItem('userToken')===''?`로그아웃`:'로그인'}</div>
     </TextWrap>
   );
 };
 
-const Logout = () => {
-  return (
-    <TextWrap>
-      <div>로그아웃</div>
-    </TextWrap>
-  );
-};
 
 const TextWrap = styled.div`
   margin-left: 2vw;
