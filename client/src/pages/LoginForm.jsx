@@ -37,7 +37,7 @@ function LoginForm() {
       try {
         const data = {email, password};
         // "/apiusers/sign-in" 엔드포인트로 post요청함.
-        const res = await Api.post("/api/users/sign-in", data);
+        const res = await Api.post("api/users/sign-in", data);
 
         // JWT 토큰은 유저 정보의 token임.
         const jwtToken = res.accessToken;
@@ -101,7 +101,7 @@ function LoginForm() {
             <tr>
               <QuestionTD>회원이 아니신가요?</QuestionTD>
               <LinkTD>
-                <a href="/register/user">
+                <a href="/register">
                   회원가입
                 </a>
               </LinkTD>
