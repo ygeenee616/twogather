@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Pagination from "../components/Pagination";
 import ProductCard from "../components/ProductCard";
+import CategorySelector from "../components/list/CategorySelector";
+import CategoryModal from "../components/list/CategoryModal";
+import DateSelector from "../components/list/DateSelector";
+import DateModal from "../components/list/DateModal";
+import SelecotrResetBtn from "../components/list/SelectorResetBtn";
 import exImg1 from "../assets/images/ex1.png";
 import exImg2 from "../assets/images/ex2.png";
 
@@ -63,37 +69,57 @@ const renderData = ({ offset, limit }) => {
     ));
 };
 
-const Selector = ({ about, clickEvent }) => {
-  return (
-    <SelectButton onClick={clickEvent}>
-      <About>{about}</About>
-    </SelectButton>
-  );
-};
-
 export default function ProductList() {
   const [page, setPage] = useState(1);
+  const [categoryModalDisplay, setcategoryModalDisplay] = useState("none");
+  const [DateModalDisplay, setDateModalDisplay] = useState("none");
   const limit = 12;
   const offset = (page - 1) * limit;
-  return (
-    <div>
-      <BottomWrap>
-        <SelectorWrap>
-          <Selector about="카테고리" />
-          <Selector about="지역" />
-          <Selector about="날짜" />
-          <Selector about="필터 초기화" />
-        </SelectorWrap>
-        <ProductWrap>{renderData({ offset, limit })}</ProductWrap>
+  const { searchInput } = useParams();
 
-        <Pagination
-          total={exData.length}
-          limit={limit}
-          page={page}
-          setPage={setPage}
-        />
-      </BottomWrap>
-    </div>
+  //selector toggle 하나씩만되도록
+  const handelClickSelector = (e) => {
+    const clickedClass = e.target.className.split(" ")[2];
+    console.log(clickedClass);
+    if (clickedClass === "Category") {
+      categoryModalDisplay === "flex"
+        ? setcategoryModalDisplay("none")
+        : setcategoryModalDisplay("flex");
+      setDateModalDisplay("none");
+    } else if (clickedClass === "Date") {
+      DateModalDisplay === "flex"
+        ? setDateModalDisplay("none")
+        : setDateModalDisplay("flex");
+      setcategoryModalDisplay("none");
+    }
+  };
+
+  return (
+    <BottomWrap>
+      <SelectorWrap>
+        <CategoryWrap>
+          <div onClick={handelClickSelector}>
+            <CategorySelector category={searchInput} />
+          </div>
+          <CategoryModal display={categoryModalDisplay} />
+        </CategoryWrap>
+        <DateWrap>
+          <div onClick={handelClickSelector}>
+            <DateSelector />
+          </div>
+          <DateModal display={DateModalDisplay} />
+        </DateWrap>
+        <SelecotrResetBtn />
+      </SelectorWrap>
+      <ProductWrap>{renderData({ offset, limit })}</ProductWrap>
+
+      <Pagination
+        total={exData.length}
+        limit={limit}
+        page={page}
+        setPage={setPage}
+      />
+    </BottomWrap>
   );
 }
 
@@ -108,18 +134,9 @@ const ProductWrap = styled.div`
   gap: 2%;
 `;
 
-const SelectButton = styled.button`
-  all: unset;
-  width: 13vw;
-  height: 5vh;
-  margin: 1vh 0 6vh 0;
-  border: 1px solid #8daef2;
-  border-radius: 10px;
-  cursor: pointer;
-  & + & {
-    margin-left: 1vw;
-  }
-  &:nth-child(4) {
+const SelectorWrap = styled.div`
+  display: flex;
+  button:nth-child(3) {
     width: 9vw;
     margin-left: auto;
     div {
@@ -128,10 +145,10 @@ const SelectButton = styled.button`
     }
   }
 `;
-const SelectorWrap = styled.div`
+
+const CategoryWrap = styled.div`
   display: flex;
+  flex-direction: column;
 `;
-const About = styled.div`
-  color: #8daef2;
-  margin-left: 10%;
-`;
+
+const DateWrap = styled(CategoryWrap)``;

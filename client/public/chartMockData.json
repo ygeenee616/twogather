@@ -1,0 +1,44 @@
+[
+  {
+    "roomName": "\"파티파티룸\"",
+    "date": "2015-10-04T15:00:00.000Z",
+    "count": "5",
+    "beforeCount": "30"
+  },
+  {
+    "roomName": "\"미지미지룸\"",
+    "date": "2015-10-04T15:00:00.000Z",
+    "count": "14",
+    "beforeCount": "30"
+  },
+  {
+    "roomName": "\"태훈태훈룸\"",
+    "date": "2015-10-04T15:00:00.000Z",
+    "count": "14",
+    "beforeCount": "30"
+  },
+  {
+    "roomName": "\"연진연진룸\"",
+    "date": "2015-10-04T15:00:00.000Z",
+    "count": "12",
+    "beforeCount": "10"
+  },
+  {
+    "roomName": "\"해란해란룸\"",
+    "date": "2015-10-04T15:00:00.000Z",
+    "count": "8",
+    "beforeCount": "10"
+  },
+  {
+    "roomName": "\"종원종원룸\"",
+    "date": "2015-10-04T15:00:00.000Z",
+    "count": "50",
+    "beforeCount": "50"
+  },
+  {
+    "roomName": "\"테트리스\"",
+    "date": "2015-10-04T15:00:00.000Z",
+    "count": "100",
+    "beforeCount": "30"
+  }
+]
