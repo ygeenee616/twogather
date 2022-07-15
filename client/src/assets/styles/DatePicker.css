@@ -66,3 +66,7 @@
 .bookInfo {
   text-align: center;
 }
+
+.react-datepicker__navigation-icon--next {
+  margin: 0 20px 0 auto;
+}
