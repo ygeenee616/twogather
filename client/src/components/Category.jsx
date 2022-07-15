@@ -36,7 +36,7 @@ const ButtonWrap = styled.button`
     transition: all 0.6s;
   }
   img {
-    width: 5vw;
+    width: 60%;
     vertical-align: middle;
   }
   .categoryTitle {
