@@ -10,7 +10,6 @@ function RegisterForm() {
   const params = useParams();
 
 
-
   return (
     <Container>
       <FormDiv>

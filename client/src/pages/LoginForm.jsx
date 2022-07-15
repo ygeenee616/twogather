@@ -101,7 +101,7 @@ function LoginForm() {
             <tr>
               <QuestionTD>회원이 아니신가요?</QuestionTD>
               <LinkTD>
-                <a href="/register/user">
+                <a href="/register">
                   회원가입
                 </a>
               </LinkTD>
