@@ -3,11 +3,11 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   UseGuards,
   Req,
+  Patch,
 } from '@nestjs/common';
 import { SpacesService } from './spaces.service';
 import { CreateSpaceDto } from './dto/create-space.dto';
@@ -16,6 +16,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
 import { Space } from './entities/spaces.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { SpaceResExample } from './space.swagger.example';
+import { GetUser } from 'src/custom.decorator';
 const spaceResExample = new SpaceResExample();
 
 @Controller('api/spaces')
@@ -24,6 +25,7 @@ const spaceResExample = new SpaceResExample();
   name: 'authorization',
   description: 'Auth token',
 }) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
+@Controller('api/spaces')
 export class SpacesController {
   constructor(private readonly spacesService: SpacesService) {}
 
@@ -40,8 +42,9 @@ export class SpacesController {
       example: spaceResExample.create,
     },
   })
-  async create(@Body() createSpaceDto: CreateSpaceDto) {
-    const newSpace = await this.spacesService.create(createSpaceDto);
+  @UseGuards(AuthGuard())
+  async create(@GetUser() user, @Body() createSpaceDto: CreateSpaceDto) {
+    const newSpace = await this.spacesService.create(createSpaceDto, user);
     return {
       status: 201,
       description: 'space 생성 완료',

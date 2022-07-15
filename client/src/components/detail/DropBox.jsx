@@ -3,38 +3,6 @@ import styled from "styled-components";
 import { HiChevronDown } from "react-icons/hi";
 import { FcHome, FcConferenceCall } from "react-icons/fc";
 
-Dropbox.defaultProps = {
-  rooms: [
-    {
-      id: "room1",
-      title: "ROOM1",
-      pay: 2000,
-      image:
-        "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165666149_3349f35a71f72e769413ec0259916966.jpeg?type=m&w=900&h=900&autorotate=true&quality=90",
-      roomType: "회의실",
-      people: 3,
-    },
-    {
-      id: "room2",
-      title: "ROOM2",
-      pay: 2500,
-      image:
-        "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165666153_16799d2af43e00dd7b3826057da2dc32.jpeg?type=m&w=900&h=900&autorotate=true&quality=90",
-      roomType: "회의실",
-      people: 4,
-    },
-    {
-      id: "room3",
-      title: "ROOM3",
-      pay: 3100,
-      image:
-        "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165666165_088b1880c43ad29ed310de168672f70e.jpeg?type=m&w=900&h=900&autorotate=true&quality=90",
-      roomType: "회의실",
-      people: 6,
-    },
-  ],
-};
-
 export default function Dropbox({ rooms }) {
   return (
     <RoomList>

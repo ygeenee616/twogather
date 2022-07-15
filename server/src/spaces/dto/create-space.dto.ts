@@ -1,24 +1,24 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
-import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
 
 export class CreateSpaceDto {
   @IsString()
-  @ApiProperty({ description: 'space 이름' })
+  @ApiProperty({ description: '공간 이름' })
   readonly name: string;
 
   @IsString()
-  @ApiProperty({ description: 'space 주소' })
+  @ApiProperty({ description: '공간 주소' })
   readonly address: string;
 
   @IsString()
-  @ApiProperty({ description: 'space 카테고리' })
+  @ApiProperty({ description: '공간 유형' })
   readonly type: string;
 
   @IsString()
-  @ApiProperty({ description: '공지사항' })
+  @ApiProperty({ description: '공간 유의사항' })
   readonly notice: string;
 
   @IsString()
-  @ApiProperty({ description: 'space 소개' })
+  @ApiProperty({ description: '공간 소개' })
   readonly intro: string;
 }

@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/users/entities/users.entity';
 import { Repository } from 'typeorm';
 import { CreateSpaceDto } from './dto/create-space.dto';
 import { UpdateSpaceDto } from './dto/update-space.dto';
@@ -12,10 +13,13 @@ export class SpacesService {
     private spacesRepository: Repository<Space>,
   ) {}
 
-  async create(spaceData: CreateSpaceDto): Promise<Space> {
+  async create(spaceData: CreateSpaceDto, user: User): Promise<Space> {
     try {
-      const newSpaces: Space = await this.spacesRepository.save(spaceData);
-      return newSpaces;
+      const newSpace = {
+        ...spaceData,
+        user,
+      };
+      return await this.spacesRepository.save(newSpace);
     } catch (error) {
       throw error;
     }
@@ -23,19 +27,51 @@ export class SpacesService {
 
   // 전체 space 조회
   async findAll(): Promise<Space[]> {
-    try {
-      return this.spacesRepository.find();
-    } catch (error) {
-      throw error;
-    }
+    return await this.spacesRepository.find({
+      relations: {
+        user: true,
+      },
+      order: {
+        id: 'ASC',
+      },
+      cache: true,
+    });
   }
 
-  // space의 id로 space 조회
+  // id로 공간 조회
   async findOne(id: number): Promise<Space> {
-    try {
-      return this.spacesRepository.findOneBy({
+    return this.spacesRepository.findOne({
+      where: {
         id,
-      });
+      },
+      relations: {
+        user: true,
+      },
+      cache: true,
+    });
+  }
+
+  async findByType(type: string): Promise<Space[]> {
+    return this.spacesRepository.find({
+      where: {
+        type,
+      },
+      relations: {
+        user: true,
+      },
+      cache: true,
+    });
+  }
+
+  // 공간 삭제
+  async remove(id: number): Promise<void> {
+    try {
+      const deletedSpace = await this.spacesRepository.delete(id);
+      if (!deletedSpace.affected) {
+        throw new NotFoundException({
+          description: '삭제할 space가 없습니다.',
+        });
+      }
     } catch (error) {
       throw error;
     }
@@ -48,33 +84,6 @@ export class SpacesService {
       return this.spacesRepository.findBy({
         user,
       });
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  // space 수정
-  async update(id: number, UpdateSpaceDto: UpdateSpaceDto) {
-    try {
-      const updatedSpace = await this.spacesRepository.update(
-        id,
-        UpdateSpaceDto,
-      );
-      return updatedSpace;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  // space 삭제
-  async remove(id: number): Promise<void> {
-    try {
-      const deletedSpace = await this.spacesRepository.delete(id);
-      if (!deletedSpace.affected) {
-        throw new NotFoundException({
-          description: '삭제할 space가 없습니다.',
-        });
-      }
     } catch (error) {
       throw error;
     }

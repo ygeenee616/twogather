@@ -1,4 +1,3 @@
-import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { User } from 'src/users/entities/users.entity';
 import {
   Column,
@@ -6,7 +5,6 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
@@ -38,12 +36,11 @@ export class Space {
   @ApiProperty({ description: 'space 소개' })
   intro: string;
 
-  @ManyToOne(() => User, (user) => user.id, {
+  @ManyToOne(() => User, (user) => user.spaces, {
     onDelete: 'CASCADE',
     eager: false,
   })
-  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
-  // @ApiProperty({ description: 'FK. user의 Id' })
+  @JoinColumn({ name: 'hostId', referencedColumnName: 'id' })
   user: User;
 
   @OneToMany(() => Hashtag, (hashtag) => hashtag.space, { eager: true })

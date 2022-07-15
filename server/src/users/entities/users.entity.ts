@@ -68,6 +68,8 @@ export class User {
   })
   reservations: Reservation[];
 
-  @OneToMany((type) => Space, (space) => space.user, { eager: true })
+  @OneToMany((type) => Space, (spaces) => spaces.user, {
+    eager: true,
+  })
   spaces: Space[];
 }
