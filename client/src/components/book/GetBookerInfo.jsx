@@ -12,6 +12,7 @@ export default function GetBookerInfo({
   onChangeEmail,
   onChangePurpose,
   onChangeRequest,
+  checkPossible,
 }) {
   return (
     <Container>
@@ -28,7 +29,10 @@ export default function GetBookerInfo({
             type="text"
             id="inputName"
             placeholder="홍길동"
-            onChange={(e) => onChangeName(e.target.value)}
+            onChange={(e) => {
+              onChangeName(e.target.value);
+              checkPossible(e);
+            }}
           ></Input>
         </Content>
         <Content>
@@ -39,7 +43,10 @@ export default function GetBookerInfo({
             type="number"
             id="inputPhone"
             placeholder="숫자만 입력. ex)01012345678"
-            onChange={(e) => onChangePhone(e.target.value)}
+            onChange={(e) => {
+              onChangePhone(e.target.value);
+              checkPossible(e);
+            }}
           ></Input>
         </Content>
         <Content>
@@ -50,7 +57,10 @@ export default function GetBookerInfo({
             type="text"
             id="inputEmail"
             placeholder="abc@naver.com"
-            onChange={(e) => onChangeEmail(e.target.value)}
+            onChange={(e) => {
+              onChangeEmail(e.target.value);
+              checkPossible(e);
+            }}
           ></Input>
         </Content>
         <Content>
