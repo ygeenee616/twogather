@@ -203,7 +203,7 @@ export default function Detail() {
                 />
                 명
               </InputPeople>
-              <p className="OverPeople">
+              <p className="overPeople">
                 * 예약 정보를 맞게 입력했는지 확인해주세요
               </p>
             </Personnel>
@@ -281,7 +281,7 @@ const RightContainer = styled.div`
 const Personnel = styled.div`
   width: 100%;
 
-  & .OverPeople {
+  & .overPeople {
     font-size: 0.8rem;
     color: red;
     ${({ possible }) => (possible ? `display: none;` : `display: block;`)};
