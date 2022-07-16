@@ -24,7 +24,7 @@ export default function Book() {
   const purpose = useRef("");
   const request = useRef("");
   // 예약 가능 여부
-  const possible = useRef(false);
+  const possible = useRef("");
 
   // 이름 입력 함수
   function onChangeName(e) {
@@ -57,10 +57,11 @@ export default function Book() {
     name.current !== "" && phone.current !== "" && email.current !== ""
       ? (possible.current = true)
       : (possible.current = false);
+    console.log(possible.current);
   }
 
   return (
-    <FullContainer possible={possible.current}>
+    <FullContainer>
       <GetBookerInfo
         name={name}
         phone={phone}
@@ -82,12 +83,7 @@ export default function Book() {
         startTime={startTime}
         endTime={endTime}
       />
-      <Button
-        possible={possible.current}
-        // onClick={() => possible.current && axios.post}
-      >
-        예약 완료
-      </Button>
+      <Button>예약 완료</Button>
       <ToTop />
     </FullContainer>
   );
@@ -114,18 +110,7 @@ const Button = styled.button`
   right: 0;
   transition: all 0.3s;
 
-  ${({ possible }) =>
-    possible
-      ? `
-      background: #8daef2;
-      transition: all 0.3s;
-      color: #fff;
-      &:hover {
-        box-shadow: 2px 2px 5px -1px #a6a9b6;
-      }
-      `
-      : `
-      background: #DFDFDE;
-      color: #fff;
-      `};
+  &:hover {
+    box-shadow: 2px 2px 5px -1px #a6a9b6;
+  }
 `;
