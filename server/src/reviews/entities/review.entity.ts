@@ -24,6 +24,6 @@ export class Review {
 
   @OneToOne(() => Reservation, (reservation) => reservation.review)
   @JoinColumn({ name: 'reservationId', referencedColumnName: 'id' })
-  @ApiProperty({ description: 'FK. 예약의 Id' })
+  @ApiProperty({ description: 'FK. 예약의 Id', type: () => Reservation })
   reservation: Reservation;
 }

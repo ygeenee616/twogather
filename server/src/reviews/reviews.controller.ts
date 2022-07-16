@@ -42,7 +42,7 @@ export class ReviewsController {
   })
   async create(
     @Body() createReviewDto: CreateReviewDto,
-    @Body() reservationId: number,
+    @Body('reservationId') reservationId: number,
   ) {
     const newReview = await this.reviewsService.create(
       createReviewDto,
