@@ -112,7 +112,8 @@ const BookBox = styled.div`
     font-size: 0.8rem;
     color: red;
 
-    display: ${({ possible }) => (possible ? "none" : "block")}
+    display: ${({ possible }) => (possible ? "none" : "block")};
+  }
 `;
 
 const Button = styled.button`
@@ -123,6 +124,7 @@ const Button = styled.button`
   background: #8daef2;
   transition: all 0.3s;
   color: #fff;
+
   &:hover {
     box-shadow: 2px 2px 5px -1px #a6a9b6;
   }
