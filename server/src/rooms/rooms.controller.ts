@@ -38,7 +38,10 @@ export class RoomsController {
       example: roomResExample.create,
     },
   })
-  async create(@Body() createRoomDto: CreateRoomDto, @Body() spaceId: number) {
+  async create(
+    @Body() createRoomDto: CreateRoomDto,
+    @Body('spaceId') spaceId: number,
+  ) {
     const newRoom = await this.roomsService.create(createRoomDto, spaceId);
     return {
       status: 201,
