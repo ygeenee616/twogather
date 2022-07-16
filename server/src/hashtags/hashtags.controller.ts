@@ -64,7 +64,7 @@ export class HashtagsController {
   @Delete(':id')
   @ApiOperation({
     summary: '특정 해시태그 삭제 API',
-    description: '해시태그의 ID로 특정 해시태그를 삭제한다.',
+    description: '해시태그의 ID로 특정 해시태그를 삭제한다.1',
   })
   @ApiResponse({ status: 200, description: '삭제된 해시태그', type: Hashtag })
   remove(@Param('id') id: string) {

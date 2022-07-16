@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/users.entity';
 import { Repository } from 'typeorm';
@@ -128,7 +124,7 @@ export class SpacesService {
         },
         UpdateSpaceDto,
       );
-      console.log(updateSpace);
+
       return updateSpace.affected === 1;
     } catch (error) {
       throw error;
