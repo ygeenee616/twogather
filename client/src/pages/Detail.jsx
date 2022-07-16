@@ -39,7 +39,7 @@ const handleDateChange = async (date) => {
 
 export default function Detail() {
   // api 데이터 state
-  const [data, setData] = useState(0);
+  const [data, setData] = useState("");
   // 선택한 룸
   const room = useRef({ id: "", title: "" });
   // 사용자 예약 인원 state
