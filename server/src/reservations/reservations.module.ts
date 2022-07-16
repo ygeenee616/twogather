@@ -10,7 +10,6 @@ import { Space } from 'src/spaces/entities/spaces.entity';
 import { PassportModule } from '@nestjs/passport';
 import { RoomsModule } from 'src/rooms/rooms.module';
 import { RoomsService } from 'src/rooms/rooms.service';
-
 @Module({
   imports: [
     TypeOrmModule.forFeature([Reservation, Space]),

@@ -5,7 +5,4 @@ export class CreateHashtagDto {
   @IsString()
   @ApiProperty({ description: '해시태그' })
   readonly tag: string;
-
-  @IsString()
-  readonly spaceId: string;
 }
