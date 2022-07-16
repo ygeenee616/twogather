@@ -58,7 +58,6 @@ export default function Book() {
     name !== "" && phone !== "" && email != ""
       ? (possible.current = true)
       : (possible.current = false);
-    console.log(possible.current);
   }
 
   return (
