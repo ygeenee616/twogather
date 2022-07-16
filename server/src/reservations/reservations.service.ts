@@ -1,5 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { RoomsService } from 'src/rooms/rooms.service';
+import { SpacesService } from 'src/spaces/spaces.service';
 import { User } from 'src/users/entities/users.entity';
 import { Repository } from 'typeorm';
 import { CreateReservationDto } from './dto/create-reservation.dto';
@@ -11,6 +13,8 @@ export class ReservationsService {
   constructor(
     @InjectRepository(Reservation)
     private readonly reservationRepository: Repository<Reservation>,
+    private roomsService: RoomsService,
+    private spaceService: SpacesService,
   ) {}
 
   async create(createReservationDto: CreateReservationDto, user: User) {
