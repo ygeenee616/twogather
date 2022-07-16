@@ -1,9 +1,7 @@
 import styled from "styled-components";
 
-
-function MyQnaComponent({qna}) {
-
-  const {space, nickname, question, questionDate, answer, replyDate} = qna;
+export const QnaComponent = ({ qna }) => {
+  const { space, question, questionDate, answer } = qna;
 
   const deleteBtnstyle = {
     display: "inline-block",
@@ -18,30 +16,40 @@ function MyQnaComponent({qna}) {
     <>
       <tr>
         <td>{space}</td>
-        <td style={{ textOverflow: "ellipsis" }}>
-          {question}
+        <td>
+          {question.length > 30 ? question.slice(0, 30) + `...` : question}
         </td>
         <td>{questionDate}</td>
         <td>
-          {answer ? '답변완료 ' : '답변대기중 '}
+          {answer ? "    답변 완료 " : "답변 대기중 "}
           <button style={deleteBtnstyle}>삭제</button>
         </td>
       </tr>
-      <QnaTR>
-        <td colspan="4">
-          <h2>Q. </h2> <p>{question}</p>
-          <h2>A. </h2> <p>{answer}</p>
-        </td>
-      </QnaTR>
     </>
   );
-}
+};
 
-const QnaTR = styled.tr`
-  span-size: 4;
-  text-align: left;
-  background-color: #D9D9D9;
-  td {padding: 0.5rem 2rem 1rem;}
-`;
+export const QnaDetailComponent = (qna) => {
+  const { question, questionDate, answer, answerDate } = qna;
 
-export default MyQnaComponent;
+  const trStyle = {
+    spanSize: 4,
+    textAlign: "left",
+    backgroundColor: "#D9D9D9",
+  };
+  const tdStyle = {
+    padding: "0.5rem 2rem 1rem",
+    width: "3rem",
+  };
+
+  return (
+    <>
+      <tr style={trStyle}>
+        <td colspan="4" style={tdStyle}>
+          <h2>Q. </h2> <span></span> <p>{question}</p>
+          <h2>A. </h2> <p>{answer}</p>
+        </td>
+      </tr>
+    </>
+  );
+};
