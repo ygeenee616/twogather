@@ -36,32 +36,39 @@ const HostPage = () => {
   );
 };
 
-const Notice = () => {
+
+const HeaderTag = ({name, target}) => {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("/notice");
+ 
+    navigate(target);
   };
   return (
     <TextWrap onClick={handleClick}>
-      <div>공지사항</div>
+      <div>{name}</div>
     </TextWrap>
   );
 };
 
-const Login = () => {
+
+const Login = ({setIsLogin}) => {
   const navigate = useNavigate();
   const handleLoginClick = () => {
-    if(localStorage.getItem('userToken')===''){
+    if(localStorage.getItem('userToken')===''){ // 토큰 없으면 login 창으로 이동
       navigate("/login");
+
     }
     else {
       localStorage.setItem('userToken', '');
       navigate("/");
     }
   };
+  if(localStorage.getItem('userToken')==='') setIsLogin(false);
+  else setIsLogin(true);
+
   return (
     <TextWrap onClick={handleLoginClick}>
-      <div>{!localStorage.getItem('userToken')===''?`로그아웃`:'로그인'}</div>
+      <div>{localStorage.getItem('userToken')===''?`로그인`:'로그아웃'}</div>
     </TextWrap>
   );
 };
@@ -122,13 +129,19 @@ const RightWrap = styled.div`
 `;
 
 export default function Header() {
+  const [isLogin, setIsLogin] = useState(false);
+  console.log(localStorage.getItem('userToken')!=='');
+
   return (
     <HeaderWrap>
       <Logo className="headerLogo" />
       <Search />
       <RightWrap>
-        <Notice />
-        <Login />
+        {isLogin ? <HeaderTag name="호스트등록하기" target="/addHost" /> : `` }
+        {isLogin ? <HeaderTag name="마이페이지" target="/mypage" /> : `` }
+        <HeaderTag name="공지사항" target="/notice" />
+        <Login className="login-out" setIsLogin={setIsLogin} />
+
       </RightWrap>
     </HeaderWrap>
   );

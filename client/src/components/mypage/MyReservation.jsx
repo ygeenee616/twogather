@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import ReservedRoom from "./ReservedRoom";
+import ReservedRoom from "./MyReservedRoom";
 import Pagination from "../Pagination";
 
 function MyReservation() {

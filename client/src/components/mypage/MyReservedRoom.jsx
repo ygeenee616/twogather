@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-function ReservedRoom() {
+function MyReservedRoom() {
   return (
     <RoomDiv>
       <InfoDiv>
@@ -71,4 +71,4 @@ const EditDiv =styled.div`
   }
 `
 
-export default ReservedRoom;
+export default MyReservedRoom;
