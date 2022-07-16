@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
 
-export default function CategorySelector({ category }) {
+export default function CategorySelector() {
   const nav = useNavigate();
   const { search } = window.location;
   const params = new URLSearchParams(search);
@@ -10,7 +10,7 @@ export default function CategorySelector({ category }) {
   const handelClickSortSelect = (order) => {
     params.set("order", order);
     const stringParam = params.toString();
-    nav(`/list/${category}?${stringParam}`);
+    nav(`/list?${stringParam}`);
   };
 
   return (

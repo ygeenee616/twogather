@@ -29,7 +29,7 @@ const QNAs = [
 ]
 
 
-function QnaComponent() {
+function MyQnaComponent() {
   const deleteBtnstyle = {
     display: "inline-block",
     height: "2rem",
@@ -72,4 +72,4 @@ const QnaTR = styled.tr`
   }
 `;
 
-export default QnaComponent;
+export default MyQnaComponent;

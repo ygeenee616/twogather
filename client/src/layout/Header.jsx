@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logoImg from "../assets/images/logo.png";
-import searchIcon from "../assets/images/searchIcon.png";
+import SearchBar from "../components/list/SearchBar";
 
 export const Logo = () => {
   const navigate = useNavigate();
@@ -12,19 +12,9 @@ export const Logo = () => {
   return (
     <LogoWrap onClick={handleClick}>
       <img className="logoImg" src={logoImg} alt="logo" />
-      <div className="logoTitle">TWOGATHER</div>
+      <div className="logoTitle">TWO</div>
+      <div className="logoTitle">GATHER</div>
     </LogoWrap>
-  );
-};
-
-const Search = () => {
-  return (
-    <SearchWrap>
-      <input className="searchInput" />
-      <button className="searchButton">
-        <img src={searchIcon} />
-      </button>
-    </SearchWrap>
   );
 };
 
@@ -36,36 +26,55 @@ const HostPage = () => {
   );
 };
 
-const Notice = () => {
+
+const HeaderTag = ({name, target}) => {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("/notice");
+ 
+    navigate(target);
   };
   return (
     <TextWrap onClick={handleClick}>
-      <div>공지사항</div>
+      <div>{name}</div>
     </TextWrap>
   );
 };
 
-const Login = () => {
+
+const Login = ({setIsLogin}) => {
   const navigate = useNavigate();
   const handleLoginClick = () => {
-    if(localStorage.getItem('userToken')===''){
+    if (localStorage.getItem("userToken") === "") {
       navigate("/login");
-    }
-    else {
-      localStorage.setItem('userToken', '');
+    } else {
+      localStorage.setItem("userToken", "");
       navigate("/");
     }
   };
+  if(localStorage.getItem('userToken')==='') setIsLogin(false);
+  else setIsLogin(true);
+
   return (
     <TextWrap onClick={handleLoginClick}>
-      <div>{!localStorage.getItem('userToken')===''?`로그아웃`:'로그인'}</div>
+      <div>
+        {!localStorage.getItem("userToken") === "" ? `로그아웃` : "로그인"}
+      </div>
     </TextWrap>
   );
 };
 
+export default function Header() {
+  return (
+    <HeaderWrap>
+      <Logo className="headerLogo" />
+      <SearchBar />
+      <RightWrap>
+        <Notice />
+        <Login />
+      </RightWrap>
+    </HeaderWrap>
+  );
+}
 
 const TextWrap = styled.div`
   margin-left: 2vw;
@@ -81,32 +90,20 @@ const LogoWrap = styled.div`
   display: flex;
   cursor: pointer;
   .logoImg {
+    margin: auto 1%;
     width: 2vw;
+    height: 2vw;
   }
   .logoTitle {
+    margin: auto 0;
+    font-weight: 600;
     font-size: 2vw;
   }
-`;
-
-const SearchWrap = styled.div`
-  display: flex;
-  width: 30vw;
-  margin: 0 1vw;
-  border: 2px solid #8daef2;
-  border-radius: 10px;
-  input {
-    all: unset;
-    margin: 0 1vw;
-    flex-grow: 1;
+  div: nth-child(2) {
+    color: #5155a6;
   }
-  button {
-    all: unset;
-    cursor: pointer;
-  }
-  button img {
-    width: 1.5vw;
-    margin: 0 0.5vw;
-    flex-shrink: 0;
+  div: nth-child(3) {
+    color: #8daef2;
   }
 `;
 
@@ -122,13 +119,19 @@ const RightWrap = styled.div`
 `;
 
 export default function Header() {
+  const [isLogin, setIsLogin] = useState(false);
+  console.log(localStorage.getItem('userToken')!=='');
+
   return (
     <HeaderWrap>
       <Logo className="headerLogo" />
       <Search />
       <RightWrap>
-        <Notice />
-        <Login />
+        {isLogin ? <HeaderTag name="호스트등록하기" target="/addHost" /> : `` }
+        {isLogin ? <HeaderTag name="마이페이지" target="/mypage" /> : `` }
+        <HeaderTag name="공지사항" target="/notice" />
+        <Login className="login-out" setIsLogin={setIsLogin} />
+
       </RightWrap>
     </HeaderWrap>
   );

@@ -39,7 +39,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
-            <Route path="/registerComplete" element={<RegisterComplete/>} />
+            <Route path="/registerComplete" element={<RegisterComplete />} />
             <Route path="/myPage" element={<MyPage />} />
             <Route path="/myPage/addReview" element={<AddReview />} />
             <Route path="/myPage/addQnA" element={<AddQnA />} />
@@ -63,7 +63,7 @@ function App() {
             <Route path="/host/spaceList" element={<HostSpaceList />} />
             {/* <Route path="/host/updateSpace" element={<UpdateSpace />} /> */}
 
-            <Route path="/list/:searchInput" element={<ProductList />} />
+            <Route path="/list" element={<ProductList />} />
             <Route path="/detail/:spaceId" element={<Detail />} />
             <Route path="/book" element={<Book />} />
 
