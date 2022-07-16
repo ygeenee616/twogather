@@ -45,6 +45,7 @@ const ProfileInfo = styled.table`
   tr {
     width: 100%;
     height: 2rem;
+    margin: 0.5rem;
   }
 
 `
@@ -53,7 +54,7 @@ const TagTD = styled.td`
   font-weight: bold;
   font-size: 0.8rem;
   color: #8daef2;
-  width:20%;
+  width: 8rem;
 `;
 
 const NicknameTD = styled.td`
