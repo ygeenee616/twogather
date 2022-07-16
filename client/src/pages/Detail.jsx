@@ -68,7 +68,6 @@ export default function Detail() {
         const req = await axios.get("/dummyDetail.json");
         const space = await req.data.space;
         setData(space);
-        console.log(space);
       } catch (err) {
         console.log(err);
       }
@@ -91,11 +90,10 @@ export default function Detail() {
       id: eId,
       title: eClass,
     };
-    console.log(room.current);
   }
 
   // 예약 정보를 제대로 입력했을 때만 예약 버튼을 활성화하는 함수
-  function checkPeople(e) {
+  function checkPossible(e) {
     e.preventDefault();
     Number(acceptPeople.current) !== 0 &&
     Number(refPeople.current) !== 0 &&
@@ -154,10 +152,6 @@ export default function Detail() {
     filtering.length > 0 ? setOverlap(true) : setOverlap(false);
   }
 
-  useEffect(() => {
-    refPeople.current = people;
-  }, [people]);
-
   return (
     data && (
       <FullContainer>
@@ -203,13 +197,15 @@ export default function Detail() {
                     if (e.target.value !== "" || e.target.value !== 0) {
                       setPeople(e.target.value);
                       refPeople.current = e.target.value;
-                      checkPeople(e);
+                      checkPossible(e);
                     }
                   }}
                 />
                 명
               </InputPeople>
-              <p className="OverPeople">* 예약 정보를 제대로 입력해주세요.</p>
+              <p className="OverPeople">
+                * 예약 정보를 맞게 입력했는지 확인해주세요
+              </p>
             </Personnel>
             <Button
               possible={possible.current}
