@@ -35,7 +35,6 @@ export class SpacesService {
       order: {
         id: 'DESC',
       },
-      cache: true,
     });
   }
 
@@ -69,7 +68,6 @@ export class SpacesService {
             id: hostId,
           },
         },
-        cache: true,
       });
     } catch (error) {
       throw error;
@@ -86,7 +84,6 @@ export class SpacesService {
         relations: {
           user: true,
         },
-        cache: true,
       });
       return spaces;
     } catch (error) {

@@ -23,18 +23,34 @@ export class HashtagsService {
   }
 
   findAll() {
-    return this.hashtagsRepository.find();
+    try {
+      return this.hashtagsRepository.find();
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findOne(id: number) {
-    return this.hashtagsRepository.findOne({ where: { id } });
+  async findOne(id: number) {
+    try {
+      return await this.hashtagsRepository.findOne({ where: { id } });
+    } catch (error) {
+      throw error;
+    }
   }
 
-  update(id: number, updateHashtagDto: UpdateHashtagDto) {
-    return `This action updates a #${id} hashtag`;
+  async update(id: number, updateHashtagDto: UpdateHashtagDto) {
+    try {
+      return await this.hashtagsRepository.update(id, updateHashtagDto);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} hashtag`;
+  async remove(id: number) {
+    try {
+      return await this.hashtagsRepository.delete(id);
+    } catch (error) {
+      throw error;
+    }
   }
 }
