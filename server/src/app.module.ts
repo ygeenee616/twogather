@@ -22,6 +22,7 @@ import { Reservation } from './reservations/entities/reservation.entity';
 import { Hashtag } from './hashtags/entities/hashtag.entity';
 import { Review } from './reviews/entities/review.entity';
 import { ReservationsModule } from './reservations/reservations.module';
+import { HashtagsModule } from './hashtags/hashtags.module';
 
 @Module({
   imports: [
@@ -67,6 +68,7 @@ import { ReservationsModule } from './reservations/reservations.module';
     SpaceImagesModule,
     RoomImagesModule,
     ReservationsModule,
+    HashtagsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

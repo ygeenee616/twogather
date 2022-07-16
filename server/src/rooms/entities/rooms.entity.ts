@@ -7,7 +7,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Room {
@@ -31,8 +31,10 @@ export class Room {
   @ApiProperty({ description: '상세설명' })
   description: string;
 
-  @ManyToOne(() => Space)
-  @JoinColumn({ name: 'spaceId', referencedColumnName: 'id' })
-  @ApiProperty({ description: 'FK. space의 Id' })
+  @ManyToOne(() => Space, (space) => space.rooms, {
+    onDelete: 'CASCADE',
+    eager: false,
+  })
+  @ApiProperty({ description: '공간 정보', type: () => Space })
   space: Space;
 }
