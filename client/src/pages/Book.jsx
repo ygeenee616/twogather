@@ -6,6 +6,7 @@ import HostInfo from "../components/book/HostInfo";
 import BookInfo from "../components/book/BookInfo";
 import ToTop from "../components/ToTop";
 import axios from "axios";
+import { useEffect } from "react";
 
 export default function Book() {
   const location = useLocation();
@@ -18,9 +19,9 @@ export default function Book() {
   const host = location.state.host;
 
   // 유저 입력 정보
-  const name = useRef("");
-  const phone = useRef("");
-  const email = useRef("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const purpose = useRef("");
   const request = useRef("");
   // 예약 가능 여부
@@ -28,17 +29,17 @@ export default function Book() {
 
   // 이름 입력 함수
   function onChangeName(e) {
-    name.current = e;
+    setName(e);
   }
 
   // 전화번호 입력 함수
   function onChangePhone(e) {
-    phone.current = e;
+    setPhone(e);
   }
 
   // 이메일 입력 함수
   function onChangeEmail(e) {
-    email.current = e;
+    setEmail(e);
   }
 
   // 사용 목적 입력 함수
@@ -54,13 +55,14 @@ export default function Book() {
   // 필수 예약 정보를 모두 입력했을 때만 예약 버튼을 활성화하는 함수
   function checkPossible(e) {
     e.preventDefault();
-    name.current !== "" && phone.current !== "" && email.current != ""
+    name !== "" && phone !== "" && email != ""
       ? (possible.current = true)
       : (possible.current = false);
+    console.log(possible.current);
   }
 
   return (
-    <FullContainer possible={possible.current}>
+    <FullContainer>
       <GetBookerInfo
         name={name}
         phone={phone}
@@ -83,10 +85,10 @@ export default function Book() {
         endTime={endTime}
       />
       <BookBox possible={possible.current}>
-        <p className="required">*예약 필수 정보를 입력해주세요.</p>
-        <Button onClick={() => possible.current && console.log("예약완료")}>
+        <p className="required">*예약 필수 정보를 입력해주세요</p>
+        <button onClick={() => possible.current && console.log("예약완료")}>
           예약 완료
-        </Button>
+        </button>
       </BookBox>
       <ToTop />
     </FullContainer>
@@ -114,18 +116,26 @@ const BookBox = styled.div`
 
     display: ${({ possible }) => (possible ? "none" : "block")};
   }
-`;
 
-const Button = styled.button`
-  width: 100%;
-  padding: 5px;
-  border-radius: 10px;
-  border: none;
-  background: #8daef2;
-  transition: all 0.3s;
-  color: #fff;
+  & button {
+    width: 100%;
+    padding: 5px;
+    border-radius: 10px;
+    border: none;
 
-  &:hover {
-    box-shadow: 2px 2px 5px -1px #a6a9b6;
+    ${({ possible }) =>
+      possible
+        ? `
+      background: #8daef2;
+      transition: all 0.3s;
+      color: #fff;
+      &:hover {
+        box-shadow: 2px 2px 5px -1px #a6a9b6;
+      }
+      `
+        : `
+      background: #DFDFDE;
+      color: #fff;
+      `};
   }
 `;
