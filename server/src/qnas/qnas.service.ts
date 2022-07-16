@@ -21,6 +21,7 @@ export class QnasService {
         ...createQnaDto,
         space,
         user,
+        createdTime: new Date(),
       };
       return await this.qnasRepository.save(newQna);
     } catch (error) {
