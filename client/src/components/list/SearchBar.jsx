@@ -10,13 +10,35 @@ export default function SearchBar() {
 
   const { search } = window.location;
   const params = new URLSearchParams(search);
-  const initialSearch = params.get("search");
+  const path = useRef(window.location.pathname);
+
+  useEffect(() => {
+    console.log(window.location.pathname);
+    path.current = window.location.pathname;
+
+    if (path.current !== "/list") {
+      document.querySelector(".searchInput").value = "";
+    }
+  }, [window.location.href]);
+
+  //search 중복 방지
+  params.get("search") ? params.delete("search") : console.log("");
   const stringParams = params.toString();
 
-  const handleClickSearchButton = () => {
+  //search 기능
+  const handleClickSearchButton = (e) => {
     searchInput.current.length === 0
       ? setCaution(true)
+      : stringParams.length === 0
+      ? nav(`/list?search=${searchInput.current}`)
       : nav(`/list?${stringParams}&search=${searchInput.current}`);
+  };
+
+  //enter button을 누를시에도 search할수있게함
+  const onCheckEnter = (e) => {
+    if (e.key === "Enter") {
+      handleClickSearchButton();
+    }
   };
 
   return (
@@ -24,6 +46,7 @@ export default function SearchBar() {
       <input
         className="searchInput"
         placeholder="공간을 검색해보세요."
+        onKeyDown={onCheckEnter}
         onChange={(e) => (searchInput.current = e.target.value)}
       />
       <button
