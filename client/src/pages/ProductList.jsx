@@ -80,17 +80,16 @@ export default function ProductList() {
   const limit = 12;
   const offset = (page - 1) * limit;
 
-  const { searchInput } = useParams();
-
   const { search } = window.location;
 
   const params = new URLSearchParams(search);
+  const category = params.get("category");
   const date = parseInt(params.get("date"));
 
   useEffect(() => {
     async function getData() {
       try {
-        const res = await api.get(`api/spaces/type/${searchInput}`);
+        const res = await api.get(`api/spaces/type/${category}`);
         const datas = res.data;
         console.log(datas);
       } catch (err) {
@@ -121,7 +120,7 @@ export default function ProductList() {
       <SelectorWrap>
         <CategoryWrap>
           <div onClick={handelClickSelector}>
-            <CategorySelector category={searchInput} />
+            <CategorySelector category={category} />
           </div>
           <CategoryModal display={categoryModalDisplay} />
         </CategoryWrap>
@@ -131,9 +130,9 @@ export default function ProductList() {
           </div>
           <DateModal display={DateModalDisplay} />
         </DateWrap>
-        <SelecotrResetBtn category={searchInput} />
+        <SelecotrResetBtn category={category} />
       </SelectorWrap>
-      <SortingSelector category={searchInput} />
+      <SortingSelector />
       <ProductWrap>{renderData(offset, limit, exData)}</ProductWrap>
 
       <Pagination

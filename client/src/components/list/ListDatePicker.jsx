@@ -10,9 +10,9 @@ export default function ListDatePicker() {
   const nav = useNavigate();
   const [date, setDate] = useState(new Date());
 
-  const { searchInput } = useParams();
   const { search } = window.location;
   const params = new URLSearchParams(search);
+  const category = params.get("category");
 
   //날짜 포맷팅
   const handleChangeDatePicker = (date) => {
@@ -26,7 +26,7 @@ export default function ListDatePicker() {
   const handleClickApplyButton = (date) => {
     params.set("date", date);
     const stringParams = params.toString();
-    nav(`/list/${searchInput}?${stringParams}`);
+    nav(`/list?${stringParams}`);
   };
 
   return (

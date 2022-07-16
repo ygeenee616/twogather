@@ -44,7 +44,10 @@ export default function HomeImageSlider({ images }) {
         <StyledSlider {...settings}>
           {images.map((image) => {
             return (
-              <div onClick={() => nav(`/list/${image.title}`)} key={image.id}>
+              <div
+                onClick={() => nav(`/list?category=${image.title}`)}
+                key={image.id}
+              >
                 <img src={image.url} />
               </div>
             );
