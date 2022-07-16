@@ -13,7 +13,6 @@ export default function SearchBar() {
   const path = useRef(window.location.pathname);
 
   useEffect(() => {
-    console.log(window.location.pathname);
     path.current = window.location.pathname;
 
     if (path.current !== "/list") {
@@ -22,7 +21,7 @@ export default function SearchBar() {
   }, [window.location.href]);
 
   //search 중복 방지
-  params.get("search") ? params.delete("search") : console.log("");
+  params.get("search") && params.delete("search");
   const stringParams = params.toString();
 
   //search 기능

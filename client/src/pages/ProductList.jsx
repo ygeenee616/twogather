@@ -172,6 +172,9 @@ const SelectorWrap = styled.div`
 const CategoryWrap = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
-const DateWrap = styled(CategoryWrap)``;
+const DateWrap = styled(CategoryWrap)`
+  position: relative;
+`;

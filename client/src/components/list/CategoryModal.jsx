@@ -45,9 +45,8 @@ export default function CategoryModal({ display }) {
 
 const ModalWrap = styled.div`
   position: absolute;
-  top: 22%;
-  width: 15%;
-  height: 20%;
+  top: 60px;
+  width: 100%;
   z-index: 100;
   border: 1px solid #8daef2;
   border-radius: 10px;
