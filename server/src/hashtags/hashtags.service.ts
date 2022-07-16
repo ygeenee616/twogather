@@ -1,19 +1,33 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { SpacesService } from 'src/spaces/spaces.service';
+import { Repository } from 'typeorm';
 import { CreateHashtagDto } from './dto/create-hashtag.dto';
 import { UpdateHashtagDto } from './dto/update-hashtag.dto';
+import { Hashtag } from './entities/hashtag.entity';
 
 @Injectable()
 export class HashtagsService {
-  create(createHashtagDto: CreateHashtagDto) {
-    return 'This action adds a new hashtag';
+  constructor(
+    @InjectRepository(Hashtag)
+    private hashtagsRepository: Repository<Hashtag>,
+    private spacesService: SpacesService,
+  ) {}
+  async create(createHashtagDto: CreateHashtagDto, id: number) {
+    const space = await this.spacesService.findOne(id);
+    console.log(space);
+    return this.hashtagsRepository.save({
+      ...createHashtagDto,
+      space: space,
+    });
   }
 
   findAll() {
-    return `This action returns all hashtags`;
+    return this.hashtagsRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} hashtag`;
+    return this.hashtagsRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateHashtagDto: UpdateHashtagDto) {
