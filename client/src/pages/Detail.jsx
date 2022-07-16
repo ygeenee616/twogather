@@ -68,7 +68,6 @@ export default function Detail() {
         const req = await axios.get("/dummyDetail.json");
         const space = await req.data.space;
         setData(space);
-        console.log(space);
       } catch (err) {
         console.log(err);
       }
@@ -91,7 +90,6 @@ export default function Detail() {
       id: eId,
       title: eClass,
     };
-    console.log(room.current);
   }
 
   // 예약 정보를 제대로 입력했을 때만 예약 버튼을 활성화하는 함수
