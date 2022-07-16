@@ -15,8 +15,8 @@ CategorySelector.defaultProps = {
 };
 
 const SelectButton = styled.div`
-  width: 13vw;
-  height: 5vh;
+  width: 180px;
+  height: 40px;
   margin: 1vh 0 6vh 0;
   border: 1px solid #8daef2;
   border-radius: 10px;
@@ -30,5 +30,6 @@ const SelectButton = styled.div`
 
 const About = styled.div`
   color: #8daef2;
+  font-weight: 600;
   margin: auto auto auto 10%;
 `;

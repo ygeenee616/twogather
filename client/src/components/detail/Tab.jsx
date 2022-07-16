@@ -25,7 +25,7 @@ export default function Tab({ contents }) {
         </TabTitle>
       </Tabs>
 
-      <ContentBox>
+      <div style={{ width: "100%" }}>
         <TabContent className="tab1">
           <h2>공간소개</h2>
           <p>{contents.introduce}</p>
@@ -57,7 +57,7 @@ export default function Tab({ contents }) {
             );
           })}
         </TabContent>
-      </ContentBox>
+      </div>
     </TabContainer>
   );
 }
@@ -92,10 +92,6 @@ const TabTitle = styled.div`
   &:hover {
     font-weight: bold;
   }
-`;
-
-const ContentBox = styled.div`
-  width: 100%;
 `;
 
 const TabContent = styled.div`
