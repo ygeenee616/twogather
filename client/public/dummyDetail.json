@@ -1,6 +1,6 @@
 {
   "space": {
-    "title": "스튜디오 709",
+    "title": "스튜디오 카이브",
     "hashTag": ["#스튜디오", "#촬영대관"],
     "contents": {
       "introduce": [
@@ -50,10 +50,11 @@
         }
       ]
     },
+    "address": "경기 부천시 정주로 16",
     "rooms": [
       {
         "id": "room1",
-        "title": "ROOM1",
+        "title": "Room1",
         "pay": 2000,
         "image": "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165666149_3349f35a71f72e769413ec0259916966.jpeg?type=m&w=900&h=900&autorotate=true&quality=90",
         "roomType": "회의실",
@@ -61,7 +62,7 @@
       },
       {
         "id": "room2",
-        "title": "ROOM2",
+        "title": "Room2",
         "pay": 2500,
         "image": "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165666153_16799d2af43e00dd7b3826057da2dc32.jpeg?type=m&w=900&h=900&autorotate=true&quality=90",
         "roomType": "회의실",
@@ -69,7 +70,7 @@
       },
       {
         "id": "room3",
-        "title": "ROOM3",
+        "title": "Room3",
         "pay": 3100,
         "image": "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165666165_088b1880c43ad29ed310de168672f70e.jpeg?type=m&w=900&h=900&autorotate=true&quality=90",
         "roomType": "회의실",
@@ -93,6 +94,13 @@
         "id": 4,
         "url": "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165224700_ec07e9f8d997b50ce92b096f3fe0911e.jpg?type=m&w=900&h=900&autorotate=true&quality=90"
       }
-    ]
+    ],
+    "host": {
+      "placeName": "스튜디오 카이브",
+      "hostName": "김미지",
+      "businessNum": "123-45-67890",
+      "hostPhone": "010-1111-2222",
+      "hostEmail": "kinunknown@naver.com"
+    }
   }
 }

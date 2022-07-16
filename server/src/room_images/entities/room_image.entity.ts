@@ -18,8 +18,11 @@ export class RoomImage {
   @ApiProperty({ description: '룸 이미지 URL' })
   imageUrl: string;
 
-  @ManyToOne(() => Room)
+  @ManyToOne(() => Room, (room) => room.roomImages, {
+    onDelete: 'CASCADE',
+    eager: false,
+  })
   @JoinColumn({ name: 'roomId', referencedColumnName: 'id' })
-  @ApiProperty({ description: 'FK. room의 Id' })
-  space: Room;
+  @ApiProperty({ description: 'FK. room의 Id', type: () => Room })
+  room: Room;
 }

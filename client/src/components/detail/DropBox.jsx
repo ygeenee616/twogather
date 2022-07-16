@@ -3,11 +3,7 @@ import styled from "styled-components";
 import { HiChevronDown } from "react-icons/hi";
 import { FcHome, FcConferenceCall } from "react-icons/fc";
 
-export default function Dropbox({ rooms, currPeople }) {
-  // 첫번째 input이 default checked 값
-  // console.log(document.getElementsByClassName(0));
-  // console.log((document.getElementsByClassName(0).checked = true));
-
+export default function Dropbox({ rooms, acceptPeople, checkSelectRoom }) {
   return (
     <RoomList>
       <p>세부 공간 선택</p>
@@ -20,13 +16,12 @@ export default function Dropbox({ rooms, currPeople }) {
                 type="radio"
                 id="select"
                 name="room"
-                className={i}
+                className={item.title}
                 value={item.id}
                 onClick={(e) => {
-                  currPeople.current = item.people;
-                  console.log(currPeople.current);
+                  checkSelectRoom(e.target.value, e.target.className);
+                  acceptPeople.current = item.people;
                 }}
-                defaultChecked
               />
               <RoomLabel>
                 <span>{item.title}</span>

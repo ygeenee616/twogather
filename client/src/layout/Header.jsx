@@ -26,19 +26,22 @@ const HostPage = () => {
   );
 };
 
-const Notice = () => {
+
+const HeaderTag = ({name, target}) => {
   const navigate = useNavigate();
-  const handleNoticeClick = () => {
-    navigate("/notice");
+  const handleClick = () => {
+ 
+    navigate(target);
   };
   return (
-    <TextWrap onClick={handleNoticeClick}>
-      <div>공지사항</div>
+    <TextWrap onClick={handleClick}>
+      <div>{name}</div>
     </TextWrap>
   );
 };
 
-const Login = () => {
+
+const Login = ({setIsLogin}) => {
   const navigate = useNavigate();
   const handleLoginClick = () => {
     if (localStorage.getItem("userToken") === "") {
@@ -48,6 +51,9 @@ const Login = () => {
       navigate("/");
     }
   };
+  if(localStorage.getItem('userToken')==='') setIsLogin(false);
+  else setIsLogin(true);
+
   return (
     <TextWrap onClick={handleLoginClick}>
       <div>
@@ -111,3 +117,22 @@ const RightWrap = styled.div`
   display: flex;
   margin-left: auto;
 `;
+
+export default function Header() {
+  const [isLogin, setIsLogin] = useState(false);
+  console.log(localStorage.getItem('userToken')!=='');
+
+  return (
+    <HeaderWrap>
+      <Logo className="headerLogo" />
+      <Search />
+      <RightWrap>
+        {isLogin ? <HeaderTag name="호스트등록하기" target="/addHost" /> : `` }
+        {isLogin ? <HeaderTag name="마이페이지" target="/mypage" /> : `` }
+        <HeaderTag name="공지사항" target="/notice" />
+        <Login className="login-out" setIsLogin={setIsLogin} />
+
+      </RightWrap>
+    </HeaderWrap>
+  );
+}
