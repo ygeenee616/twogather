@@ -24,7 +24,7 @@ export default function Book() {
   const purpose = useRef("");
   const request = useRef("");
   // 예약 가능 여부
-  const possible = useRef("");
+  const possible = useRef(false);
 
   // 이름 입력 함수
   function onChangeName(e) {
@@ -54,14 +54,13 @@ export default function Book() {
   // 필수 예약 정보를 모두 입력했을 때만 예약 버튼을 활성화하는 함수
   function checkPossible(e) {
     e.preventDefault();
-    name.current !== "" && phone.current !== "" && email.current !== ""
+    name.current !== "" && phone.current !== "" && email.current != ""
       ? (possible.current = true)
       : (possible.current = false);
-    console.log(possible.current);
   }
 
   return (
-    <FullContainer>
+    <FullContainer possible={possible.current}>
       <GetBookerInfo
         name={name}
         phone={phone}
@@ -83,7 +82,12 @@ export default function Book() {
         startTime={startTime}
         endTime={endTime}
       />
-      <Button>예약 완료</Button>
+      <BookBox possible={possible.current}>
+        <p className="required">*예약 필수 정보를 입력해주세요.</p>
+        <Button onClick={() => possible.current && console.log("예약완료")}>
+          예약 완료
+        </Button>
+      </BookBox>
       <ToTop />
     </FullContainer>
   );
@@ -97,19 +101,28 @@ const FullContainer = styled.div`
   position: relative;
 `;
 
-const Button = styled.button`
+const BookBox = styled.div`
   width: 30%;
+  position: absolute;
+  bottom: -40px;
+  right: 0;
+
+  & .required {
+    margin: 5px 0;
+    font-size: 0.8rem;
+    color: red;
+
+    display: ${({ possible }) => (possible ? "none" : "block")}
+`;
+
+const Button = styled.button`
+  width: 100%;
   padding: 5px;
-  margin: 20px 0;
   border-radius: 10px;
   border: none;
   background: #8daef2;
-  color: #fff;
-  position: absolute;
-  bottom: -60px;
-  right: 0;
   transition: all 0.3s;
-
+  color: #fff;
   &:hover {
     box-shadow: 2px 2px 5px -1px #a6a9b6;
   }
