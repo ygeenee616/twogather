@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/users.entity';
 import { Repository } from 'typeorm';
@@ -30,7 +30,19 @@ export class ReservationsService {
   }
 
   async findOne(id: number) {
-    return await `This action returns a #${id} reservation`;
+    try {
+      const review = await this.reservationRepository.findOne({
+        where: {
+          id,
+        },
+      });
+      if (review === null) {
+        throw new NotFoundException('존재하지 않는 예약입니다.');
+      }
+      return review;
+    } catch (error) {
+      throw error;
+    }
   }
 
   update(id: number, updateReservationDto: UpdateReservationDto) {
