@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
 
 export default function CategorySelector({ category }) {
+  category === null ? (category = "카테고리") : (category = category);
   return (
     <SelectButton className="Category">
       <About>{category}</About>
