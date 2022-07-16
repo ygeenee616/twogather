@@ -22,7 +22,7 @@ export class Review {
   @ApiProperty({ description: '리뷰 내용' })
   content: string;
 
-  @OneToOne(() => Reservation)
+  @OneToOne(() => Reservation, (reservation) => reservation.review)
   @JoinColumn({ name: 'reservationId', referencedColumnName: 'id' })
   @ApiProperty({ description: 'FK. 예약의 Id' })
   reservation: Reservation;

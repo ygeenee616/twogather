@@ -18,8 +18,11 @@ export class SpaceImage {
   @ApiProperty({ description: 'space 이미지 URL' })
   imageUrl: string;
 
-  @ManyToOne(() => Space)
+  @ManyToOne(() => Space, (space) => space.spaceImages, {
+    onDelete: 'CASCADE',
+    eager: false,
+  })
   @JoinColumn({ name: 'spaceId', referencedColumnName: 'id' })
-  @ApiProperty({ description: 'FK. Space의 Id' })
+  @ApiProperty({ type: () => Space })
   space: Space;
 }

@@ -29,8 +29,8 @@ export class ReservationsService {
     return `This action returns all reservations`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} reservation`;
+  async findOne(id: number) {
+    return await `This action returns a #${id} reservation`;
   }
 
   update(id: number, updateReservationDto: UpdateReservationDto) {

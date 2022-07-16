@@ -20,7 +20,6 @@ const spaceResExample = new SpaceResExample();
 
 @Controller('api/spaces')
 @ApiTags('공간 API')
-@Controller('api/spaces')
 export class SpacesController {
   constructor(private readonly spacesService: SpacesService) {}
 
