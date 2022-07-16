@@ -22,7 +22,9 @@ export class Review {
   @ApiProperty({ description: '리뷰 내용' })
   content: string;
 
-  @OneToOne(() => Reservation, (reservation) => reservation.review)
+  @OneToOne(() => Reservation, (reservation) => reservation.review, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'reservationId', referencedColumnName: 'id' })
   @ApiProperty({ description: 'FK. 예약의 Id', type: () => Reservation })
   reservation: Reservation;

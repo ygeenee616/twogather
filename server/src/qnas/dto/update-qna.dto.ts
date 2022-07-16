@@ -3,6 +3,7 @@ import { CreateQnaDto } from './create-qna.dto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsEmail,
+  IsOptional,
   IsString,
   Matches,
   MaxLength,
@@ -15,6 +16,7 @@ export class UpdateQnaDto extends PartialType(CreateQnaDto) {
   readonly content: string;
 
   @IsString()
+  @IsOptional()
   @ApiPropertyOptional({ description: 'Q&A 답글' })
   reply: string;
 }
