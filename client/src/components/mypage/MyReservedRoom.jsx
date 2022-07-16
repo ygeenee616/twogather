@@ -1,5 +1,13 @@
 import styled from "styled-components";
 
+
+const rooms = [
+  {
+    image: "/images/partyRoom.png",
+    
+  }
+]
+
 function MyReservedRoom() {
 
   const handleCancelReservation = () => {

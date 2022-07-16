@@ -5,7 +5,9 @@ import { useState } from "react";
 function MyProfileEdit({oldNickname, oldGender, oldBirthDate}) {
 
   const [nickname, setNickname] = useState(oldNickname);
+  const [gender, setGender] = useState(oldGender);
   const isNicknameValid = nickname.length >= 2 && nickname.length <= 10;
+
 
   return (
     <Container>
@@ -17,7 +19,7 @@ function MyProfileEdit({oldNickname, oldGender, oldBirthDate}) {
               <input value={nickname} onChange={(e)=>setNickname(e.target.value)}></input>
             </InputTD>
           </tr>
-          {!isNicknameValid && <AlertTR>2~10자로 입력해주세요.</AlertTR>}
+          {!isNicknameValid && <AlertTR><td /><td>2~10자로 입력해주세요.</td></AlertTR>}
           <tr>
             <TagTD>비밀번호</TagTD>
             <InputTD>
@@ -30,9 +32,9 @@ function MyProfileEdit({oldNickname, oldGender, oldBirthDate}) {
             <TagTD>성별</TagTD>
             <td>
               <div>
-                <input type="radio" name="gender" checked={oldGender==='남'}/>
+                <input type="radio" name="gender" checked={gender==='남'} onClick={()=>{setGender('남')}}/>
                 <label for="m">남 </label> &nbsp;
-                <input type="radio" name="gender"/>
+                <input type="radio" name="gender" checked={gender==='여'} onClick={()=>{setGender('여')}}/>
                 <label for="w">여 </label>
               </div>
             </td>   
@@ -61,7 +63,16 @@ const Container = styled.div`
 `;
 
 const EditProfileTable = styled.div`
-  padding: 1rem;
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: auto;
+  justify-content: center;
+
+  tr {
+    width: 100%;
+    height: 2rem;
+  }
+
   td {
     width: 5rem;
     padding: 0.5rem;

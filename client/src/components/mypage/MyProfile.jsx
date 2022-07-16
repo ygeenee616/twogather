@@ -18,9 +18,7 @@ function MyProfile() {
 
   const [editUser, setEditUser] = useState(false);
 
-  const handleUploadImage = () => {
-    
-  }
+ 
   const handleEditUser = () => {
     setEditUser(true);
   }
@@ -34,15 +32,16 @@ function MyProfile() {
           <input type="button" value="유저 정보 수정" onClick={handleEditUser} />
         </EditBtnDiv>   
       </ProfileImgDiv>
-    {
+      <ProfileContents>
+      {
       editUser ?
-      <MyProfileEdit 
-        oldNickname={user.nickname} 
-        oldGender={user.gender} 
-        oldBirthDate={user.birthDate} /> :
-      <MyProfileInfo user={user}/> 
-    }
-      
+        <MyProfileEdit 
+          oldNickname={user.nickname} 
+          oldGender={user.gender} 
+          oldBirthDate={user.birthDate} /> :
+        <MyProfileInfo user={user}/> 
+      }
+      </ProfileContents>
     </ProfileDiv>
 
   );
@@ -53,33 +52,37 @@ function MyProfile() {
 const ProfileDiv = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: left;
+  justify-content: center;
   height: wrap-content;
-  border: none;
   text-align: center;
+  border: none;
 
-  @media only screen and (max-width: 1200px) {
+  @media only screen and (max-width: 600px) {
     flex-direction: column;
 
   }
 `;
 
+const ProfileContents = styled.div`
+  width: 80%;
+`
+
 const ProfileImgDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 5rem;
-  margin-right: 5rem;
+  margin: 0 10vw;
+  width: 20vw;
 
   img {
     width: 10rem;
     height: 10rem;
     border-radius: 10rem;
-    padding: 2rem;
+
   }
 
-  button + button {
-    margin-top: 0.5rem;
+  button {
+    margin: 2rem 0;
   }
 `;
 
