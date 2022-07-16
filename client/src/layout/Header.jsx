@@ -26,11 +26,9 @@ const HostPage = () => {
   );
 };
 
-
-const HeaderTag = ({name, target}) => {
+const HeaderTag = ({ name, target }) => {
   const navigate = useNavigate();
   const handleClick = () => {
- 
     navigate(target);
   };
   return (
@@ -40,8 +38,7 @@ const HeaderTag = ({name, target}) => {
   );
 };
 
-
-const Login = ({setIsLogin}) => {
+const Login = ({ setIsLogin }) => {
   const navigate = useNavigate();
   const handleLoginClick = () => {
     if (localStorage.getItem("userToken") === "") {
@@ -51,26 +48,31 @@ const Login = ({setIsLogin}) => {
       navigate("/");
     }
   };
-  if(localStorage.getItem('userToken')==='') setIsLogin(false);
+  if (localStorage.getItem("userToken") === "") setIsLogin(false);
   else setIsLogin(true);
 
   return (
     <TextWrap onClick={handleLoginClick}>
       <div>
-        {!localStorage.getItem("userToken") === "" ? `로그아웃` : "로그인"}
+        {localStorage.getItem("userToken") === "" ? `로그인` : "로그아웃"}
       </div>
     </TextWrap>
   );
 };
 
 export default function Header() {
+  const [isLogin, setIsLogin] = useState(false);
+  console.log(localStorage.getItem("userToken") !== "");
+
   return (
     <HeaderWrap>
       <Logo className="headerLogo" />
       <SearchBar />
       <RightWrap>
-        <Notice />
-        <Login />
+        {isLogin ? <HeaderTag name="호스트등록하기" target="/addHost" /> : ``}
+        {isLogin ? <HeaderTag name="마이페이지" target="/mypage" /> : ``}
+        <HeaderTag name="공지사항" target="/notice" />
+        <Login className="login-out" setIsLogin={setIsLogin} />
       </RightWrap>
     </HeaderWrap>
   );
@@ -117,22 +119,3 @@ const RightWrap = styled.div`
   display: flex;
   margin-left: auto;
 `;
-
-export default function Header() {
-  const [isLogin, setIsLogin] = useState(false);
-  console.log(localStorage.getItem('userToken')!=='');
-
-  return (
-    <HeaderWrap>
-      <Logo className="headerLogo" />
-      <Search />
-      <RightWrap>
-        {isLogin ? <HeaderTag name="호스트등록하기" target="/addHost" /> : `` }
-        {isLogin ? <HeaderTag name="마이페이지" target="/mypage" /> : `` }
-        <HeaderTag name="공지사항" target="/notice" />
-        <Login className="login-out" setIsLogin={setIsLogin} />
-
-      </RightWrap>
-    </HeaderWrap>
-  );
-}
