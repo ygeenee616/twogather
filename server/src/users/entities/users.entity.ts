@@ -8,6 +8,7 @@ import {
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { Space } from 'src/spaces/entities/spaces.entity';
+import { Qna } from 'src/qnas/entities/qna.entity';
 
 @Entity()
 export class User {
@@ -72,4 +73,9 @@ export class User {
     eager: true,
   })
   spaces: Space[];
+
+  @OneToMany((type) => Qna, (qna) => qna.user, {
+    eager: true,
+  })
+  qnas: Qna[];
 }

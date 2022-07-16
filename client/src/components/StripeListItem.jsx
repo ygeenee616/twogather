@@ -1,14 +1,30 @@
-import React, { useState, memo } from "react";
+import React, { useState, memo, useRef } from "react";
 import styled from "styled-components";
 import { FaUserSlash } from "react-icons/fa";
 import BookedButtonBox from "./BookedButtonBox";
 import UserBlockButtonBox from "./UserBlockButtonBox";
 
-function ListItem({ item, columnTemplete, keys, listName }) {
+function ListItem({ item, columnTemplete, keys, listName, id, handleClick }) {
+  const userId = useRef(0);
+
+  function stopCapturing(e) {
+    userId.current = id;
+    handleClick(userId.current);
+    e.stopPropagation();
+  }
+
   return (
-    <ItemList templete={columnTemplete}>
+    <ItemList onClick={stopCapturing} templete={columnTemplete}>
       {keys.map((key) => {
-        return <Item>{item[key]}</Item>;
+        return (
+          <Item>
+            {key === "role"
+              ? item["businessNumber"] === null
+                ? "User"
+                : "Host"
+              : item[key]}
+          </Item>
+        );
       })}
       {listName === "BOOK" ? <BookedButtonBox></BookedButtonBox> : ""}
     </ItemList>

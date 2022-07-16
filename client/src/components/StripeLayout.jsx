@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, memo } from "react";
+import React, { useState, memo, useRef } from "react";
 import { RiEdit2Fill, RiExternalLinkFill } from "react-icons/ri";
 import ListItem from "./StripeListItem";
 import AdminBookDetail from "../pages/AdminBookDetail";
@@ -13,11 +13,13 @@ UserInfo.defaultProps = {
 function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
   const [viewInfo, setViewInfo] = useState(false);
   const [bookInfo, setBookInfo] = useState(false);
+  const [userId, setUserId] = useState();
 
-  function handleClick() {
+  function handleClick(id) {
     if (listName === "USER") {
       //유저이름을 받아와서 api출력
       setViewInfo(!viewInfo);
+      setUserId(id);
     }
   }
 
@@ -26,7 +28,7 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
       <Container>
         <UserContainer>
           <UserBox viewInfo={viewInfo}>
-            <UserInfo viewInfo={viewInfo}></UserInfo>
+            <UserInfo userId={userId} viewInfo={viewInfo}></UserInfo>
           </UserBox>
         </UserContainer>
         <ReservationForm viewInfo={viewInfo}>
@@ -37,15 +39,19 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
           </List>
           {datas.map((item, idx) => {
             return (
-              <div onClick={handleClick}>
+              //클릭한 항목의 데이터 받아와서 해당 id에 맞는 user출력하기
+              <ListContainer>
                 <ListItem
+                  className="10"
                   item={item}
                   columnTemplete={columnTemplete}
                   keys={keys}
                   listName={listName}
+                  id={item.id}
+                  handleClick={handleClick}
                   //"1fr 2fr 1fr 1fr 2fr 1fr 1.2fr"
                 ></ListItem>
-              </div>
+              </ListContainer>
             );
           })}
         </ReservationForm>
@@ -63,7 +69,7 @@ const Container = styled.div`
   margin-top: 50px;
   margin-bottom: 50px;
 `;
-
+const ListContainer = styled.div``;
 const ReservationForm = styled.div`
   margin: 0 auto;
   padding: 10px 0;

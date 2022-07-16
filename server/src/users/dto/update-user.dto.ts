@@ -22,14 +22,8 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   readonly password: string;
 
   @IsString()
-  @MinLength(4)
-  @MaxLength(20)
-  @Matches(/^[a-zA-Z0-9]*$/, {
-    message: '닉네임은 영어 대/소문자, 숫자만 가능합니다',
-  })
-  @IsString()
-  @MinLength(4)
-  @MaxLength(20)
-  @ApiProperty({ description: '닉네임(4~20자, 영문 대소문자, 숫자만 가능)' })
+  @MinLength(2)
+  @MaxLength(10)
+  @ApiProperty({ description: '닉네임(2~10자)' })
   readonly nickname: string;
 }

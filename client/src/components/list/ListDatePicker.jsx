@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
@@ -7,18 +7,26 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../../assets/styles/DatePicker.css";
 
 export default function ListDatePicker() {
+  const nav = useNavigate();
   const [date, setDate] = useState(new Date());
 
-  const { searchInput } = useParams();
+  const { search } = window.location;
+  const params = new URLSearchParams(search);
+  const category = params.get("category");
 
+  //날짜 포맷팅
   const handleChangeDatePicker = (date) => {
     const yyyy = `${date.getFullYear()}`;
     const mm = (date.getMonth() + 1).toString().padStart(2, "0");
     const dd = date.getDate().toString().padStart(2, "0");
-    const fullDate = Number(yyyy + mm + dd); //string일 경우 datepicker selected props에서 오류남
-    console.log(fullDate);
-    console.log(typeof fullDate);
+    const fullDate = Number(yyyy + mm + dd);
     setDate(fullDate);
+  };
+
+  const handleClickApplyButton = (date) => {
+    params.set("date", date);
+    const stringParams = params.toString();
+    nav(`/list?${stringParams}`);
   };
 
   return (
@@ -33,7 +41,7 @@ export default function ListDatePicker() {
         />
       </DatePickeContainer>
 
-      <ApplyDateButton to={`/list/${searchInput}?date=${date}`}>
+      <ApplyDateButton onClick={() => handleClickApplyButton(date)}>
         날짜 적용하기
       </ApplyDateButton>
     </Container>
@@ -50,7 +58,7 @@ const DatePickeContainer = styled.div`
   margin: auto;
 `;
 
-const ApplyDateButton = styled(Link)`
+const ApplyDateButton = styled.button`
   all: unset;
   position: relative;
   bottom: 0;
