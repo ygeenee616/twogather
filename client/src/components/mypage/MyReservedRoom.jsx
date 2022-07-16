@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
 function MyReservedRoom() {
+
+  const handleCancelReservation = () => {
+
+  }
+
   return (
     <RoomDiv>
       <InfoDiv>
@@ -13,8 +18,8 @@ function MyReservedRoom() {
         </InfoText>
       </InfoDiv>
       <EditDiv>
-        <a>예약취소</a>
-        <a href='/myPage/addQna'>리뷰작성</a>
+        <span onClick={handleCancelReservation}> 예약취소 </span>
+        <a href='/myPage/addReview'> 리뷰작성</a>
       </EditDiv>
     </RoomDiv>
   );
