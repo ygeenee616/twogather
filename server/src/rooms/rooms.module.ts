@@ -5,15 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Room } from './entities/rooms.entity';
 import { SpacesModule } from 'src/spaces/spaces.module';
 import { SpacesService } from 'src/spaces/spaces.service';
-import { PassportModule } from '@nestjs/passport';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Room]),
-    SpacesModule,
-    PassportModule.register({ defaultStrategy: 'jwt' }),
-  ],
-  exports: [TypeOrmModule, PassportModule],
+  imports: [TypeOrmModule.forFeature([Room]), SpacesModule],
+  exports: [TypeOrmModule],
   controllers: [RoomsController],
   providers: [RoomsService, SpacesService],
 })

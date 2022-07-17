@@ -39,26 +39,6 @@ export class SpaceImagesService {
     });
   }
 
-  async findAllBySpace(spaceId: number) {
-    try {
-      return await this.spaceImagesRepository.find({
-        where: {
-          space: {
-            id: spaceId,
-          },
-        },
-        relations: {
-          space: true,
-        },
-        order: {
-          id: 'DESC',
-        },
-      });
-    } catch (error) {
-      throw error;
-    }
-  }
-
   // spaceImageId로 특정 spaceImage(URL) 조회
   async findOne(id: number) {
     try {

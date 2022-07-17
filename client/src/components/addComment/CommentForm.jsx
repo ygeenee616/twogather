@@ -55,7 +55,7 @@ const CommentInfoContainer = styled.div`
     background-color: ;
 `
 const CommentTextArea = styled.textarea`
-    width: 60vw;
+    width: 40rem;
     height: 10rem;
     placeholder: {props => props.value}
     padding: 1rem;
@@ -63,11 +63,10 @@ const CommentTextArea = styled.textarea`
 const BtnContainer = styled.div`
     display: flex;
     flex-direction: row;
-    width: 100%;
 
     button {
         border: none;
-        width: 50%;
+        width: 20rem;
         height: 2rem;
         margin: 2rem 1rem;
 

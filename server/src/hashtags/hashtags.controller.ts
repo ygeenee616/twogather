@@ -38,27 +38,8 @@ export class HashtagsController {
 
   @Get()
   findAll() {
+    console.log('123');
     return this.hashtagsService.findAll();
-  }
-
-  @Get('space/:spaceId')
-  @ApiOperation({
-    summary: '특정 공간의 해시태그 목록 조회 API',
-    description: '특정 공간의 해시태그 목록을 불러온다.',
-  })
-  @ApiResponse({
-    status: 200,
-    description: '특정 공간의 해시태그 목록 조회',
-    type: Hashtag,
-  })
-  async findAllBySpace(@Param('spaceId') spaceId: number) {
-    const hashtags = await this.hashtagsService.findAllBySpace(spaceId);
-    return {
-      status: 200,
-      description: '특정 공간의 해시태그 목록 조회 성공',
-      success: true,
-      data: hashtags,
-    };
   }
 
   @Get(':id')
@@ -106,7 +87,7 @@ export class HashtagsController {
   @Delete(':id')
   @ApiOperation({
     summary: '특정 해시태그 삭제 API',
-    description: '해시태그의 ID로 특정 해시태그를 삭제한다.',
+    description: '해시태그의 ID로 특정 해시태그를 삭제한다.1',
   })
   @ApiResponse({
     status: 200,

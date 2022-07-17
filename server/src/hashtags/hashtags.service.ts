@@ -21,26 +21,6 @@ export class HashtagsService {
     });
   }
 
-  async findAllBySpace(spaceId: number) {
-    try {
-      return this.hashtagsRepository.find({
-        where: {
-          space: {
-            id: spaceId,
-          },
-        },
-        relations: {
-          space: true,
-        },
-        order: {
-          id: 'DESC',
-        },
-      });
-    } catch (error) {
-      throw error;
-    }
-  }
-
   findAll() {
     try {
       return this.hashtagsRepository.find({

@@ -18,21 +18,19 @@ export default function ImageSlider({ images }) {
   };
 
   return (
-    images && (
-      <Container>
-        <div>
-          <StyledSlider {...settings}>
-            {images.map((image) => {
-              return (
-                <div key={image.id}>
-                  <img src={image.url} />
-                </div>
-              );
-            })}
-          </StyledSlider>
-        </div>
-      </Container>
-    )
+    <Container>
+      <div>
+        <StyledSlider {...settings}>
+          {images.map((image) => {
+            return (
+              <div key={image.id}>
+                <img src={image.url} />
+              </div>
+            );
+          })}
+        </StyledSlider>
+      </div>
+    </Container>
   );
 }
 

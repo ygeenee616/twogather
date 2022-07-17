@@ -73,5 +73,4 @@ export const Line = styled.div`
   height: none;
   margin: 1rem;
   border: solid 0.8px #bbd3f2;
-  background-color: #bbd3f2;
 `;

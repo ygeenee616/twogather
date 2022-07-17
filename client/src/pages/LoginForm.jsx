@@ -39,12 +39,8 @@ function LoginForm() {
 
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const a = useRecoilValue(userInfoState);
-
-  const getData = async () => {
-    const datas = await Api.get(`api/users/email/${email}`);
-    return datas.data.data;
-  };
-
+  
+  
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -65,25 +61,15 @@ function LoginForm() {
         // dispatch 함수를 이용해 로그인 성공 상태로 만듦.
         dispatch(login(data));
 
-        //저장된 이메일로 유저조회 => 이메일로 조회 시 나오는
+        setUserInfo({ ...userInfo, userEmail: email });
 
-        //const datas = await Api.get(`api/users/email/${email}`);
-        const userData = await getData();
+        console.log(userInfo);
+        console.log("asdasdasd");
+        console.log(a);
 
-        const userType = userData.isAdmin
-          ? "Admin"
-          : userData.businessNumber
-          ? "Host"
-          : "User";
+        // email로 유저 검색해서 유저정보 받아오기
 
-        setUserInfo({
-          userId: userData.id,
-          userName: userData.name,
-          nickName: userData.nickName,
-          email: email,
-          useType: userType,
-        });
-
+        // 기본 페이지로 이동함.
         navigate("/", { replace: true });
       } catch (err) {
         console.log("로그인에 실패하였습니다.", err);
@@ -92,6 +78,7 @@ function LoginForm() {
         );
       }
     }
+    console.log(user);
   };
 
   return (
