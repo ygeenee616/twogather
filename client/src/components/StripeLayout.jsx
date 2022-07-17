@@ -74,7 +74,7 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
 
 const Container = styled.div`
   margin: 0 auto;
-  width: 80%;
+  width: 90%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -105,7 +105,7 @@ const ReservationForm = styled.div`
 
 const Header = styled.div`
   background-color: white;
-  font-size: 1.2rem;
+  font-size: 1rem;
   line-height: 2.4rem;
   text-align: center;
   height: 3rem;
@@ -117,6 +117,7 @@ const Header = styled.div`
     border-right: none;
   }
 `;
+
 const UserContainer = styled.div`
   width: 100%;
 
@@ -124,6 +125,7 @@ const UserContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
 const List = styled.div`
   display: grid;
   grid-template-columns: ${(props) => props.templete};
