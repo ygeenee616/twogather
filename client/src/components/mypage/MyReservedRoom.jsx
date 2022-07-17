@@ -17,9 +17,9 @@ function MyReservedRoom({room, idx}) {
       <InfoDiv>
         <RoomImg src={image} alt="공간 이미지"></RoomImg>
         <InfoText>
-          <InfoTag color="black">{space} {idx}</InfoTag> <br/>
+          <InfoTag color="black"><a href={`http://localhost:5001/detail/${idx}`}>{space} {idx}</a></InfoTag> <br/>
           <InfoTag color="light-grey">예약자: {booker} / {personnel}인</InfoTag>
-          <InfoTag color="grey">장소: {location}</InfoTag>
+          <InfoTag color="grey">장소: {location}></InfoTag>
           <InfoTag color="grey">예약일시:{visitingTime}</InfoTag>
         </InfoText>
       </InfoDiv>
@@ -35,9 +35,9 @@ const RoomDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-bottom: solid 1px;
+  padding: 1rem 0;
 
-  @media only screen and (max-width: 1200px) {
+  @media only screen and (max-width: 1000px) {
     flex-direction: column;
     div + div {
       margin-top: 1rem;
@@ -62,7 +62,6 @@ const RoomImg = styled.img`
 `;
 const InfoText = styled.span`
   text-align: left;
-
 `
 const InfoTag = styled.p`
   font-size: 1rem;
@@ -70,17 +69,22 @@ const InfoTag = styled.p`
     (props.color ==='black') ? `font-weight: bold;` :`color: ${props.color};`
   }
   margin: 0.5rem 2rem;
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
 `;
 
 const EditDiv =styled.div`
   text-algin: left;
-  a {
+  a, span {
     text-decoration: underline;
+    color: black;
     padding: 0;
+    margin: 0 0.5rem;
   }
-  a + a {
-    margin-left: 1rem;
-  }
+  
 `
 
 export default MyReservedRoom;

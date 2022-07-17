@@ -31,12 +31,10 @@ function MyProfileEdit({oldNickname, oldGender, oldBirthDate}) {
           <tr>
             <TagTD>성별</TagTD>
             <td>
-              <div>
                 <input type="radio" name="gender" checked={gender==='남'} onClick={()=>{setGender('남')}}/>
                 <label for="m">남 </label> &nbsp;
                 <input type="radio" name="gender" checked={gender==='여'} onClick={()=>{setGender('여')}}/>
                 <label for="w">여 </label>
-              </div>
             </td>   
           </tr>
           <tr>

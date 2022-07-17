@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const QnaComponent = ({ qna }) => {
+const QnaComponent = ({ qna }) => {
   const { space, question, questionDate, answer } = qna;
 
   const deleteBtnstyle = {
@@ -29,7 +29,7 @@ export const QnaComponent = ({ qna }) => {
   );
 };
 
-export const QnaDetailComponent = ({qna}) => {
+const QnaDetailComponent = ({ qna }) => {
   const { question, questionDate, answer, answerDate } = qna;
 
   const trStyle = {
@@ -43,14 +43,24 @@ export const QnaDetailComponent = ({qna}) => {
     width: "3rem",
   };
 
+
   return (
     <>
       <tr style={trStyle}>
-        <td colspan="4" style={tdStyle}>
-          <h2>Q. </h2> <span></span> <p>{question}</p>
-          <h2>A. </h2> <p>{answer}</p>
+        <td colSpan="4" style={tdStyle}>
+          <h2>Q. </h2> <span>질문일: {questionDate} </span> <p>{question}</p>
+          <h2>A. </h2> <span>답변일: {answerDate} </span> <p>{answer}</p>
         </td>
       </tr>
     </>
   );
 };
+
+export default function MyQnaComponent({ qna }) {
+  return (
+    <>
+      <QnaComponent qna={qna} />
+      <QnaDetailComponent qna={qna} />
+    </>
+  );
+}

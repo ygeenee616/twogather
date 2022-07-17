@@ -32,7 +32,7 @@ function MyProfile() {
       <ProfileImgDiv>
         <img src="/images/duck.png" alt="프로필 사진" />
         <EditBtnDiv>
-          <label for="imgUpload">
+          <label htmlFor="imgUpload">
             <div id="img_upload">프로필 사진 변경</div>
           </label>
           <input type="file" accept="image/*" id="imgUpload" />
