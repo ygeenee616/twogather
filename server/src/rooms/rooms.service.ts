@@ -38,6 +38,26 @@ export class RoomsService {
     });
   }
 
+  async findAllBySpace(spaceId: number) {
+    try {
+      return await this.roomsRepository.find({
+        where: {
+          space: {
+            id: spaceId,
+          },
+        },
+        relations: {
+          space: true,
+        },
+        order: {
+          id: 'DESC',
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // roomId로 특정 room 조회
   async findOne(id: number) {
     try {

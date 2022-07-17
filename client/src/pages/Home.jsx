@@ -3,8 +3,20 @@ import styled from "styled-components";
 import HomeImageSlider from "../components/HomeImageSlider";
 import Category from "../components/Category.jsx";
 import Recommendation from "../components/Recommendation.jsx";
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from "recoil";
+import userInfoState from "../atom/userInfoState";
 
 export default function Home() {
+  const a = useRecoilValue(userInfoState);
+
+  console.log(a);
+
   return (
     <div>
       <HomeImageSlider />
