@@ -21,8 +21,7 @@ export class UserResExample {
         id: 41,
         nickname: 'test678',
         email: 'test678@naver.com',
-        password:
-          '$2a$10$NWv0JutXwYJUaA8oUX45weRdBNuTpO3AjjlizhdSpUDcwjNwV2k7q',
+        password: '****',
         name: null,
         sex: null,
         profileImage: null,
@@ -36,8 +35,7 @@ export class UserResExample {
         id: 43,
         nickname: 'test6789',
         email: 'test6789@naver.com',
-        password:
-          '$2a$10$WKS7MfQZiVoZxvvIrm3FJ.f.o8lqTjPChx2ZL3ze.IifGLqV3SoRm',
+        password: '****',
         name: null,
         sex: null,
         profileImage: null,
