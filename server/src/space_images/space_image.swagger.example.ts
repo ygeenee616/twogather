@@ -44,6 +44,69 @@ export class SpaceImageResExample {
       },
     },
   };
+
+  public readonly findAllBySpace = {
+    status: 200,
+    description: '특정 공간의 space 이미지(URL) 목록 조회 성공',
+    success: true,
+    data: [
+      {
+        id: 5,
+        imageUrl: 'http://s33.com',
+        space: {
+          id: 37,
+          type: 'q1',
+          address: 'ㅁㄴㅁㄴasdf',
+          name: '234123ㅁㄴㅁㄴ1',
+          notice: '123ㅁㄴㄴㅁ4',
+          intro: 'tgdㅁㄴㄴㅁsvcax',
+          user: {
+            id: 65,
+            isAdmin: false,
+            nickname: 'kkk123',
+            email: 'kkkk123@naver.com',
+            password: '****',
+            name: null,
+            sex: null,
+            profileImage: null,
+            phoneNumber: null,
+            businessNumber: null,
+            businessName: null,
+            businessAddress: null,
+            accountNumber: null,
+          },
+        },
+      },
+      {
+        id: 4,
+        imageUrl: 'http://s32.com',
+        space: {
+          id: 37,
+          type: 'q1',
+          address: 'ㅁㄴㅁㄴasdf',
+          name: '234123ㅁㄴㅁㄴ1',
+          notice: '123ㅁㄴㄴㅁ4',
+          intro: 'tgdㅁㄴㄴㅁsvcax',
+          user: {
+            id: 65,
+            isAdmin: false,
+            nickname: 'kkk123',
+            email: 'kkkk123@naver.com',
+            password: '****',
+            name: null,
+            sex: null,
+            profileImage: null,
+            phoneNumber: null,
+            businessNumber: null,
+            businessName: null,
+            businessAddress: null,
+            accountNumber: null,
+          },
+        },
+      },
+    ],
+  };
+
   public readonly findAll = {
     status: 200,
     description: '전체 space 이미지(URL) 목록 조회 성공',

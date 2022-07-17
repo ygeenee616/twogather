@@ -90,7 +90,7 @@ export class QnasController {
     status: 200,
     description: '특정 공간의 Q&A 목록 조회',
     schema: {
-      example: qnaResExample.findAll,
+      example: qnaResExample.findAllBySpace,
     },
   })
   async findAllBySpace(@Param('spaceId') spaceId: number, @Query() query) {

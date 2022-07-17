@@ -77,6 +77,28 @@ export class RoomsController {
     };
   }
 
+  @Get('space/:spaceId')
+  @ApiOperation({
+    summary: '특정 공간의 room 목록 조회 API',
+    description: '특정 공간의 room 목록을 가져온다.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '특정 공간의 rooms',
+    schema: {
+      example: roomResExample.findAllBySpace,
+    },
+  })
+  async findAllBySpace(@Param('spaceId') spaceId: number) {
+    const rooms = await this.roomsService.findAllBySpace(spaceId);
+    return {
+      status: 200,
+      success: true,
+      description: 'spaceId로 rooms 조회 성공',
+      data: rooms,
+    };
+  }
+
   // My Room 목록 조회
   @Get('/host')
   @ApiOperation({
