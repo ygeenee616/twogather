@@ -9,6 +9,8 @@ function MyReservedRoom({room, idx}) {
   const handleCancelReservation = () => {
 
   }
+  
+  let reviewId= 1;
 
   return (
     <RoomDiv>
@@ -23,7 +25,7 @@ function MyReservedRoom({room, idx}) {
       </InfoDiv>
       <EditDiv>
         <span onClick={handleCancelReservation}> 예약취소 </span>
-        <a href='/myPage/addReview'> 리뷰작성</a>
+        <a href={`/myPage/addReview?reviewId=${reviewId}`}> 리뷰작성</a>
       </EditDiv>
     </RoomDiv>
   );

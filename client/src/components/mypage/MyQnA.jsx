@@ -50,23 +50,26 @@ function MyQnA() {
     page_limit * page < total_elem ? page_limit * page : total_elem;
   const [targetTr, setTargetTr] = useState('');
 
-  const handleQnaClick = (e) => {
+  const handleToggle = (e) => {
     e.preventDefault();
 
     let tr = e.target.closest('tr').nextElementSibling;
     if(!tr) return;
 
+    // 기존 detail tr 숨기기
     if(targetTr) targetTr.style.setProperty('display', 'none');
+
+    // 타겟 detail tr 변경하고 보이기
     setTargetTr(tr);
     tr.style.setProperty('display', 'table-row');
-    console.log(tr.style.getPropertyValue('display'));
+
 
   }
 
   return (
     <QnADiv>
       <h3>나의 질문</h3>
-      <QnATable onClick={handleQnaClick}>
+      <QnATable onClick={handleToggle}>
         <QnATableHead>
           <td className="space"> 공간정보 </td>
           <td className="description"> 문의내용 </td>
