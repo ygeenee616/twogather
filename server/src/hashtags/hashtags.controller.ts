@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { HashtagsService } from './hashtags.service';
 import { CreateHashtagDto } from './dto/create-hashtag.dto';
@@ -13,6 +14,7 @@ import { UpdateHashtagDto } from './dto/update-hashtag.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
 import { Hashtag } from './entities/hashtag.entity';
 import { UpdateDateColumn } from 'typeorm';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('api/hashtags')
 @ApiTags('해시태그 API')
@@ -24,25 +26,44 @@ export class HashtagsController {
   constructor(private readonly hashtagsService: HashtagsService) {}
 
   @Post(':spaceId')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '해시태그 생성 API',
     description: '해시태그를 생성한다.',
   })
-  @ApiResponse({ status: 201, description: '생성된 해시태그', type: Hashtag })
-  create(
+  @ApiResponse({
+    status: 201,
+    description: '해시태그 생성 성공',
+    type: Hashtag,
+  })
+  async create(
     @Body() createHashtagDto: CreateHashtagDto,
     @Param('spaceId') spaceId: number,
   ) {
-    return this.hashtagsService.create(createHashtagDto, spaceId);
+    const hashtags = await this.hashtagsService.create(
+      createHashtagDto,
+      spaceId,
+    );
+    return {
+      status: 200,
+      description: '해시태그 생성 성공',
+      success: true,
+      data: hashtags,
+    };
   }
 
   @Get()
-  findAll() {
-    console.log('123');
-    return this.hashtagsService.findAll();
+  async findAll(@Param('id') id: number): Promise<any> {
+    const hashtag = await this.hashtagsService.findOne(id);
+    return {
+      status: 200,
+      description: '특정 해시태그',
+      success: true,
+      data: hashtag,
+    };
   }
 
-  @Get(':id')
+  @Get('/:id')
   @ApiOperation({
     summary: '특정 해시태그 찾는 API',
     description: '해시태그의 ID로 특정 해시태그를 불러온다.',
