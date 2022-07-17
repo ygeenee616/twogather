@@ -5,6 +5,7 @@ import HostSpaceList from "./hostPage/HostSpaceList";
 import HostBookList from "./HostBookList";
 import { FaUserCircle } from "react-icons/fa";
 import StripeLayout from "../components/StripeLayout";
+import HostQnA from "./HostQ&A";
 
 const name = "강예정";
 function HostHome() {
@@ -57,6 +58,8 @@ function HostHome() {
             <HostBookList></HostBookList> //추후 공간내역이 들어가야함
           ) : content === "manageSpace" ? (
             <HostSpaceList></HostSpaceList> //추후 공간내역이 들어가야함
+          ) : content === "manageQA" ? (
+            <HostQnA></HostQnA>
           ) : (
             ""
           )}

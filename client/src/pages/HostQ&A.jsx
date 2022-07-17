@@ -56,7 +56,7 @@ const QnABox = styled.details`
 `;
 
 const Question = styled.summary`
-  cursor: help;
+  cursor: pointer;
 
   &::marker {
     content: "❓";
