@@ -76,6 +76,29 @@ export class SpaceImagesController {
     };
   }
 
+  // 특정 공간의 spaceImage URL 목록 조회
+  @Get('space/:spaceId')
+  @ApiOperation({
+    summary: '특정 공간의 space 이미지(URL) findAll API',
+    description: '특정 공간의 space 이미지(URL) 목록을 불러온다.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '특정 공간의 space 이미지(URL) 목록',
+    schema: {
+      // example: spaceImageResExample.findAll,
+    },
+  })
+  async findAllBySpace(@Param('spaceId') spaceId: number) {
+    const spaceImages = await this.spaceImagesService.findAllBySpace(spaceId);
+    return {
+      status: 200,
+      description: '특정 공간의 space 이미지(URL) 목록 조회 성공',
+      success: true,
+      data: spaceImages,
+    };
+  }
+
   // Id로 특정 spaceImage URL 조회
   @Get(':id')
   @ApiOperation({

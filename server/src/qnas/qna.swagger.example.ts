@@ -20,8 +20,7 @@ export class QnaResExample {
           isAdmin: false,
           nickname: 'test2',
           email: 'test2@naver.com',
-          password:
-            '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
+          password: '****',
           name: '김태훈',
           sex: null,
           profileImage: null,
@@ -57,8 +56,7 @@ export class QnaResExample {
         isAdmin: false,
         nickname: 'test2',
         email: 'test2@naver.com',
-        password:
-          '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
+        password: '****',
         name: '김태훈',
         sex: null,
         profileImage: null,
@@ -82,6 +80,106 @@ export class QnaResExample {
       },
     },
   };
+
+  public readonly findAllBySpace = {
+    status: 200,
+    description: '특정 공간의 Q&A 목록 조회 성공',
+    success: true,
+    data: {
+      totalPage: 3,
+      paginatedQnas: [
+        {
+          id: 5,
+          createdTime: '2022-07-17T12:19:14.000Z',
+          content: '숙박 가능한 방인가요?1',
+          reply: null,
+          space: {
+            id: 50,
+            type: '세미나실',
+            address: 'ㅁㄴㅁㄴasdf',
+            name: '세미나실123',
+            notice: '123ㅁㄴㄴㅁ4',
+            intro: 'tgdㅁㄴㄴㅁsvcax',
+            user: {
+              id: 74,
+              isAdmin: false,
+              nickname: 'ttest',
+              email: 'tester@t.com',
+              password: '****',
+              name: null,
+              sex: null,
+              profileImage: null,
+              phoneNumber: null,
+              businessNumber: null,
+              businessName: null,
+              businessAddress: null,
+              accountNumber: null,
+            },
+          },
+          user: {
+            id: 74,
+            isAdmin: false,
+            nickname: 'ttest',
+            email: 'tester@t.com',
+            password: '****',
+            name: null,
+            sex: null,
+            profileImage: null,
+            phoneNumber: null,
+            businessNumber: null,
+            businessName: null,
+            businessAddress: null,
+            accountNumber: null,
+          },
+        },
+        {
+          id: 5,
+          createdTime: '2022-07-17T12:19:14.000Z',
+          content: '숙박 가능한 방인가요?1',
+          reply: null,
+          space: {
+            id: 50,
+            type: '세미나실',
+            address: 'ㅁㄴㅁㄴasdf',
+            name: '세미나실123',
+            notice: '123ㅁㄴㄴㅁ4',
+            intro: 'tgdㅁㄴㄴㅁsvcax',
+            user: {
+              id: 74,
+              isAdmin: false,
+              nickname: 'ttest',
+              email: 'tester@t.com',
+              password: '****',
+              name: null,
+              sex: null,
+              profileImage: null,
+              phoneNumber: null,
+              businessNumber: null,
+              businessName: null,
+              businessAddress: null,
+              accountNumber: null,
+            },
+          },
+          user: {
+            id: 74,
+            isAdmin: false,
+            nickname: 'ttest',
+            email: 'tester@t.com',
+            password: '****',
+            name: null,
+            sex: null,
+            profileImage: null,
+            phoneNumber: null,
+            businessNumber: null,
+            businessName: null,
+            businessAddress: null,
+            accountNumber: null,
+          },
+        },
+      ],
+    },
+  };
+
   public readonly findAll = {
     status: 200,
     description: '전체 Q&A 목록 조회 성공',
@@ -104,8 +202,7 @@ export class QnaResExample {
             isAdmin: false,
             nickname: 'test2',
             email: 'test2@naver.com',
-            password:
-              '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
+            password: '****',
             name: '김태훈',
             sex: null,
             profileImage: null,
@@ -141,8 +238,7 @@ export class QnaResExample {
           isAdmin: false,
           nickname: 'test2',
           email: 'test2@naver.com',
-          password:
-            '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
+          password: '****',
           name: '김태훈',
           sex: null,
           profileImage: null,
@@ -182,8 +278,7 @@ export class QnaResExample {
             isAdmin: false,
             nickname: 'test2',
             email: 'test2@naver.com',
-            password:
-              '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
+            password: '****',
             name: '김태훈',
             sex: null,
             profileImage: null,
@@ -219,8 +314,7 @@ export class QnaResExample {
           isAdmin: false,
           nickname: 'test2',
           email: 'test2@naver.com',
-          password:
-            '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
+          password: '****',
           name: '김태훈',
           sex: null,
           profileImage: null,
@@ -266,8 +360,7 @@ export class QnaResExample {
           isAdmin: false,
           nickname: 'test2',
           email: 'test2@naver.com',
-          password:
-            '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
+          password: '****',
           name: '김태훈',
           sex: null,
           profileImage: null,
@@ -303,8 +396,7 @@ export class QnaResExample {
         isAdmin: false,
         nickname: 'test2',
         email: 'test2@naver.com',
-        password:
-          '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
+        password: '****',
         name: '김태훈',
         sex: null,
         profileImage: null,
@@ -335,9 +427,22 @@ export class QnaResExample {
     data: { affected: true },
   };
 
+  public readonly updateMyQna = {
+    status: 201,
+    description: 'qnaId로 내가 작성한 특정 Q&A 수정',
+    success: true,
+    data: { affected: true },
+  };
+
   public readonly removeQna = {
     status: 201,
     description: 'qnaId로 특정 Q&A 삭제 성공',
+    success: true,
+  };
+
+  public readonly removeMyQna = {
+    status: 201,
+    description: 'qnaId로 내가 작성한 특정 Q&A 삭제 성공',
     success: true,
   };
 }
