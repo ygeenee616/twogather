@@ -23,7 +23,14 @@ export class HashtagsService {
 
   findAll() {
     try {
-      return this.hashtagsRepository.find();
+      return this.hashtagsRepository.find({
+        relations: {
+          space: true,
+        },
+        order: {
+          id: 'DESC',
+        },
+      });
     } catch (error) {
       throw error;
     }
