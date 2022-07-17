@@ -4,7 +4,6 @@ import "./index.css";
 import App from "./App";
 import Store from "./Store";
 import { Provider } from "react-redux";
-import RecoilizeDebugger from "recoilize";
 
 import {
   RecoilRoot,
