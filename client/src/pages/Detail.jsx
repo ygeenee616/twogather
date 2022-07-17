@@ -1,32 +1,73 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ImageSlider from "../components/detail/ImageSlider";
+import Tab from "../components/detail/Tab";
 import Map from "../components/detail/Map";
 import Dropbox from "../components/detail/DropBox";
 import { MyDatePicker } from "../components/detail/DatePicker";
 import ToTop from "../components/ToTop";
 import axios from "axios";
 
-// 탭 스크롤 함수
-function changeTab(props) {
-  const thisContent = document.querySelector(`.${props}`);
-  thisContent.scrollIntoView({ behavior: "smooth", block: "center" });
-}
+// 날짜 선택시 해당 날짜의 예약 내역 가져오는 함수
+const handleDateChange = async (date) => {
+  // 클릭한 date에 따른 예약 내역
+  const req = await axios.get("/dummyBook.json");
+  const data = await req.data.books;
+
+  // 예약 내역이 있는 시간 배열
+  let bookedTime = [];
+  data.map((item) => {
+    for (let t = item.startTime; t <= item.endTime; t++) {
+      bookedTime.push(t);
+    }
+  });
+
+  let startTimeList = document.querySelectorAll(".startTime");
+  let endTimeList = document.querySelectorAll(".endTime");
+
+  bookedTime.forEach((num) => {
+    startTimeList[num].disabled = true;
+    startTimeList[num].classList.add("disable");
+    startTimeList[num].style.textDecoration = "line-through";
+
+    endTimeList[num].disabled = true;
+    endTimeList[num].classList.add("disable");
+    endTimeList[num].style.textDecoration = "line-through";
+  });
+};
 
 export default function Detail() {
-  const [data, setData] = useState(0);
+  // api 데이터 state
+  const [data, setData] = useState("");
+  // 선택한 룸
+  const room = useRef({ id: "", title: "" });
+  // 사용자 예약 인원 state
   const [people, setPeople] = useState(0);
-  const currPeople = useRef(0);
-  const [possible, setPossible] = useState();
+  const refPeople = useRef(people);
+  // 데이트피커 state
+  const [date, setDate] = useState(new Date());
+  const [startTime, setStartTime] = useState(0);
+  const [endTime, setEndTime] = useState(0);
+  // 예약 최소 시간
+  const [lessTime, setLessTime] = useState(true);
+  // 예약 중복 내역
+  const [overlap, setOverlap] = useState(false);
 
+  // 선택한 룸의 수용 가능 인원
+  const acceptPeople = useRef(0);
+  // 예약 가능 여부
+  const possible = useRef(false);
+
+  const navigate = useNavigate();
+
+  // api 데이터 받아오는 함수
   useEffect(() => {
     const getData = async () => {
       try {
         const req = await axios.get("/dummyDetail.json");
         const space = await req.data.space;
         setData(space);
-        console.log(space);
       } catch (err) {
         console.log(err);
       }
@@ -34,19 +75,82 @@ export default function Detail() {
     getData();
   }, []);
 
+  // 받아온 데이터를 각각 변수에 저장
   const title = data.title;
   const hashTag = data.hashTag;
   const contents = data.contents;
+  const address = data.address;
   const rooms = data.rooms;
   const images = data.images;
+  const host = data.host;
 
-  useEffect(() => {
-    console.log(people);
-    // Number(currPeople.current) >= Number(people)
-    //   ? setPossible(true)
-    //   : setPossible(false);
-    // console.log(possible);
-  }, [people]);
+  // 룸 선택시 적용하는 DropBox 함수
+  function checkSelectRoom(eId, eClass) {
+    room.current = {
+      id: eId,
+      title: eClass,
+    };
+  }
+
+  // 예약 정보를 제대로 입력했을 때만 예약 버튼을 활성화하는 함수
+  function checkPossible(e) {
+    e.preventDefault();
+    Number(acceptPeople.current) !== 0 &&
+    Number(refPeople.current) !== 0 &&
+    Number(acceptPeople.current) >= Number(refPeople.current) &&
+    lessTime === false &&
+    overlap === false
+      ? (possible.current = true)
+      : (possible.current = false);
+  }
+
+  // 날짜 포맷팅
+  function dateToNumber(date) {
+    const formatDate = Number(
+      date.getFullYear() +
+        (date.getMonth() + 1).toString().padStart(2, "0") +
+        date.getDate().toString().padStart(2, "0")
+    );
+    return formatDate;
+  }
+
+  // date 선택시 적용하는 DatePicker 함수
+  function onChangeDate(date) {
+    setDate(dateToNumber(date));
+    handleDateChange(date);
+  }
+
+  // startTime 선택시 적용하는 DatePicker 함수
+  function onClickStartTime(time) {
+    setStartTime(Number(time));
+    handleTimeChange(Number(time), endTime);
+    Number(time) < endTime ? setLessTime(false) : setLessTime(true);
+  }
+
+  // endTime 선택시 적용하는 DatePicker 함수
+  function onClickEndTime(time) {
+    setEndTime(Number(time));
+    handleTimeChange(startTime, Number(time));
+    startTime < Number(time) ? setLessTime(false) : setLessTime(true);
+  }
+
+  // 예약 시작 시간과 종료 시간 사이에 이미 예약된 시간이 있을 시 주의를 주는 함수
+  function handleTimeChange(startTime, endTime) {
+    let disableList = document.querySelectorAll(".disable");
+
+    let booked = [];
+    disableList.forEach((list) => {
+      booked.push(Number(list.value));
+    });
+    booked = booked.slice(booked.length / 2);
+
+    let newBookTime = [];
+    for (let n = Number(startTime); n <= Number(endTime); n++) {
+      newBookTime.push(n);
+    }
+    const filtering = newBookTime.filter((x) => booked.includes(x));
+    filtering.length > 0 ? setOverlap(true) : setOverlap(false);
+  }
 
   return (
     data && (
@@ -63,80 +167,63 @@ export default function Detail() {
         <DetailContainer>
           <LeftContainer>
             <ImageSlider images={images} />
-            <TabContainer>
-              <Tabs>
-                <TabTitle id="tab1" onClick={(e) => changeTab(e.target.id)}>
-                  공간소개
-                </TabTitle>
-                <TabTitle id="tab2" onClick={(e) => changeTab(e.target.id)}>
-                  유의사항
-                </TabTitle>
-                <TabTitle id="tab3" onClick={(e) => changeTab(e.target.id)}>
-                  후기
-                </TabTitle>
-                <TabTitle id="tab4" onClick={(e) => changeTab(e.target.id)}>
-                  Q & A
-                </TabTitle>
-              </Tabs>
-
-              <div className="tab-box">
-                <TabContent className="tab1">
-                  <h2>공간소개</h2>
-                  <p>{contents.introduce}</p>
-                </TabContent>
-                <TabContent className="tab2">
-                  <h2>유의사항</h2>
-                  <p>{contents.notice}</p>
-                </TabContent>
-                <TabContent className="tab3">
-                  <h2>후기</h2>
-                  {contents.review.map((item, i) => {
-                    return (
-                      <div key={i} className="itemBox">
-                        <p className="itemUser">{item.id}</p>
-                        <p className="itemContent">{item.content}</p>
-                      </div>
-                    );
-                  })}
-                </TabContent>
-                <TabContent className="tab4">
-                  <h2>Q&A</h2>
-                  {contents.qna.map((item, i) => {
-                    return (
-                      <div key={i} className="itemBox">
-                        <p className="itemUser">{item.id}</p>
-                        <p className="itemContent">{item.question}</p>
-                        <p className="itemContent">↪ {item.answer}</p>
-                      </div>
-                    );
-                  })}
-                </TabContent>
-              </div>
-            </TabContainer>
-            <Map />
+            <Tab contents={contents} />
+            <Map title={title} address={address} />
           </LeftContainer>
 
           <RightContainer>
-            <Dropbox rooms={rooms} currPeople={currPeople} />
-            <MyDatePicker />
-            <Personnel>
-              예약 인원:
-              <input
-                type="number"
-                value={people}
-                onChange={(e) => {
-                  setPeople(e.target.value);
-                }}
-              />
-              명
+            <Dropbox
+              rooms={rooms}
+              acceptPeople={acceptPeople}
+              checkSelectRoom={checkSelectRoom}
+            />
+            <MyDatePicker
+              date={date}
+              startTime={startTime}
+              endTime={endTime}
+              lessTime={lessTime}
+              overlap={overlap}
+              onChangeDate={onChangeDate}
+              onClickStartTime={onClickStartTime}
+              onClickEndTime={onClickEndTime}
+            />
+            <Personnel possible={possible.current}>
+              <InputPeople>
+                예약 인원:
+                <input
+                  type="number"
+                  value={people}
+                  onChange={(e) => {
+                    if (e.target.value !== "" || e.target.value !== 0) {
+                      setPeople(e.target.value);
+                      refPeople.current = e.target.value;
+                      checkPossible(e);
+                    }
+                  }}
+                />
+                명
+              </InputPeople>
+              <p className="overPeople">
+                * 예약 정보를 맞게 입력했는지 확인해주세요
+              </p>
             </Personnel>
-            <p className="OverPeople" possible={possible}>
-              * 예약 인원이 수용 가능 인원을 초과하였습니다.
-            </p>
-            <Button>
-              <Link to="/book" className="move">
-                예약하기
-              </Link>
+            <Button
+              possible={possible.current}
+              onClick={() =>
+                possible.current &&
+                navigate("/book", {
+                  state: {
+                    people: people,
+                    date: date,
+                    startTime: startTime,
+                    endTime: endTime,
+                    room: room.current,
+                    host: host,
+                  },
+                })
+              }
+            >
+              예약하기
             </Button>
           </RightContainer>
 
@@ -171,7 +258,7 @@ const HashTag = styled.span`
   background-color: #9ba3eb;
   color: white;
   border-radius: 20px;
-  padding: 0 10px;
+  padding: 3px 15px;
   margin-right: 10px;
 `;
 
@@ -181,96 +268,39 @@ const DetailContainer = styled.div`
 `;
 
 const LeftContainer = styled.div`
-  width: 70%;
-`;
-
-const TabContainer = styled.div`
-  width: 100%;
-  margin: 30px 0;
-`;
-
-const Tabs = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  border: solid #bbd3f2;
-  border-width: 2px 0;
-  font-size: 0.9rem;
-`;
-
-const TabTitle = styled.div`
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  font-weight: normal;
-  padding: 10px 0;
-  margin: 0;
-
-  & + div {
-    border-left: 2px solid #bbd3f2;
-  }
-
-  &:hover {
-    font-weight: bold;
-  }
-`;
-
-const TabContent = styled.div`
-  width: 100%;
-  padding: 20px;
-  white-space: pre-wrap;
-  font-size: 0.9rem;
-  text-align: left;
-
-  & + div {
-    border-top: 2px solid #bbd3f2;
-  }
-
-  & .itemBox + .itemBox {
-    border-top: 1px solid #f2f2f2;
-  }
-
-  & .itemUser + .itemUser {
-    font-weight: bold;
-  }
-
-  & .itemContent {
-    margin-left: 7%;
-  }
-
-  p {
-    line-height: 2.3rem;
-  }
+  width: 65%;
 `;
 
 const RightContainer = styled.div`
-  width: 20%;
+  width: 30%;
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  & .OverPeople {
-    font-size: 0.7rem;
-    color: red;
-    ${({ possible }) => (possible ? `display: block;` : `display: none;`)};
-  }
 `;
 
 const Personnel = styled.div`
   width: 100%;
+
+  & .overPeople {
+    font-size: 0.8rem;
+    color: red;
+    ${({ possible }) => (possible ? `display: none;` : `display: block;`)};
+  }
+`;
+
+const InputPeople = styled.div`
+  width: 100%;
   display: flex;
-  justify-content: space-between;
   margin: 10px 0;
 
   & > input {
-    width: 50%;
+    width: 30%;
     max-height: 22px;
     border: 2px solid #8daef2;
     border-radius: 5px;
     text-align: center;
     padding: 0;
-    margin: 0;
+    margin: 0 10px;
   }
 
   /* 스피너 제거 */
@@ -292,15 +322,19 @@ const Button = styled.button`
   padding: 5px;
   border-radius: 10px;
   border: none;
-  background: #8daef2;
-  transition: all 0.3s;
 
-  &:hover {
-    box-shadow: 2px 2px 5px -1px #a6a9b6;
-  }
-
-  & .move {
-    text-decoration: none;
-    color: #fff;
-  }
+  ${({ possible }) =>
+    possible
+      ? `
+      background: #8daef2;
+      transition: all 0.3s;
+      color: #fff;
+      &:hover {
+        box-shadow: 2px 2px 5px -1px #a6a9b6;
+      }
+      `
+      : `
+      background: #DFDFDE;
+      color: #fff;
+      `};
 `;

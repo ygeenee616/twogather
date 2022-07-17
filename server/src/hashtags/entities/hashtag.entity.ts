@@ -24,6 +24,6 @@ export class Hashtag {
     eager: false,
   })
   @JoinColumn({ name: 'spaceId', referencedColumnName: 'id' })
-  @ApiProperty({ description: 'hashtag의 FK. space의 Id' })
+  @ApiProperty({ description: 'hashtag의 FK. space의 Id', type: () => Space })
   space: Space;
 }

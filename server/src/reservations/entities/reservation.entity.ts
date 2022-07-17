@@ -1,8 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Review } from 'src/reviews/entities/review.entity';
 import { Room } from 'src/rooms/entities/rooms.entity';
 import { Space } from 'src/spaces/entities/spaces.entity';
 import { User } from 'src/users/entities/users.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Reservation {
@@ -34,4 +41,7 @@ export class Reservation {
     eager: false,
   })
   user: User;
+
+  @OneToOne((type) => Review, (rewiew) => rewiew.reservation)
+  review: Review;
 }

@@ -8,6 +8,7 @@ import {
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { Space } from 'src/spaces/entities/spaces.entity';
+import { Qna } from 'src/qnas/entities/qna.entity';
 
 @Entity()
 export class User {
@@ -63,13 +64,12 @@ export class User {
   @ApiPropertyOptional({ description: '사업자 계좌번호' })
   accountNumber: string;
 
-  @OneToMany((type) => Reservation, (reservation) => reservation.user, {
-    eager: true,
-  })
+  @OneToMany((type) => Reservation, (reservation) => reservation.user)
   reservations: Reservation[];
 
-  @OneToMany((type) => Space, (spaces) => spaces.user, {
-    eager: true,
-  })
+  @OneToMany((type) => Space, (spaces) => spaces.user)
   spaces: Space[];
+
+  @OneToMany((type) => Qna, (qna) => qna.user)
+  qnas: Qna[];
 }

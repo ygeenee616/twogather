@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { HiChevronDown } from "react-icons/hi";
 import { FcHome, FcConferenceCall } from "react-icons/fc";
 
-export default function Dropbox({ rooms, currPeople }) {
+export default function Dropbox({ rooms, acceptPeople, checkSelectRoom }) {
   return (
     <RoomList>
       <p>세부 공간 선택</p>
@@ -16,10 +16,11 @@ export default function Dropbox({ rooms, currPeople }) {
                 type="radio"
                 id="select"
                 name="room"
+                className={item.title}
                 value={item.id}
                 onClick={(e) => {
-                  currPeople.current = item.people;
-                  console.log(currPeople.current);
+                  checkSelectRoom(e.target.value, e.target.className);
+                  acceptPeople.current = item.people;
                 }}
               />
               <RoomLabel>
@@ -55,7 +56,7 @@ const RoomList = styled.div`
   border: solid #8daef2;
   border-width: 2px 0;
   background-color: #fff;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 `;
 
 const Container = styled.details`
@@ -76,14 +77,14 @@ const Container = styled.details`
 const RoomItem = styled.summary`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  font-size: 0.7rem;
+  justify-content: space-around;
+  font-size: 0.8rem;
   border-top: 2px solid #8daef2;
   padding: 5px 0;
   transition: all 0.3s;
 
   & img {
-    width: 50%;
+    width: 40%;
     border-radius: 15px;
     padding: 5px 0;
   }
@@ -97,7 +98,6 @@ const RoomLabel = styled.div`
 
 const Dropdown = styled.div`
   padding-bottom: 10px;
-  transition: all 0.3s;
   & div {
     margin: 0 10%;
     display: flex;

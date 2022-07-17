@@ -2,9 +2,12 @@ import React, { useState, useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { validateEmail, validatePassword } from "../assets/utils/UsefulFunction";
-import userSlice, {login} from "../slices/UserSlice";
-import * as Api from '../api';
+import {
+  validateEmail,
+  validatePassword,
+} from "../assets/utils/UsefulFunction";
+import userSlice, { login } from "../slices/UserSlice";
+import * as Api from "../api";
 
 import styled from "styled-components";
 import {
@@ -20,43 +23,41 @@ function LoginForm() {
 
   const dispatch = useDispatch();
   const params = useParams();
-  const navigate =useNavigate();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [alertMsg, setAlertMsg] = useState("")
+  const [alertMsg, setAlertMsg] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    if(email==="") setAlertMsg("아이디를 입력해 주세요.");
-    else if(password==="") setAlertMsg("비밀번호를 입력해 주세요.");
-    else if(!validateEmail(email)) setAlertMsg("이메일 형식이 올바르지 않습니다.");
-    
+    if (email === "") setAlertMsg("아이디를 입력해 주세요.");
+    else if (password === "") setAlertMsg("비밀번호를 입력해 주세요.");
+    else if (!validateEmail(email))
+      setAlertMsg("이메일 형식이 올바르지 않습니다.");
     else {
       try {
-        const data = {email, password};
+        const data = { email, password };
         // "/apiusers/sign-in" 엔드포인트로 post요청함.
-        const res = await Api.post("/api/users/sign-in", data);
-
+        const res = await Api.post("api/users/sign-in", data);
         // JWT 토큰은 유저 정보의 token임.
-        const jwtToken = res.accessToken;
+        const jwtToken = `Bearer ${res.data.accessToken}`;
         // sessionStorage에 "userToken"이라는 키로 JWT 토큰을 저장함.
         localStorage.setItem("userToken", jwtToken);
         // dispatch 함수를 이용해 로그인 성공 상태로 만듦.
         dispatch(login(data));
-  
+
         // 기본 페이지로 이동함.
         navigate("/", { replace: true });
       } catch (err) {
         console.log("로그인에 실패하였습니다.", err);
-        setAlertMsg("아이디 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해주세요.")
+        setAlertMsg(
+          "아이디 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해주세요."
+        );
       }
-
     }
-
     console.log(user);
-    
   };
 
   return (
@@ -83,8 +84,9 @@ function LoginForm() {
             </LoginInputDiv>
             <LoginButton onClick={handleLogin}>LOGIN</LoginButton>
           </LoginDiv>
-          <AlertMsg><span>{alertMsg}</span></AlertMsg>
-
+          <AlertMsg>
+            <span>{alertMsg}</span>
+          </AlertMsg>
 
           <SocialLoginDiv>
             <SocialLoginBtn className="kakao-login">
@@ -101,9 +103,7 @@ function LoginForm() {
             <tr>
               <QuestionTD>회원이 아니신가요?</QuestionTD>
               <LinkTD>
-                <a href="/register/user">
-                  회원가입
-                </a>
+                <a href="/register">회원가입</a>
               </LinkTD>
             </tr>
             <tr>
@@ -121,7 +121,6 @@ const LoginDiv = styled.form`
   display: flex;
   flex-direction: row;
   margin: 0 5rem;
-  
 
   input {
     width: 11rem;
@@ -159,7 +158,7 @@ const AlertMsg = styled.div`
     font-size: 0.5rem;
     color: red;
   }
-`
+`;
 
 const SocialLoginDiv = styled.div`
   display: flex;

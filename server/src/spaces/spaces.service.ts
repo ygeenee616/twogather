@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/users.entity';
+import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { CreateSpaceDto } from './dto/create-space.dto';
 import { UpdateSpaceDto } from './dto/update-space.dto';
@@ -70,7 +71,6 @@ export class SpacesService {
             id: hostId,
           },
         },
-        cache: true,
       });
     } catch (error) {
       throw error;
@@ -87,7 +87,6 @@ export class SpacesService {
         relations: {
           user: true,
         },
-        cache: true,
       });
       return spaces;
     } catch (error) {
@@ -126,7 +125,7 @@ export class SpacesService {
         },
         UpdateSpaceDto,
       );
-      console.log(updateSpace);
+
       return updateSpace.affected === 1;
     } catch (error) {
       throw error;

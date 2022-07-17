@@ -8,8 +8,10 @@ import CategoryModal from "../components/list/CategoryModal";
 import DateSelector from "../components/list/DateSelector";
 import DateModal from "../components/list/DateModal";
 import SelecotrResetBtn from "../components/list/SelectorResetBtn";
+import SortingSelector from "../components/list/SortingSelector";
 import exImg1 from "../assets/images/ex1.png";
 import exImg2 from "../assets/images/ex2.png";
+import * as api from "../api";
 
 const ex1 = [
   {
@@ -52,18 +54,18 @@ for (let i = 12; i < 24; i++) {
   exData = exData.concat(ex2);
 }
 
-const renderData = ({ offset, limit }) => {
-  return exData
+const renderData = (offset, limit, data) => {
+  return data
     .slice(offset, offset + limit)
-    .map((exData, i) => (
+    .map((data, i) => (
       <ProductCard
         key={i}
-        src={exData.src}
-        tag={exData.tag}
-        title={exData.title}
-        address={exData.address}
-        price={exData.price}
-        review={exData.review}
+        src={data.src}
+        tag={data.tag}
+        title={data.title}
+        address={data.address}
+        price={data.price}
+        review={data.review}
         link={`/detail/1`}
       />
     ));
@@ -73,14 +75,33 @@ export default function ProductList() {
   const [page, setPage] = useState(1);
   const [categoryModalDisplay, setcategoryModalDisplay] = useState("none");
   const [DateModalDisplay, setDateModalDisplay] = useState("none");
+  const [spaces, setSpaces] = useState([]);
+
   const limit = 12;
   const offset = (page - 1) * limit;
-  const { searchInput } = useParams();
+
+  const { search } = window.location;
+
+  const params = new URLSearchParams(search);
+  const category = params.get("category");
+  const date = parseInt(params.get("date"));
+
+  useEffect(() => {
+    async function getData() {
+      try {
+        const res = await api.get(`api/spaces/type/${category}`);
+        const datas = res.data;
+        console.log(datas);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getData();
+  }, []);
 
   //selector toggle 하나씩만되도록
   const handelClickSelector = (e) => {
     const clickedClass = e.target.className.split(" ")[2];
-    console.log(clickedClass);
     if (clickedClass === "Category") {
       categoryModalDisplay === "flex"
         ? setcategoryModalDisplay("none")
@@ -99,7 +120,7 @@ export default function ProductList() {
       <SelectorWrap>
         <CategoryWrap>
           <div onClick={handelClickSelector}>
-            <CategorySelector category={searchInput} />
+            <CategorySelector category={category} />
           </div>
           <CategoryModal display={categoryModalDisplay} />
         </CategoryWrap>
@@ -109,9 +130,10 @@ export default function ProductList() {
           </div>
           <DateModal display={DateModalDisplay} />
         </DateWrap>
-        <SelecotrResetBtn />
+        <SelecotrResetBtn category={category} />
       </SelectorWrap>
-      <ProductWrap>{renderData({ offset, limit })}</ProductWrap>
+      <SortingSelector />
+      <ProductWrap>{renderData(offset, limit, exData)}</ProductWrap>
 
       <Pagination
         total={exData.length}
@@ -136,6 +158,7 @@ const ProductWrap = styled.div`
 
 const SelectorWrap = styled.div`
   display: flex;
+  height: 80px;
   button:nth-child(3) {
     width: 9vw;
     margin-left: auto;

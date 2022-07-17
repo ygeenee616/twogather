@@ -17,8 +17,8 @@ import AdminUserList from "./pages/AdminUserList";
 import AdminBookList from "./pages/AdminBookList";
 import AdminBookDetail from "./pages/AdminBookDetail";
 import HostHome from "./pages/HostHome";
-// import AddHost
-// import AddSpace
+import AddHost from "./pages/AddHost";
+import AddSpace from "./pages/AddSpace";
 import HostBookList from "./pages/HostBookList";
 import HostSpaceList from "./pages/hostPage/HostSpaceList";
 import HostUpdateSpace from "./pages/HostUpdateSpace";
@@ -38,9 +38,12 @@ function App() {
           <Header></Header>
           <Routes>
             <Route path="/login" element={<LoginForm />} />
-            <Route path="/register/:userType" element={<RegisterForm />} />
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="/registerComplete" element={<RegisterComplete />} />
             <Route path="/myPage" element={<MyPage />} />
-            {/* <Route path="/myPage/addReview" element={<AddReview />} /> */}
+            <Route path="/myPage/addReview" element={<AddReview />} />
+            <Route path="/myPage/addQnA" element={<AddQnA />} />
+            <Route path="/myPage/addQnaCommnet" element={<AddQnaComment />} />
 
             <Route path="/notice" element={<Notice />} />
             <Route path="/addNotice" element={<AddNotice />} />
@@ -54,13 +57,13 @@ function App() {
             />
 
             <Route path="/host" element={<HostHome />} />
-            {/* <Route path="/host/addHost" element={<AddHost />} /> */}
-            {/* <Route path="/host/addSpace" element={<AddSpace />} /> */}
+            <Route path="/host/addHost" element={<AddHost />} />
+            <Route path="/host/addSpace" element={<AddSpace />} />
             <Route path="/host/bookList" element={<HostBookList />} />
             <Route path="/host/spaceList" element={<HostSpaceList />} />
-            {/* <Route path="/host/updateSpace" element={<UpdateSpace />} /> */}
+            <Route path="/host/updateSpace" element={<HostUpdateSpace />} />
 
-            <Route path="/list/:searchInput" element={<ProductList />} />
+            <Route path="/list" element={<ProductList />} />
             <Route path="/detail/:spaceId" element={<Detail />} />
             <Route path="/book" element={<Book />} />
 
