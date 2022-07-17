@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/users.entity';
 import { UsersService } from 'src/users/users.service';
-import { Repository } from 'typeorm';
+import { Like, MoreThanOrEqual, Repository } from 'typeorm';
 import { CreateSpaceDto } from './dto/create-space.dto';
 import { UpdateSpaceDto } from './dto/update-space.dto';
 import { Space } from './entities/spaces.entity';
@@ -27,20 +27,38 @@ export class SpacesService {
   }
 
   // 전체 공간 목록 조회
-  async findAll(startIndex: number, perPage: number) {
+  async findAll(startIndex: number, perPage: number, keyword: string) {
     try {
       const totalSpace = await this.spacesRepository.find();
       const totalPage = parseInt((totalSpace.length / perPage).toString()) + 1;
-      const paginatedSpaces = await this.spacesRepository.find({
-        relations: {
-          user: true,
-        },
-        order: {
-          id: 'DESC',
-        },
-        skip: startIndex,
-        take: perPage,
-      });
+      let paginatedSpaces: Space[];
+      if (keyword === undefined || keyword === null) {
+        paginatedSpaces = await this.spacesRepository.find({
+          relations: {
+            user: true,
+          },
+          order: {
+            id: 'DESC',
+          },
+          skip: startIndex,
+          take: perPage,
+        });
+      } else {
+        paginatedSpaces = await this.spacesRepository.find({
+          where: {
+            name: Like(`%${keyword}%`),
+          },
+          relations: {
+            user: true,
+          },
+          order: {
+            id: 'DESC',
+          },
+          skip: startIndex,
+          take: perPage,
+        });
+      }
+
       return {
         totalPage,
         paginatedSpaces,
