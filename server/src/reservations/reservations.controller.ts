@@ -150,7 +150,6 @@ export class ReservationsController {
       data: removeReservation.affected === 1,
     };
   }
-  s;
 
   @Delete(':id')
   @ApiOperation({
