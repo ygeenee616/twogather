@@ -14,13 +14,12 @@ import {
 import { ReservationsService } from './reservations.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Reservation } from './entities/reservation.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/users/entities/users.entity';
 import { GetUser } from 'src/custom.decorator';
 import { RoomsService } from 'src/rooms/rooms.service';
-import { userInfo } from 'os';
 
 @Controller('api/reservations')
 @ApiTags('예약 API')
