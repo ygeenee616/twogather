@@ -18,6 +18,8 @@ const QnAContainer = styled.div`
     flex-direction: column;
     margin: 5vw 15vw;
     align-items:center;
+    
+
 `
 
 export default AddQnA;

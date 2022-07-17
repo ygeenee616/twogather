@@ -77,6 +77,38 @@ export class ReservationsController {
     };
   }
 
+  // roomId로 특정 룸의 예약 전제 조회
+  @Get('room/:roomId')
+  @ApiOperation({
+    summary: '특정 룸의 예약 findAll API',
+    description: '특정 룸의 전체 예약 목록을 불러온다.',
+  })
+  @ApiResponse({
+    status: 200,
+    description:
+      '특정 룸의 예약 목록 조회, 페이지네이션 가능(localhost:3000/api/reservations/room/50?page=1&perPage=5)',
+    type: Reservation,
+  })
+  async findAllByRoom(@Param('roomId') roomId: number, @Query() query) {
+    const { page, perPage } = query;
+    const startIndex: number = Number(perPage) * (Number(page) - 1);
+    const { totalPage, paginatedReservations } =
+      await this.reservationsService.findAllByRoom(
+        roomId,
+        startIndex,
+        Number(perPage),
+      );
+    return {
+      status: 200,
+      description: '특정 룸의 예약 목록 조회 성공',
+      success: true,
+      data: {
+        totalPage,
+        paginatedReservations,
+      },
+    };
+  }
+
   // id로 예약 조회
   @Get(':id')
   @ApiOperation({
@@ -150,7 +182,6 @@ export class ReservationsController {
       data: removeReservation.affected === 1,
     };
   }
-  s;
 
   @Delete(':id')
   @ApiOperation({

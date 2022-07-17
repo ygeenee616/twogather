@@ -1,20 +1,31 @@
 import styled from "styled-components";
 
-function MyReservedRoom() {
+
+
+function MyReservedRoom({room, idx}) {
+
+  const {image, booker, space, personnel, location, visitingTime} = room;
+
+  const handleCancelReservation = () => {
+
+  }
+  
+  let reviewId= 1;
+
   return (
     <RoomDiv>
       <InfoDiv>
-        <RoomImg src="/images/partyRoom.png" alt="공간 이미지"></RoomImg>
+        <RoomImg src={image} alt="공간 이미지"></RoomImg>
         <InfoText>
-          <InfoTag color="black">딘어게인 성수 - 브라이덜 샤워 생일파티</InfoTag> <br/>
-          <InfoTag color="light-grey">예약자: 홍길동 / 4인</InfoTag>
-          <InfoTag color="grey">장소: 서울 성동구 성덕정 17길 12 4층</InfoTag>
-          <InfoTag color="grey">예약일시: 2022년 7월 일 11시-2시</InfoTag>
+          <InfoTag color="black">{space} {idx}</InfoTag> <br/>
+          <InfoTag color="light-grey">예약자: {booker} / {personnel}인</InfoTag>
+          <InfoTag color="grey">장소: {location}</InfoTag>
+          <InfoTag color="grey">예약일시:{visitingTime}</InfoTag>
         </InfoText>
       </InfoDiv>
       <EditDiv>
-        <a>예약취소</a>
-        <a href='/myPage/addQna'>리뷰작성</a>
+        <span onClick={handleCancelReservation}> 예약취소 </span>
+        <a href={`/myPage/addReview?reviewId=${reviewId}`}> 리뷰작성</a>
       </EditDiv>
     </RoomDiv>
   );
@@ -24,6 +35,7 @@ const RoomDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  border-bottom: solid 1px;
 
   @media only screen and (max-width: 1200px) {
     flex-direction: column;

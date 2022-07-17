@@ -25,7 +25,7 @@ function MyPage() {
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-contents: left;
+  justify-contents: center;
   top: 5rem;
   margin: 0 15vw;
 `;

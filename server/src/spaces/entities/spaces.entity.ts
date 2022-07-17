@@ -41,7 +41,7 @@ export class Space {
 
   @ManyToOne(() => User, (user) => user.spaces, {
     onDelete: 'CASCADE',
-    eager: false,
+    eager: true,
   })
   user: User;
 
