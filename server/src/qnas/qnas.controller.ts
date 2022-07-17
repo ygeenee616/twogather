@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { QnasService } from './qnas.service';
 import { CreateQnaDto } from './dto/create-qna.dto';
@@ -75,6 +76,39 @@ export class QnasController {
       description: '전체 Q&A 목록 조회 성공',
       success: true,
       data: qnas,
+    };
+  }
+
+  // 특정 space의 Q&A 목록 조회
+  @Get('space/:spaceId')
+  @ApiOperation({
+    summary: '특정 공간의 Q&A 목록 조회 API',
+    description:
+      '전체 Q&A 목록을 불러온다. 페이지네이션 가능(localhost:3000/api/qnas/space/1?page=1&perPage=5)',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '특정 공간의 Q&A 목록 조회',
+    schema: {
+      example: qnaResExample.findAll,
+    },
+  })
+  async findAllBySpace(@Param('spaceId') spaceId: number, @Query() query) {
+    const { page, perPage } = query;
+    const startIndex: number = Number(perPage) * (Number(page) - 1);
+    const { totalPage, paginatedQnas } = await this.qnasService.findAllBySpace(
+      spaceId,
+      startIndex,
+      Number(perPage),
+    );
+    return {
+      status: 200,
+      description: '특정 공간의 Q&A 목록 조회 성공',
+      success: true,
+      data: {
+        totalPage,
+        paginatedQnas,
+      },
     };
   }
 
