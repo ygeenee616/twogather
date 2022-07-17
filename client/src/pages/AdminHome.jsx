@@ -8,7 +8,7 @@ import AdminBookList from "./AdminBookList";
 import { FaUserCircle } from "react-icons/fa";
 import { FaUserTie } from "react-icons/fa";
 import Notice from "./Notice";
-import HostQnA from "./HostQ&A";
+import HostQnA from "./HostQnA";
 
 const name = "강예정";
 function AdminHome() {

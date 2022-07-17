@@ -5,7 +5,7 @@ import HostSpaceList from "./hostPage/HostSpaceList";
 import HostBookList from "./HostBookList";
 import { FaUserCircle } from "react-icons/fa";
 import StripeLayout from "../components/StripeLayout";
-import HostQnA from "./HostQ&A";
+import HostQnA from "./HostQnA";
 
 const name = "강예정";
 function HostHome() {
