@@ -39,7 +39,7 @@ export class SpaceImagesController {
   })
   async create(
     @Body() createSpaceImageDto: CreateSpaceImageDto,
-    @Body() spaceId: number,
+    @Body('spaceId') spaceId: number,
   ) {
     const newSpaceImage = await this.spaceImagesService.create(
       createSpaceImageDto,

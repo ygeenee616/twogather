@@ -19,8 +19,9 @@ export class ReviewsService {
       const newReview = {
         ...createReviewDto,
         reservation,
+        createdTime: new Date(),
       };
-      // return await this.reviewsRepository.save(newReview); 예약구현되면 주석 풀기
+      return await this.reviewsRepository.save(newReview);
     } catch (error) {
       throw error;
     }

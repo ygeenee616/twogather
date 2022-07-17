@@ -39,7 +39,7 @@ export class RoomImagesController {
   })
   async create(
     @Body() createRoomImageDto: CreateRoomImageDto,
-    @Body() roomId: number,
+    @Body('roomId') roomId: number,
   ) {
     const newRoomImage = await this.roomImagesService.create(
       createRoomImageDto,
