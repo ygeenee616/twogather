@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { useSelector } from 'react-redux';
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { validatePassword } from "../../assets/utils/UsefulFunction";
 import MyProfileInfo from "./MyProfileInfo";
 import MyProfileEdit from "./MyProfileEdit";
+import * as Api from "../../api";
 
 const user = {
   nickname: "연두부",
@@ -13,22 +14,20 @@ const user = {
   gender: "여",
   birthDate: "1999.06.16"
 }
-
 function MyProfile() {
 
   const [editUser, setEditUser] = useState(false);
-
- 
   const handleEditUser = () => {
     setEditUser(true);
   }
-  // 로그인이 안되어 있을 경우
+
   return (
     <ProfileDiv>
       <ProfileImgDiv>
         <img src="/images/duck.png" alt="프로필 사진" />
         <EditBtnDiv>
-          {/* <input type="file" accept="image/*" value="프로필 사진 변경"/>  */}
+          <label for="imgUpload"><div id="img_upload">프로필 사진 변경</div></label>
+          <input type="file" accept="image/*" id="imgUpload" />
           <input type="button" value="유저 정보 수정" onClick={handleEditUser} />
         </EditBtnDiv>   
       </ProfileImgDiv>
@@ -85,21 +84,29 @@ const ProfileImgDiv = styled.div`
 `;
 
 const EditBtnDiv = styled.div`
-  input {
+  input[type="file"] {
+    display: none;
+  }
+
+  label, input[type="button"] {
+    display: inline-block;
     background-color: white;
     color: #bbd3f2;
     width: 8rem;
     height: 2.5rem;
-    padding: 0.5rem;
     margin: 0.5rem;
     border: solid #bbd3f2;
     border-radius: 10px;
     font-weight: bold;
+    font-size: 0.8rem;
+    
+    #img_upload {
+      padding: 0.6rem;
+    }
 
     :hover {
       box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
     }
-
   }
 `
 

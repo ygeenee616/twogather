@@ -9,7 +9,7 @@ function MyProfileInfo({user}) {
     <div>
       <ProfileInfo>
         <tr> 
-          <NicknameTD colSpan={2}>{nickname}</NicknameTD>
+          <NicknameTD colSpan={2}> {nickname} </NicknameTD>
         </tr>
         <tr />
         <tr>
@@ -18,15 +18,15 @@ function MyProfileInfo({user}) {
         </tr>
         <tr>
           <TagTD>소셜 로그인 연동</TagTD>
-          <InfoTD>{socialLogin}</InfoTD>
+          <InfoTD> {socialLogin} </InfoTD>
         </tr>
         <tr>
           <TagTD>성별</TagTD>
-          <InfoTD>{gender}</InfoTD>
+          <InfoTD> {gender} </InfoTD>
         </tr>
         <tr>
           <TagTD>생년월일</TagTD>
-          <InfoTD>{birthDate}</InfoTD>
+          <InfoTD> {birthDate} </InfoTD>
         </tr>
     </ProfileInfo>
     </div>
