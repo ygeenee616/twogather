@@ -59,8 +59,39 @@ export class RoomsService {
     }
   }
 
+  // HostId로 rooms 조회
+  async findRoomsByUser(hostId: number) {
+    try {
+      const rooms = await this.roomsRepository.find({
+        where: {
+          space: {
+            user: {
+              id: hostId,
+            },
+          },
+        },
+        relations: {
+          space: true,
+        },
+      });
+      return rooms;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // roomId로 room 수정
   async update(id: number, updateRoomDto: UpdateRoomDto) {
+    try {
+      const updatedRoom = await this.roomsRepository.update(id, updateRoomDto);
+      return updatedRoom.affected === 1;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // 내 room 수정
+  async updateMyRoom(id: number, updateRoomDto: UpdateRoomDto) {
     try {
       const updatedRoom = await this.roomsRepository.update(id, updateRoomDto);
       return updatedRoom.affected === 1;
