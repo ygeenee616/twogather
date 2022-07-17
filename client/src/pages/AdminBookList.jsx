@@ -1,38 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import StripeLayout from "../components/StripeLayout";
 import AdminBookDetail from "./AdminBookDetail";
-function AdminBookList() {
-  const data = [
-    {
-      booker: "강예정",
-      bookedRoom: "파티파티룸",
-      bookMembers: "5",
-      price: "5000",
-      phoneNumber: "010-3000-2000",
-      date: "1월18일",
-      modify: false,
-    },
-    {
-      booker: "강예쩡",
-      bookedRoom: "파티파티룸",
-      bookMembers: "5",
-      price: "5000",
-      phoneNumber: "010-3000-2000",
-      date: "1월18일",
-      modify: false,
-    },
+import axios from "axios";
 
-    {
-      booker: "탱구",
-      bookedRoom: "파티파티룸",
-      bookMembers: "5",
-      price: "5000",
-      phoneNumber: "010-3000-2000",
-      date: "1월18일",
-      modify: false,
-    },
-  ];
+function AdminBookList() {
+  const [data, setData] = useState("");
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const req = await axios.get("/dummyBookList.json");
+        const data = await req.data.data;
+        setData(data);
+        console.log(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getData();
+  }, []);
 
   const keys = [
     "booker",
@@ -52,26 +39,28 @@ function AdminBookList() {
     "관리",
   ];
   const mainTitle = "전체예약내역";
-  const columnTemplete = "1fr 2fr 1.2fr 1.2fr 2fr 1fr 1.2fr";
+  const columnTemplete = "1fr 2fr 1.2fr 1.2fr 2fr 1.2fr 1.2fr";
   const title = "";
 
   return (
-    <>
-      <ReservationHeader>
-        <TitleName>
-          <MainTitle>{mainTitle}</MainTitle>
-          {title ? <Title className="title">{title}</Title> : ""}
-        </TitleName>
-      </ReservationHeader>
+    data && (
+      <>
+        <ReservationHeader>
+          <TitleName>
+            <MainTitle>{mainTitle}</MainTitle>
+            {title ? <Title className="title">{title}</Title> : ""}
+          </TitleName>
+        </ReservationHeader>
 
-      <StripeLayout
-        datas={data}
-        headers={headers}
-        columnTemplete={columnTemplete}
-        keys={keys}
-        listName="BOOK"
-      ></StripeLayout>
-    </>
+        <StripeLayout
+          datas={data}
+          headers={headers}
+          columnTemplete={columnTemplete}
+          keys={keys}
+          listName="BOOK"
+        ></StripeLayout>
+      </>
+    )
   );
 }
 export default AdminBookList;

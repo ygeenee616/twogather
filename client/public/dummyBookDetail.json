@@ -1,0 +1,24 @@
+{
+  "book": {
+    "id": "1",
+    "room": "파티파티룸",
+    "date": 220717,
+    "startTime": 2,
+    "endTime": 4,
+    "people": 5,
+    "pay": 3000,
+    "modify": false,
+    "name": "강예정",
+    "phone": "01030002000",
+    "email": "bananana@naver.com",
+    "purpose": "촬영",
+    "request": "의자 4개 준비 부탁드립니다.",
+    "host": {
+      "placeName": "스튜디오 카이브",
+      "hostName": "김미지",
+      "businessNum": "123-45-67890",
+      "hostPhone": "010-1111-2222",
+      "hostEmail": "kimunknown@naver.com"
+    }
+  }
+}
