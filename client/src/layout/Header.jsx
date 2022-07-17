@@ -38,31 +38,27 @@ const HeaderTag = ({ name, target }) => {
   );
 };
 
-const Login = ({ setIsLogin }) => {
+export default function Header() {
+  const [isLogin, setIsLogin] = useState(false);
   const navigate = useNavigate();
   const handleLoginClick = () => {
     if (localStorage.getItem("userToken") === "") {
+      setIsLogin(false);
       navigate("/login");
     } else {
       localStorage.setItem("userToken", "");
+      setIsLogin(true);
       navigate("/");
     }
   };
-  if (localStorage.getItem("userToken") === "") setIsLogin(false);
-  else setIsLogin(true);
 
-  return (
-    <TextWrap onClick={handleLoginClick}>
-      <div>
-        {localStorage.getItem("userToken") === "" ? `로그인` : "로그아웃"}
-      </div>
-    </TextWrap>
-  );
-};
-
-export default function Header() {
-  const [isLogin, setIsLogin] = useState(false);
-  console.log(localStorage.getItem("userToken") !== "");
+  useEffect(() => {
+    if (localStorage.getItem("userToken") === "") {
+      setIsLogin(false);
+    } else {
+      setIsLogin(true);
+    }
+  },);
 
   return (
     <HeaderWrap>
@@ -72,7 +68,9 @@ export default function Header() {
         {isLogin ? <HeaderTag name="호스트등록하기" target="/addHost" /> : ``}
         {isLogin ? <HeaderTag name="마이페이지" target="/mypage" /> : ``}
         <HeaderTag name="공지사항" target="/notice" />
-        <Login className="login-out" setIsLogin={setIsLogin} />
+        <TextWrap onClick={handleLoginClick}>
+          {localStorage.getItem("userToken") === "" ? `로그인` : "로그아웃"}
+        </TextWrap>
       </RightWrap>
     </HeaderWrap>
   );
@@ -80,12 +78,10 @@ export default function Header() {
 
 const TextWrap = styled.div`
   margin-left: 2vw;
-  div {
-    color: black;
-    font-size: 1.5vw;
-    font-weight: bold;
-    cursor: pointer;
-  }
+  color: black;
+  font-size: 1.5vw;
+  font-weight: bold;
+  cursor: pointer;
 `;
 
 const LogoWrap = styled.div`
