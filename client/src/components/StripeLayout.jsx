@@ -26,7 +26,7 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
       setViewInfo(!viewInfo);
       setUserId(id);
       // UserInfo 부분으로 스크롤 이동
-      const thisContent = document.querySelector(`.userContainer`);
+      const thisContent = document.querySelector(".userContainer");
       thisContent.scrollIntoView({ behavior: "smooth", block: "center" });
     } else if (listName === "BOOK") {
       navigate(`/admin/bookList/bookDetail/${id}`);

@@ -69,7 +69,7 @@ const ReservationHeader = styled.div`
   margin: 0 auto;
   display: flex;
   justify-content: center;
-  margin: 10%;
+  margin: 5%;
 `;
 const TitleName = styled.div`
   border-bottom: 2px solid #8daef2;
