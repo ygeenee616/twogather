@@ -19,11 +19,11 @@ export class Qna {
   @ApiProperty({ description: 'Q&A 작성 시간' })
   createdTime: Date;
 
-  @Column({ type: 'varchar', length: 400 })
+  @Column({ type: 'varchar', length: 400, nullable: false })
   @ApiProperty({ description: 'Q&A 내용' })
   content: string;
 
-  @Column({ type: 'varchar', length: 400 })
+  @Column({ type: 'varchar', length: 400, nullable: true })
   @ApiPropertyOptional({ description: 'Q&A 답글' })
   reply: string;
 
@@ -40,6 +40,6 @@ export class Qna {
     eager: false,
   })
   @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
-  @ApiProperty({ description: 'Q&A 작성자' })
+  @ApiProperty({ description: 'Q&A 작성자', type: () => User })
   user: User;
 }
