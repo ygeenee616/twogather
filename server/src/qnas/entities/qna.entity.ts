@@ -23,7 +23,7 @@ export class Qna {
   @ApiProperty({ description: 'Q&A 내용' })
   content: string;
 
-  @Column({ type: 'varchar', length: 400 })
+  @Column({ type: 'varchar', length: 400, nullable: true })
   @ApiPropertyOptional({ description: 'Q&A 답글' })
   reply: string;
 
