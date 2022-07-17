@@ -7,6 +7,7 @@ import {
   Delete,
   UseGuards,
   Patch,
+  Query,
 } from '@nestjs/common';
 import { SpacesService } from './spaces.service';
 import { CreateSpaceDto } from './dto/create-space.dto';
@@ -60,13 +61,17 @@ export class SpacesController {
       example: spaceResExample.findAll,
     },
   })
-  async findAll() {
-    const spaces = await this.spacesService.findAll();
+  async findAll(@Query() query) {
+    const { page, perPage } = query;
+    const startIndex: number = perPage * (page - 1);
+    const spaces = await this.spacesService.findAll(startIndex, perPage);
     return {
       status: 200,
       description: '전체 공간 목록 조회 성공',
       success: true,
-      data: spaces,
+      data: {
+        spaces,
+      },
     };
   }
   // type으로 공간 목록 조회
