@@ -11,7 +11,7 @@ const CategoryButton = ({ img, title }) => {
   const navigate = useNavigate();
 
   const handleGoToListByCategoryClick = () => {
-    navigate(`/list/${title}`);
+    navigate(`/list?category=${title}`);
   };
   return (
     <ButtonWrap onClick={handleGoToListByCategoryClick}>
@@ -36,7 +36,7 @@ const ButtonWrap = styled.button`
     transition: all 0.6s;
   }
   img {
-    width: 5vw;
+    width: 60%;
     vertical-align: middle;
   }
   .categoryTitle {

@@ -1,9 +1,11 @@
 import styled from "styled-components";
-import React, { useState, memo } from "react";
+import React, { useState, memo, useRef } from "react";
 import { RiEdit2Fill, RiExternalLinkFill } from "react-icons/ri";
 import ListItem from "./StripeListItem";
 import AdminBookDetail from "../pages/AdminBookDetail";
 import UserInfo from "../components/UserInfo";
+import { Link, useNavigate } from "react-router-dom";
+
 UserInfo.defaultProps = {
   userName: "김미지",
   commentNum: "1863회",
@@ -13,22 +15,33 @@ UserInfo.defaultProps = {
 function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
   const [viewInfo, setViewInfo] = useState(false);
   const [bookInfo, setBookInfo] = useState(false);
+  const [userId, setUserId] = useState();
+  const clickItem = useRef(0);
 
-  function handleClick() {
+  const navigate = useNavigate();
+
+  function handleClick(id) {
     if (listName === "USER") {
       //유저이름을 받아와서 api출력
       setViewInfo(!viewInfo);
+      setUserId(id);
+      // UserInfo 부분으로 스크롤 이동
+      const thisContent = document.querySelector(".userContainer");
+      thisContent.scrollIntoView({ behavior: "smooth", block: "center" });
+    } else if (listName === "BOOK") {
+      navigate(`/admin/bookList/bookDetail/${id}`);
     }
   }
 
   return (
     <>
       <Container>
-        <UserContainer>
+        <UserContainer className="userContainer">
           <UserBox viewInfo={viewInfo}>
-            <UserInfo viewInfo={viewInfo}></UserInfo>
+            <UserInfo userId={userId} viewInfo={viewInfo}></UserInfo>
           </UserBox>
         </UserContainer>
+
         <ReservationForm viewInfo={viewInfo}>
           <List templete={columnTemplete}>
             {headers.map((name) => {
@@ -37,15 +50,23 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
           </List>
           {datas.map((item, idx) => {
             return (
-              <div onClick={handleClick}>
+              //클릭한 항목의 데이터 받아와서 해당 id에 맞는 user출력하기
+              <ListContainer key={idx}>
                 <ListItem
+                  className="10"
                   item={item}
                   columnTemplete={columnTemplete}
                   keys={keys}
                   listName={listName}
+                  id={item.id}
+                  value={item.id}
+                  handleClick={handleClick}
+                  onClick={(e) => {
+                    handleClick(e.target.value);
+                  }}
                   //"1fr 2fr 1fr 1fr 2fr 1fr 1.2fr"
                 ></ListItem>
-              </div>
+              </ListContainer>
             );
           })}
         </ReservationForm>
@@ -56,14 +77,14 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
 
 const Container = styled.div`
   margin: 0 auto;
-  width: 80%;
+  width: 90%;
   height: 100%;
   display: flex;
   flex-direction: column;
   margin-top: 50px;
   margin-bottom: 50px;
 `;
-
+const ListContainer = styled.div``;
 const ReservationForm = styled.div`
   margin: 0 auto;
   padding: 10px 0;
@@ -76,7 +97,7 @@ const ReservationForm = styled.div`
     @keyframes fadeInDown {
     0% {
       opacity: 1;
-      transform: translate3d(0, 10%, 0);
+      transform: translate3d(0, -10%, 0);
     }
     to {
       opacity: 1;
@@ -87,7 +108,7 @@ const ReservationForm = styled.div`
 
 const Header = styled.div`
   background-color: white;
-  font-size: 1.2rem;
+  font-size: 1rem;
   line-height: 2.4rem;
   text-align: center;
   height: 3rem;
@@ -99,6 +120,7 @@ const Header = styled.div`
     border-right: none;
   }
 `;
+
 const UserContainer = styled.div`
   width: 100%;
 
@@ -106,6 +128,7 @@ const UserContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
 const List = styled.div`
   display: grid;
   grid-template-columns: ${(props) => props.templete};

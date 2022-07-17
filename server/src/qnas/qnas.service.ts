@@ -1,26 +1,86 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { SpacesService } from 'src/spaces/spaces.service';
+import { User } from 'src/users/entities/users.entity';
+import { Repository } from 'typeorm';
 import { CreateQnaDto } from './dto/create-qna.dto';
 import { UpdateQnaDto } from './dto/update-qna.dto';
+import { Qna } from './entities/qna.entity';
 
 @Injectable()
 export class QnasService {
-  create(createQnaDto: CreateQnaDto) {
-    return 'This action adds a new qna';
+  constructor(
+    @InjectRepository(Qna) private qnasRepository: Repository<Qna>,
+    private spaceService: SpacesService,
+  ) {}
+
+  async create(createQnaDto: CreateQnaDto, user: User, spaceId: number) {
+    try {
+      const space = await this.spaceService.findOne(spaceId);
+      const newQna = {
+        ...createQnaDto,
+        space,
+        user,
+        createdTime: new Date(),
+      };
+      return await this.qnasRepository.save(newQna);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findAll() {
-    return `This action returns all qnas`;
+  async findAll() {
+    return await this.qnasRepository.find({
+      relations: {
+        space: true,
+        user: true,
+      },
+      order: {
+        id: 'DESC',
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} qna`;
+  async findOne(id: number) {
+    try {
+      const qna = await this.qnasRepository.findOne({
+        where: {
+          id,
+        },
+        relations: {
+          space: true,
+          user: true,
+        },
+      });
+      if (qna === null) {
+        throw new NotFoundException('존재하지 않는 Q&A 입니다.');
+      }
+      return qna;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  update(id: number, updateQnaDto: UpdateQnaDto) {
-    return `This action updates a #${id} qna`;
+  async update(id: number, updateQnaDto: UpdateQnaDto) {
+    try {
+      const updatedQna = await this.qnasRepository.update(id, updateQnaDto);
+      return updatedQna.affected === 1;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} qna`;
+  // Q&A 삭제
+  async remove(id: number) {
+    try {
+      const deletedQna = await this.qnasRepository.delete(id);
+      if (!deletedQna.affected) {
+        throw new NotFoundException({
+          description: '삭제할 qna가 없습니다.',
+        });
+      }
+    } catch (error) {
+      throw error;
+    }
   }
 }

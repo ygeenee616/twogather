@@ -6,14 +6,14 @@ import exImg2 from "../assets/images/ex2.png";
 
 const exData = {
   src: [exImg1, exImg2],
-  tag: [
+  hashtags: [
     "#강남모임공간",
     "#강남파티룸",
     "#강남럭셔리파티룸",
     "#강남럭셔리모임공간",
     "#앤틱공간대여",
   ],
-  title: "강남최대 앤틱모임공간 공유먼트청담",
+  name: "강남최대 앤틱모임공간 공유먼트청담",
   address: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
   price: "150,000",
   review: "12",
@@ -42,8 +42,8 @@ export default function Recommendation() {
     props.push({
       className: "recomCard",
       src: exData.src,
-      tag: exData.tag,
-      title: exData.title,
+      hashtags: exData.hashtags,
+      name: exData.name,
       address: exData.address,
       price: exData.price,
       review: exData.review,
@@ -57,8 +57,8 @@ export default function Recommendation() {
           key={i}
           className="recomCard"
           src={item.src}
-          tag={item.tag}
-          title={item.title}
+          hashtags={item.hashtags}
+          name={item.name}
           address={item.address}
           price={item.price}
           review={item.review}

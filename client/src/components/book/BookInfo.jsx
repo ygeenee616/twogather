@@ -2,24 +2,29 @@ import React from "react";
 import styled from "styled-components";
 
 BookInfo.defaultProps = {
-  room: "스튜디오 709",
-  date: "2022-07-08",
-  startTime: 4,
-  endTime: 8,
-  personnel: 4,
   pay: 2000,
 };
 
 export default function BookInfo({
-  room,
+  roomId,
+  roomTitle,
   date,
   startTime,
   endTime,
-  personnel,
+  people,
   pay,
 }) {
   const useTime = endTime - startTime;
-  const totalPay = pay * personnel * useTime;
+  const totalPay = pay * people * useTime;
+
+  function dateToString(date) {
+    const fullDate = String(date);
+    const year = fullDate.substring(0, 4);
+    const month = fullDate.substring(4, 6);
+    const day = fullDate.substring(6, 8);
+
+    return `${year}년 ${month}월 ${day}일`;
+  }
 
   return (
     <Container>
@@ -27,21 +32,21 @@ export default function BookInfo({
       <div>
         <Info>
           <div>예약 룸</div>
-          <div>{room}</div>
+          <div>{roomTitle}</div>
         </Info>
         <Info>
           <div>예약 날짜</div>
-          <div>{date}</div>
+          <div>{dateToString(date)}</div>
         </Info>
         <Info>
-          <div>예약 날짜</div>
+          <div>예약 시간</div>
           <div>
             {startTime}시 ~ {endTime}시
           </div>
         </Info>
         <Info>
           <div>예약 인원</div>
-          <div>{personnel}명</div>
+          <div>{people}명</div>
         </Info>
         <Info>
           <div>결제 금액</div>

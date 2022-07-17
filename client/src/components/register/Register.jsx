@@ -1,19 +1,25 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   validateEmail,
   validatePassword,
 } from "../../assets/utils/UsefulFunction";
+import * as Api from '../../api';
 
 function Register() {
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [serviceAgree, setServiceAgree] = useState(false);
   const [privacyAgree, setPrivacyAgree] = useState(false);
-  const [showAlert, setShowAlert] = useState(true);
+  const [alertMsg, setAlertMsg] = useState("");
 
   const isNicknameValid = nickname.length >= 2 && nickname.length <= 10;
   const isEmailValid = validateEmail(email);
@@ -39,6 +45,26 @@ function Register() {
       setPrivacyAgree(true);
     }
   };
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+
+    if(isFormValid){
+      try {
+        const data = {email, password, nickname};
+        // "/apiusers/sign-in" 엔드포인트로 post요청함.
+        const res = await Api.post("api/users/sign-up", data);
+
+        navigate("/", { replace: true, state: {nickname} });
+
+      } catch (err) {
+
+        setAlertMsg("이미 가입된 회원입니다.")
+        console.log("회원가입에 실패하였습니다.", err);
+        // setAlertMsg("아이디 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해주세요.")
+      }
+    }  
+  };
 
   return (
     <RegisterDiv>
@@ -54,7 +80,7 @@ function Register() {
             ></input>
           </InputTD>
         </tr>
-        {showAlert && !isNicknameValid && (
+        {!isNicknameValid && (
           <AlertTR className="alert-msg">
             <td colspan="2">2~10자로 입력해주세요.</td>
           </AlertTR>
@@ -71,7 +97,7 @@ function Register() {
             ></input>
           </InputTD>
         </tr>
-        {showAlert && !isEmailValid && (
+        {!isEmailValid && (
           <AlertTR className="alert-msg">
             <td colspan="2">이메일 형식이 올바르지 않습니다.</td>
           </AlertTR>
@@ -88,7 +114,7 @@ function Register() {
             ></input>
           </InputTD>
         </tr>
-        {showAlert && !isPasswordValid && (
+        {!isPasswordValid && (
           <AlertTR className="alert-msg">
             <td colspan="2">
               8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
@@ -107,7 +133,7 @@ function Register() {
             ></input>
           </InputTD>
         </tr>
-        {showAlert && !isPasswordSame && (
+        {!isPasswordSame && (
           <AlertTR className="alert-msg">
             <td colspan="2">비밀번호가 일치하지 않습니다.</td>
           </AlertTR>
@@ -142,15 +168,16 @@ function Register() {
           ></input>
           <span className="agree-all"> 전체 동의 </span>
         </div>
-        {showAlert && (!serviceAgree || !privacyAgree) && (
+        {(!serviceAgree || !privacyAgree) && (
           <AlertTR> 약관 동의가 필요합니다.</AlertTR>
         )}
+        <AlertTR>{alertMsg}</AlertTR>
       </AgreementDiv>
 
       <RegisterBtn
         type="submit"
         disabled={!isFormValid}
-        onClick={() => setShowAlert(true)}
+        onClick={handleRegister}
       >
         가입하기
       </RegisterBtn>

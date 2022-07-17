@@ -1,15 +1,8 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 
-Map.defaultProps = {
-  place: "스튜디오 709",
-  address: "서울 서초구 강남대로65길 12",
-};
-
-export default function Map({ place, address }) {
+export default function Map({ title, address }) {
   useEffect(() => {
-    console.log(place, address);
-
     const container = document.getElementById("map");
     const options = {
       center: new window.kakao.maps.LatLng(35.12, 129.1),
@@ -33,7 +26,7 @@ export default function Map({ place, address }) {
 
         // 인포윈도우로 장소에 대한 설명을 표시합니다
         var infowindow = new window.kakao.maps.InfoWindow({
-          content: `<div style="width:150px; text-align:center; padding:0;">${place}</div>`,
+          content: `<div style="width:150px; text-align:center; padding:0;">${title}</div>`,
         });
         infowindow.open(map, marker);
 

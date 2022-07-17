@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "createdTime": "2022-07-17 09:21:30",
+      "content": "숙박 가능한 방인가요?",
+      "reply": "네 가능합니다.",
+      "spaceId": "room123"
+    },
+    {
+      "id": 2,
+      "createdTime": "2022-07-17 09:21:30",
+      "content": "난방 가능한가요??",
+      "reply": "네 가능합니다^^",
+      "spaceId": "room123"
+    },
+    {
+      "id": 1,
+      "createdTime": "2022-07-17 09:21:30",
+      "content": "취식 가능한가요?",
+      "reply": null,
+      "spaceId": "room123"
+    }
+  ]
+}

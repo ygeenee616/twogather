@@ -1,21 +1,29 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Pagination from "../components/Pagination";
 import ProductCard from "../components/ProductCard";
+import CategorySelector from "../components/list/CategorySelector";
+import CategoryModal from "../components/list/CategoryModal";
+import DateSelector from "../components/list/DateSelector";
+import DateModal from "../components/list/DateModal";
+import SelecotrResetBtn from "../components/list/SelectorResetBtn";
+import SortingSelector from "../components/list/SortingSelector";
 import exImg1 from "../assets/images/ex1.png";
 import exImg2 from "../assets/images/ex2.png";
+import * as api from "../api";
 
 const ex1 = [
   {
     src: [exImg1, exImg2],
-    tag: [
+    hashtags: [
       "#강남모임공간",
       "#강남파티룸",
       "#강남럭셔리파티룸",
       "#강남럭셔리모임공간",
       "#앤틱공간대여",
     ],
-    title: "강남최대 앤틱모임공간 공유먼트청담",
+    name: "강남최대 앤틱모임공간 공유먼트청담",
     address: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
     price: "150,000",
     review: "12",
@@ -24,14 +32,14 @@ const ex1 = [
 const ex2 = [
   {
     src: [exImg2, exImg1],
-    tag: [
+    hashtags: [
       "#강남모임공간",
       "#강남파티룸",
       "#강남럭셔리파티룸",
       "#강남럭셔리모임공간",
       "#앤틱공간대여",
     ],
-    title: "강남최대 앤틱모임공간 공유먼트청담",
+    name: "강남최대 앤틱모임공간 공유먼트청담",
     address: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
     price: "150,000",
     review: "12",
@@ -46,54 +54,94 @@ for (let i = 12; i < 24; i++) {
   exData = exData.concat(ex2);
 }
 
-const renderData = ({ offset, limit }) => {
-  return exData
+const renderData = (offset, limit, data) => {
+  return data
     .slice(offset, offset + limit)
-    .map((exData, i) => (
+    .map((data, i) => (
       <ProductCard
         key={i}
-        src={exData.src}
-        tag={exData.tag}
-        title={exData.title}
-        address={exData.address}
-        price={exData.price}
-        review={exData.review}
+        src={data.src}
+        hashtags={data.hashtags}
+        name={data.name}
+        address={data.address}
+        price={data.price}
+        review={data.review}
         link={`/detail/1`}
       />
     ));
 };
 
-const Selector = ({ about, clickEvent }) => {
-  return (
-    <SelectButton onClick={clickEvent}>
-      <About>{about}</About>
-    </SelectButton>
-  );
-};
-
 export default function ProductList() {
   const [page, setPage] = useState(1);
+  const [categoryModalDisplay, setcategoryModalDisplay] = useState("none");
+  const [DateModalDisplay, setDateModalDisplay] = useState("none");
+  const [spaces, setSpaces] = useState([]);
+
   const limit = 12;
   const offset = (page - 1) * limit;
-  return (
-    <div>
-      <BottomWrap>
-        <SelectorWrap>
-          <Selector about="카테고리" />
-          <Selector about="지역" />
-          <Selector about="날짜" />
-          <Selector about="필터 초기화" />
-        </SelectorWrap>
-        <ProductWrap>{renderData({ offset, limit })}</ProductWrap>
 
-        <Pagination
-          total={exData.length}
-          limit={limit}
-          page={page}
-          setPage={setPage}
-        />
-      </BottomWrap>
-    </div>
+  const { search } = window.location;
+
+  const params = new URLSearchParams(search);
+  const category = params.get("category");
+  const date = parseInt(params.get("date"));
+
+  useEffect(() => {
+    async function getData() {
+      try {
+        const res = await api.get(`api/spaces/type/${category}`);
+        const datas = res.data;
+        console.log(datas);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getData();
+  }, []);
+
+  //selector toggle 하나씩만되도록
+  const handelClickSelector = (e) => {
+    const clickedClass = e.target.className.split(" ")[2];
+    if (clickedClass === "Category") {
+      categoryModalDisplay === "flex"
+        ? setcategoryModalDisplay("none")
+        : setcategoryModalDisplay("flex");
+      setDateModalDisplay("none");
+    } else if (clickedClass === "Date") {
+      DateModalDisplay === "flex"
+        ? setDateModalDisplay("none")
+        : setDateModalDisplay("flex");
+      setcategoryModalDisplay("none");
+    }
+  };
+
+  return (
+    <BottomWrap>
+      <SelectorWrap>
+        <CategoryWrap>
+          <div onClick={handelClickSelector}>
+            <CategorySelector category={category} />
+          </div>
+          <CategoryModal display={categoryModalDisplay} />
+        </CategoryWrap>
+        <DateWrap>
+          <div onClick={handelClickSelector}>
+            <DateSelector />
+          </div>
+          <DateModal display={DateModalDisplay} />
+        </DateWrap>
+        <SelecotrResetBtn category={category} />
+      </SelectorWrap>
+      <SortingSelector />
+      <ProductWrap>{renderData(offset, limit, exData)}</ProductWrap>
+
+      <Pagination
+        total={exData.length}
+        limit={limit}
+        page={page}
+        setPage={setPage}
+      />
+    </BottomWrap>
   );
 }
 
@@ -108,18 +156,10 @@ const ProductWrap = styled.div`
   gap: 2%;
 `;
 
-const SelectButton = styled.button`
-  all: unset;
-  width: 13vw;
-  height: 5vh;
-  margin: 1vh 0 6vh 0;
-  border: 1px solid #8daef2;
-  border-radius: 10px;
-  cursor: pointer;
-  & + & {
-    margin-left: 1vw;
-  }
-  &:nth-child(4) {
+const SelectorWrap = styled.div`
+  display: flex;
+  height: 80px;
+  button:nth-child(3) {
     width: 9vw;
     margin-left: auto;
     div {
@@ -128,10 +168,13 @@ const SelectButton = styled.button`
     }
   }
 `;
-const SelectorWrap = styled.div`
+
+const CategoryWrap = styled.div`
   display: flex;
+  flex-direction: column;
+  position: relative;
 `;
-const About = styled.div`
-  color: #8daef2;
-  margin-left: 10%;
+
+const DateWrap = styled(CategoryWrap)`
+  position: relative;
 `;
