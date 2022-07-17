@@ -1,23 +1,26 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import Postcode from "../components/admin/Postcode";
 import PostcodePopup from "../components/admin/PostcodePopup";
+import * as Api from "../api";
 
 function AddHost() {
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
-
+  const [datas, setData] = useState({ accountNumber: "" });
   const [hostInfo, setHostInfo] = useState({
     businessName: "", //상호명
-    representativeName: "", //대표자명
-    companyRegisNumber: "",
-    contactInfo: "", //연락처
+    name: "", //대표자명
+    businessNumber: "",
+    phoneNumber: "", //연락처
     email: "", //이메일
-    bankAccountNum: {
-      bankName: "",
-      accountNum: "",
-      name: "",
-    },
+    accountNumber: "",
+  });
+
+  const [bankInfo, setBankInfo] = useState({
+    bankName: "",
+    bankAccount: "",
+    name: "",
   });
 
   const handleChangeState = (e) => {
@@ -27,9 +30,21 @@ function AddHost() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleChangeBankState = (e) => {
+    setBankInfo({
+      ...bankInfo,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(hostInfo);
+    //포스트 요청시 데이터 새로 넘겨주기 합성해서
+    const account = `${bankInfo.bankName} ${bankInfo.bankAccount} ${bankInfo.name}`;
+    setHostInfo({ ...hostInfo, accountNumber: account });
+    const response = await Api.patch("api/users", hostInfo);
+    console.log(response);
+    console.log("asds");
   };
 
   //TODO
@@ -41,7 +56,7 @@ function AddHost() {
 
   return (
     <Main>
-      <SpaceForm>
+      <SpaceForm onSubmit={handleSubmit}>
         <InputBox className="title">
           <Title>
             Host에 대한 정보를 입력해주세요
@@ -56,6 +71,7 @@ function AddHost() {
             name="businessName"
             value={hostInfo.businessName}
             onChange={handleChangeState}
+            required={"required"}
           ></StyledInput>
         </InputBox>
 
@@ -63,10 +79,11 @@ function AddHost() {
           <StyledLabel>대표자 명</StyledLabel>
           <StyledInput
             type="text"
-            name="representativeName"
+            name="name"
             width={"40%"}
-            value={hostInfo.representativeName}
+            value={hostInfo.name}
             onChange={handleChangeState}
+            required
           ></StyledInput>
         </InputBox>
 
@@ -75,9 +92,10 @@ function AddHost() {
           <StyledInput
             type="text"
             width={"40%"}
-            name="companyRegisNumber"
-            value={hostInfo.companyRegisNumber}
+            name="businessNumber"
+            value={hostInfo.businessNumber}
             onChange={handleChangeState}
+            required
           ></StyledInput>
         </InputBox>
 
@@ -85,11 +103,12 @@ function AddHost() {
           <StyledLabel>연락처</StyledLabel>
           <StyledInput
             width={"40%"}
-            type="text"
-            name="contactInfo"
+            type="tel"
+            name="phoneNumber"
             placeholder="숫자만 입력해 주세요"
-            value={hostInfo.contactInfo}
+            value={hostInfo.phoneNumber}
             onChange={handleChangeState}
+            required
           ></StyledInput>
         </InputBox>
 
@@ -101,6 +120,7 @@ function AddHost() {
             name="email"
             value={hostInfo.email}
             onChange={handleChangeState}
+            required
           ></StyledInput>
         </InputBox>
 
@@ -113,8 +133,9 @@ function AddHost() {
               type="text"
               name="bankName"
               placeholder="은행"
-              value={hostInfo.bankAccountNum.bankName}
-              onChange={handleChangeState}
+              value={bankInfo.bankName}
+              onChange={handleChangeBankState}
+              required
             ></StyledInput>
             <StyledInput
               className="account"
@@ -122,8 +143,9 @@ function AddHost() {
               placeholder="계좌번호"
               width={"40%"}
               name="bankAccount"
-              value={hostInfo.bankAccountNum.accountNum}
-              onChange={handleChangeState}
+              value={bankInfo.accountNum}
+              onChange={handleChangeBankState}
+              required
             ></StyledInput>
             <StyledInput
               className="account"
@@ -131,8 +153,9 @@ function AddHost() {
               placeholder="소유주"
               type="text"
               name="name"
-              value={hostInfo.bankAccountNum.name}
-              onChange={handleChangeState}
+              value={bankInfo.name}
+              onChange={handleChangeBankState}
+              required
             ></StyledInput>
           </div>
         </InputBox>
@@ -146,16 +169,19 @@ function AddHost() {
           >
             등록취소
           </StyledButton>
+          {/* /*네비게이트 설정하기 */}
           <StyledButton
             className="inc"
-            onClick={handleSubmit}
             color="white"
             backGroundColor="#8daef2"
             name="register"
             className="register"
+            type="submit"
+            value="submit"
           >
             Host등록
           </StyledButton>
+          {/* {포스트 요청하기 } */}
         </ButtonBox>
       </SpaceForm>
     </Main>
