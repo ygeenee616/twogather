@@ -8,7 +8,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { RoomImage } from 'src/room_images/entities/room_image.entity';
 
 @Entity()
@@ -40,6 +40,6 @@ export class Room {
   @JoinColumn({ name: 'spaceId', referencedColumnName: 'id' })
   space: Space;
 
-  @OneToMany(() => RoomImage, (roomImage) => roomImage.room, { eager: true })
+  @OneToMany(() => RoomImage, (roomImage) => roomImage.room)
   roomImages: RoomImage[];
 }

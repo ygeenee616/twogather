@@ -8,6 +8,7 @@ import AdminBookList from "./AdminBookList";
 import { FaUserCircle } from "react-icons/fa";
 import { FaUserTie } from "react-icons/fa";
 import Notice from "./Notice";
+import HostQnA from "./HostQnA";
 
 const name = "강예정";
 function AdminHome() {
@@ -62,6 +63,8 @@ function AdminHome() {
             <AdminUserList></AdminUserList>
           ) : content === "manageNotice" ? (
             <Notice></Notice>
+          ) : content === "manageQA" ? (
+            <HostQnA></HostQnA>
           ) : (
             <div></div>
           )}
@@ -144,7 +147,6 @@ const Content = styled.div`
   border-left: 1px solid #f2f2f2;
   margin: 5% auto;
   width: 60vw;
-  height: 80vh;
   border-radius: 20px;
 `;
 

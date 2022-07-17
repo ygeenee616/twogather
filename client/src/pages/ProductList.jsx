@@ -16,14 +16,14 @@ import * as api from "../api";
 const ex1 = [
   {
     src: [exImg1, exImg2],
-    tag: [
+    hashtags: [
       "#강남모임공간",
       "#강남파티룸",
       "#강남럭셔리파티룸",
       "#강남럭셔리모임공간",
       "#앤틱공간대여",
     ],
-    title: "강남최대 앤틱모임공간 공유먼트청담",
+    name: "강남최대 앤틱모임공간 공유먼트청담",
     address: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
     price: "150,000",
     review: "12",
@@ -32,14 +32,14 @@ const ex1 = [
 const ex2 = [
   {
     src: [exImg2, exImg1],
-    tag: [
+    hashtags: [
       "#강남모임공간",
       "#강남파티룸",
       "#강남럭셔리파티룸",
       "#강남럭셔리모임공간",
       "#앤틱공간대여",
     ],
-    title: "강남최대 앤틱모임공간 공유먼트청담",
+    name: "강남최대 앤틱모임공간 공유먼트청담",
     address: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
     price: "150,000",
     review: "12",
@@ -61,8 +61,8 @@ const renderData = (offset, limit, data) => {
       <ProductCard
         key={i}
         src={data.src}
-        tag={data.tag}
-        title={data.title}
+        hashtags={data.hashtags}
+        name={data.name}
         address={data.address}
         price={data.price}
         review={data.review}
@@ -172,6 +172,9 @@ const SelectorWrap = styled.div`
 const CategoryWrap = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
-const DateWrap = styled(CategoryWrap)``;
+const DateWrap = styled(CategoryWrap)`
+  position: relative;
+`;

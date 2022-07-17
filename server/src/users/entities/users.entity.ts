@@ -64,18 +64,12 @@ export class User {
   @ApiPropertyOptional({ description: '사업자 계좌번호' })
   accountNumber: string;
 
-  @OneToMany((type) => Reservation, (reservation) => reservation.user, {
-    eager: true,
-  })
+  @OneToMany((type) => Reservation, (reservation) => reservation.user)
   reservations: Reservation[];
 
-  @OneToMany((type) => Space, (spaces) => spaces.user, {
-    eager: true,
-  })
+  @OneToMany((type) => Space, (spaces) => spaces.user)
   spaces: Space[];
 
-  @OneToMany((type) => Qna, (qna) => qna.user, {
-    eager: true,
-  })
+  @OneToMany((type) => Qna, (qna) => qna.user)
   qnas: Qna[];
 }

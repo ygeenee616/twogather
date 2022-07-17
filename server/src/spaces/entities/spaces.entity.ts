@@ -7,7 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Hashtag } from 'src/hashtags/entities/hashtag.entity';
 import { Room } from 'src/rooms/entities/rooms.entity';
 import { Qna } from 'src/qnas/entities/qna.entity';
@@ -43,24 +43,21 @@ export class Space {
     onDelete: 'CASCADE',
     eager: false,
   })
-  @JoinColumn({ name: 'hostId', referencedColumnName: 'id' })
   user: User;
 
-  @OneToMany(() => Hashtag, (hashtag) => hashtag.space, { eager: true })
+  @OneToMany(() => Hashtag, (hashtag) => hashtag.space)
   @ApiPropertyOptional({ description: 'hastag와의 관계' })
   hashtags: Hashtag[];
 
-  @OneToMany(() => Room, (room) => room.space, { eager: true })
+  @OneToMany(() => Room, (room) => room.space)
   @ApiPropertyOptional({ description: 'room과의 관계' })
   rooms: Room[];
 
-  @OneToMany(() => Qna, (qna) => qna.space, { eager: true })
+  @OneToMany(() => Qna, (qna) => qna.space)
   @ApiPropertyOptional({ description: 'qna와의 관계' })
   qnas: Qna[];
 
-  @OneToMany(() => SpaceImage, (spaceImage) => spaceImage.space, {
-    eager: true,
-  })
+  @OneToMany(() => SpaceImage, (spaceImage) => spaceImage.space)
   @ApiPropertyOptional({ description: 'spaceImage와의 관계' })
   spaceImages: SpaceImage[];
 }

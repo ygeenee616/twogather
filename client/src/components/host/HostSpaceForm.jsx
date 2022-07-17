@@ -1,35 +1,47 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import PostcodePopup from "../admin/PostcodePopup";
+import * as Api from "../../api";
 
 export default function HostSpaceForm({ mode }) {
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
 
-  const [spaceState, setSpaceState] = useState({
-    spaceName: "", //공간명
-    spaceType: "", //공간타입
-    spaceShortIntro: "", //공간한줄소개
-    spaceIntro: "", //공간소개
-    spaceTag: "", //태그
-    spaceSubImages: "",
-    caution: "", //주의사항
-    webAddress: "", //웹주소
-    realAddress: "", //실주소
+  const [spaceInfo, setSpaceInfo] = useState({
+    name: "", //공간명
+    type: "세미나실", //공간타입
+    //spaceShortIntro: "", //공간한줄소개
+    intro: "", //공간소개
+    hashTags: [], //태그
+    Images: "귀여운탱구사진",
+    notice: "", //주의사항
+    address: "", //실주소
   });
 
   const subViewInput = useRef();
 
   const handleChangeState = (e) => {
-    setSpaceState({
-      ...spaceState,
+    setSpaceInfo({
+      ...spaceInfo,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-    console.log(spaceState);
+
+    const response = await Api.post("api/spaces", {
+      name: spaceInfo.name, //공간명
+      address: spaceInfo.address, //실주소
+      type: "세미나실", //공간타입
+      notice: spaceInfo.notice, //주의사항
+      intro: spaceInfo.notice, //공간소개
+      //Images: "귀여운탱구사진",
+    });
+
+    console.log(response);
+    console.log("asds");
+    console.log(spaceInfo);
   };
 
   const loadDetailImage = (e) => {
@@ -79,7 +91,7 @@ export default function HostSpaceForm({ mode }) {
 
   return (
     <Main>
-      <SpaceForm>
+      <SpaceForm onSubmit={handleUpdateSubmit}>
         <InputBox>
           <Title>
             공간 정보를 입력해주세요
@@ -90,12 +102,13 @@ export default function HostSpaceForm({ mode }) {
           <StyledLabel>공간명</StyledLabel>
           <StyledInput
             type="text"
-            name="spaceName"
-            value={spaceState.spaceName}
+            width="50%"
+            name="name"
+            value={spaceInfo.name}
             onChange={handleChangeState}
           ></StyledInput>
         </InputBox>
-
+        {/* 
         <InputBox>
           <StyledLabel>메인 이미지</StyledLabel>
           <ImageView name="spaceMainImage" readonly>
@@ -109,9 +122,9 @@ export default function HostSpaceForm({ mode }) {
               encodeFileToBase64(e.target.files[0]);
             }}
           />
-        </InputBox>
+        </InputBox> */}
 
-        <InputBox>
+        {/* <InputBox>
           <StyledLabel>공간 한 줄 소개</StyledLabel>
           <StyledInput
             type="text"
@@ -119,15 +132,15 @@ export default function HostSpaceForm({ mode }) {
             value={spaceState.spaceShortIntro}
             onChange={handleChangeState}
           ></StyledInput>
-        </InputBox>
+        </InputBox> */}
 
         <InputBox>
           <StyledLabel>공간 소개</StyledLabel>
           <StyledTextArea
             type="text"
             rows={"10"}
-            name="spaceIntro"
-            value={spaceState.spaceIntro}
+            name="intro"
+            value={spaceInfo.intro}
             onChange={handleChangeState}
           ></StyledTextArea>
         </InputBox>
@@ -136,13 +149,13 @@ export default function HostSpaceForm({ mode }) {
           <StyledLabel>예약 시 주의사항</StyledLabel>
           <StyledTextArea
             type="text"
-            name="caution"
-            value={spaceState.caution}
+            name="notice"
+            value={spaceInfo.notice}
             onChange={handleChangeState}
           ></StyledTextArea>
         </InputBox>
 
-        <InputBox>
+        {/* <InputBox>
           <StyledLabel>웹사이트 주소</StyledLabel>
           <StyledInput
             type="text"
@@ -150,7 +163,7 @@ export default function HostSpaceForm({ mode }) {
             value={spaceState.webAddress}
             onChange={handleChangeState}
           ></StyledInput>
-        </InputBox>
+        </InputBox> */}
 
         <InputBox>
           <StyledLabel>주소지 입력</StyledLabel>
@@ -183,11 +196,13 @@ export default function HostSpaceForm({ mode }) {
           </StyledButton>
           <StyledButton
             className="inc"
-            onClick={handleSubmit}
+            onClick={handleUpdateSubmit}
             color="white"
             backGroundColor="#8daef2"
             name="register"
             className="register"
+            type="submit"
+            value="submit"
           >
             {mode === "UPDATE" ? "공간수정" : mode === "ADD" ? "공간등록" : ""}
           </StyledButton>

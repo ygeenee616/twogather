@@ -12,8 +12,9 @@ import { CreateHashtagDto } from './dto/create-hashtag.dto';
 import { UpdateHashtagDto } from './dto/update-hashtag.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
 import { Hashtag } from './entities/hashtag.entity';
+import { UpdateDateColumn } from 'typeorm';
 
-@Controller('hashtags')
+@Controller('api/hashtags')
 @ApiTags('해시태그 API')
 @ApiHeader({
   name: 'authorization',
@@ -22,27 +23,22 @@ import { Hashtag } from './entities/hashtag.entity';
 export class HashtagsController {
   constructor(private readonly hashtagsService: HashtagsService) {}
 
-  @Post()
+  @Post(':spaceId')
   @ApiOperation({
     summary: '해시태그 생성 API',
     description: '해시태그를 생성한다.',
   })
   @ApiResponse({ status: 201, description: '생성된 해시태그', type: Hashtag })
-  create(@Body() createHashtagDto: CreateHashtagDto) {
-    return this.hashtagsService.create(createHashtagDto);
+  create(
+    @Body() createHashtagDto: CreateHashtagDto,
+    @Param('spaceId') spaceId: number,
+  ) {
+    return this.hashtagsService.create(createHashtagDto, spaceId);
   }
 
   @Get()
-  @ApiOperation({
-    summary: '해시태그 findAll API',
-    description: '전체 해시태그 목록을 불러온다.',
-  })
-  @ApiResponse({
-    status: 200,
-    description: '전체 해시태그 목록',
-    type: Hashtag,
-  })
   findAll() {
+    console.log('123');
     return this.hashtagsService.findAll();
   }
 
@@ -52,8 +48,14 @@ export class HashtagsController {
     description: '해시태그의 ID로 특정 해시태그를 불러온다.',
   })
   @ApiResponse({ status: 200, description: '특정 해시태그', type: Hashtag })
-  findOne(@Param('id') id: string) {
-    return this.hashtagsService.findOne(+id);
+  async findOne(@Param('id') id: number) {
+    const hashtag = await this.hashtagsService.findOne(id);
+    return {
+      status: 200,
+      description: '특정 해시태그',
+      success: true,
+      data: hashtag,
+    };
   }
 
   @Patch(':id')
@@ -61,18 +63,44 @@ export class HashtagsController {
     summary: '특정 해시태그 수정 API',
     description: '해시태그의 ID로 특정 해시태그를 수정한다.',
   })
-  @ApiResponse({ status: 200, description: '수정된 해시태그', type: Hashtag })
-  update(@Param('id') id: string, @Body() updateHashtagDto: UpdateHashtagDto) {
-    return this.hashtagsService.update(+id, updateHashtagDto);
+  @ApiResponse({
+    status: 200,
+    description: '해시태그 수정 성공',
+    type: Hashtag,
+  })
+  async update(
+    @Param('id') id: number,
+    @Body() updateHashtagDto: UpdateHashtagDto,
+  ) {
+    const updateHashtag = await this.hashtagsService.update(
+      id,
+      updateHashtagDto,
+    );
+    return {
+      status: 200,
+      description: '해시태그 수정 성공',
+      success: true,
+      affected: updateHashtag.affected === 1,
+    };
   }
 
   @Delete(':id')
   @ApiOperation({
     summary: '특정 해시태그 삭제 API',
-    description: '해시태그의 ID로 특정 해시태그를 삭제한다.',
+    description: '해시태그의 ID로 특정 해시태그를 삭제한다.1',
   })
-  @ApiResponse({ status: 200, description: '삭제된 해시태그', type: Hashtag })
-  remove(@Param('id') id: string) {
-    return this.hashtagsService.remove(+id);
+  @ApiResponse({
+    status: 200,
+    description: '해시태그 삭제 성공',
+    type: Hashtag,
+  })
+  async remove(@Param('id') id: number) {
+    const deletedHashtag = await this.hashtagsService.remove(id);
+    return {
+      status: 200,
+      description: '해시태그 삭제 성공',
+      success: true,
+      affected: deletedHashtag.affected === 1,
+    };
   }
 }

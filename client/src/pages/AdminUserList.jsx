@@ -4,6 +4,7 @@ import StripeLayout from "../components/StripeLayout";
 import axios from "axios";
 import * as api from "../api";
 import { useState, useEffect } from "react";
+
 function AdminUserList() {
   const [users, setUsers] = useState("");
   useEffect(() => {
@@ -16,7 +17,7 @@ function AdminUserList() {
   }, []);
 
   const headers = ["닉네임", "E-Mail", "전화번호", "성별", "Role", "가입날짜"];
-  const keys = ["nickname", "email", "phoneNumber", "sex", "role", "date"];
+  const keys = ["nickname", "email", "phoneNumber", "sexs", "role", "date"];
   const mainTitle = "유저정보";
   const columnTemplete = "1fr 2fr 1.5fr 1fr 1fr 1.5fr";
   const title = "";

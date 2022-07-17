@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
+import { AiOutlinePlus } from "react-icons/ai";
 import Pagination from "../components/Pagination";
 
 const exData = [
@@ -112,6 +113,7 @@ export default function Notice() {
   const nav = useNavigate();
   const [clickedNumber, setClickedNumber] = useState(0);
 
+  //클릭된 line의 content만 보이도록 하는 함수
   const handleClickToNoticeDetail = (e) => {
     const stringClass = e.target.className;
     const numberClass =
@@ -121,7 +123,18 @@ export default function Notice() {
     numberClass === clickedNumber
       ? setClickedNumber(0)
       : setClickedNumber(numberClass);
-    console.log(clickedNumber);
+  };
+
+  //수정버튼 클릭시 수정페이지로 이동
+  const handleClickUpdateButton = (e) => {
+    const clickedId = e.target.id;
+    nav(`/updateNotice/${clickedId}`);
+  };
+
+  //삭제버튼 클릭시 삭제
+  const handleClickDeleteButton = (e) => {
+    const clickedId = e.target.id.replace(/[^0-9]/g, "");
+    //console.log(clickedId);
   };
 
   const renderData = ({ offset, limit }) => {
@@ -132,6 +145,20 @@ export default function Notice() {
             <div className={cur.id}>공지사항</div>
             <div className={cur.id}>{cur.title}</div>
             <div className={cur.id}>{cur.writtenDate}</div>
+            <div className={cur.id}>
+              <NoticeUpdateButton
+                id={cur.id}
+                onClick={(e) => handleClickUpdateButton(e)}
+              >
+                수정
+              </NoticeUpdateButton>
+              <NoticeDeleteButton
+                id={`d${cur.id}`}
+                onClick={(e) => handleClickDeleteButton(e)}
+              >
+                삭제
+              </NoticeDeleteButton>
+            </div>
             <IoIosArrowDown className={cur.id} />
           </Line>
           <Content className={`content${cur.id}`}>{cur.content}</Content>
@@ -145,7 +172,8 @@ export default function Notice() {
       <NoticeWrap>
         <NoticeTitle>공지사항</NoticeTitle>
         <ButtonGoToAddNotice onClick={() => nav("/addNotice")}>
-          공지사항 추가
+          <AiOutlinePlus />
+          <div>공지사항 추가</div>
         </ButtonGoToAddNotice>
         <NoticeTable clickedNumber={clickedNumber}>
           {renderData({ offset, limit })}
@@ -171,7 +199,7 @@ const Line = styled.div`
   border-bottom: 1px solid #8daef2;
   font-size: 1.2rem;
   font-weight: 400;
-  padding: 1.5vh 0;
+  padding: 10px 0;
   cursor: pointer;
   div {
     flex-grow: 1;
@@ -230,15 +258,38 @@ const NoticeTable = styled.div`
 `;
 
 const ButtonGoToAddNotice = styled.button`
+  display: flex;
   background-color: white;
   border: 2px solid #8daef2;
-  font-size: 1.4rem;
+  font-size: 20px;
   border-radius: 10px;
-  width: 20%;
-  height: 6vh;
+  width: 150px;
+  height: 40px;
+  padding-top: 7px;
   font-weight: 600;
   color: #8daef2;
   cursor: pointer;
   margin-left: auto;
   margin: 0 0 1% auto;
+`;
+
+const NoticeUpdateButton = styled.button`
+  all: unset;
+  font-size: 11px;
+  color: #8daef2;
+  background-color: rgba(141, 175, 242, 0.1);
+  padding: 4px;
+  border: 2px solid #8daef2;
+  border-radius: 6px;
+`;
+
+const NoticeDeleteButton = styled.button`
+  all: unset;
+  font-size: 11px;
+  color: #d80907;
+  background-color: rgba(216, 10, 7, 0.1);
+  padding: 4px;
+  margin-left: 5px;
+  border: 2px solid #d80907;
+  border-radius: 6px;
 `;

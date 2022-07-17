@@ -12,13 +12,14 @@ import AddQnA from "./pages/AddQnA";
 import AddQnaComment from "./pages/AddQnaComment";
 import Notice from "./pages/Notice";
 import AddNotice from "./pages/AddNotice";
+import UpdateNotice from "./pages/UpdateNotice";
 import AdminHome from "./pages/AdminHome";
 import AdminUserList from "./pages/AdminUserList";
 import AdminBookList from "./pages/AdminBookList";
 import AdminBookDetail from "./pages/AdminBookDetail";
 import HostHome from "./pages/HostHome";
-// import AddHost
-// import AddSpace
+import AddHost from "./pages/AddHost";
+import AddSpace from "./pages/AddSpace";
 import HostBookList from "./pages/HostBookList";
 import HostSpaceList from "./pages/hostPage/HostSpaceList";
 import HostUpdateSpace from "./pages/HostUpdateSpace";
@@ -47,6 +48,7 @@ function App() {
 
             <Route path="/notice" element={<Notice />} />
             <Route path="/addNotice" element={<AddNotice />} />
+            <Route path="/updateNotice/:id" element={<UpdateNotice />} />
 
             <Route path="/admin" element={<AdminHome />} />
             <Route path="/admin/userList" element={<AdminUserList />} />
@@ -57,11 +59,11 @@ function App() {
             />
 
             <Route path="/host" element={<HostHome />} />
-            {/* <Route path="/host/addHost" element={<AddHost />} /> */}
-            {/* <Route path="/host/addSpace" element={<AddSpace />} /> */}
+            <Route path="/host/addHost" element={<AddHost />} />
+            <Route path="/host/addSpace" element={<AddSpace />} />
             <Route path="/host/bookList" element={<HostBookList />} />
             <Route path="/host/spaceList" element={<HostSpaceList />} />
-            {/* <Route path="/host/updateSpace" element={<UpdateSpace />} /> */}
+            <Route path="/host/updateSpace/:id" element={<HostUpdateSpace />} />
 
             <Route path="/list" element={<ProductList />} />
             <Route path="/detail/:spaceId" element={<Detail />} />

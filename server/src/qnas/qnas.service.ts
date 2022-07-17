@@ -21,6 +21,7 @@ export class QnasService {
         ...createQnaDto,
         space,
         user,
+        createdTime: new Date(),
       };
       return await this.qnasRepository.save(newQna);
     } catch (error) {
@@ -37,7 +38,6 @@ export class QnasService {
       order: {
         id: 'DESC',
       },
-      // cache: true,
     });
   }
 
@@ -51,7 +51,6 @@ export class QnasService {
           space: true,
           user: true,
         },
-        // cache: true,
       });
       if (qna === null) {
         throw new NotFoundException('존재하지 않는 Q&A 입니다.');
