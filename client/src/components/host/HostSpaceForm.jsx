@@ -1,11 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import PostcodePopup from "../admin/PostcodePopup";
+import HashTag from "./HashTag";
 import * as Api from "../../api";
 
 export default function HostSpaceForm({ mode }) {
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
+  // hashTag state
+  const [tagItem, setTagItem] = useState("");
+  const [tagList, setTagList] = useState([]);
 
   const [spaceInfo, setSpaceInfo] = useState({
     name: "", //공간명
@@ -89,9 +93,39 @@ export default function HostSpaceForm({ mode }) {
     }
   };
 
+  // hashTag  컴포넌트 함수
+  useEffect(() => {
+    // ['스터디룸', '모임', '강남'] 이런식으로 배열로 들어감
+    console.log(tagList);
+  }, [tagList]);
+
+  // 엔터 누르면 추가
+  const onKeyPress = (e) => {
+    if (e.target.value.length !== 0 && window.event.keyCode === 13) {
+      addHashTag();
+    }
+  };
+
+  // hashTag 추가 함수
+  const addHashTag = () => {
+    let updatedTagList = [...tagList];
+    updatedTagList.push(tagItem);
+    setTagList(updatedTagList);
+    setTagItem("");
+  };
+
+  // hashTag 삭제
+  const removeHashTag = (e) => {
+    const deleteTagItem = e.target.parentElement.firstChild.innerText;
+    const filteredTagList = tagList.filter(
+      (tagItem) => tagItem !== deleteTagItem
+    );
+    setTagList(filteredTagList);
+  };
+
   return (
     <Main>
-      <SpaceForm onSubmit={handleUpdateSubmit}>
+      <SpaceForm>
         <InputBox>
           <Title>
             공간 정보를 입력해주세요
@@ -145,6 +179,16 @@ export default function HostSpaceForm({ mode }) {
           ></StyledTextArea>
         </InputBox>
 
+        <HashTag
+          tagItem={tagItem}
+          setTagItem={setTagItem}
+          tagList={tagList}
+          setTagList={setTagList}
+          onKeyPress={onKeyPress}
+          addHashTag={addHashTag}
+          removeHashTag={removeHashTag}
+        />
+
         <InputBox>
           <StyledLabel>예약 시 주의사항</StyledLabel>
           <StyledTextArea
@@ -195,8 +239,7 @@ export default function HostSpaceForm({ mode }) {
             취소
           </StyledButton>
           <StyledButton
-            className="inc"
-            onClick={handleUpdateSubmit}
+            onClick={(e) => handleUpdateSubmit(e)}
             color="white"
             backGroundColor="#8daef2"
             name="register"
@@ -225,7 +268,7 @@ const Main = styled.div`
   margin-bottom: 50px;
 `;
 
-const SpaceForm = styled.form`
+const SpaceForm = styled.div`
   margin-top: 100px;
   margin: 0 10%;
   width: 100%;

@@ -2,45 +2,24 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
 
-export default function HashTag() {
-  const [tagItem, setTagItem] = useState("");
-  const [tagList, setTagList] = useState([]);
-
-  useEffect(() => {
-    // ['스터디룸', '모임', '강남'] 이런식으로 배열로 들어감
-    console.log(tagList);
-  }, [tagList]);
-
-  const onKeyPress = (e) => {
-    if (e.target.value.length !== 0 && e.key === "Enter") {
-      addHashTag();
-    }
-  };
-
-  const addHashTag = () => {
-    let updatedTagList = [...tagList];
-    updatedTagList.push(tagItem);
-    setTagList(updatedTagList);
-    setTagItem("");
-  };
-
-  const removeHashTag = (e) => {
-    const deleteTagItem = e.target.parentElement.firstChild.innerText;
-    const filteredTagList = tagList.filter(
-      (tagItem) => tagItem !== deleteTagItem
-    );
-    setTagList(filteredTagList);
-  };
-
+export default function HashTag({
+  tagItem,
+  setTagItem,
+  tagList,
+  setTagList,
+  onKeyPress,
+  addHashTag,
+  removeHashTag,
+}) {
   return (
     <HashTagContainer>
-      <p>HashTag</p>
+      <p>해시태그</p>
       <HashTagBox>
         {tagList.map((tagItem, index) => {
           return (
             <HashTagItem key={index}>
               <span>{tagItem}</span>
-              <Button onClick={removeHashTag}>X</Button>
+              <Button onClick={(e) => removeHashTag(e)}>X</Button>
             </HashTagItem>
           );
         })}
@@ -49,7 +28,7 @@ export default function HashTag() {
           placeholder="해시태그를 등록해주세요"
           onChange={(e) => setTagItem(e.target.value)}
           value={tagItem}
-          onKeyPress={onKeyPress}
+          onKeyDown={(e) => onKeyPress(e)}
         />
       </HashTagBox>
     </HashTagContainer>
@@ -57,23 +36,21 @@ export default function HashTag() {
 }
 
 const HashTagContainer = styled.div`
-  padding: 10px;
+  width: 100%;
   height: 80px;
+  color: #8daef2;
 `;
 
 const HashTagBox = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   min-height: 50px;
   margin: 10px 0;
   padding: 0 10px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-
-  &:focus-within {
-    border: 1px solid rgba(0, 0, 0, 0.7);
-  }
+  border: 1px solid lightgrey;
+  border-radius: 5px;
 `;
 
 const HashTagItem = styled.div`
