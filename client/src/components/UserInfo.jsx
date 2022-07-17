@@ -21,16 +21,19 @@ export default function UserInfo({
   }, [userId]);
 
   return (
-    <UserProfile viewInfo={viewInfo}>
-      <FaUserCircle size={"40%"} color="lightgrey"></FaUserCircle>
-      <UserName>{userInfo.name ? userInfo.name : "유저2"}</UserName>
-      <UserBlockButtonBox></UserBlockButtonBox>
+    userInfo && (
+      <UserProfile viewInfo={viewInfo}>
+        <FaUserCircle size={"40%"} color="lightgrey"></FaUserCircle>
+        <UserName>{userInfo.name ? userInfo.name : "유저2"}</UserName>
+        <UserBlockButtonBox></UserBlockButtonBox>
 
-      <div className="userName">
-        예약횟수 : {userInfo.reserbations ? userInfo.reserbations.length : 0}회
-      </div>
-      <div className="userInfo">신고 횟수 : {reportedNum}</div>
-    </UserProfile>
+        <div className="userName">
+          예약횟수 : {userInfo.reserbations ? userInfo.reserbations.length : 0}
+          회
+        </div>
+        <div className="userInfo">신고 횟수 : {reportedNum}</div>
+      </UserProfile>
+    )
   );
 }
 

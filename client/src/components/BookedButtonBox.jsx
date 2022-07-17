@@ -11,7 +11,7 @@ export default function BookedButtonBox() {
         backGroundColor="#BBD3F2"
         color="white"
       >
-        <RiEdit2Fill className="modify" size={"1.5rem"}></RiEdit2Fill>
+        <RiEdit2Fill className="modify" size={"1rem"}></RiEdit2Fill>
       </Button>
       <Button
         className="btnDelete"
@@ -19,7 +19,7 @@ export default function BookedButtonBox() {
         backGroundColor="#BBD3F2"
         color="white"
       >
-        <ImBin class="delete"></ImBin>
+        <ImBin class="delete" size={"0.7rem"}></ImBin>
       </Button>
     </ButtonBox>
   );
@@ -38,12 +38,12 @@ const ButtonBox = styled.div`
 `;
 
 const Button = styled.div`
-  width:  2.5rem;
+  width:  2rem;
+  height: 2rem;
 
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 2.5rem;
   border-radius: 5px;
   font-size: 1rem;
 

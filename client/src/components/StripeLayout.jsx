@@ -4,6 +4,8 @@ import { RiEdit2Fill, RiExternalLinkFill } from "react-icons/ri";
 import ListItem from "./StripeListItem";
 import AdminBookDetail from "../pages/AdminBookDetail";
 import UserInfo from "../components/UserInfo";
+import { Link, useNavigate } from "react-router-dom";
+
 UserInfo.defaultProps = {
   userName: "김미지",
   commentNum: "1863회",
@@ -14,12 +16,17 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
   const [viewInfo, setViewInfo] = useState(false);
   const [bookInfo, setBookInfo] = useState(false);
   const [userId, setUserId] = useState();
+  const clickItem = useRef(0);
+
+  const navigate = useNavigate();
 
   function handleClick(id) {
     if (listName === "USER") {
       //유저이름을 받아와서 api출력
       setViewInfo(!viewInfo);
       setUserId(id);
+    } else if (listName === "BOOK") {
+      navigate(`/admin/bookList/bookDetail/${id}`);
     }
   }
 
@@ -31,6 +38,7 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
             <UserInfo userId={userId} viewInfo={viewInfo}></UserInfo>
           </UserBox>
         </UserContainer>
+
         <ReservationForm viewInfo={viewInfo}>
           <List templete={columnTemplete}>
             {headers.map((name) => {
@@ -40,7 +48,7 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
           {datas.map((item, idx) => {
             return (
               //클릭한 항목의 데이터 받아와서 해당 id에 맞는 user출력하기
-              <ListContainer>
+              <ListContainer key={idx}>
                 <ListItem
                   className="10"
                   item={item}
@@ -48,7 +56,11 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
                   keys={keys}
                   listName={listName}
                   id={item.id}
+                  value={item.id}
                   handleClick={handleClick}
+                  onClick={(e) => {
+                    handleClick(e.target.value);
+                  }}
                   //"1fr 2fr 1fr 1fr 2fr 1fr 1.2fr"
                 ></ListItem>
               </ListContainer>

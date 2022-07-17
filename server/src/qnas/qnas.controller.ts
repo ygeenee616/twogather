@@ -44,7 +44,7 @@ export class QnasController {
   async create(
     @GetUser() user,
     @Body() createQnaDto: CreateQnaDto,
-    @Body() spaceId: number,
+    @Body('spaceId') spaceId: number,
   ) {
     const newQna = await this.qnasService.create(createQnaDto, user, spaceId);
     return {
