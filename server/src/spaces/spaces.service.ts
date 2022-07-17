@@ -45,7 +45,9 @@ export class SpacesService {
         totalPage,
         paginatedSpaces,
       };
-    } catch (error) {}
+    } catch (error) {
+      throw error;
+    }
   }
 
   // id로 공간 조회
