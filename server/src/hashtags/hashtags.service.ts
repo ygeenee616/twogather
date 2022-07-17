@@ -15,7 +15,6 @@ export class HashtagsService {
   ) {}
   async create(createHashtagDto: CreateHashtagDto, id: number) {
     const space = await this.spacesService.findOne(id);
-    console.log(space);
     return this.hashtagsRepository.save({
       ...createHashtagDto,
       space: space,
@@ -32,7 +31,15 @@ export class HashtagsService {
 
   async findOne(id: number) {
     try {
-      return await this.hashtagsRepository.findOne({ where: { id } });
+      return await this.hashtagsRepository.findOne({
+        where: { id },
+        relations: {
+          space: true,
+        },
+        order: {
+          id: 'DESC',
+        },
+      });
     } catch (error) {
       throw error;
     }
