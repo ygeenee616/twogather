@@ -144,7 +144,6 @@ const Content = styled.div`
   border-left: 1px solid #f2f2f2;
   margin: 5% auto;
   width: 60vw;
-  height: 80vh;
   border-radius: 20px;
 `;
 
