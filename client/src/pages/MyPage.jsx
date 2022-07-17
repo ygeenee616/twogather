@@ -9,8 +9,6 @@ import {useSelector} from 'react-redux';
 function MyPage() {
   const user = useSelector((store) => store.user);
 
-  console.log(user);
-
   return (
     <Container>
       <PageTitle>마이페이지</PageTitle>

@@ -2,45 +2,79 @@ import styled from "styled-components";
 import { TagTD, InputTD, AlertTR, RegisterBtn } from "../register/Register";
 import { useState } from "react";
 
-function MyProfileEdit({oldNickname, oldGender, oldBirthDate}) {
+function MyProfileEdit({ user }) {
+  const { nickname, sex, phoneNumber } = user;
+  console.log(user);
+  const [newNickname, setNewNickname] = useState(nickname);
+  const [newSex, setNewSex] = useState(sex);
+  const [newPhoneNumber, setNewPhoneNumber] = useState(phoneNumber);
+  const isNicknameValid = newNickname.length >= 2 && newNickname.length <= 10;
 
-  const [nickname, setNickname] = useState(oldNickname);
-  const [gender, setGender] = useState(oldGender);
-  const isNicknameValid = nickname.length >= 2 && nickname.length <= 10;
-
+  const handleDoneEdit = async (e) => {
+    e.preventDefault();
+    
+  }
 
   return (
     <Container>
-      <form>
+      <form onSubmit={handleDoneEdit}>
         <EditProfileTable>
           <tr>
             <TagTD>닉네임</TagTD>
             <InputTD>
-              <input value={nickname} onChange={(e)=>setNickname(e.target.value)}></input>
+              <input
+                value={newNickname}
+                onChange={(e) => setNewNickname(e.target.value)}
+              ></input>
             </InputTD>
           </tr>
-          {!isNicknameValid && <AlertTR><td /><td>2~10자로 입력해주세요.</td></AlertTR>}
+          {!isNicknameValid && (
+            <AlertTR>
+              <td />
+              <td>2~10자로 입력해주세요.</td>
+            </AlertTR>
+          )}
           <tr>
             <TagTD>비밀번호</TagTD>
             <InputTD>
-              <input type="password" placeholder="기존 비밀번호"/>
-              <input type="password" placeholder="새 비밀번호"/>
-              <input type="password" placeholder="새 비밀번호 확인"/>
+              <input type="password" placeholder="기존 비밀번호" />
+              <input type="password" placeholder="새 비밀번호" />
+              <input type="password" placeholder="새 비밀번호 확인" />
             </InputTD>
           </tr>
           <tr>
             <TagTD>성별</TagTD>
             <td>
-                <input type="radio" name="gender" checked={gender==='남'} onClick={()=>{setGender('남')}}/>
-                <label for="m">남 </label> &nbsp;
-                <input type="radio" name="gender" checked={gender==='여'} onClick={()=>{setGender('여')}}/>
-                <label for="w">여 </label>
-            </td>   
+              <input
+                type="radio"
+                name="gender"
+                checked={newSex === "남"}
+                onClick={() => {
+                  setNewSex("남");
+                }}
+              />
+              <label for="m">남 </label> &nbsp;
+              <input
+                type="radio"
+                name="gender"
+                checked={newSex === "여"}
+                onClick={() => {
+                  setNewSex("여");
+                }}
+              />
+              <label for="w">여 </label>
+            </td>
           </tr>
           <tr>
-            <TagTD>생년월일</TagTD>
+            <TagTD>전화번호</TagTD>
             <InputTD>
-              <input type="date" />
+              <input
+                type="tel"
+                name="phoneNumber"
+                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                value={newPhoneNumber}
+                onChange={(e) => setNewPhoneNumber(e.target.value)}
+              />
             </InputTD>
           </tr>
         </EditProfileTable>

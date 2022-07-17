@@ -19,7 +19,7 @@ function MyReservedRoom({room, idx}) {
         <InfoText>
           <InfoTag color="black"><a href={`http://localhost:5001/detail/${idx}`}>{space} {idx}</a></InfoTag> <br/>
           <InfoTag color="light-grey">예약자: {booker} / {personnel}인</InfoTag>
-          <InfoTag color="grey">장소: {location}></InfoTag>
+          <InfoTag color="grey">장소: {location}</InfoTag>
           <InfoTag color="grey">예약일시:{visitingTime}</InfoTag>
         </InfoText>
       </InfoDiv>

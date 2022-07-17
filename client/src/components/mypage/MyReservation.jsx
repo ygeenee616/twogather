@@ -17,14 +17,11 @@ const room = {
 const rooms = [];
 for (var i = 0; i < 12; i++) rooms.push(room);
 
-console.log(rooms);
-
 function MyReservation() {
 
   const total_elem = rooms.length;
   const page_limit = 5;
   const [page, setPage] = useState(1);
-  console.log('cookie:' + getCookie('page'));
 
   const page_limit_elem = (page_limit*page-1 < total_elem-1) ? page_limit*page-1 : total_elem-1;
 
@@ -37,7 +34,11 @@ function MyReservation() {
       <h3>나의 예약 정보</h3>
       <Line></Line>
       <Reservations>
-        {rooms.slice(page_limit*(page-1),page_limit_elem).map( (room, idx )=> <ReservedRoom room={room} key={idx} className="reservedRoom"/>)}
+        {
+          rooms
+          .slice(page_limit*(page-1),page_limit_elem)
+          .map( (room, idx )=> <ReservedRoom room={room} key={idx} className="reservedRoom"/>)
+        }
       </Reservations>
       <Pagination
         total={total_elem}

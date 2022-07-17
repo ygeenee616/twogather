@@ -1,30 +1,40 @@
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { validatePassword } from "../../assets/utils/UsefulFunction";
+import {
+  validateEmail,
+  validatePassword,
+} from "../../assets/utils/UsefulFunction";
 import MyProfileInfo from "./MyProfileInfo";
 import MyProfileEdit from "./MyProfileEdit";
 import * as Api from "../../api";
 
-const user = {
-  nickname: "연두부",
-  email: "dubu@kakao.com",
-  password: "******",
-  socialLogin: "카카오",
-  gender: "여",
-  birthDate: "1999.06.16",
-};
 function MyProfile() {
   const [editUser, setEditUser] = useState(false);
+  const [user, setUser] = useState({});
   const handleEditUser = () => {
     setEditUser(true);
   };
 
   useEffect(() => {
     async function getUser() {
-      const data = await Api.get("api/users/info");
-      
+      const res = await Api.get("api/users/info");
+      if (res.data.data) {
+        const { id, email, nickname, phoneNumber, sex, profileImage } = res.data.data;
+        const userData = {
+          id,
+          email,
+          nickname,
+          phoneNumber,
+          sex,
+          profileImage,
+        };
+        console.log(userData);
+
+        setUser(userData);
+      }
     }
+    getUser();
   }, []);
 
   return (
@@ -45,11 +55,7 @@ function MyProfile() {
       </ProfileImgDiv>
       <ProfileContents>
         {editUser ? (
-          <MyProfileEdit
-            oldNickname={user.nickname}
-            oldGender={user.gender}
-            oldBirthDate={user.birthDate}
-          />
+          <MyProfileEdit user={user} />
         ) : (
           <MyProfileInfo user={user} />
         )}

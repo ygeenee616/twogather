@@ -79,7 +79,7 @@ function MyQnA() {
         </QnATableHead>
         <tbody>
           {QNAs.slice(page_limit * (page - 1), page_limit_elem).map(
-            (qna, idx) => <MyQnaComponent qna={qna}/>
+            (qna, idx) => <MyQnaComponent qna={qna} key={idx}/>
           )}
         </tbody>
       </QnATable>
