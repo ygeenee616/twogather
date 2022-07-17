@@ -6,7 +6,8 @@ BookInfo.defaultProps = {
 };
 
 export default function BookInfo({
-  room,
+  roomId,
+  roomTitle,
   date,
   startTime,
   endTime,
@@ -31,7 +32,7 @@ export default function BookInfo({
       <div>
         <Info>
           <div>예약 룸</div>
-          <div>{room.title}</div>
+          <div>{roomTitle}</div>
         </Info>
         <Info>
           <div>예약 날짜</div>

@@ -1,14 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-PostBookerInfo.defaultProps = {
-  name: "강예정",
-  phone: "01012345678",
-  email: "abc@naver.com",
-  purpose: "촬영",
-  request: "의자 4개 준비 부탁드립니다.",
-};
-
 export default function PostBookerInfo({
   name,
   phone,

@@ -1,19 +1,52 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import HostInfo from "../components/book/HostInfo";
 import BookInfo from "../components/book/BookInfo";
 import PostBookerInfo from "../components/book/PostBookerInfo";
 import ToTop from "../components/ToTop";
+import axios from "axios";
 
-export default function Book() {
+export default function AdminBookDetail() {
+  const [data, setData] = useState("");
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        // 나중에 url 해당 BookId 사용해서 API 연결
+        const req = await axios.get("/dummyBookDetail.json");
+        const data = await req.data.book;
+        setData(data);
+        console.log(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getData();
+  }, []);
+
   return (
-    <FullContainer>
-      <BookInfo />
-      <PostBookerInfo />
-      <HostInfo />
-      <Button>취소하기</Button>
-      <ToTop />
-    </FullContainer>
+    data && (
+      <FullContainer>
+        <BookInfo
+          roomTitle={data.room}
+          date={data.date}
+          startTime={data.startTime}
+          endTime={data.endTime}
+          people={data.people}
+          pay={data.pay}
+        />
+        <PostBookerInfo
+          name={data.name}
+          phone={data.phone}
+          email={data.email}
+          purpose={data.purpose}
+          request={data.request}
+        />
+        <HostInfo host={data.host} />
+        <Button>취소하기</Button>
+        <ToTop />
+      </FullContainer>
+    )
   );
 }
 
@@ -31,7 +64,7 @@ const Button = styled.button`
   margin: 20px 0;
   border-radius: 10px;
   border: none;
-  background: #8daef2;
+  background: red;
   color: #fff;
   position: absolute;
   bottom: -60px;

@@ -15,7 +15,8 @@ export default function Book() {
   const date = location.state.date;
   const startTime = location.state.startTime;
   const endTime = location.state.endTime;
-  const room = location.state.room;
+  const roomId = location.state.room.id;
+  const roomTitle = location.state.room.title;
   const host = location.state.host;
 
   // 유저 입력 정보
@@ -77,7 +78,8 @@ export default function Book() {
       />
       <HostInfo host={host} />
       <BookInfo
-        room={room}
+        roomId={roomId}
+        roomTitle={roomTitle}
         people={people}
         date={date}
         startTime={startTime}
