@@ -5,45 +5,47 @@ import { FcHome, FcConferenceCall } from "react-icons/fc";
 
 export default function Dropbox({ rooms, acceptPeople, checkSelectRoom }) {
   return (
-    <RoomList>
-      <p>세부 공간 선택</p>
+    rooms && (
+      <RoomList>
+        <p>세부 공간 선택</p>
 
-      {rooms.map((item, i) => {
-        return (
-          <Container key={i}>
-            <RoomItem>
-              <input
-                type="radio"
-                id="select"
-                name="room"
-                className={item.title}
-                value={item.id}
-                onClick={(e) => {
-                  checkSelectRoom(e.target.value, e.target.className);
-                  acceptPeople.current = item.people;
-                }}
-              />
-              <RoomLabel>
-                <span>{item.title}</span>
-                <span>시간당 {item.pay} ₩</span>
-              </RoomLabel>
-              <img src={item.image} />
-              <HiChevronDown />
-            </RoomItem>
-            <Dropdown>
-              <div>
-                <FcHome style={{ marginRight: "5px" }} size={16} />
-                공간 유형 : {item.roomType}
-              </div>
-              <div>
-                <FcConferenceCall style={{ marginRight: "5px" }} size={16} />
-                수용 인원 : {item.people}
-              </div>
-            </Dropdown>
-          </Container>
-        );
-      })}
-    </RoomList>
+        {rooms.map((item, i) => {
+          return (
+            <Container key={i}>
+              <RoomItem>
+                <input
+                  type="radio"
+                  id="select"
+                  name="room"
+                  className={item.title}
+                  value={item.id}
+                  onClick={(e) => {
+                    checkSelectRoom(e.target.value, e.target.className);
+                    acceptPeople.current = item.people;
+                  }}
+                />
+                <RoomLabel>
+                  <span>{item.title}</span>
+                  <span>시간당 {item.pay} ₩</span>
+                </RoomLabel>
+                <img src={item.image} />
+                <HiChevronDown />
+              </RoomItem>
+              <Dropdown>
+                <div>
+                  <FcHome style={{ marginRight: "5px" }} size={16} />
+                  공간 유형 : {item.roomType}
+                </div>
+                <div>
+                  <FcConferenceCall style={{ marginRight: "5px" }} size={16} />
+                  수용 인원 : {item.people}
+                </div>
+              </Dropdown>
+            </Container>
+          );
+        })}
+      </RoomList>
+    )
   );
 }
 
