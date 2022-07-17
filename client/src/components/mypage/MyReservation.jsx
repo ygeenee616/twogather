@@ -37,7 +37,7 @@ function MyReservation() {
       <h3>나의 예약 정보</h3>
       <Line></Line>
       <Reservations>
-        {rooms.slice(page_limit*(page-1),page_limit_elem).map( (room, idx )=> <ReservedRoom room={room} key={idx}/>)}
+        {rooms.slice(page_limit*(page-1),page_limit_elem).map( (room, idx )=> <ReservedRoom room={room} key={idx} className="reservedRoom"/>)}
       </Reservations>
       <Pagination
         total={total_elem}
@@ -73,7 +73,7 @@ const Line = styled.div`
 const Reservations = styled.div`
   display: flex;
   flex-direction: column;
-  div {
+  .reservedRoom {
     border-bottom: #bbd3f2;
   }
 `;

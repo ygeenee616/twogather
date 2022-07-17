@@ -36,6 +36,7 @@ const RoomDiv = styled.div`
   flex-direction: row;
   align-items: center;
   padding: 1rem 0;
+  border-bottom: solid lightgrey;
 
   @media only screen and (max-width: 1000px) {
     flex-direction: column;
