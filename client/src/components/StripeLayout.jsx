@@ -25,6 +25,9 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
       //유저이름을 받아와서 api출력
       setViewInfo(!viewInfo);
       setUserId(id);
+      // UserInfo 부분으로 스크롤 이동
+      const thisContent = document.querySelector(".userContainer");
+      thisContent.scrollIntoView({ behavior: "smooth", block: "center" });
     } else if (listName === "BOOK") {
       navigate(`/admin/bookList/bookDetail/${id}`);
     }
@@ -33,7 +36,7 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
   return (
     <>
       <Container>
-        <UserContainer>
+        <UserContainer className="userContainer">
           <UserBox viewInfo={viewInfo}>
             <UserInfo userId={userId} viewInfo={viewInfo}></UserInfo>
           </UserBox>
@@ -74,7 +77,7 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
 
 const Container = styled.div`
   margin: 0 auto;
-  width: 80%;
+  width: 90%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -105,7 +108,7 @@ const ReservationForm = styled.div`
 
 const Header = styled.div`
   background-color: white;
-  font-size: 1.2rem;
+  font-size: 1rem;
   line-height: 2.4rem;
   text-align: center;
   height: 3rem;
@@ -117,6 +120,7 @@ const Header = styled.div`
     border-right: none;
   }
 `;
+
 const UserContainer = styled.div`
   width: 100%;
 
@@ -124,6 +128,7 @@ const UserContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
 const List = styled.div`
   display: grid;
   grid-template-columns: ${(props) => props.templete};
