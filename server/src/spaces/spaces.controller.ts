@@ -63,9 +63,14 @@ export class SpacesController {
     },
   })
   async findAll(@Query() query) {
-    const { page, perPage } = query;
+    const { page, perPage, keyword } = query;
+
     const startIndex: number = perPage * (page - 1);
-    const spaces = await this.spacesService.findAll(startIndex, perPage);
+    const spaces = await this.spacesService.findAll(
+      startIndex,
+      perPage,
+      keyword,
+    );
     return {
       status: 200,
       description: '전체 공간 목록 조회 성공',
