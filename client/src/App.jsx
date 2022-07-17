@@ -63,7 +63,7 @@ function App() {
             <Route path="/host/addSpace" element={<AddSpace />} />
             <Route path="/host/bookList" element={<HostBookList />} />
             <Route path="/host/spaceList" element={<HostSpaceList />} />
-            <Route path="/host/updateSpace" element={<HostUpdateSpace />} />
+            <Route path="/host/updateSpace/:id" element={<HostUpdateSpace />} />
 
             <Route path="/list" element={<ProductList />} />
             <Route path="/detail/:spaceId" element={<Detail />} />

@@ -4,17 +4,19 @@ import styled from "styled-components";
 import ProductImageSlider from "./ProductImageSlider";
 import reviewImg from "../assets/images/reviewIcon.png";
 
-const productTags = (tag) => {
+const productTags = (hashtags) => {
   let result = "";
   let resultStr = "";
-  for (let i = 0; i < tag.length; i++) {
-    resultStr += tag[i];
+  for (let i = 0; i < hashtags.length; i++) {
+    resultStr += hashtags[i];
   }
   if (resultStr.length >= 20) {
     for (let i = 0; i <= 18; i++) {
       result += resultStr[i];
     }
     result += "···";
+  } else {
+    return resultStr;
   }
   return result;
 };
@@ -22,8 +24,8 @@ const productTags = (tag) => {
 export default function ProductCard({
   //id,
   src,
-  tag,
-  title,
+  hashtags,
+  name,
   address,
   price,
   review,
@@ -41,12 +43,15 @@ export default function ProductCard({
       </ImageSliderWrap>
       <ProductInfo onClick={handleClick}>
         <Line>
-          <SubTag>{productTags(tag)}</SubTag>
-          <img src={reviewImg} style={{ width: "1vw", marginLeft: "auto" }} />
+          <SubTag>{productTags(hashtags)}</SubTag>
+          <img
+            src={reviewImg}
+            style={{ width: "13px", height: "13px", marginLeft: "auto" }}
+          />
           <SubTag>{review}</SubTag>
         </Line>
         <Line>
-          <Title>{title}</Title>
+          <Title>{name}</Title>
         </Line>
         <Line>
           <SubTag>{address}</SubTag>
