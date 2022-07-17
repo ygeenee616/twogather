@@ -44,10 +44,4 @@ export class Reservation {
 
   @OneToOne((type) => Review, (rewiew) => rewiew.reservation)
   review: Review;
-
-  @ManyToOne((type) => Room, (room) => room.reservations, {
-    onDelete: 'CASCADE',
-    eager: false,
-  })
-  room: Room;
 }

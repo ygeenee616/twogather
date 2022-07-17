@@ -208,7 +208,6 @@ const InputTD = styled.td`
     padding: 0.4rem;
     border: solid #d9d9d9;
     border-radius: 10px;
-    margin: 0.2rem 0
   }
 `;
 const AlertTR = styled.tr`
@@ -250,6 +249,4 @@ const RegisterBtn = styled.button`
   }
 `;
 
-
-export {RegisterDiv, TagTD, InputTD, AlertTR, RegisterBtn };
 export default Register;

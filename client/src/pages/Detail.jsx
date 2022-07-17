@@ -8,7 +8,6 @@ import Dropbox from "../components/detail/DropBox";
 import { MyDatePicker } from "../components/detail/DatePicker";
 import ToTop from "../components/ToTop";
 import axios from "axios";
-import * as Api from "../api";
 
 // 날짜 선택시 해당 날짜의 예약 내역 가져오는 함수
 const handleDateChange = async (date) => {
@@ -66,7 +65,6 @@ export default function Detail() {
   useEffect(() => {
     const getData = async () => {
       try {
-        // const req = await Api.get(`/api/detail/${id}`)
         const req = await axios.get("/dummyDetail.json");
         const space = await req.data.space;
         setData(space);

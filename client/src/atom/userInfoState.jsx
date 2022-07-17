@@ -14,7 +14,6 @@ const userInfoState = atom({
     userName: "",
     userEmail: "",
     useType: "user",
-    nickName: "",
   },
 });
 

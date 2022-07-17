@@ -20,7 +20,8 @@ export class RoomResExample {
           isAdmin: false,
           nickname: 'test2',
           email: 'test2@naver.com',
-          password: '****',
+          password:
+            '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
           name: '김태훈',
           sex: null,
           profileImage: null,
@@ -46,75 +47,6 @@ export class RoomResExample {
       },
     },
   };
-
-  public readonly findAllBySpace = {
-    status: 200,
-    success: true,
-    description: 'spaceId로 rooms 조회 성공',
-    data: [
-      {
-        id: 3,
-        name: '좋은방1',
-        capacity: 6,
-        price: 2000,
-        description: '좋은방1은 2,000원에 6명 수용가능합니다.',
-        space: {
-          id: 37,
-          type: 'q1',
-          address: 'ㅁㄴㅁㄴasdf',
-          name: '234123ㅁㄴㅁㄴ1',
-          notice: '123ㅁㄴㄴㅁ4',
-          intro: 'tgdㅁㄴㄴㅁsvcax',
-          user: {
-            id: 65,
-            isAdmin: false,
-            nickname: 'kkk123',
-            email: 'kkkk123@naver.com',
-            password: '****',
-            name: null,
-            sex: null,
-            profileImage: null,
-            phoneNumber: null,
-            businessNumber: null,
-            businessName: null,
-            businessAddress: null,
-            accountNumber: null,
-          },
-        },
-      },
-      {
-        id: 3,
-        name: '좋은방1',
-        capacity: 6,
-        price: 2000,
-        description: '좋은방1은 2,000원에 6명 수용가능합니다.',
-        space: {
-          id: 37,
-          type: 'q1',
-          address: 'ㅁㄴㅁㄴasdf',
-          name: '234123ㅁㄴㅁㄴ1',
-          notice: '123ㅁㄴㄴㅁ4',
-          intro: 'tgdㅁㄴㄴㅁsvcax',
-          user: {
-            id: 65,
-            isAdmin: false,
-            nickname: 'kkk123',
-            email: 'kkkk123@naver.com',
-            password: '****',
-            name: null,
-            sex: null,
-            profileImage: null,
-            phoneNumber: null,
-            businessNumber: null,
-            businessName: null,
-            businessAddress: null,
-            accountNumber: null,
-          },
-        },
-      },
-    ],
-  };
-
   public readonly findAll = {
     status: 200,
     description: '전체 room 조회',
@@ -136,7 +68,8 @@ export class RoomResExample {
             isAdmin: false,
             nickname: 'test2',
             email: 'test2@naver.com',
-            password: '****',
+            password:
+              '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
             name: '김태훈',
             sex: null,
             profileImage: null,
@@ -178,7 +111,8 @@ export class RoomResExample {
             isAdmin: false,
             nickname: 'test2',
             email: 'test2@naver.com',
-            password: '****',
+            password:
+              '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
             name: '김태훈',
             sex: null,
             profileImage: null,
@@ -227,7 +161,8 @@ export class RoomResExample {
           isAdmin: false,
           nickname: 'test2',
           email: 'test2@naver.com',
-          password: '****',
+          password:
+            '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
           name: '김태훈',
           sex: null,
           profileImage: null,
@@ -265,37 +200,5 @@ export class RoomResExample {
     status: 201,
     description: 'ID로 특정 room 삭제 성공',
     success: true,
-  };
-
-  public readonly findMyRooms = {
-    status: 200,
-    success: true,
-    description: '내 room 목록 조회 성공',
-    data: [
-      {
-        id: 4,
-        name: '수정된 좋은방3',
-        capacity: 5,
-        price: 4000,
-        description: '수정된 좋은방3은 4,000원에 5명 수용가능합니다.',
-        space: {
-          id: 40,
-          type: '스터디룸',
-          address: 'ㄴㅇㄹㄴㅇㄹ2',
-          name: 'ㄴㅇㄹㄴㅇㄹㅁㄴ2',
-          notice: '12ㄴㅇㄹㄴㅁ4',
-          intro: 'tgdㄴㅇㄹㄴㅇㄹcax',
-        },
-      },
-    ],
-  };
-
-  public readonly updateMyRoom = {
-    status: 201,
-    description: '내 room 정보 수정 성공',
-    success: true,
-    data: {
-      affected: true,
-    },
   };
 }

@@ -54,42 +54,6 @@ export class ReservationsService {
     }
   }
 
-  // 특정 룸의 전체 예약 목록 조회
-  async findAllByRoom(roomId: number, startIndex: number, perPage: number) {
-    try {
-      const totalReservation = await this.reservationRepository.find({
-        where: {
-          room: {
-            id: roomId,
-          },
-        },
-      });
-      const totalPage = Math.ceil(totalReservation.length / perPage);
-      const paginatedReservations = await this.reservationRepository.find({
-        where: {
-          room: {
-            id: roomId,
-          },
-        },
-        relations: {
-          user: true,
-          room: true,
-        },
-        order: {
-          id: 'DESC',
-        },
-        skip: startIndex,
-        take: perPage,
-      });
-      return {
-        totalPage,
-        paginatedReservations,
-      };
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async findOne(id: number) {
     try {
       const reservation = await this.reservationRepository.findOne({

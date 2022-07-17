@@ -7,7 +7,6 @@ import BookInfo from "../components/book/BookInfo";
 import ToTop from "../components/ToTop";
 import axios from "axios";
 import { useEffect } from "react";
-import * as Api from "../api";
 
 export default function Book() {
   const location = useLocation();
@@ -62,21 +61,6 @@ export default function Book() {
       : (possible.current = false);
   }
 
-  // 예약 등록 함수
-  async function submitBook(id) {
-    try {
-      // const req = await Api.post(`/api/reservations/3`, {
-      //   startTime: 18,
-      //   endTime: 20,
-      //   date: "2022-07-20",
-      //   personnel: 3,
-      // });
-      console.log("예약완료");
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   return (
     <FullContainer>
       <GetBookerInfo
@@ -103,7 +87,7 @@ export default function Book() {
       />
       <BookBox possible={possible.current}>
         <p className="required">*예약 필수 정보를 입력해주세요</p>
-        <button onClick={() => possible.current && submitBook()}>
+        <button onClick={() => possible.current && console.log("예약완료")}>
           예약 완료
         </button>
       </BookBox>

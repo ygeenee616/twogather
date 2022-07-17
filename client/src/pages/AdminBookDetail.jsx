@@ -6,36 +6,17 @@ import PostBookerInfo from "../components/book/PostBookerInfo";
 import ToTop from "../components/ToTop";
 import axios from "axios";
 import * as Api from "../api";
-import userInfoState from "../atom/userInfoState";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from "recoil";
 
-function updateBook(id) {
-  //update 페이지로
+function onClickUpdate() {
+  //update
 }
 
-async function deleteBook(id) {
+function onClickCancle() {
   // cancle
-  try {
-    // 나중에 url 해당 BookId 사용해서 API 연결
-    const req = await Api.delete(`api/reservations/${id}`);
-    console.log(req);
-  } catch (err) {
-    console.log(err);
-  }
 }
 
 export default function AdminBookDetail() {
   const [data, setData] = useState("");
-
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  setUserInfo("HOST");
-  console.log(userInfo);
 
   useEffect(() => {
     const getData = async () => {
@@ -73,22 +54,9 @@ export default function AdminBookDetail() {
         />
         <HostInfo host={data.host} />
         <ButtonContainer>
-          {userInfo === "HOST" && (
-            <Button
-              onClick={() => {
-                updateBook(data.id);
-              }}
-            >
-              수정하기
-            </Button>
-          )}
-          <Button
-            onClick={() => {
-              deleteBook(data.id);
-            }}
-            primary
-          >
-            삭제하기
+          <Button onClick={onClickUpdate()}>수정하기</Button>
+          <Button onClick={onClickCancle()} primary>
+            취소하기
           </Button>
         </ButtonContainer>
         <ToTop />

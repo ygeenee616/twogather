@@ -18,7 +18,8 @@ export class SpaceResExample {
           isAdmin: false,
           nickname: 'test2',
           email: 'test2@naver.com',
-          password: '****',
+          password:
+            '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
           name: '김태훈',
           sex: null,
           profileImage: null,
@@ -64,7 +65,8 @@ export class SpaceResExample {
               isAdmin: false,
               nickname: 'aaaa',
               email: '11@11.com',
-              password: '****',
+              password:
+                '$2a$10$Wf470a.QJtiqGSKFdeQr1OpWvtoejtSNRzKr6/5cXsSfjOQKf.ZRO',
               name: null,
               sex: null,
               profileImage: null,
@@ -87,7 +89,8 @@ export class SpaceResExample {
               isAdmin: false,
               nickname: 'aaaa',
               email: '11@11.com',
-              password: '****',
+              password:
+                '$2a$10$Wf470a.QJtiqGSKFdeQr1OpWvtoejtSNRzKr6/5cXsSfjOQKf.ZRO',
               name: null,
               sex: null,
               profileImage: null,
@@ -110,7 +113,8 @@ export class SpaceResExample {
               isAdmin: false,
               nickname: 'aaaa',
               email: '11@11.com',
-              password: '****',
+              password:
+                '$2a$10$Wf470a.QJtiqGSKFdeQr1OpWvtoejtSNRzKr6/5cXsSfjOQKf.ZRO',
               name: null,
               sex: null,
               profileImage: null,
@@ -133,7 +137,8 @@ export class SpaceResExample {
               isAdmin: false,
               nickname: 'aaaa',
               email: '11@11.com',
-              password: '****',
+              password:
+                '$2a$10$Wf470a.QJtiqGSKFdeQr1OpWvtoejtSNRzKr6/5cXsSfjOQKf.ZRO',
               name: null,
               sex: null,
               profileImage: null,
@@ -156,7 +161,8 @@ export class SpaceResExample {
               isAdmin: false,
               nickname: 'aaaa',
               email: '11@11.com',
-              password: '****',
+              password:
+                '$2a$10$Wf470a.QJtiqGSKFdeQr1OpWvtoejtSNRzKr6/5cXsSfjOQKf.ZRO',
               name: null,
               sex: null,
               profileImage: null,
@@ -188,7 +194,8 @@ export class SpaceResExample {
         isAdmin: false,
         nickname: 'test2',
         email: 'test2@naver.com',
-        password: '****',
+        password:
+          '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
         name: '김태훈',
         sex: null,
         profileImage: null,
@@ -240,7 +247,8 @@ export class SpaceResExample {
           isAdmin: false,
           nickname: 'test2',
           email: 'test2@naver.com',
-          password: '****',
+          password:
+            '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
           name: '김태훈',
           sex: null,
           profileImage: null,

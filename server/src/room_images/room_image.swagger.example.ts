@@ -23,7 +23,8 @@ export class RoomImageResExample {
             isAdmin: false,
             nickname: 'test2',
             email: 'test2@naver.com',
-            password: '****',
+            password:
+              '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
             name: '김태훈',
             sex: null,
             profileImage: null,
@@ -72,7 +73,8 @@ export class RoomImageResExample {
             isAdmin: false,
             nickname: 'test2',
             email: 'test2@naver.com',
-            password: '****',
+            password:
+              '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
             name: '김태훈',
             sex: null,
             profileImage: null,
@@ -114,7 +116,8 @@ export class RoomImageResExample {
             isAdmin: false,
             nickname: 'test2',
             email: 'test2@naver.com',
-            password: '****',
+            password:
+              '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
             name: '김태훈',
             sex: null,
             profileImage: null,
@@ -163,7 +166,8 @@ export class RoomImageResExample {
           isAdmin: false,
           nickname: 'test2',
           email: 'test2@naver.com',
-          password: '****',
+          password:
+            '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
           name: '김태훈',
           sex: null,
           profileImage: null,

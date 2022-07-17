@@ -7,8 +7,6 @@ import {
   Param,
   Delete,
   UseGuards,
-  Query,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { QnasService } from './qnas.service';
 import { CreateQnaDto } from './dto/create-qna.dto';
@@ -18,7 +16,6 @@ import { Qna } from './entities/qna.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/custom.decorator';
 import { QnaResExample } from './qna.swagger.example';
-import { User } from 'src/users/entities/users.entity';
 const qnaResExample = new QnaResExample();
 
 @Controller('api/qnas')
@@ -81,39 +78,6 @@ export class QnasController {
     };
   }
 
-  // 특정 space의 Q&A 목록 조회
-  @Get('space/:spaceId')
-  @ApiOperation({
-    summary: '특정 공간의 Q&A 목록 조회 API',
-    description:
-      '전체 Q&A 목록을 불러온다. 페이지네이션 가능(localhost:3000/api/qnas/space/1?page=1&perPage=5)',
-  })
-  @ApiResponse({
-    status: 200,
-    description: '특정 공간의 Q&A 목록 조회',
-    schema: {
-      example: qnaResExample.findAllBySpace,
-    },
-  })
-  async findAllBySpace(@Param('spaceId') spaceId: number, @Query() query) {
-    const { page, perPage } = query;
-    const startIndex: number = Number(perPage) * (Number(page) - 1);
-    const { totalPage, paginatedQnas } = await this.qnasService.findAllBySpace(
-      spaceId,
-      startIndex,
-      Number(perPage),
-    );
-    return {
-      status: 200,
-      description: '특정 공간의 Q&A 목록 조회 성공',
-      success: true,
-      data: {
-        totalPage,
-        paginatedQnas,
-      },
-    };
-  }
-
   @Get(':id')
   @ApiOperation({
     summary: '특정 Q&A 찾는 API',
@@ -159,38 +123,6 @@ export class QnasController {
     };
   }
 
-  // 내가 작성한 특정 Q&A 수정
-  @Patch('mypage/:id')
-  @UseGuards(AuthGuard())
-  @ApiOperation({
-    summary: '내가 작성한 특정 Q&A 수정 API',
-    description: 'Q&A의 ID로 내가 작성한 특정 Q&A를 수정한다.',
-  })
-  @ApiResponse({
-    status: 201,
-    description: '수정된 Q&A',
-    schema: {
-      example: qnaResExample.updateMyQna,
-    },
-  })
-  async updateMyQna(
-    @Param('id') id: number,
-    @Body() updateQnaDto: UpdateQnaDto,
-    @GetUser() user: User,
-  ) {
-    const qna = await this.qnasService.findOne(id);
-    if (qna.user.id !== user.id) {
-      throw UnauthorizedException;
-    }
-    const updatedQna = await this.qnasService.update(id, updateQnaDto);
-    return {
-      status: 201,
-      description: 'qnaId로 내가 작성한 특정 Q&A 수정',
-      success: true,
-      data: { affected: updatedQna },
-    };
-  }
-
   // qnaId로 특정 Q&A 삭제
   @Delete(':id')
   @ApiOperation({
@@ -209,33 +141,6 @@ export class QnasController {
     return {
       status: 201,
       description: 'qnaId로 특정 Q&A 삭제 성공',
-      success: true,
-    };
-  }
-
-  // qnaId로 내가 작성한 특정 Q&A 삭제
-  @Delete('mypage/:id')
-  @UseGuards(AuthGuard())
-  @ApiOperation({
-    summary: '내가 작성한 특정 Q&A 삭제 API',
-    description: 'Q&A ID로 내가 작성한 특정 Q&A를 삭제한다.',
-  })
-  @ApiResponse({
-    status: 201,
-    description: '삭제된 Q&A',
-    schema: {
-      example: qnaResExample.removeQna,
-    },
-  })
-  async removeMyQna(@Param('id') id: number, @GetUser() user: User) {
-    const qna = await this.qnasService.findOne(id);
-    if (qna.user.id !== user.id) {
-      throw UnauthorizedException;
-    }
-    await this.qnasService.remove(id);
-    return {
-      status: 201,
-      description: 'qnaId로 내가 작성한 특정 Q&A 삭제 성공',
       success: true,
     };
   }
