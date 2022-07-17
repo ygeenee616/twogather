@@ -25,6 +25,9 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
       //유저이름을 받아와서 api출력
       setViewInfo(!viewInfo);
       setUserId(id);
+      // UserInfo 부분으로 스크롤 이동
+      const thisContent = document.querySelector(`.userContainer`);
+      thisContent.scrollIntoView({ behavior: "smooth", block: "center" });
     } else if (listName === "BOOK") {
       navigate(`/admin/bookList/bookDetail/${id}`);
     }
@@ -33,7 +36,7 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
   return (
     <>
       <Container>
-        <UserContainer>
+        <UserContainer className="userContainer">
           <UserBox viewInfo={viewInfo}>
             <UserInfo userId={userId} viewInfo={viewInfo}></UserInfo>
           </UserBox>
