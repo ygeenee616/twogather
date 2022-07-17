@@ -17,6 +17,14 @@ import {
   PageTitle,
   UserBtn,
 } from "../components/register/UserForm";
+import userInfoState from "../atom/userInfoState";
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from "recoil";
 
 function LoginForm() {
   const user = useSelector((store) => store.user);
@@ -29,6 +37,10 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [alertMsg, setAlertMsg] = useState("");
 
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const a = useRecoilValue(userInfoState);
+  
+  
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -37,6 +49,7 @@ function LoginForm() {
     else if (!validateEmail(email))
       setAlertMsg("이메일 형식이 올바르지 않습니다.");
     else {
+      //로그인 성공
       try {
         const data = { email, password };
         // "/apiusers/sign-in" 엔드포인트로 post요청함.
@@ -47,6 +60,14 @@ function LoginForm() {
         localStorage.setItem("userToken", jwtToken);
         // dispatch 함수를 이용해 로그인 성공 상태로 만듦.
         dispatch(login(data));
+
+        setUserInfo({ ...userInfo, userEmail: email });
+
+        console.log(userInfo);
+        console.log("asdasdasd");
+        console.log(a);
+
+        // email로 유저 검색해서 유저정보 받아오기
 
         // 기본 페이지로 이동함.
         navigate("/", { replace: true });

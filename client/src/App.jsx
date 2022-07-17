@@ -12,6 +12,7 @@ import AddQnA from "./pages/AddQnA";
 import AddQnaComment from "./pages/AddQnaComment";
 import Notice from "./pages/Notice";
 import AddNotice from "./pages/AddNotice";
+import UpdateNotice from "./pages/UpdateNotice";
 import AdminHome from "./pages/AdminHome";
 import AdminUserList from "./pages/AdminUserList";
 import AdminBookList from "./pages/AdminBookList";
@@ -47,6 +48,7 @@ function App() {
 
             <Route path="/notice" element={<Notice />} />
             <Route path="/addNotice" element={<AddNotice />} />
+            <Route path="/updateNotice/:id" element={<UpdateNotice />} />
 
             <Route path="/admin" element={<AdminHome />} />
             <Route path="/admin/userList" element={<AdminUserList />} />

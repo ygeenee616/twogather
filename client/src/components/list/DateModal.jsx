@@ -11,7 +11,8 @@ export default function DateModal({ display }) {
 
 const ModalWrap = styled.div`
   position: absolute;
-  top: 22%;
+  top: 60px;
+  left: 1vw;
   width: 350px;
   height: 475px;
   z-index: 100;
