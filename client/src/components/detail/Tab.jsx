@@ -9,56 +9,58 @@ function changeTab(props) {
 
 export default function Tab({ contents }) {
   return (
-    <TabContainer>
-      <Tabs>
-        <TabTitle id="tab1" onClick={(e) => changeTab(e.target.id)}>
-          공간소개
-        </TabTitle>
-        <TabTitle id="tab2" onClick={(e) => changeTab(e.target.id)}>
-          유의사항
-        </TabTitle>
-        <TabTitle id="tab3" onClick={(e) => changeTab(e.target.id)}>
-          후기
-        </TabTitle>
-        <TabTitle id="tab4" onClick={(e) => changeTab(e.target.id)}>
-          Q & A
-        </TabTitle>
-      </Tabs>
+    contents && (
+      <TabContainer>
+        <Tabs>
+          <TabTitle id="tab1" onClick={(e) => changeTab(e.target.id)}>
+            공간소개
+          </TabTitle>
+          <TabTitle id="tab2" onClick={(e) => changeTab(e.target.id)}>
+            유의사항
+          </TabTitle>
+          <TabTitle id="tab3" onClick={(e) => changeTab(e.target.id)}>
+            후기
+          </TabTitle>
+          <TabTitle id="tab4" onClick={(e) => changeTab(e.target.id)}>
+            Q & A
+          </TabTitle>
+        </Tabs>
 
-      <div style={{ width: "100%" }}>
-        <TabContent className="tab1">
-          <h2>공간소개</h2>
-          <p>{contents.introduce}</p>
-        </TabContent>
-        <TabContent className="tab2">
-          <h2>유의사항</h2>
-          <p>{contents.notice}</p>
-        </TabContent>
-        <TabContent className="tab3">
-          <h2>후기</h2>
-          {contents.review.map((item, i) => {
-            return (
-              <div key={i} className="itemBox">
-                <p className="itemUser">{item.id}</p>
-                <p className="itemContent">{item.content}</p>
-              </div>
-            );
-          })}
-        </TabContent>
-        <TabContent className="tab4">
-          <h2>Q&A</h2>
-          {contents.qna.map((item, i) => {
-            return (
-              <div key={i} className="itemBox">
-                <p className="itemUser">{item.id}</p>
-                <p className="itemContent">{item.question}</p>
-                <p className="itemContent">↪ {item.answer}</p>
-              </div>
-            );
-          })}
-        </TabContent>
-      </div>
-    </TabContainer>
+        <div style={{ width: "100%" }}>
+          <TabContent className="tab1">
+            <h2>공간소개</h2>
+            <p>{contents.introduce}</p>
+          </TabContent>
+          <TabContent className="tab2">
+            <h2>유의사항</h2>
+            <p>{contents.notice}</p>
+          </TabContent>
+          <TabContent className="tab3">
+            <h2>후기</h2>
+            {contents.review.map((item, i) => {
+              return (
+                <div key={i} className="itemBox">
+                  <p className="itemUser">{item.id}</p>
+                  <p className="itemContent">{item.content}</p>
+                </div>
+              );
+            })}
+          </TabContent>
+          <TabContent className="tab4">
+            <h2>Q&A</h2>
+            {contents.qna.map((item, i) => {
+              return (
+                <div key={i} className="itemBox">
+                  <p className="itemUser">{item.id}</p>
+                  <p className="itemContent">{item.question}</p>
+                  <p className="itemContent">↪ {item.answer}</p>
+                </div>
+              );
+            })}
+          </TabContent>
+        </div>
+      </TabContainer>
+    )
   );
 }
 
