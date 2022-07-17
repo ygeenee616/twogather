@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
@@ -14,6 +15,9 @@ import { UpdateRoomDto } from './dto/update-room.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
 import { Room } from './entities/rooms.entity';
 import { RoomResExample } from './room.swagger.example';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/custom.decorator';
+import { User } from 'src/users/entities/users.entity';
 const roomResExample = new RoomResExample();
 
 @Controller('api/rooms')
@@ -27,6 +31,7 @@ export class RoomsController {
 
   // room 생성
   @Post()
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: 'room 생성 API',
     description: 'room을 생성한다.',
@@ -72,6 +77,35 @@ export class RoomsController {
     };
   }
 
+  // My Room 목록 조회
+  @Get('/host')
+  @ApiOperation({
+    summary: '내 room 목록 조회 API',
+    description: '내 room 목록 조회',
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Auth token-> Bearer {token} 이렇게 넣기 ',
+  }) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
+  @ApiResponse({
+    status: 200,
+    description: '내 room 목록 조회 성공',
+    schema: {
+      example: roomResExample.findMyRooms,
+    },
+  })
+  @UseGuards(AuthGuard())
+  async findMyRooms(@GetUser() user: User) {
+    console.log('가져오는 User의 id는 : ' + user.id);
+    const rooms = await this.roomsService.findRoomsByUser(user.id);
+    return {
+      status: 200,
+      success: true,
+      description: '내 room 목록 조회 성공',
+      data: rooms,
+    };
+  }
+
   @Get(':id')
   @ApiOperation({
     summary: '특정 room 찾는 API',
@@ -91,6 +125,42 @@ export class RoomsController {
       success: true,
       description: 'roomId로 room 조회 성공',
       data: room,
+    };
+  }
+
+  // 내 room 정보 수정
+  @Patch('host/:id')
+  @UseGuards(AuthGuard())
+  @ApiOperation({
+    summary: '내 room 정보 수정 API',
+    description: '내 room 정보를 수정한다.',
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Auth token-> Bearer {token} 이렇게 넣기 ',
+  }) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
+  @ApiResponse({
+    status: 201,
+    description: '내 room 정보 수정 성공',
+    schema: {
+      example: roomResExample.updateMyRoom,
+    },
+  })
+  async updateMyRoom(
+    @GetUser() user: User,
+    @Param('id') id: number,
+    @Body() updateRoomDto: UpdateRoomDto,
+  ) {
+    const room = await this.roomsService.findOne(id);
+    if (room.space.user.id !== user.id) {
+      throw UnauthorizedException;
+    }
+    const updatedRoom = await this.roomsService.updateMyRoom(id, updateRoomDto);
+    return {
+      status: 201,
+      description: '내 room 정보 수정 성공',
+      success: true,
+      data: { affected: updatedRoom },
     };
   }
 
@@ -119,6 +189,7 @@ export class RoomsController {
       data: { affected: updatedRoom },
     };
   }
+
   // 특정 room 삭제
   @Delete(':id')
   @ApiOperation({
@@ -137,6 +208,37 @@ export class RoomsController {
     return {
       status: 201,
       description: 'ID로 특정 room 삭제 성공',
+      success: true,
+    };
+  }
+
+  // 내 room 삭제
+  @Delete('host/:id')
+  @UseGuards(AuthGuard())
+  @ApiOperation({
+    summary: '내 room 삭제 API',
+    description: '내 room을 삭제한다.',
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Auth token-> Bearer {token} 이렇게 넣기 ',
+  }) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
+  @ApiResponse({
+    status: 201,
+    description: '내 room 삭제 성공',
+    schema: {
+      example: roomResExample.removeRoom,
+    },
+  })
+  async removeMyRoom(@GetUser() user: User, @Param('id') id: number) {
+    const room = await this.roomsService.findOne(id);
+    if (room.space.user.id !== user.id) {
+      throw UnauthorizedException;
+    }
+    await this.roomsService.remove(+id);
+    return {
+      status: 201,
+      description: '내 room 삭제 성공',
       success: true,
     };
   }

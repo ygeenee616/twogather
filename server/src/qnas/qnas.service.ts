@@ -41,6 +41,38 @@ export class QnasService {
     });
   }
 
+  async findAllBySpace(spaceId: number, startIndex: number, perPage: number) {
+    try {
+      const totalQna = await this.qnasRepository.find({
+        where: {
+          space: {
+            id: spaceId,
+          },
+        },
+      });
+      const totalPage = Math.ceil(totalQna.length / perPage);
+      const paginatedQnas = await this.qnasRepository.find({
+        where: {
+          space: {
+            id: spaceId,
+          },
+        },
+        relations: {
+          space: true,
+          user: true,
+        },
+        order: {
+          id: 'DESC',
+        },
+        skip: startIndex,
+        take: perPage,
+      });
+      return { totalPage, paginatedQnas };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async findOne(id: number) {
     try {
       const qna = await this.qnasRepository.findOne({
