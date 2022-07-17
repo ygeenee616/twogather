@@ -27,15 +27,25 @@ export class SpacesService {
   }
 
   // 전체 공간 목록 조회
-  async findAll(): Promise<Space[]> {
-    return await this.spacesRepository.find({
-      relations: {
-        user: true,
-      },
-      order: {
-        id: 'DESC',
-      },
-    });
+  async findAll(startIndex: number, perPage: number) {
+    try {
+      const totalSpace = await this.spacesRepository.find();
+      const totalPage = parseInt((totalSpace.length / perPage).toString()) + 1;
+      const paginatedSpaces = await this.spacesRepository.find({
+        relations: {
+          user: true,
+        },
+        order: {
+          id: 'DESC',
+        },
+        skip: startIndex,
+        take: perPage,
+      });
+      return {
+        totalPage,
+        paginatedSpaces,
+      };
+    } catch (error) {}
   }
 
   // id로 공간 조회

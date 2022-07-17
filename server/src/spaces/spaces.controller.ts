@@ -7,6 +7,7 @@ import {
   Delete,
   UseGuards,
   Patch,
+  Query,
 } from '@nestjs/common';
 import { SpacesService } from './spaces.service';
 import { CreateSpaceDto } from './dto/create-space.dto';
@@ -51,7 +52,8 @@ export class SpacesController {
   @Get()
   @ApiOperation({
     summary: '전체 공간 목록 조회 API',
-    description: '전체 공간 목록 조회(공간 목록 전체보기 페이지)',
+    description:
+      '전체 공간 목록 조회(공간 목록 전체보기 페이지), 페이지네이션 가능(localhost:3000/api/spaces?page=1&perPage=5)',
   })
   @ApiResponse({
     status: 200,
@@ -60,13 +62,17 @@ export class SpacesController {
       example: spaceResExample.findAll,
     },
   })
-  async findAll() {
-    const spaces = await this.spacesService.findAll();
+  async findAll(@Query() query) {
+    const { page, perPage } = query;
+    const startIndex: number = perPage * (page - 1);
+    const spaces = await this.spacesService.findAll(startIndex, perPage);
     return {
       status: 200,
       description: '전체 공간 목록 조회 성공',
       success: true,
-      data: spaces,
+      data: {
+        spaces,
+      },
     };
   }
   // type으로 공간 목록 조회
