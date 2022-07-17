@@ -59,7 +59,6 @@ const ProfileDiv = styled.div`
 
   @media only screen and (max-width: 600px) {
     flex-direction: column;
-
   }
 `;
 
@@ -71,14 +70,13 @@ const ProfileImgDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 10vw;
+  margin: 5px 10vw;
   width: 20vw;
 
   img {
     width: 10rem;
     height: 10rem;
     border-radius: 10rem;
-
   }
 
   button {

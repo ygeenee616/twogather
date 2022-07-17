@@ -35,8 +35,7 @@ const QNAs = [
     registerId: 4,
     space: "룸룸",
     nickname: "연진",
-    question:
-      "11시~6시이면 1시간 추가이고,  현재 11명이면 최종 가격이 어떻게 되는지도 궁금합니다 !! 추가 해서 더 오게 되면 추후에 1인당 비용 결제를 하면 되나요? 혹시 결제시 할인이 되는 것도 있는지 궁금합니다 ! 인원이 많은편이라 냉방이 빵빵하게 나오고 창문 열면 시원한지도 매우 궁금합니다 화장실도 내부에 있나요?",
+    question: "11시~6시이면 1시간 추가이고,  현재 11명이면 최종 가격이 어떻게 되는지도 궁금합니다 !! 추가 해서 더 오게 되면 추후에 1인당 비용 결제를 하면 되나요? 혹시 결제시 할인이 되는 것도 있는지 궁금합니다 ! 인원이 많은편이라 냉방이 빵빵하게 나오고 창문 열면 시원한지도 매우 궁금합니다 화장실도 내부에 있나요?",
     questionDate: "2022-02-02",
     answer: "",
     replyDate: "",
@@ -48,17 +47,26 @@ function MyQnA() {
   const page_limit = 5;
   const [page, setPage] = useState(1);
   const page_limit_elem =
-    page_limit * page - 1 < total_elem ? page_limit * page - 1 : total_elem;
-  const [clickedQna, setClickedQna] = useState(-1);
+    page_limit * page < total_elem ? page_limit * page : total_elem;
+  const [targetTr, setTargetTr] = useState('');
 
-  const handleQnaClick = (idx) => {
-    console.log('click');
-  };
+  const handleQnaClick = (e) => {
+    e.preventDefault();
+
+    let tr = e.target.closest('tr').nextElementSibling;
+    if(!tr) return;
+
+    if(targetTr) targetTr.style.setProperty('display', 'none');
+    setTargetTr(tr);
+    tr.style.setProperty('display', 'table-row');
+    console.log(tr.style.getPropertyValue('display'));
+
+  }
 
   return (
     <QnADiv>
       <h3>나의 질문</h3>
-      <QnATable>
+      <QnATable onClick={handleQnaClick}>
         <QnATableHead>
           <td className="space"> 공간정보 </td>
           <td className="description"> 문의내용 </td>
@@ -67,10 +75,12 @@ function MyQnA() {
         </QnATableHead>
         {QNAs.slice(page_limit * (page - 1), page_limit_elem).map(
           (qna, idx) => {
-            return (
-              <QnaComponent qna={qna} onClick={() => handleQnaClick(idx)} />
-            );
-          }
+            return(
+            <>
+              <QnaComponent qna={qna} idx={idx}/>
+              <QnaDetailComponent qna={qna}/>
+            </>
+          )}
         )}
       </QnATable>
       <Pagination

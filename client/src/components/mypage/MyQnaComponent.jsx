@@ -29,10 +29,11 @@ export const QnaComponent = ({ qna }) => {
   );
 };
 
-export const QnaDetailComponent = (qna) => {
+export const QnaDetailComponent = ({qna}) => {
   const { question, questionDate, answer, answerDate } = qna;
 
   const trStyle = {
+    display: "none",
     spanSize: 4,
     textAlign: "left",
     backgroundColor: "#D9D9D9",
