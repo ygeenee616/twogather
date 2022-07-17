@@ -52,7 +52,8 @@ export class SpacesController {
   @Get()
   @ApiOperation({
     summary: '전체 공간 목록 조회 API',
-    description: '전체 공간 목록 조회(공간 목록 전체보기 페이지)',
+    description:
+      '전체 공간 목록 조회(공간 목록 전체보기 페이지), 페이지네이션 가능',
   })
   @ApiResponse({
     status: 200,
