@@ -20,8 +20,7 @@ export class RoomResExample {
           isAdmin: false,
           nickname: 'test2',
           email: 'test2@naver.com',
-          password:
-            '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
+          password: '****',
           name: '김태훈',
           sex: null,
           profileImage: null,
@@ -68,8 +67,7 @@ export class RoomResExample {
             isAdmin: false,
             nickname: 'test2',
             email: 'test2@naver.com',
-            password:
-              '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
+            password: '****',
             name: '김태훈',
             sex: null,
             profileImage: null,
@@ -111,8 +109,7 @@ export class RoomResExample {
             isAdmin: false,
             nickname: 'test2',
             email: 'test2@naver.com',
-            password:
-              '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
+            password: '****',
             name: '김태훈',
             sex: null,
             profileImage: null,
@@ -161,8 +158,7 @@ export class RoomResExample {
           isAdmin: false,
           nickname: 'test2',
           email: 'test2@naver.com',
-          password:
-            '$2a$10$Omwa5FeAGh9Jieo2kPDa2O5vzIaYoxBbuhAVDCNTqNFCrkyleAKZy',
+          password: '****',
           name: '김태훈',
           sex: null,
           profileImage: null,
@@ -200,5 +196,37 @@ export class RoomResExample {
     status: 201,
     description: 'ID로 특정 room 삭제 성공',
     success: true,
+  };
+
+  public readonly findMyRooms = {
+    status: 200,
+    success: true,
+    description: '내 room 목록 조회 성공',
+    data: [
+      {
+        id: 4,
+        name: '수정된 좋은방3',
+        capacity: 5,
+        price: 4000,
+        description: '수정된 좋은방3은 4,000원에 5명 수용가능합니다.',
+        space: {
+          id: 40,
+          type: '스터디룸',
+          address: 'ㄴㅇㄹㄴㅇㄹ2',
+          name: 'ㄴㅇㄹㄴㅇㄹㅁㄴ2',
+          notice: '12ㄴㅇㄹㄴㅁ4',
+          intro: 'tgdㄴㅇㄹㄴㅇㄹcax',
+        },
+      },
+    ],
+  };
+
+  public readonly updateMyRoom = {
+    status: 201,
+    description: '내 room 정보 수정 성공',
+    success: true,
+    data: {
+      affected: true,
+    },
   };
 }
