@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import HostInfo from "../components/book/HostInfo";
 import BookInfo from "../components/book/BookInfo";
@@ -15,21 +16,7 @@ import {
   useRecoilValue,
 } from "recoil";
 
-function updateBook(id) {
-  //update 페이지로
-}
-
-async function deleteBook(id) {
-  // cancle
-  try {
-    // 나중에 url 해당 BookId 사용해서 API 연결
-    const req = await Api.delete(`api/reservations/${id}`);
-    console.log(req);
-  } catch (err) {
-    console.log(err);
-  }
-}
-
+// 제발
 export default function AdminBookDetail() {
   const [data, setData] = useState("");
 
@@ -37,12 +24,15 @@ export default function AdminBookDetail() {
   setUserInfo("HOST");
   console.log(userInfo);
 
+  const navigate = useNavigate();
+  const { params } = useParams();
+
   useEffect(() => {
-    const getData = async () => {
+    const getData = async (params) => {
       try {
         // 나중에 url 해당 BookId 사용해서 API 연결
-        // const req = await Api.get("/api/reservations");
-        const req = await axios.get("/dummyBookDetail.json");
+        const req = await Api.get(`api/reservations/${params}`);
+        // const req = await axios.get("/dummyBookDetail.json");
         const data = await req.data.book;
         setData(data);
         console.log(data);
@@ -52,6 +42,18 @@ export default function AdminBookDetail() {
     };
     getData();
   }, []);
+
+  // 예약 삭제 함수
+  async function deleteBook(params) {
+    try {
+      // 나중에 url 해당 BookId 사용해서 API 연결
+      const req = await Api.delete(`api/reservations/${params}`);
+      console.log(req);
+      navigate("/admin");
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     data && (
@@ -73,20 +75,10 @@ export default function AdminBookDetail() {
         />
         <HostInfo host={data.host} />
         <ButtonContainer>
-          {userInfo === "HOST" && (
-            <Button
-              onClick={() => {
-                updateBook(data.id);
-              }}
-            >
-              수정하기
-            </Button>
-          )}
           <Button
             onClick={() => {
-              deleteBook(data.id);
+              deleteBook(params);
             }}
-            primary
           >
             삭제하기
           </Button>
@@ -119,13 +111,11 @@ const Button = styled.button`
   margin: 0 10px;
   border-radius: 10px;
   border: none;
-  background: red;
+  background: #ff8b8b;
   color: #fff;
 
   &:hover {
     box-shadow: 2px 2px 5px -1px #a6a9b6;
     transition: 0.3s;
   }
-
-  background: ${(props) => (props.primary ? "#FF8B8B" : "#92B4EC")};
 `;
