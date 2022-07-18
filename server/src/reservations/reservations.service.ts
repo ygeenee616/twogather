@@ -17,13 +17,15 @@ export class ReservationsService {
     private spaceService: SpacesService,
   ) {}
 
+  // 예약 등록
   async create(createReservationDto: CreateReservationDto, user: User, room) {
     try {
-      const newReservation = {
+      const newReservation = await this.reservationRepository.create({
         ...createReservationDto,
         user,
         room,
-      };
+      });
+
       return await this.reservationRepository.save(newReservation);
     } catch (error) {
       throw error;
@@ -36,6 +38,33 @@ export class ReservationsService {
       const totalSpace = await this.reservationRepository.find();
       const totalPage = parseInt((totalSpace.length / perPage).toString()) + 1;
       const paginatedSpaces = await this.reservationRepository.find({
+        relations: {
+          user: true,
+        },
+        order: {
+          id: 'DESC',
+        },
+        skip: startIndex,
+        take: perPage,
+      });
+      return {
+        totalPage,
+        paginatedSpaces,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // 내 예약 조회
+  async findMyReservation(user: User, startIndex: number, perPage: number) {
+    try {
+      const totalSpace = await this.reservationRepository.find();
+      const totalPage = parseInt((totalSpace.length / perPage).toString()) + 1;
+      const paginatedSpaces = await this.reservationRepository.find({
+        where: {
+          user,
+        },
         relations: {
           user: true,
         },
@@ -98,6 +127,9 @@ export class ReservationsService {
         },
         relations: {
           user: true,
+          room: {
+            space: true,
+          },
         },
       });
       if (reservation === null) {

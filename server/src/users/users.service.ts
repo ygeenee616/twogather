@@ -94,15 +94,17 @@ export class UsersService {
   // 유저 갱신
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     try {
-      if (updateUserDto.password) {
+      let updateUser = null;
+      if (updateUserDto.password !== undefined) {
         const { password, ...updateUserInfo } = updateUserDto;
         const salt: string = await bcrypt.genSalt();
         const hashedPassword: string = await bcrypt.hash(password, salt);
-        const updatedUser = { password: hashedPassword, ...updateUserInfo };
+        console.log(hashedPassword);
+        updateUser = { password: hashedPassword, ...updateUserInfo };
       } else {
-        const updateUser = updateUserDto;
-        await this.usersRepository.update(id, updateUser);
+        updateUser = updateUserDto;
       }
+      const user = await this.usersRepository.update(id, updateUser);
 
       return await this.usersRepository.findOneBy({ id });
     } catch (error) {
