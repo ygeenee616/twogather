@@ -1,57 +1,58 @@
 import styled from "styled-components";
 import { TagTD, InputTD, AlertTR, RegisterBtn } from "../register/Register";
 import { useEffect, useState } from "react";
-import { validatePassword} from "../../assets/utils/UsefulFunction";
+import { validatePassword } from "../../assets/utils/UsefulFunction";
 import { useNavigate } from "react-router-dom";
 import * as Api from "../../api";
 
 function MyProfileEdit({ user, handleEditUserDone }) {
-
-  const navigate = useNavigate();
 
   const { nickname, name, sex, phoneNumber } = user;
   const [newNickname, setNewNickname] = useState(nickname ?? "");
   const [newName, setNewName] = useState(name ?? "");
   const [newSex, setNewSex] = useState(sex ?? "");
   const [newPhoneNumber, setNewPhoneNumber] = useState(phoneNumber ?? "");
-  const [newPassword , setNewPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [newUser, setNewUser] = useState({});
-  const isNicknameValid =  newNickname.length >= 2 && newNickname.length <= 10;
-  const isPasswordValid =  validatePassword(newPassword) && newPassword==="";
+  const isNicknameValid = newNickname.length >= 2 && newNickname.length <= 10;
+  const isPasswordValid = validatePassword(newPassword) || newPassword === "";
   const isFormValid = isNicknameValid && isPasswordValid;
 
-  const getNewUser = () => {
-    if (newNickname !== "") setNewUser({...newUser, nickname: newNickname});
-    if (newName !== "") setNewUser({...newUser, name: newName});
-    if (newPassword !== "" && isPasswordValid) setNewUser({...newUser, password: newPassword});
-    if (newSex !== "") setNewUser({...newUser, sex: newSex});
-    if (newPhoneNumber !== "") setNewUser({...newUser, phoneNumber: newPhoneNumber});
-  }
+  useEffect(() => {
+    setNewUser({
+      ...newUser,
+      nickname: newNickname,
+      name: newName,
+      password: newPassword,
+      sex: newSex,
+      phoneNumber: newPhoneNumber,
+    });
+  }, [newNickname, newName, newPassword, newSex, newPhoneNumber]);
 
   const handleDoneEdit = async (e) => {
     e.preventDefault();
 
-    getNewUser();
-  
-    console.log(newUser);
-        
-    // if (isFormValid && newUser!==null) {
-    //   try {
-    //     const res = Api.patch("api/users", newUser);
-    //     handleEditUserDone();
-    //     console.log(res); 
+    const userData = newUser;
 
-    //   } catch (err) {
+    for (var prop in userData) {
+      if (userData[prop] === "") {
+        delete userData[prop];
+      }
+    }
 
-    //     console.log(err);
-    //   }
-    // }
+    if (isFormValid && newUser !== null) {
+      try {
+        const res = await Api.patch("api/users", userData);
 
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
   return (
     <Container>
-      <form>
+      <form onSubmit={handleDoneEdit}>
         <EditProfileTable>
           <tbody>
             <tr>
@@ -134,7 +135,7 @@ function MyProfileEdit({ user, handleEditUserDone }) {
             </tr>
           </tbody>
         </EditProfileTable>
-        <RegisterBtn onClick={handleDoneEdit}>수정 완료</RegisterBtn>
+        <RegisterBtn onClick={handleEditUserDone}>수정 완료</RegisterBtn>
       </form>
     </Container>
   );

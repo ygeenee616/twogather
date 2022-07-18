@@ -11,18 +11,17 @@ import * as Api from "../../api";
 
 function MyProfile({userInfo}) {
   const [editUser, setEditUser] = useState(false);
-  const handleEditUser = () => {
+  function  handleEditUser() {
     setEditUser(true);
   };
 
-  const handleEditUserDone = () => {
+  function handleEditUserDone() {
     setEditUser(false);
   };
 
   useEffect(()=>{
     setEditUser(false);
-
-    
+ 
   },[])
 
   return (
