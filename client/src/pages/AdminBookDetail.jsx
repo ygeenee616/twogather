@@ -74,15 +74,13 @@ export default function AdminBookDetail() {
           request={data.request}
         />
         <HostInfo host={data.host} />
-        <ButtonContainer>
-          <Button
-            onClick={() => {
-              deleteBook(params);
-            }}
-          >
-            삭제하기
-          </Button>
-        </ButtonContainer>
+        <Button
+          onClick={() => {
+            deleteBook(params);
+          }}
+        >
+          삭제하기
+        </Button>
         <ToTop />
       </FullContainer>
     )
@@ -94,15 +92,6 @@ const FullContainer = styled.div`
   margin: 5% 15%;
   display: flex;
   flex-direction: column;
-`;
-
-const ButtonContainer = styled.div`
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
 `;
 
 const Button = styled.button`
