@@ -55,14 +55,6 @@ export default function HostSpaceForm({ mode, data }) {
       ...spaceInfo,
       [e.target.name]: e.target.value,
     });
-    console.log(spaceInfo);
-  };
-
-  const handleChangeRoomState = (e) => {
-    setRoomInfo({
-      ...roomInfo,
-      [e.target.name]: e.target.value,
-    });
   };
 
   //공간수정 버튼 누를 시 patch 요청
@@ -78,6 +70,7 @@ export default function HostSpaceForm({ mode, data }) {
       type: spaceInfo.type, //공간타입
       notice: spaceInfo.notice, //주의사항
       intro: spaceInfo.intro, //공간소개
+      hashTags: spaceInfo.hashTags,
       //Images: "귀여운탱구사진",
     });
     const modal = document.querySelector(".modalWrap");
@@ -144,6 +137,13 @@ export default function HostSpaceForm({ mode, data }) {
     setTagList(updatedTagList);
     setTagItem("");
   };
+
+  useEffect(() => {
+    setSpaceInfo({
+      ...spaceInfo,
+      hashTags: tagList,
+    });
+  }, [tagList]);
 
   // hashTag 삭제
   const removeHashTag = (e) => {
@@ -259,72 +259,6 @@ export default function HostSpaceForm({ mode, data }) {
           ></SubImageView>
           <ImageInput
             name="spaceImages"
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={handleImageUpload}
-          ></ImageInput>
-        </InputBox>
-
-        <InputBox>
-          <Title>
-            룸 정보를 입력해주세요
-            <Hr></Hr>
-          </Title>
-        </InputBox>
-        <InputBox>
-          <StyledLabel>룸 이름</StyledLabel>
-          <StyledInput
-            type="text"
-            width="50%"
-            name="roomName"
-            value={roomInfo.roomName}
-            onChange={handleChangeRoomState}
-          ></StyledInput>
-        </InputBox>
-
-        <InputBox>
-          <StyledLabel>룸 타입</StyledLabel>
-          <StyledInput
-            type="text"
-            width="50%"
-            name="roomType"
-            value={roomInfo.roomType}
-            onChange={handleChangeRoomState}
-          ></StyledInput>
-        </InputBox>
-
-        <InputBox>
-          <StyledLabel>룸 수용인원</StyledLabel>
-          <StyledInput
-            type="text"
-            width="50%"
-            name="personal"
-            value={roomInfo.personal}
-            onChange={handleChangeRoomState}
-          ></StyledInput>
-        </InputBox>
-
-        <InputBox>
-          <StyledLabel>룸 가격</StyledLabel>
-          <StyledInput
-            type="text"
-            width="50%"
-            name="price"
-            value={roomInfo.price}
-            onChange={handleChangeRoomState}
-          ></StyledInput>
-        </InputBox>
-
-        <InputBox>
-          <StyledLabel>룸 이미지 선택</StyledLabel>
-          <SubImageView
-            name="images"
-            ref={subViewInput}
-            onChange={loadDetailImage}
-          ></SubImageView>
-          <ImageInput
-            name="roomInfo.images.image"
             type="file"
             multiple
             accept="image/*"
