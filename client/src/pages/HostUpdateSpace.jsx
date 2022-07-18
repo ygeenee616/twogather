@@ -5,11 +5,11 @@ import * as Api from "../api";
 
 export default function HostUpdateSpace() {
   const [data, setData] = useState(false);
-  const { id } = useParams();
+  const { spaceId } = useParams();
 
   useEffect(() => {
     async function getData() {
-      const res = await Api.get(`api/spaces/${id}`);
+      const res = await Api.get(`api/spaces/${spaceId}`);
       const datas = res.data.data;
       setData(datas);
       console.log(data);

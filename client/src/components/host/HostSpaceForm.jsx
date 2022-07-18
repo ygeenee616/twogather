@@ -74,7 +74,7 @@ export default function HostSpaceForm({ mode, data }) {
       type: spaceInfo.type, //공간타입
       notice: spaceInfo.notice, //주의사항
       intro: spaceInfo.intro, //공간소개
-      hashTags: spaceInfo.hashTags,
+      //hashTags: spaceInfo.hashTags,
       //Images: "귀여운탱구사진",
     });
     const modal = document.querySelector(".modalWrap");
@@ -296,7 +296,7 @@ export default function HostSpaceForm({ mode, data }) {
             className="updateModal"
             title=""
             content="수정이 완료되었습니다."
-            clickEvent={() => nav("/host")}
+            clickEvent={() => nav("/host/spaceList")}
           />
         </ModalWrap>
       </SpaceForm>
