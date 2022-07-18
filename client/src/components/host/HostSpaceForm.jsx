@@ -13,7 +13,7 @@ export default function HostSpaceForm({ mode }) {
 
   const { params } = useParams();
   console.log(params);
-  
+
   const [spaceInfo, setSpaceInfo] = useState({
     name: "", //공간명
     type: "세미나실", //공간타입
