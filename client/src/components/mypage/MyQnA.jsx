@@ -49,20 +49,20 @@ function MyQnA() {
   const [page, setPage] = useState(1);
   const page_limit_elem =
     page_limit * page < total_elem ? page_limit * page : total_elem;
-  const [targetTr, setTargetTr] = useState("");
+  const [targetDetailTr, setTargetDetailTr] = useState("");
 
   const handleToggle = (e) => {
     e.preventDefault();
-
-    let tr = e.target.closest("tr").nextElementSibling;
-    if (!tr) return;
-
+    let target = e.target.closest("tr");
+    let detailTr = target.nextElementSibling;
+    if (!detailTr) return;
+    if (target.className==="detailTr") return; // detail tr이면 클릭 무시
     // 기존 detail tr 숨기기
-    if (targetTr) targetTr.style.setProperty("display", "none");
+    if (targetDetailTr!=="") targetDetailTr.style.setProperty("display", "none");
 
     // 타겟 detail tr 변경하고 보이기
-    setTargetTr(tr);
-    tr.style.setProperty("display", "table-row");
+    setTargetDetailTr(detailTr);
+    detailTr.style.setProperty("display", "table-row");
   };
 
   return (

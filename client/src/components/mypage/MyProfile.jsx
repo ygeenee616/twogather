@@ -15,6 +15,14 @@ function MyProfile({userInfo}) {
     setEditUser(true);
   };
 
+  const handleEditUserDone = () => {
+    setEditUser(false);
+  };
+
+  useEffect(()=>{
+    setEditUser(false);
+  },[])
+
   return (
     <ProfileDiv>
       <ProfileImgDiv>
@@ -35,7 +43,7 @@ function MyProfile({userInfo}) {
         {editUser ? (
           <MyProfileEdit user={userInfo} />
         ) : (
-          <MyProfileInfo user={userInfo} />
+          <MyProfileInfo user={userInfo} handleEditUserDone={handleEditUserDone}/>
         )}
       </ProfileContents>
     </ProfileDiv>

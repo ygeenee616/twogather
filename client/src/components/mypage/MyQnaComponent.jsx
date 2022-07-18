@@ -46,7 +46,7 @@ const QnaDetailComponent = ({ qna }) => {
 
   return (
     <>
-      <tr style={trStyle}>
+      <tr style={trStyle} className="detailTr">
         <td colSpan="4" style={tdStyle}>
           <h2>Q. </h2> <span>질문일: {questionDate} </span> <p>{question}</p>
           <h2>A. </h2> <span>답변일: {answerDate} </span> <p>{answer}</p>

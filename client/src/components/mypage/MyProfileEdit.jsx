@@ -5,7 +5,7 @@ import { validatePassword} from "../../assets/utils/UsefulFunction";
 import { useNavigate } from "react-router-dom";
 import * as Api from "../../api";
 
-function MyProfileEdit({ user }) {
+function MyProfileEdit({ user, handleEditUserDone }) {
 
   const navigate = useNavigate();
 
@@ -28,22 +28,25 @@ function MyProfileEdit({ user }) {
     if (sex !== newSex || newSex !== "") newUser.sex = newSex;
     if (phoneNumber !== newPhoneNumber || newPhoneNumber !== "")
       newUser.phoneNumber = newPhoneNumber;
-  
 
-    console.log(newUser);
-
+    console.log(newUser); 
+    
+    handleEditUserDone();
+    
     if (isFormValid && newUser !== null) {
       try {
         const res = Api.patch("api/users", newUser);
+        handleEditUserDone();
       } catch (err) {
         console.log(err);
       }
     }
+
   };
 
   return (
     <Container>
-      <form onSubmit={handleDoneEdit}>
+      <form>
         <EditProfileTable>
           <tbody>
             <tr>
@@ -126,7 +129,7 @@ function MyProfileEdit({ user }) {
             </tr>
           </tbody>
         </EditProfileTable>
-        <RegisterBtn>수정 완료</RegisterBtn>
+        <RegisterBtn onClick={()=> handleDoneEdit() }>수정 완료</RegisterBtn>
       </form>
     </Container>
   );

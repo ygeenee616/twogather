@@ -1,16 +1,22 @@
 import styled from "styled-components";
+import * as Api from "../../api";
 
 
+function MyReservedRoom({reservation, idx}) {
 
-function MyReservedRoom({room, idx}) {
+  // id는 예약번호
+  const {id, image, booker, space, personnel, location, date, startTime, endTime} = reservation;
 
-  const {image, booker, space, personnel, location, visitingTime} = room;
-
-  const handleCancelReservation = () => {
-
+  const handleCancelReservation = async () => {
+    try {
+      if(window.confirm('예약을 취소하시겠습니까?')){
+        Api.delete(`api/reservations/${id}`);
+      }
+      
+    } catch(err) {
+      console.log(err);
+    }
   }
-  
-  let reviewId= 1;
 
   return (
     <RoomDiv>
@@ -20,12 +26,12 @@ function MyReservedRoom({room, idx}) {
           <InfoTag color="black"><a href={`http://localhost:5001/detail/${idx}`}>{space} {idx}</a></InfoTag> <br/>
           <InfoTag color="light-grey">예약자: {booker} / {personnel}인</InfoTag>
           <InfoTag color="grey">장소: {location}</InfoTag>
-          <InfoTag color="grey">예약일시:{visitingTime}</InfoTag>
+          <InfoTag color="grey">예약일시:{date} {startTime}시~{endTime}시</InfoTag>
         </InfoText>
       </InfoDiv>
       <EditDiv>
-        <span onClick={handleCancelReservation}> 예약취소 </span>
-        <a href={`/myPage/addReview?reviewId=${reviewId}`}> 리뷰작성</a>
+        <span onClick={(e)=>handleCancelReservation(id)}> 예약취소 </span>
+        <a href={`/myPage/addReview?reviewId=${id}`}> 리뷰작성</a>
       </EditDiv>
     </RoomDiv>
   );
