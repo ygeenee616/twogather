@@ -1,10 +1,4 @@
-import {
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  Unique,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { Space } from 'src/spaces/entities/spaces.entity';
@@ -64,12 +58,12 @@ export class User {
   @ApiPropertyOptional({ description: '사업자 계좌번호' })
   accountNumber: string;
 
-  @OneToMany((type) => Reservation, (reservation) => reservation.user)
+  @OneToMany(() => Reservation, (reservation) => reservation.user)
   reservations: Reservation[];
 
-  @OneToMany((type) => Space, (spaces) => spaces.user)
+  @OneToMany(() => Space, (spaces) => spaces.user)
   spaces: Space[];
 
-  @OneToMany((type) => Qna, (qna) => qna.user)
+  @OneToMany(() => Qna, (qna) => qna.user)
   qnas: Qna[];
 }
