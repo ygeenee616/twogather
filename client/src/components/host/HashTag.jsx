@@ -7,7 +7,7 @@ export default function HashTag() {
   const [tagList, setTagList] = useState([]);
 
   useEffect(() => {
-    // ['스터디룸', '모임', '강남'] 이런식으로 배열로 들어감
+    // ['스터디룸', '모임', '강남'] 이런식으로 배열로 들어감.
     console.log(tagList);
   }, [tagList]);
 
