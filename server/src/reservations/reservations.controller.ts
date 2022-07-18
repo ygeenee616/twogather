@@ -20,7 +20,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/users/entities/users.entity';
 import { GetUser } from 'src/custom.decorator';
 import { RoomsService } from 'src/rooms/rooms.service';
-import { query } from 'express';
 
 @Controller('api/reservations')
 @ApiTags('예약 API')
