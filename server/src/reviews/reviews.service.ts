@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Get,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ReservationsService } from 'src/reservations/reservations.service';
 import { Repository } from 'typeorm';
@@ -29,11 +34,28 @@ export class ReviewsService {
 
   async findAll() {
     return await this.reviewsRepository.find({
+      relations: {
+        reservation: true,
+      },
       order: {
         id: 'DESC',
       },
-      // cache: true,
     });
+  }
+
+  // 내가 쓴 리뷰 목록 조회
+  async findMyReviews(userId: number) {
+    try {
+      const reviews = await this.reviewsRepository.query(
+        `SELECT A.id as reviewId, A.createdTime as reviewCreatedTime, A.content, A.reservationId, B.id as reservationId, B.date, 
+        B.personnel, B.createdTime as reservationCreatedTime, B.userId, B.startTime, B.endTime, B.roomId,
+        C.id as userId, C.nickname, C.email, C.name, C.phoneNumber
+        from review A, reservation B, user C WHERE A.reservationId = B.id and B.userId = C.id and C.id = ${userId};`,
+      );
+      return reviews;
+    } catch (error) {
+      throw error;
+    }
   }
 
   // reviewId로 특정 review 조회
@@ -66,8 +88,58 @@ export class ReviewsService {
     }
   }
 
+  // 내가 쓴 review 수정
+  async updateMyReview(
+    userId: number,
+    id: number,
+    updateReviewDto: UpdateReviewDto,
+  ) {
+    try {
+      const review = await this.reviewsRepository.query(
+        `SELECT A.id as reviewId, A.createdTime as reviewCreatedTime, A.content, A.reservationId, B.id as reservationId, B.date, 
+        B.personnel, B.createdTime as reservationCreatedTime, B.userId, B.startTime, B.endTime, B.roomId,
+        C.id as userId, C.nickname, C.email, C.name, C.phoneNumber
+        from review A, reservation B, user C WHERE A.reservationId = B.id and B.userId = C.id and A.id = ${id};`,
+      );
+      console.log(review[0].userId);
+      if (userId !== review[0].userId) {
+        throw UnauthorizedException;
+      }
+      const updatedReview = await this.reviewsRepository.update(
+        id,
+        updateReviewDto,
+      );
+      return updatedReview.affected === 1;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async remove(id: number) {
     try {
+      const deletedReview = await this.reviewsRepository.delete(id);
+      if (!deletedReview.affected) {
+        throw new NotFoundException({
+          description: '삭제할 review가 없습니다.',
+        });
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async removeMyReview(userId: number, id: number) {
+    try {
+      const review = await this.reviewsRepository.query(
+        `SELECT A.id as reviewId, A.createdTime as reviewCreatedTime, A.content, A.reservationId, B.id as reservationId, B.date, 
+        B.personnel, B.createdTime as reservationCreatedTime, B.userId, B.startTime, B.endTime, B.roomId,
+        C.id as userId, C.nickname, C.email, C.name, C.phoneNumber
+        from review A, reservation B, user C WHERE A.reservationId = B.id and B.userId = C.id and A.id = ${id};`,
+      );
+      console.log(review[0].userId);
+      if (userId !== review[0].userId) {
+        throw UnauthorizedException;
+      }
       const deletedReview = await this.reviewsRepository.delete(id);
       if (!deletedReview.affected) {
         throw new NotFoundException({

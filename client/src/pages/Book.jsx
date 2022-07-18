@@ -20,8 +20,6 @@ export default function Book() {
   const roomTitle = location.state.room.title;
   const host = location.state.host;
 
-  console.log(people, date, startTime, endTime, roomId, roomTitle, host);
-
   // 유저 입력 정보
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -72,9 +70,9 @@ export default function Book() {
         endTime: endTime,
         date: date,
         personnel: people,
+        // 이름 연락처 이메일 요청사항 사용 목적 추가
       });
-      console.log(req);
-      console.log("예약완료");
+      // console.log(req);
     } catch (err) {
       console.log(err);
     }
