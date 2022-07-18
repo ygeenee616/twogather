@@ -41,9 +41,13 @@ export class Room {
   @JoinColumn({ name: 'spaceId', referencedColumnName: 'id' })
   space: Space;
 
-  @OneToMany(() => RoomImage, (roomImage) => roomImage.room)
+  @OneToMany(() => RoomImage, (roomImage) => roomImage.room, {
+    eager: true,
+  })
   roomImages: RoomImage[];
 
-  @OneToMany(() => Reservation, (reservation) => reservation.room)
+  @OneToMany(() => Reservation, (reservation) => reservation.room, {
+    eager: true,
+  })
   reservations: Reservation[];
 }
