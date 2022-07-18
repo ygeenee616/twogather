@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Chart from "../components/Chart";
 import HostSpaceList2 from "./hostPage/HostSpaceList2";
@@ -6,14 +6,33 @@ import HostBookList from "./HostBookList";
 import { FaUserCircle } from "react-icons/fa";
 import StripeLayout from "../components/StripeLayout";
 import HostQnA from "./HostQnA";
+import BookList from "../components/BookList";
+import * as Api from "../api";
 
 const name = "강예정";
 function HostHome() {
   const [content, setContent] = useState("manageBooked");
+  const [bookdata, setBookData] = useState([]);
 
   function menuClick(props) {
     setContent(props);
   }
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const req = await Api.get(`api/reservations?page=1&perPage=5`);
+        console.log(req);
+        const data = await req.data.data.spaces.paginatedSpaces;
+        setBookData(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    content === "manageBooked" && getData();
+  }, [content]);
+  console.log(bookdata);
 
   const array = [
     { idx: 0, menuName: "예약관리", stateName: "manageBooked" },
@@ -51,11 +70,11 @@ function HostHome() {
             <Label>님!</Label>
           </Header>
           {content === "manageBooked" ? (
-            <HostBookList></HostBookList> //추후 공간내역이 들어가야함
+            <BookList data={bookdata} endpoint={"host/bookList/bookDetail/"} />
           ) : content === "manageSpace" ? (
-            <HostSpaceList2></HostSpaceList2> //추후 공간내역이 들어가야함
+            <HostSpaceList2 /> //추후 공간내역이 들어가야함
           ) : content === "manageQA" ? (
-            <HostQnA></HostQnA>
+            <HostQnA />
           ) : (
             ""
           )}

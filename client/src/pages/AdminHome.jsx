@@ -9,7 +9,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { FaUserTie } from "react-icons/fa";
 import Notice from "./Notice";
 import HostQnA from "./HostQnA";
-import NewAdminBookList from "../components/admin/NewAdminBookList";
+import BookList from "../components/BookList";
 import * as Api from "../api";
 
 const name = "강예정";
@@ -73,9 +73,9 @@ function AdminHome() {
             <Label>님!</Label>
           </Header>
           {content === "manageBooked" ? (
-            <NewAdminBookList data={bookdata} />
+            <BookList data={bookdata} endpoint={"admin/bookList/bookDetail/"} />
           ) : content === "manageUsers" ? (
-            <AdminUserList></AdminUserList>
+            <AdminUserList />
           ) : content === "manageNotice" ? (
             <Notice />
           ) : (

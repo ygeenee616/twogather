@@ -25,14 +25,14 @@ import HostSpaceList2 from "./pages/hostPage/HostSpaceList2";
 import HostUpdateSpace from "./pages/HostUpdateSpace";
 import HostAddRoom from "./pages/hostPage/HostAddRoom";
 import HostUpdateRoom from "./pages/hostPage/HostUpdateRoom";
-
+import HostQnA from "./pages/HostQnA";
 import ProductList from "./pages/ProductList";
 import Detail from "./pages/Detail";
 import Book from "./pages/Book";
 import Home from "./pages/Home";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
-import NewAdminBookList from "./components/admin/NewAdminBookList";
+import BookList from "./components/BookList";
 
 function App() {
   return (
@@ -42,7 +42,6 @@ function App() {
           <ScrollToTop />
           <Header></Header>
           <Routes>
-            <Route path="/bookList" element={<NewAdminBookList />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
             <Route path="/registerComplete" element={<RegisterComplete />} />
@@ -55,22 +54,46 @@ function App() {
             <Route path="/addNotice" element={<AddNotice />} />
             <Route path="/updateNotice/:id" element={<UpdateNotice />} />
 
-            <Route path="/admin" element={<AdminHome />} />
+            <Route path="/admin/notice" element={<Notice />} />
             <Route path="/admin/userList" element={<AdminUserList />} />
-            <Route path="/admin/bookList" element={<AdminBookList />} />
+            <Route path="/admin/bookList" element={<BookList />} />
             <Route
               path="/admin/bookList/bookDetail/:bookId"
               element={<AdminBookDetail />}
             />
 
-            <Route path="/host" element={<HostHome />} />
+            <Route path="/host/bookList" element={<BookList />} />
+            <Route path="/host/bookList/:bookId" element={<BookList />} />
+            <Route
+              path="/host/bookList/bookDetail/:bookId"
+              element={<AdminBookDetail />}
+            />
+
+            {/* 호스트 정보 추가 */}
             <Route path="/host/addHost" element={<AddHost />} />
+            {/* 공간 추가 */}
             <Route path="/host/addSpace" element={<AddSpace />} />
-            <Route path="/host/addRoom/:id" element={<HostAddRoom />} />
-            <Route path="/host/updateRoom/:id" element={<HostUpdateRoom />} />
-            <Route path="/host/bookList" element={<HostBookList />} />
+            {/* 공간 리스트 */}
             <Route path="/host/spaceList" element={<HostSpaceList2 />} />
-            <Route path="/host/updateSpace/:id" element={<HostUpdateSpace />} />
+            {/* 룸 리스트 */}
+            <Route
+              path="/host/spaceList/:spaceId"
+              element={<HostSpaceList2 />}
+            />
+            {/* 공간 수정 */}
+            <Route
+              path="/host/updateSpace/:spaceId"
+              element={<HostUpdateSpace />}
+            />
+            {/* 룸 추가 */}
+            <Route path="/host/addRoom/:spaceId" element={<HostAddRoom />} />
+            {/* 룸 수정 */}
+            <Route
+              path="/host/updateRoom/:spaceId"
+              element={<HostUpdateRoom />}
+            />
+            {/* Q&A 관리 */}
+            <Route path="/host/qna" element={<HostQnA />} />
 
             <Route path="/list" element={<ProductList />} />
             <Route path="/detail/:spaceId" element={<Detail />} />
