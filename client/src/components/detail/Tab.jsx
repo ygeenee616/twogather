@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom"
 
 // 탭 스크롤 함수
 function changeTab(props) {
@@ -8,6 +9,9 @@ function changeTab(props) {
 }
 
 export default function Tab({ contents }) {
+
+  const navigate = useNavigate();
+
   return (
     contents && (
       <TabContainer>
@@ -57,6 +61,8 @@ export default function Tab({ contents }) {
                 </div>
               );
             })}
+            <AddQnA onClick={()=> navigate('/mypage/addQna')}>질문 작성하기</AddQnA>
+
           </TabContent>
         </div>
       </TabContainer>
@@ -122,4 +128,20 @@ const TabContent = styled.div`
   p {
     line-height: 2.3rem;
   }
+
 `;
+
+const AddQnA = styled.button`
+  border: none;
+  border-radius: 10px;
+  background-color: #8DAEF2;
+  color: white;
+  width: 10rem;
+  height: 2rem;
+  font-size: 1rem;
+  margin-top: 1rem;
+
+  :hover {
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+  }
+`

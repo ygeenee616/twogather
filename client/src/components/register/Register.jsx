@@ -55,11 +55,11 @@ function Register() {
         // "/apiusers/sign-in" 엔드포인트로 post요청함.
         const res = await Api.post("api/users/sign-up", data);
 
-        navigate("/", { replace: true, state: {nickname} });
+        navigate("/registerComplete", { replace: true, state: {nickname} });
 
       } catch (err) {
 
-        setAlertMsg("이미 가입된 회원입니다.")
+        setAlertMsg(err.response.data.message);
         console.log("회원가입에 실패하였습니다.", err);
         // setAlertMsg("아이디 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해주세요.")
       }
@@ -117,7 +117,7 @@ function Register() {
         {!isPasswordValid && (
           <AlertTR className="alert-msg">
             <td colspan="2">
-              8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
+              8~16자 영어, 숫자, 특수문자를 사용하세요.
             </td>
           </AlertTR>
         )}
