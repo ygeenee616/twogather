@@ -84,7 +84,6 @@ export class UsersService {
   // email로 유저 조회
   async findOneByEmail(email: string) {
     try {
-      console.log(email);
       return await this.usersRepository.findOneBy({ email });
     } catch (error) {
       throw error;
@@ -99,7 +98,6 @@ export class UsersService {
         const { password, ...updateUserInfo } = updateUserDto;
         const salt: string = await bcrypt.genSalt();
         const hashedPassword: string = await bcrypt.hash(password, salt);
-        console.log(hashedPassword);
         updateUser = { password: hashedPassword, ...updateUserInfo };
       } else {
         updateUser = updateUserDto;

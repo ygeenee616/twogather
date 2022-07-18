@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
 import PostcodePopup from "../admin/PostcodePopup";
 import Modal from "../Modal";
 import HashTag from "./HashTag";
@@ -14,6 +15,9 @@ export default function HostSpaceForm({ mode, data }) {
   // hashTag state
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState([]);
+
+  let { params } = useParams();
+  console.log(params);
 
   //address가 object로 바뀌어야할듯
   const [addressState, setAddressState] = useState({

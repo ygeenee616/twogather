@@ -45,6 +45,10 @@ export class QnasController {
       example: qnaResExample.create,
     },
   })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
+  })
   async create(
     @GetUser() user,
     @Body() createQnaDto: CreateQnaDto,
@@ -151,6 +155,10 @@ export class QnasController {
       example: qnaResExample.updateQna,
     },
   })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
+  })
   async updateQna(
     @Param('id') id: number,
     @Body() updateQnaDto: UpdateQnaDto,
@@ -184,6 +192,10 @@ export class QnasController {
       example: qnaResExample.updateMyQna,
     },
   })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
+  })
   async updateMyQna(
     @Param('id') id: number,
     @Body() updateQnaDto: UpdateQnaDto,
@@ -215,6 +227,10 @@ export class QnasController {
       example: qnaResExample.removeQna,
     },
   })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
+  })
   async removeQna(@Param('id') id: number) {
     await this.qnasService.remove(id);
     return {
@@ -237,6 +253,10 @@ export class QnasController {
     schema: {
       example: qnaResExample.removeQna,
     },
+  })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
   })
   async removeMyQna(@Param('id') id: number, @GetUser() user: User) {
     const qna = await this.qnasService.findOne(id);
