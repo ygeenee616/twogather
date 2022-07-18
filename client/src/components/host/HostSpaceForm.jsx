@@ -17,9 +17,17 @@ export default function HostSpaceForm({ mode }) {
     //spaceShortIntro: "", //공간한줄소개
     intro: "", //공간소개
     hashTags: [], //태그
-    Images: "귀여운탱구사진",
+    images: "귀여운탱구사진",
     notice: "", //주의사항
     address: "", //실주소
+  });
+
+  const [roomInfo, setRoomInfo] = useState({
+    roomName: "",
+    roomType: "",
+    personal: "",
+    price: "",
+    images: { image: [] },
   });
 
   const subViewInput = useRef();
@@ -27,6 +35,14 @@ export default function HostSpaceForm({ mode }) {
   const handleChangeState = (e) => {
     setSpaceInfo({
       ...spaceInfo,
+      [e.target.name]: e.target.value,
+    });
+    console.log(spaceInfo);
+  };
+
+  const handleChangeRoomState = (e) => {
+    setRoomInfo({
+      ...roomInfo,
       [e.target.name]: e.target.value,
     });
   };
@@ -43,9 +59,15 @@ export default function HostSpaceForm({ mode }) {
       //Images: "귀여운탱구사진",
     });
 
-    console.log(response);
-    console.log("asds");
-    console.log(spaceInfo);
+    const roomResponse = await Api.post("api/rooms", {
+      name: roomInfo.roomName, //공간명
+      capacity: roomInfo.personal, //수용인원
+      price: roomInfo.price, //공간타입
+      description: roomInfo.roomType,
+      imgaes: roomInfo.images,
+    });
+
+    console.log(roomResponse);
   };
 
   const loadDetailImage = (e) => {
@@ -158,16 +180,6 @@ export default function HostSpaceForm({ mode }) {
           />
         </InputBox> */}
 
-        {/* <InputBox>
-          <StyledLabel>공간 한 줄 소개</StyledLabel>
-          <StyledInput
-            type="text"
-            name="spaceShortIntro"
-            value={spaceState.spaceShortIntro}
-            onChange={handleChangeState}
-          ></StyledInput>
-        </InputBox> */}
-
         <InputBox>
           <StyledLabel>공간 소개</StyledLabel>
           <StyledTextArea
@@ -229,6 +241,73 @@ export default function HostSpaceForm({ mode }) {
             onChange={handleImageUpload}
           ></ImageInput>
         </InputBox>
+
+        <InputBox>
+          <Title>
+            룸 정보를 입력해주세요
+            <Hr></Hr>
+          </Title>
+        </InputBox>
+        <InputBox>
+          <StyledLabel>룸 이름</StyledLabel>
+          <StyledInput
+            type="text"
+            width="50%"
+            name="roomName"
+            value={roomInfo.roomName}
+            onChange={handleChangeRoomState}
+          ></StyledInput>
+        </InputBox>
+
+        <InputBox>
+          <StyledLabel>룸 타입</StyledLabel>
+          <StyledInput
+            type="text"
+            width="50%"
+            name="roomType"
+            value={roomInfo.roomType}
+            onChange={handleChangeRoomState}
+          ></StyledInput>
+        </InputBox>
+
+        <InputBox>
+          <StyledLabel>룸 수용인원</StyledLabel>
+          <StyledInput
+            type="text"
+            width="50%"
+            name="personal"
+            value={roomInfo.personal}
+            onChange={handleChangeRoomState}
+          ></StyledInput>
+        </InputBox>
+
+        <InputBox>
+          <StyledLabel>룸 가격</StyledLabel>
+          <StyledInput
+            type="text"
+            width="50%"
+            name="price"
+            value={roomInfo.price}
+            onChange={handleChangeRoomState}
+          ></StyledInput>
+        </InputBox>
+
+        <InputBox>
+          <StyledLabel>룸 이미지 선택</StyledLabel>
+          <SubImageView
+            name="images"
+            ref={subViewInput}
+            onChange={loadDetailImage}
+          ></SubImageView>
+          <ImageInput
+            name="roomInfo.images.image"
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleImageUpload}
+          ></ImageInput>
+        </InputBox>
+
         <ButtonBox>
           <StyledButton
             name="cancel"

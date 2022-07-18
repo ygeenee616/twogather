@@ -38,6 +38,7 @@ function LoginForm() {
   const [alertMsg, setAlertMsg] = useState("");
 
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+
   const a = useRecoilValue(userInfoState);
 
   const getData = async () => {
@@ -68,6 +69,8 @@ function LoginForm() {
         //저장된 이메일로 유저조회 => 이메일로 조회 시 나오는
 
         //const datas = await Api.get(`api/users/email/${email}`);
+
+        
         const userData = await getData();
 
         const userType = userData.isAdmin
@@ -79,7 +82,7 @@ function LoginForm() {
         setUserInfo({
           userId: userData.id,
           userName: userData.name,
-          nickName: userData.nickName,
+          nickName: userData.nickname,
           email: email,
           useType: userType,
         });
