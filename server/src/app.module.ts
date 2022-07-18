@@ -24,6 +24,8 @@ import { Review } from './reviews/entities/review.entity';
 import { ReservationsModule } from './reservations/reservations.module';
 import { HashtagsModule } from './hashtags/hashtags.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { NoticesModule } from './notices/notices.module';
+import { Notice } from './notices/entities/notice.entity';
 
 @Module({
   imports: [
@@ -59,6 +61,7 @@ import { ReviewsModule } from './reviews/reviews.module';
         Reservation,
         Hashtag,
         Review,
+        Notice,
       ],
       autoLoadEntities: true,
     }),
@@ -71,6 +74,7 @@ import { ReviewsModule } from './reviews/reviews.module';
     ReservationsModule,
     HashtagsModule,
     ReviewsModule,
+    NoticesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
