@@ -17,7 +17,15 @@ export class CreateReservationDto {
   @ApiProperty({ description: '예약 인원' })
   personnel: number;
 
+  @IsString()
+  @ApiProperty({ description: '사용 목적' })
+  purpose: string;
+
+  @IsString()
+  @ApiProperty({ description: '요청 사항' })
+  requirement: string;
+
   @IsNumber()
-  @ApiProperty({ description: '공간 ID' })
-  spaceId: number;
+  @ApiProperty({ description: '총 금액' })
+  totalPrice: number;
 }

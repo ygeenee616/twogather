@@ -6,7 +6,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Review {
@@ -24,6 +24,7 @@ export class Review {
 
   @OneToOne(() => Reservation, (reservation) => reservation.review, {
     onDelete: 'CASCADE',
+    eager: false,
   })
   @JoinColumn({ name: 'reservationId', referencedColumnName: 'id' })
   @ApiProperty({ description: 'FK. 예약의 Id', type: () => Reservation })
