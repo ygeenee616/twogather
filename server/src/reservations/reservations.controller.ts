@@ -111,7 +111,7 @@ export class ReservationsController {
   }
 
   // id로 예약 조회
-  @Get('id/:id')
+  @Get(':id')
   @ApiOperation({
     summary: '특정 예약 찾는 API',
     description: '예약의 ID로 특정 예약을 불러온다.',
