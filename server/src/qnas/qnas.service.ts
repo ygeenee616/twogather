@@ -107,9 +107,7 @@ export class QnasService {
     try {
       const deletedQna = await this.qnasRepository.delete(id);
       if (!deletedQna.affected) {
-        throw new NotFoundException({
-          description: '삭제할 qna가 없습니다.',
-        });
+        throw new NotFoundException('삭제할 qna가 없습니다.');
       }
     } catch (error) {
       throw error;
