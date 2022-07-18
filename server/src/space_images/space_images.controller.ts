@@ -25,7 +25,7 @@ export class SpaceImagesController {
   constructor(private readonly spaceImagesService: SpaceImagesService) {}
 
   // spaceImage 등록
-  @Post()
+  @Post(':spaceId')
   @ApiOperation({
     summary: 'space 이미지(URL) 생성 API',
     description: 'space 이미지(URL)를 생성한다.',
@@ -39,7 +39,7 @@ export class SpaceImagesController {
   })
   async create(
     @Body() createSpaceImageDto: CreateSpaceImageDto,
-    @Body('spaceId') spaceId: number,
+    @Param('spaceId') spaceId: number,
   ) {
     const newSpaceImage = await this.spaceImagesService.create(
       createSpaceImageDto,
@@ -86,7 +86,7 @@ export class SpaceImagesController {
     status: 200,
     description: '특정 공간의 space 이미지(URL) 목록',
     schema: {
-      // example: spaceImageResExample.findAll,
+      example: spaceImageResExample.findAllBySpace,
     },
   })
   async findAllBySpace(@Param('spaceId') spaceId: number) {

@@ -25,7 +25,7 @@ export class RoomImagesController {
   constructor(private readonly roomImagesService: RoomImagesService) {}
 
   // roomImage(URL) 생성
-  @Post()
+  @Post(':roomId')
   @ApiOperation({
     summary: '룸 이미지(URL) 생성 API',
     description: '룸 이미지(URL) 생성한다.',
@@ -39,7 +39,7 @@ export class RoomImagesController {
   })
   async create(
     @Body() createRoomImageDto: CreateRoomImageDto,
-    @Body('roomId') roomId: number,
+    @Param('roomId') roomId: number,
   ) {
     const newRoomImage = await this.roomImagesService.create(
       createRoomImageDto,
@@ -71,6 +71,29 @@ export class RoomImagesController {
     return {
       status: 200,
       description: '전체 roomImages(URL) 목록 조회 성공',
+      success: true,
+      data: roomImages,
+    };
+  }
+
+  // 특정 룸의 roomImage URL 목록 조회
+  @Get('room/:roomId')
+  @ApiOperation({
+    summary: '특정 룸의 이미지(URL) findAll API',
+    description: '특정 룸의 이미지(URL) 목록을 불러온다.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '특정 룸의 이미지(URL) 목록',
+    schema: {
+      example: roomImageResExample.findAllByRoom,
+    },
+  })
+  async findAllByRoom(@Param('roomId') roomId: number) {
+    const roomImages = await this.roomImagesService.findAllByRoom(roomId);
+    return {
+      status: 200,
+      description: '특정 룸의 roomImages(URL) 목록 조회 성공',
       success: true,
       data: roomImages,
     };
