@@ -57,7 +57,7 @@ ProductList.defaultProps = {
 
 export default function ProductList({ host }) {
   const [page, setPage] = useState(1);
-  const [datas, setDatas] = useState(false);
+  const [data, setData] = useState(false);
   const limit = 4;
   const offset = (page - 1) * limit;
 
@@ -65,8 +65,8 @@ export default function ProductList({ host }) {
     async function getData() {
       try {
         const res = await api.get("api/spaces/host");
-        const data = res.data.data;
-        setDatas(data);
+        const resData = res.data.data;
+        setData(resData);
         console.log(data);
       } catch (err) {
         console.log(err);
@@ -80,7 +80,7 @@ export default function ProductList({ host }) {
       <ProductCard
         key={i}
         src={[exImg1, exImg2]} //아직없음
-        hashtags={["#강남모임공간", "#블라블라"]}
+        hashtags={data.hashtags}
         name={data.name}
         address={data.address}
         price={15000}
@@ -95,17 +95,17 @@ export default function ProductList({ host }) {
   }
 
   return (
-    datas && (
+    data && (
       <BottomWrap>
         <TitleContanier>
           <MainTitle>{host.name}님 </MainTitle>
           <Title>공간내역</Title>
         </TitleContanier>
         <div onClick={clickToModSpace}>
-          <ProductWrap>{renderData(offset, limit, datas)}</ProductWrap>
+          <ProductWrap>{renderData(offset, limit, data)}</ProductWrap>
           <div>
             <Pagination
-              total={datas.length}
+              total={data.length}
               limit={limit}
               page={page}
               setPage={setPage}

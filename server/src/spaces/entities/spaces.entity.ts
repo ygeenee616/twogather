@@ -46,25 +46,25 @@ export class Space {
   user: User;
 
   @OneToMany(() => Hashtag, (hashtag) => hashtag.space, {
-    eager: true,
+    eager: false,
   })
   @ApiPropertyOptional({ description: 'hastag와의 관계' })
   hashtags: Hashtag[];
 
   @OneToMany(() => Room, (room) => room.space, {
-    eager: true,
+    eager: false,
   })
   @ApiPropertyOptional({ description: 'room과의 관계' })
   rooms: Room[];
 
   @OneToMany(() => Qna, (qna) => qna.space, {
-    eager: true,
+    eager: false,
   })
   @ApiPropertyOptional({ description: 'qna와의 관계' })
   qnas: Qna[];
 
   @OneToMany(() => SpaceImage, (spaceImage) => spaceImage.space, {
-    eager: true,
+    eager: false,
   })
   @ApiPropertyOptional({ description: 'spaceImage와의 관계' })
   spaceImages: SpaceImage[];

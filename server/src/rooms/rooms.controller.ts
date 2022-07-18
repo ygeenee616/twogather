@@ -16,7 +16,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
 import { Room } from './entities/rooms.entity';
 import { RoomResExample } from './room.swagger.example';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUser } from 'src/custom.decorator';
+import { GetAdminUser, GetUser } from 'src/custom.decorator';
 import { User } from 'src/users/entities/users.entity';
 const roomResExample = new RoomResExample();
 
@@ -101,6 +101,7 @@ export class RoomsController {
 
   // My Room 목록 조회
   @Get('/host')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '내 room 목록 조회 API',
     description: '내 room 목록 조회',
@@ -116,9 +117,7 @@ export class RoomsController {
       example: roomResExample.findMyRooms,
     },
   })
-  @UseGuards(AuthGuard())
   async findMyRooms(@GetUser() user: User) {
-    console.log('가져오는 User의 id는 : ' + user.id);
     const rooms = await this.roomsService.findRoomsByUser(user.id);
     return {
       status: 200,
@@ -128,6 +127,7 @@ export class RoomsController {
     };
   }
 
+  // id로 룸 조회
   @Get(':id')
   @ApiOperation({
     summary: '특정 room 찾는 API',
@@ -188,6 +188,7 @@ export class RoomsController {
 
   // ID로 특정 room 정보 수정
   @Patch(':id')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: 'Id로 특정 room 수정 API',
     description: 'roomId로 특정 room을 수정한다.',
@@ -202,6 +203,7 @@ export class RoomsController {
   async updateRoom(
     @Param('id') id: number,
     @Body() updateRoomDto: UpdateRoomDto,
+    @GetAdminUser() admin: User,
   ) {
     const updatedRoom = await this.roomsService.update(+id, updateRoomDto);
     return {
@@ -214,6 +216,7 @@ export class RoomsController {
 
   // 특정 room 삭제
   @Delete(':id')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '특정 room 삭제 API',
     description: 'roomId로 특정 room을 삭제한다.',
@@ -225,7 +228,7 @@ export class RoomsController {
       example: roomResExample.removeRoom,
     },
   })
-  async removeRoom(@Param('id') id: number) {
+  async removeRoom(@Param('id') id: number, @GetAdminUser() admin: User) {
     await this.roomsService.remove(+id);
     return {
       status: 201,

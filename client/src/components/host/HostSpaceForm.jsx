@@ -1,11 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useDaumPostcodePopup } from "react-daum-postcode";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import PostcodePopup from "../admin/PostcodePopup";
+import Modal from "../Modal";
 import HashTag from "./HashTag";
 import * as Api from "../../api";
 
-export default function HostSpaceForm({ mode }) {
+export default function HostSpaceForm({ mode, data }) {
+  const nav = useNavigate();
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
   // hashTag state
@@ -15,64 +19,67 @@ export default function HostSpaceForm({ mode }) {
   let { params } = useParams();
   console.log(params);
 
-  const [spaceInfo, setSpaceInfo] = useState({
-    name: "", //공간명
-    type: "세미나실", //공간타입
-    //spaceShortIntro: "", //공간한줄소개
-    intro: "", //공간소개
-    hashTags: [], //태그
-    images: "귀여운탱구사진",
-    notice: "", //주의사항
-    address: "", //실주소
+  //address가 object로 바뀌어야할듯
+  const [addressState, setAddressState] = useState({
+    myFullAddress: "",
+    myPersonalAddress: data.address,
+    myZoneCode: "",
   });
 
-  const [roomInfo, setRoomInfo] = useState({
-    roomName: "",
-    roomType: "",
-    personal: "",
-    price: "",
-    images: { image: [] },
-    spaceId: null,
+  const [spaceInfo, setSpaceInfo] = useState({
+    name: data.name, //공간명
+    type: data.type, //공간타입
+    intro: data.intro, //공간소개
+    hashTags: data.hashTags, //태그
+    Images: "귀여운탱구사진",
+    notice: data.notice, //주의사항
+    address: addressState, //실주소
   });
+
+  //주소창 handlechange
+  const handleChangeAddressState = (e) => {
+    setAddressState({
+      ...addressState,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  useEffect(() => {
+    setSpaceInfo({
+      ...spaceInfo,
+      address: addressState,
+    });
+  }, [addressState]);
 
   const subViewInput = useRef();
 
+  //input값이 바뀔시 해당 value 바뀜
   const handleChangeState = (e) => {
     setSpaceInfo({
       ...spaceInfo,
       [e.target.name]: e.target.value,
     });
-    console.log(spaceInfo);
   };
 
-  const handleChangeRoomState = (e) => {
-    setRoomInfo({
-      ...roomInfo,
-      [e.target.name]: e.target.value,
-    });
-  };
-
+  //공간수정 버튼 누를 시 patch 요청
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
+    console.log(addressState.myFullAddress);
+    const stringAddress =
+      addressState.myFullAddress + addressState.myPersonalAddress;
 
-    const response = await Api.post("api/spaces", {
+    await Api.patch(`api/spaces/host/${data.id}`, {
       name: spaceInfo.name, //공간명
-      address: spaceInfo.address, //실주소
-      type: "세미나실", //공간타입
+      address: stringAddress, //실주소
+      type: spaceInfo.type, //공간타입
       notice: spaceInfo.notice, //주의사항
-      intro: spaceInfo.notice, //공간소개
+      intro: spaceInfo.intro, //공간소개
+      hashTags: spaceInfo.hashTags,
       //Images: "귀여운탱구사진",
     });
-
-    const roomResponse = await Api.post("api/rooms", {
-      name: roomInfo.roomName, //공간명
-      capacity: roomInfo.personal, //수용인원
-      price: roomInfo.price, //공간타입
-      description: roomInfo.roomType,
-      imgaes: roomInfo.images,
-    });
-
-    console.log(roomResponse);
+    const modal = document.querySelector(".modalWrap");
+    modal.style.display = "block";
+    window.scrollTo(0, 0);
   };
 
   const loadDetailImage = (e) => {
@@ -80,12 +87,6 @@ export default function HostSpaceForm({ mode }) {
       <img src={detailImgs[i]} multiple alt="preview" />;
     }
   };
-  //TODO
-  //데이터들 STATE객체화 시켜서 받기
-  //onClick 이벤트 만들기
-  //주소 api 따와서 주소불러오기
-  //이미지 그리드로 보여주기
-  // - 동적으로 생성해야됨
 
   const encodeFileToBase64 = (fileBlob) => {
     const reader = new FileReader();
@@ -136,10 +137,17 @@ export default function HostSpaceForm({ mode }) {
   // hashTag 추가 함수
   const addHashTag = () => {
     let updatedTagList = [...tagList];
-    updatedTagList.push(tagItem);
+    updatedTagList.push(`#${tagItem}`);
     setTagList(updatedTagList);
     setTagItem("");
   };
+
+  useEffect(() => {
+    setSpaceInfo({
+      ...spaceInfo,
+      hashTags: tagList,
+    });
+  }, [tagList]);
 
   // hashTag 삭제
   const removeHashTag = (e) => {
@@ -148,6 +156,40 @@ export default function HostSpaceForm({ mode }) {
       (tagItem) => tagItem !== deleteTagItem
     );
     setTagList(filteredTagList);
+  };
+
+  //주소창 관련 함수
+  //다음 api에서 우편번호, fulladdress불러옴
+  const handleComplete = (data) => {
+    let fullAddress = data.address;
+    let zoneCode = data.zonecode;
+    console.log(data);
+
+    // if (data.addressType === "R") {
+    //   if (data.bname !== "") {
+    //     extraAddress += data.bname;
+    //   }
+    //   if (data.buildingName !== "") {
+    //     extraAddress +=
+    //       extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+    //   }
+    //   fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+    // }
+    const newItem = {
+      ...addressState,
+      myFullAddress: fullAddress,
+      myZoneCode: zoneCode,
+    };
+    console.log(newItem);
+    setAddressState(newItem);
+    console.log("addressState:", addressState); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+  };
+
+  //다음 주소 api
+  const open = useDaumPostcodePopup();
+
+  const handleClick = () => {
+    open({ onComplete: handleComplete });
   };
 
   return (
@@ -166,24 +208,9 @@ export default function HostSpaceForm({ mode }) {
             width="50%"
             name="name"
             value={spaceInfo.name}
-            onChange={handleChangeState}
+            onChange={(e) => handleChangeState(e)}
           ></StyledInput>
         </InputBox>
-        {/* 
-        <InputBox>
-          <StyledLabel>메인 이미지</StyledLabel>
-          <ImageView name="spaceMainImage" readonly>
-            {imageSrc && <img src={imageSrc} alt="preview" readonly />}
-          </ImageView>
-          <ImageInput
-            name="spaceMainImage"
-            type={"file"}
-            accept="image/*"
-            onChange={(e) => {
-              encodeFileToBase64(e.target.files[0]);
-            }}
-          />
-        </InputBox> */}
 
         <InputBox>
           <StyledLabel>공간 소개</StyledLabel>
@@ -192,7 +219,7 @@ export default function HostSpaceForm({ mode }) {
             rows={"10"}
             name="intro"
             value={spaceInfo.intro}
-            onChange={handleChangeState}
+            onChange={(e) => handleChangeState(e)}
           ></StyledTextArea>
         </InputBox>
 
@@ -212,14 +239,19 @@ export default function HostSpaceForm({ mode }) {
             type="text"
             name="notice"
             value={spaceInfo.notice}
-            onChange={handleChangeState}
+            onChange={(e) => handleChangeState(e)}
           ></StyledTextArea>
         </InputBox>
 
-
         <InputBox>
           <StyledLabel>주소지 입력</StyledLabel>
-          <PostcodePopup></PostcodePopup>
+          <PostcodePopup
+            name="address"
+            value={addressState}
+            state={addressState}
+            onChange={handleChangeAddressState}
+            handleClick={handleClick}
+          ></PostcodePopup>
         </InputBox>
 
         <InputBox>
@@ -248,7 +280,7 @@ export default function HostSpaceForm({ mode }) {
             취소
           </StyledButton>
           <StyledButton
-            onClick={(e) => handleUpdateSubmit(e)}
+            onClick={handleUpdateSubmit}
             color="white"
             backGroundColor="#8daef2"
             name="register"
@@ -256,9 +288,17 @@ export default function HostSpaceForm({ mode }) {
             type="submit"
             value="submit"
           >
-            {mode === "UPDATE" ? "공간수정" : mode === "ADD" ? "공간등록" : ""}
+            공간수정
           </StyledButton>
         </ButtonBox>
+        <ModalWrap className="modalWrap">
+          <Modal
+            className="updateModal"
+            title=""
+            content="수정이 완료되었습니다."
+            clickEvent={() => nav("/host")}
+          />
+        </ModalWrap>
       </SpaceForm>
     </Main>
   );
@@ -367,7 +407,7 @@ const StyledButton = styled.button`
   transition-duration: 0.3s;
 
   :hover {
-    background-color: black;
+    background-color: #5155a6;
   }
   & + & {
     margin-left: 20px;
@@ -389,4 +429,13 @@ const ButtonBox = styled.div`
 
 const Hr = styled.hr`
   border: 2px #8daef2 solid;
+`;
+
+const ModalWrap = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 244vh;
+  background-color: rgba(90, 90, 90, 0.2);
+  display: none;
 `;

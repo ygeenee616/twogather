@@ -42,12 +42,12 @@ export class Room {
   space: Space;
 
   @OneToMany(() => RoomImage, (roomImage) => roomImage.room, {
-    eager: true,
+    eager: false,
   })
   roomImages: RoomImage[];
 
   @OneToMany(() => Reservation, (reservation) => reservation.room, {
-    eager: true,
+    eager: false,
   })
   reservations: Reservation[];
 }
