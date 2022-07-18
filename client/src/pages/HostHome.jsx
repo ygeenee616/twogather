@@ -9,18 +9,16 @@ import HostQnA from "./HostQnA";
 
 const name = "강예정";
 function HostHome() {
-  const [content, setContent] = useState("Greetings");
+  const [content, setContent] = useState("manageBooked");
 
   function menuClick(props) {
     setContent(props);
   }
 
   const array = [
-    { idx: 0, menuName: "공지사항", stateName: "manageNotice" },
-    { idx: 1, menuName: "차트보기", stateName: "Greetings" },
-    { idx: 2, menuName: "예약관리", stateName: "manageBooked" },
-    { idx: 3, menuName: "공간관리", stateName: "manageSpace" },
-    { idx: 4, menuName: "Q & A관리", stateName: "manageQA" },
+    { idx: 0, menuName: "예약관리", stateName: "manageBooked" },
+    { idx: 1, menuName: "공간관리", stateName: "manageSpace" },
+    { idx: 2, menuName: "Q & A관리", stateName: "manageQA" },
   ];
 
   return (
@@ -52,9 +50,7 @@ function HostHome() {
             <Label className="username">{name}</Label>
             <Label>님!</Label>
           </Header>
-          {content === "Greetings" ? (
-            <Greetings></Greetings>
-          ) : content === "manageBooked" ? (
+          {content === "manageBooked" ? (
             <HostBookList></HostBookList> //추후 공간내역이 들어가야함
           ) : content === "manageSpace" ? (
             <HostSpaceList2></HostSpaceList2> //추후 공간내역이 들어가야함
