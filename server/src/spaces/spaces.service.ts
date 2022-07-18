@@ -78,6 +78,7 @@ export class SpacesService {
         relations: {
           user: true,
           rooms: true,
+          qnas: true,
         },
         cache: true,
       });

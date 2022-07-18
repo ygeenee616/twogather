@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
@@ -17,6 +18,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ReviewResExample } from './review.swagger.example';
 import { GetUser } from 'src/custom.decorator';
 import { User } from 'src/users/entities/users.entity';
+import { ReservationsService } from 'src/reservations/reservations.service';
 const reviewResExample = new ReviewResExample();
 
 @Controller('api/reviews')
@@ -26,7 +28,10 @@ const reviewResExample = new ReviewResExample();
 //   description: 'Auth token',
 // }) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
 export class ReviewsController {
-  constructor(private readonly reviewsService: ReviewsService) {}
+  constructor(
+    private readonly reviewsService: ReviewsService,
+    private reservationsService: ReservationsService,
+  ) {}
 
   // review 등록
   @Post('/:reservationId')
@@ -45,7 +50,12 @@ export class ReviewsController {
   async create(
     @Body() createReviewDto: CreateReviewDto,
     @Param('reservationId') reservationId: number,
+    @GetUser() user: User,
   ) {
+    const reservation = await this.reservationsService.findOne(reservationId);
+    if (reservation.user !== user) {
+      throw new UnauthorizedException('권한없음');
+    }
     const newReview = await this.reviewsService.create(
       createReviewDto,
       reservationId,
@@ -139,6 +149,7 @@ export class ReviewsController {
 
   // reviewId로 특정 리뷰 수정
   @Patch(':id')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '특정 리뷰 수정 API',
     description: '리뷰 ID로 특정 리뷰를 수정한다.',
@@ -153,7 +164,12 @@ export class ReviewsController {
   async updateReview(
     @Param('id') id: number,
     @Body() updateReviewDto: UpdateReviewDto,
+    @GetUser() user: User,
   ) {
+    const review = await this.reviewsService.findOne(id);
+    if (review.reservation.user !== user) {
+      throw new UnauthorizedException('권한없음');
+    }
     const updatedReview = await this.reviewsService.update(
       +id,
       updateReviewDto,
