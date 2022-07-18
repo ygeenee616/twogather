@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Chart from "../components/Chart";
-import AdminPage from "./AddHost";
+import AddHost from "../pages/host/AddHost";
 import AdminUserList from "./AdminUserList";
 import HostBookList from "./HostBookList";
 import AdminBookList from "./AdminBookList";
 import { FaUserCircle } from "react-icons/fa";
 import { FaUserTie } from "react-icons/fa";
 import Notice from "./Notice";
-import HostQnA from "./HostQnA";
+import HostQnA from "./host/HostQnA";
 import BookList from "../components/BookList";
 import * as Api from "../api";
 

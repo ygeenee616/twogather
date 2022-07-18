@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as Api from "../../api";
-import AdminNav from "../../components/admin/AdminNav";
+import HostNav from "../../components/host/HostNav";
 import BookList from "../../components/BookList";
 
-export default function AdminBook() {
+export default function HostBook() {
   const [data, setData] = useState("");
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function AdminBook() {
 
   return (
     <div>
-      <AdminNav />
+      <HostNav />
       <BookList data={data} endpoint={"bookDetail/"} />
     </div>
   );

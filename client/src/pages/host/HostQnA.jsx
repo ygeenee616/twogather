@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import HostNav from "../../components/host/HostNav";
 
 function submitAnswer(e) {
   // submit answer
@@ -24,27 +25,34 @@ export default function HostQnA() {
   }, []);
 
   return (
-    data && (
-      <QnAContainer>
-        {data.map((item, i) => {
-          return (
-            <QnABox key={i}>
-              <Question>{item.content}</Question>
-              <Answer placeholder="아직 등록된 답변이 없습니다. 답변을 등록해보세요!">
-                {item.reply}
-              </Answer>
-              <SubmitBtn onClick={(e) => submitAnswer(e.target.value)}>
-                답변 등록
-              </SubmitBtn>
-            </QnABox>
-          );
-        })}
-      </QnAContainer>
-    )
+    <div>
+      <HostNav />
+      {data && (
+        <QnAContainer>
+          {data.map((item, i) => {
+            return (
+              <QnABox key={i}>
+                <Question>{item.content}</Question>
+                <Answer placeholder="아직 등록된 답변이 없습니다. 답변을 등록해보세요!">
+                  {item.reply}
+                </Answer>
+                <SubmitBtn onClick={(e) => submitAnswer(e.target.value)}>
+                  답변 등록
+                </SubmitBtn>
+              </QnABox>
+            );
+          })}
+        </QnAContainer>
+      )}
+    </div>
   );
 }
 
 const QnAContainer = styled.div`
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 80px;
+  margin-bottom: 80px;
   display: flex;
   flex-direction: column;
 `;
@@ -64,11 +72,11 @@ const Question = styled.summary`
 `;
 
 const Answer = styled.textarea`
-  width: 100%;
+  width: 95%;
   height: 80px;
   padding: 10px;
   margin-top: 10px;
-  margin-left: 20px;
+  margin-left: 3%;
   border-radius: 10px;
   background-color: #f2f2f2;
   border: none;

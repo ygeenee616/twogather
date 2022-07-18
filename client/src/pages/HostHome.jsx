@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Chart from "../components/Chart";
-import HostSpaceList2 from "./hostPage/HostSpaceList2";
+import HostSpaceList2 from "./host/HostSpaceList2";
 import HostBookList from "./HostBookList";
 import { FaUserCircle } from "react-icons/fa";
 import StripeLayout from "../components/StripeLayout";
-import HostQnA from "./HostQnA";
+import HostQnA from "./host/HostQnA";
 import BookList from "../components/BookList";
 import * as Api from "../api";
 
