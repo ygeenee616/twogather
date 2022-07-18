@@ -6,14 +6,19 @@ import AdminNav from "../../components/admin/AdminNav";
 
 export default function AdminUser() {
   const [users, setUsers] = useState("");
+  const [data, setData] = useState([]);
+
   useEffect(() => {
     async function getData() {
       const response = await Api.get("api/users");
-      const datas = response.data;
-      setUsers(datas.data);
+      console.log(response);
+      const data = response.data.data;
+      setData(data);
     }
     getData();
   }, []);
+
+  console.log(data);
 
   const headers = ["닉네임", "E-Mail", "전화번호", "성별", "Role", "가입날짜"];
   const keys = ["nickname", "email", "phoneNumber", "sexs", "role", "date"];
@@ -21,7 +26,7 @@ export default function AdminUser() {
   const columnTemplete = "1fr 2fr 1.5fr 1fr 1fr 1.5fr";
   const title = "";
   return (
-    users && (
+    data && (
       <>
         <AdminNav />
         <ReservationHeader>
@@ -32,7 +37,7 @@ export default function AdminUser() {
         </ReservationHeader>
 
         <StripeLayout
-          datas={users}
+          datas={data}
           headers={headers}
           columnTemplete={columnTemplete}
           keys={keys}
