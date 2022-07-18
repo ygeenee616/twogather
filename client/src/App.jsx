@@ -33,6 +33,11 @@ import Home from "./pages/Home";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
 import BookList from "./components/BookList";
+import HostNav from "./components/host/HostNav";
+import AdminNav from "./components/admin/AdminNav";
+import AdminNotice from "./pages/admin/AdminNotice";
+import AdminUser from "./pages/admin/AdminUser";
+import AdminBook from "./pages/admin/AdminBook";
 
 function App() {
   return (
@@ -54,9 +59,9 @@ function App() {
             <Route path="/addNotice" element={<AddNotice />} />
             <Route path="/updateNotice/:id" element={<UpdateNotice />} />
 
-            <Route path="/admin/notice" element={<Notice />} />
-            <Route path="/admin/userList" element={<AdminUserList />} />
-            <Route path="/admin/bookList" element={<BookList />} />
+            <Route path="/admin/notice" element={<AdminNotice />} />
+            <Route path="/admin/userList" element={<AdminUser />} />
+            <Route path="/admin/bookList" element={<AdminBook />} />
             <Route
               path="/admin/bookList/bookDetail/:bookId"
               element={<AdminBookDetail />}
@@ -68,6 +73,9 @@ function App() {
               path="/host/bookList/bookDetail/:bookId"
               element={<AdminBookDetail />}
             />
+
+            <Route path="/hostHome" element={<HostNav />} />
+            <Route path="/adminHome" element={<AdminNav />} />
 
             {/* 호스트 정보 추가 */}
             <Route path="/host/addHost" element={<AddHost />} />
