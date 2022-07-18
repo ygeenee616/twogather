@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect, useParams } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
 import PostcodePopup from "../../components/admin/PostcodePopup";
 import HashTag from "../../components/host/HashTag";
 import * as Api from "../../api";
@@ -17,9 +18,10 @@ export default function HostSpaceForm({ mode }) {
     personal: "",
     price: "",
     images: { image: [] },
-    spaceId: null,
+    // spaceId: null,
   });
 
+  const params = useParams();
   const subViewInput = useRef();
 
   const handleChangeRoomState = (e) => {
@@ -29,15 +31,22 @@ export default function HostSpaceForm({ mode }) {
     });
   };
 
+  const images = [];
+
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
 
-    const roomResponse = await Api.post("api/rooms", {
+    const roomResponse = await Api.post(`api/rooms/${params.id}`, {
       name: roomInfo.roomName, //공간명
-      capacity: roomInfo.personal, //수용인원
-      price: roomInfo.price, //공간타입
+      capacity: Number(roomInfo.personal), //수용인원
+      price: Number(roomInfo.price), //공간타입
       description: roomInfo.roomType,
-      imgaes: roomInfo.images,
+      spaceId: Number(params.id),
+      images: [
+        "https://t1.daumcdn.net/cfile/tistory/99C6A83359857E0609",
+        "https://pbs.twimg.com/media/B5eTRPKCIAAtXtK?format=jpg&name=small",
+      ],
+      //imgaes: [roomInfo.images],
     });
 
     console.log(roomResponse);
@@ -67,24 +76,31 @@ export default function HostSpaceForm({ mode }) {
     });
   };
 
-  const handleImageUpload = (e) => {
-    const fileArr = e.target.files;
+  const getPreviewImg = () => {
+    if (images === null || images.length === 0) {
+      return (
+        <ImgAreaContainer>
+          <ImgArea>
+            <Img
+              src="https://k-startup.go.kr/images/homepage/prototype/noimage.gif"
+              alt="dd"
+            />
+          </ImgArea>
+          <ImgName>등록된 이미지가 없습니다.</ImgName>
+        </ImgAreaContainer>
+      );
+    } else {
+      return images.map((el, index) => {
+        return (
+          <ImgAreaContainer key={index}>
+            <ImgArea>
+              <Img src={images[index]} />
+            </ImgArea>
 
-    let fileURLs = [];
-
-    let file;
-    let filesLength = fileArr.length > 5 ? 5 : fileArr.length;
-
-    for (let i = 0; i < filesLength; i++) {
-      file = fileArr[i];
-
-      let reader = new FileReader();
-      reader.onload = () => {
-        console.log(reader.result);
-        fileURLs[i] = reader.result;
-        setDatailImgs([...fileURLs]);
-      };
-      reader.readAsDataURL(file);
+            {/* <DeleteButton onClick={deleteImg}>❌</DeleteButton> */}
+          </ImgAreaContainer>
+        );
+      });
     }
   };
 
@@ -143,18 +159,20 @@ export default function HostSpaceForm({ mode }) {
 
         <InputBox>
           <StyledLabel>룸 이미지 선택</StyledLabel>
-          <SubImageView
-            name="images"
-            ref={subViewInput}
-            onChange={loadDetailImage}
-          ></SubImageView>
+          <ImageView name="images" readonly>
+            {imageSrc && <img src={imageSrc} alt="preview" readonly />}
+          </ImageView>
+          {getPreviewImg()}
+
           <ImageInput
             name="roomInfo.images.image"
             type="file"
             multiple
             accept="image/*"
-            onChange={handleImageUpload}
-          ></ImageInput>
+            onChange={(e) => {
+              encodeFileToBase64(e.target.files[0]);
+            }}
+          />
         </InputBox>
 
         <ButtonBox>
@@ -309,3 +327,9 @@ const ButtonBox = styled.div`
 const Hr = styled.hr`
   border: 2px #8daef2 solid;
 `;
+
+const ImgAreaContainer = styled.div``;
+const ImgArea = styled.div``;
+const Img = styled.img``;
+const DeleteButton = styled.div``;
+const ImgName = styled.div;
