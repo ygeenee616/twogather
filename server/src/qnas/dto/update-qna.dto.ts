@@ -18,5 +18,5 @@ export class UpdateQnaDto extends PartialType(CreateQnaDto) {
   @IsString()
   @IsOptional()
   @ApiPropertyOptional({ description: 'Q&A 답글' })
-  reply: string;
+  readonly reply: string;
 }
