@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/users.entity';
 import { UsersService } from 'src/users/users.service';
-import { Like, MoreThanOrEqual, Repository } from 'typeorm';
+import { FindOptionsOrder, Like, MoreThanOrEqual, Repository } from 'typeorm';
 import { CreateSpaceDto } from './dto/create-space.dto';
 import { UpdateSpaceDto } from './dto/update-space.dto';
 import { Space } from './entities/spaces.entity';
@@ -27,38 +27,147 @@ export class SpacesService {
   }
 
   // 전체 공간 목록 조회
-  async findAll(startIndex: number, perPage: number, keyword: string) {
+  async findAll(
+    startIndex: number,
+    perPage: number,
+    keyword: string,
+    dateOrder: string,
+    type: string,
+  ) {
     try {
       const totalSpace = await this.spacesRepository.find();
       const totalPage = parseInt((totalSpace.length / perPage).toString()) + 1;
       let paginatedSpaces: Space[];
-      if (keyword === undefined || keyword === null) {
-        paginatedSpaces = await this.spacesRepository.find({
-          relations: {
-            rooms: true,
-          },
-          order: {
-            id: 'DESC',
-          },
-          skip: startIndex,
-          take: perPage,
-        });
-      } else {
-        paginatedSpaces = await this.spacesRepository.find({
-          where: {
-            name: Like(`%${keyword}%`),
-          },
-          relations: {
-            rooms: true,
-          },
-          order: {
-            id: 'DESC',
-          },
-          skip: startIndex,
-          take: perPage,
-        });
-      }
 
+      // no type?
+      if (type === undefined || type === null) {
+        if (dateOrder === undefined || dateOrder === null) {
+          // keyword?
+          if (keyword === undefined || keyword === null) {
+            paginatedSpaces = await this.spacesRepository.find({
+              relations: {
+                rooms: true,
+              },
+              order: {
+                id: 'DESC',
+              },
+              skip: startIndex,
+              take: perPage,
+            });
+            // not keyword?
+          } else {
+            paginatedSpaces = await this.spacesRepository.find({
+              where: {
+                name: Like(`%${keyword}%`),
+              },
+              relations: {
+                rooms: true,
+              },
+              order: {
+                id: 'DESC',
+              },
+              skip: startIndex,
+              take: perPage,
+            });
+          }
+        } else {
+          if (keyword === undefined || keyword === null) {
+            paginatedSpaces = await this.spacesRepository.find({
+              relations: {
+                rooms: true,
+              },
+              order: {
+                id: 'ASC',
+              },
+              skip: startIndex,
+              take: perPage,
+            });
+            // not keyword?
+          } else {
+            paginatedSpaces = await this.spacesRepository.find({
+              where: {
+                name: Like(`%${keyword}%`),
+              },
+              relations: {
+                rooms: true,
+              },
+              order: {
+                id: 'ASC',
+              },
+              skip: startIndex,
+              take: perPage,
+            });
+          }
+        }
+      } else {
+        // type?
+        if (dateOrder === undefined || dateOrder === null) {
+          // keyword?
+          if (keyword === undefined || keyword === null) {
+            paginatedSpaces = await this.spacesRepository.find({
+              where: {
+                type,
+              },
+              relations: {
+                rooms: true,
+              },
+              order: {
+                id: 'DESC',
+              },
+              skip: startIndex,
+              take: perPage,
+            });
+            // not keyword?
+          } else {
+            paginatedSpaces = await this.spacesRepository.find({
+              where: {
+                name: Like(`%${keyword}%`),
+                type,
+              },
+              relations: {
+                rooms: true,
+              },
+              order: {
+                id: 'DESC',
+              },
+              skip: startIndex,
+              take: perPage,
+            });
+          }
+        } else {
+          if (keyword === undefined || keyword === null) {
+            paginatedSpaces = await this.spacesRepository.find({
+              where: {
+                type,
+              },
+              relations: {
+                rooms: true,
+              },
+              order: {
+                id: 'ASC',
+              },
+              skip: startIndex,
+              take: perPage,
+            });
+            // not keyword?
+          } else {
+            paginatedSpaces = await this.spacesRepository.find({
+              where: {
+                name: Like(`%${keyword}%`),
+                type,
+              },
+              relations: {
+                rooms: true,
+              },
+              order: {
+                id: 'ASC',
+              },
+              skip: startIndex,
+              take: perPage,
+            });
+          }
+        }
+      }
       return {
         totalPage,
         paginatedSpaces,
@@ -79,6 +188,7 @@ export class SpacesService {
           user: true,
           rooms: true,
           qnas: true,
+          hashtags: true,
         },
         cache: true,
       });
@@ -101,23 +211,6 @@ export class SpacesService {
           },
         },
       });
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  //type으로 공간 목록 조회
-  async findByType(type: string): Promise<Space[]> {
-    try {
-      const spaces = await this.spacesRepository.find({
-        where: {
-          type,
-        },
-        relations: {
-          user: true,
-        },
-      });
-      return spaces;
     } catch (error) {
       throw error;
     }

@@ -67,13 +67,15 @@ export class SpacesController {
     },
   })
   async findAll(@Query() query) {
-    const { page, perPage, keyword } = query;
+    const { page, perPage, keyword, dateOrder, priceOrder, type } = query;
 
     const startIndex: number = perPage * (page - 1);
     const spaces = await this.spacesService.findAll(
       startIndex,
       perPage,
       keyword,
+      dateOrder,
+      type,
     );
     return {
       status: 200,
@@ -82,31 +84,6 @@ export class SpacesController {
       data: {
         spaces,
       },
-    };
-  }
-
-  // type으로 공간 목록 조회
-  @Get('/type/:type')
-  @ApiOperation({
-    summary: '공간 유형으로 공간 목록 조회 API',
-    description:
-      '공간 유형으로 공간 목록 조회(공간 목록 전체보기 페이지, 타입별 조회 성공)',
-  })
-  @ApiResponse({
-    status: 200,
-    description: '유형별 공간 목록 조회',
-    schema: {
-      example: spaceResExample.findByType,
-    },
-  })
-  async findByType(@Param('type') type: string) {
-    const spaces = await this.spacesService.findByType(type);
-    return {
-      status: 200,
-      description:
-        '공간 유형으로 공간 목록 조회(공간 목록 전체보기 페이지, 타입별 조회 성공)',
-      success: true,
-      data: spaces,
     };
   }
 

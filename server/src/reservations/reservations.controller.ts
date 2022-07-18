@@ -144,7 +144,7 @@ export class ReservationsController {
   }
 
   // 내 예약 목록 조회
-  @Get('/mypage')
+  @Get('/my/info')
   @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '내 예약 찾는 API',
@@ -213,7 +213,7 @@ export class ReservationsController {
   }
 
   // 내 예약 삭제
-  @Delete('mypage/:id')
+  @Delete('my/:id')
   @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '내 예약 삭제 API',
