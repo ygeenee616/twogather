@@ -175,7 +175,7 @@ export class RoomsController {
   ) {
     const room = await this.roomsService.findOne(id);
     if (room.space.user.id !== user.id) {
-      throw UnauthorizedException;
+      throw new UnauthorizedException('권한 없음');
     }
     const updatedRoom = await this.roomsService.updateMyRoom(id, updateRoomDto);
     return {
@@ -255,7 +255,7 @@ export class RoomsController {
   async removeMyRoom(@GetUser() user: User, @Param('id') id: number) {
     const room = await this.roomsService.findOne(id);
     if (room.space.user.id !== user.id) {
-      throw UnauthorizedException;
+      throw new UnauthorizedException('권한 없음');
     }
     await this.roomsService.remove(+id);
     return {
