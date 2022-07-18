@@ -3,6 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { Space } from 'src/spaces/entities/spaces.entity';
 import { Qna } from 'src/qnas/entities/qna.entity';
+import { Notice } from 'src/notices/entities/notice.entity';
 
 @Entity()
 export class User {
@@ -66,4 +67,7 @@ export class User {
 
   @OneToMany(() => Qna, (qna) => qna.user)
   qnas: Qna[];
+
+  @OneToMany((type) => Notice, (notice) => notice.user)
+  notices: Notice[];
 }
