@@ -100,7 +100,6 @@ export class SpacesController {
     },
   })
   async findByType(@Param('type') type: string) {
-    console.log(type);
     const spaces = await this.spacesService.findByType(type);
     return {
       status: 200,
@@ -130,7 +129,6 @@ export class SpacesController {
     },
   })
   async findMySpaces(@GetUser() user: User) {
-    console.log(user.id);
     const spaces = await this.spacesService.findOneByUser(user.id);
     return {
       status: 200,
