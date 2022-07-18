@@ -76,12 +76,12 @@ const Container = styled.div`
   & caption {
     background-color: #577bc1;
     color: #fff;
-    padding: 5px;
+    padding: 10px;
   }
 
   & th {
     color: #577bc1;
-    padding: 5px;
+    padding: 10px;
   }
 
   & tr {
