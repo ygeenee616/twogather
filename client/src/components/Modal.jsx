@@ -7,7 +7,7 @@ Modal.defaultProps = {
   content: "공간 제공을 시작하기 전에 \n 호스트 정보를 먼저 입력해주세요",
 };
 
-export default function Modal({ title, content }) {
+export default function Modal({ title, content, clickEvent }) {
   return (
     <Container id="box">
       <ModalContainer>
@@ -15,7 +15,7 @@ export default function Modal({ title, content }) {
           <FiAlertCircle /> {title}
         </ModalTitle>
         <ModalContent>{content}</ModalContent>
-        <Button>확인</Button>
+        <Button onClick={clickEvent}>확인</Button>
       </ModalContainer>
     </Container>
   );
