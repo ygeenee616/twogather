@@ -25,7 +25,7 @@ const PostcodePopup = () => {
       }
       fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
-
+    console.log(state);
     const newItem = {
       ...state,
       myFullAddress: fullAddress,
