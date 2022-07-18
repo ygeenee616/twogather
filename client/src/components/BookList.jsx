@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import { FcSettings } from "react-icons/fc";
-import * as Api from "../../api";
+import * as Api from "../api";
 
-export default function NewAdminBookList({ data, endpoint }) {
+export default function BookList({ data, endpoint }) {
   return (
     data && (
       <Container>
@@ -33,7 +33,6 @@ export default function NewAdminBookList({ data, endpoint }) {
           <tbody>
             {data.map((item, i) => {
               return (
-                // <Link to ={`${endpoint}/${item.id}`}>
                 <tr align="center">
                   <td>{item.user.name}</td>
                   {/* <td>{item.room.id}</td> */}
@@ -44,10 +43,11 @@ export default function NewAdminBookList({ data, endpoint }) {
                   <td>1억</td>
                   <td>{item.user.phoneNumber}</td>
                   <td>
-                    <FcSettings className="icon" />
+                    <Link to={`${endpoint}${item.id}`}>
+                      <FcSettings className="icon" size={"1.5rem"} />
+                    </Link>
                   </td>
                 </tr>
-                // </Link>
               );
             })}
           </tbody>
@@ -90,6 +90,8 @@ const Container = styled.div`
     overflow: hidden;
     white-space: nowrap;
     padding: 5px;
+    color: #000;
+    text-decoration: none;
   }
 
   & .icon:hover {
