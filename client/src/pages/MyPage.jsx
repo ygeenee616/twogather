@@ -18,15 +18,15 @@ function MyPage() {
         const res = await Api.get("api/users/info");
         const data = res.data.data;
 
-        // setUser({
-        //   userId: data.id,
-        //   email: data.email,
-        //   name: data.name,
-        //   nickname: data.nickname,
-        //   sex: data.sex,
-        //   phoneNumber: data.phoneNumber,
-        //   profileImage: data.profileImage,
-        // });
+        setUser({
+          userId: data.id,
+          email: data.email,
+          name: data.name,
+          nickname: data.nickname,
+          sex: data.sex,
+          phoneNumber: data.phoneNumber,
+          profileImage: data.profileImage,
+        });
 
         setReservations(data.reservations);
 
@@ -42,9 +42,9 @@ function MyPage() {
   return (
     <Container>
       <PageTitle>마이페이지</PageTitle>
-      {user && <MyProfile userInfo={user}></MyProfile>}
-      <MyReservation reservations={reservations}></MyReservation>
-      <MyQnA qnas={qnas}></MyQnA>
+      { user && <MyProfile userInfo={user}></MyProfile>}
+      { reservations && <MyReservation reservations={reservations}></MyReservation> }
+      { qnas && <MyQnA qnas={qnas}></MyQnA> }
     </Container>
   );
 }

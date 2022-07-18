@@ -1,82 +1,130 @@
 import styled from "styled-components";
 import { TagTD, InputTD, AlertTR, RegisterBtn } from "../register/Register";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { validatePassword} from "../../assets/utils/UsefulFunction";
+import { useNavigate } from "react-router-dom";
+import * as Api from "../../api";
 
 function MyProfileEdit({ user }) {
-  const { nickname, sex, phoneNumber } = user;
-  console.log(user);
-  const [newNickname, setNewNickname] = useState(nickname);
-  const [newSex, setNewSex] = useState(sex);
-  const [newPhoneNumber, setNewPhoneNumber] = useState(phoneNumber);
-  const isNicknameValid = newNickname.length >= 2 && newNickname.length <= 10;
+
+  const navigate = useNavigate();
+
+  const { nickname, name, sex, phoneNumber } = user;
+  const [newNickname, setNewNickname] = useState(nickname || "");
+  const [newName, setNewName] = useState(name || "");
+  const [newSex, setNewSex] = useState(sex || "");
+  const [newPhoneNumber, setNewPhoneNumber] = useState(phoneNumber || "");
+  const [newPassword , setNewPassword] = useState("");
+  const isNicknameValid = (newNickname) => { return newNickname.length >= 2 && newNickname.length <= 10};
+  const isPasswordValid = (newPassword) => { return validatePassword(newPassword) || newPassword!==""};
+  const isFormValid = isNicknameValid && isPasswordValid;
 
   const handleDoneEdit = async (e) => {
     e.preventDefault();
-    
-  }
+    const newUser = {};
+    if (nickname !== newNickname) newUser.nickname = newNickname;
+    if (name !== "") newUser.name = newName;
+    if (newPassword !== "" && isPasswordValid) newUser.password = newPassword;
+    if (sex !== newSex || newSex !== "") newUser.sex = newSex;
+    if (phoneNumber !== newPhoneNumber || newPhoneNumber !== "")
+      newUser.phoneNumber = newPhoneNumber;
+  
+
+    console.log(newUser);
+
+    if (isFormValid && newUser !== null) {
+      try {
+        const res = Api.patch("api/users", newUser);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
 
   return (
     <Container>
       <form onSubmit={handleDoneEdit}>
         <EditProfileTable>
-          <tr>
-            <TagTD>닉네임</TagTD>
-            <InputTD>
-              <input
-                value={newNickname}
-                onChange={(e) => setNewNickname(e.target.value)}
-              ></input>
-            </InputTD>
-          </tr>
-          {!isNicknameValid && (
-            <AlertTR>
-              <td />
-              <td>2~10자로 입력해주세요.</td>
-            </AlertTR>
-          )}
-          <tr>
-            <TagTD>비밀번호</TagTD>
-            <InputTD>
-              <input type="password" placeholder="기존 비밀번호" />
-              <input type="password" placeholder="새 비밀번호" />
-              <input type="password" placeholder="새 비밀번호 확인" />
-            </InputTD>
-          </tr>
-          <tr>
-            <TagTD>성별</TagTD>
-            <td>
-              <input
-                type="radio"
-                name="gender"
-                checked={newSex === "남"}
-                onClick={() => {
-                  setNewSex("남");
-                }}
-              />
-              <label for="m">남 </label> &nbsp;
-              <input
-                type="radio"
-                name="gender"
-                checked={newSex === "여"}
-                onClick={() => {
-                  setNewSex("여");
-                }}
-              />
-              <label for="w">여 </label>
-            </td>
-          </tr>
-          <tr>
-            <TagTD>전화번호</TagTD>
-            <InputTD>
-              <input
-                type="tel"
-                name="phoneNumber"
-                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                value={newPhoneNumber}
-                onChange={(e) => setNewPhoneNumber(e.target.value)}
-              />
-            </InputTD>
-          </tr>
+          <tbody>
+            <tr>
+              <TagTD>닉네임</TagTD>
+              <InputTD>
+                <input
+                  type="text"
+                  value={newNickname}
+                  onChange={(e) => setNewNickname(e.target.value)}
+                ></input>
+              </InputTD>
+            </tr>
+            {!isNicknameValid(newNickname) && (
+              <AlertTR>
+                <td colSpan="2">2~10자로 입력해주세요.</td>
+              </AlertTR>
+            )}
+            <tr>
+              <TagTD>이름</TagTD>
+              <InputTD>
+                <input
+                  type="text"
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  placeholder="홍길동"
+                />
+              </InputTD>
+            </tr>
+            <tr>
+              <TagTD>비밀번호</TagTD>
+              <InputTD>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="새 비밀번호를 입력하세요."
+                />
+              </InputTD>
+            </tr>
+            {!isPasswordValid(newPassword) && (
+              <AlertTR>
+                <td colSpan="2">8~16자 영어, 숫자, 특수문자를 사용하세요.</td>
+              </AlertTR>
+            )}
+            <tr>
+              <TagTD>성별</TagTD>
+              <td>
+                <input
+                  type="radio"
+                  name="gender"
+                  checked={newSex === "남"}
+                  onChange={() => {
+                    setNewSex("남");
+                  }}
+                />
+                <label htmlFor="m">남 </label> &nbsp;
+                <input
+                  type="radio"
+                  name="gender"
+                  checked={newSex === "여"}
+                  onChange={() => {
+                    setNewSex("여");
+                  }}
+                />
+                <label htmlFor="w">여 </label>
+              </td>
+            </tr>
+            <tr>
+              <TagTD>전화번호</TagTD>
+              <InputTD>
+                <input
+                  type="tel"
+                  name="phoneNumber"
+                  pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
+                  value={newPhoneNumber}
+                  onChange={(e) => setNewPhoneNumber(e.target.value)}
+                  placeholder="010-1234-5678"
+                />
+              </InputTD>
+            </tr>
+          </tbody>
         </EditProfileTable>
         <RegisterBtn>수정 완료</RegisterBtn>
       </form>
@@ -94,7 +142,7 @@ const Container = styled.div`
   width: 20rem;
 `;
 
-const EditProfileTable = styled.div`
+const EditProfileTable = styled.table`
   border-collapse: collapse;
   border-spacing: 0;
   table-layout: auto;

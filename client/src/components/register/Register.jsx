@@ -117,7 +117,7 @@ function Register() {
         {!isPasswordValid && (
           <AlertTR className="alert-msg">
             <td colspan="2">
-              8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
+              8~16자 영어, 숫자, 특수문자를 사용하세요.
             </td>
           </AlertTR>
         )}
