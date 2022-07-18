@@ -9,33 +9,11 @@ import MyProfileInfo from "./MyProfileInfo";
 import MyProfileEdit from "./MyProfileEdit";
 import * as Api from "../../api";
 
-function MyProfile() {
+function MyProfile({userInfo}) {
   const [editUser, setEditUser] = useState(false);
-  const [user, setUser] = useState({});
   const handleEditUser = () => {
     setEditUser(true);
   };
-
-  useEffect(() => {
-    async function getUser() {
-      const res = await Api.get("api/users/info");
-      if (res.data.data) {
-        const { id, email, nickname, phoneNumber, sex, profileImage } = res.data.data;
-        const userData = {
-          id,
-          email,
-          nickname,
-          phoneNumber,
-          sex,
-          profileImage,
-        };
-        console.log(userData);
-
-        setUser(userData);
-      }
-    }
-    getUser();
-  }, []);
 
   return (
     <ProfileDiv>
@@ -55,9 +33,9 @@ function MyProfile() {
       </ProfileImgDiv>
       <ProfileContents>
         {editUser ? (
-          <MyProfileEdit user={user} />
+          <MyProfileEdit user={userInfo} />
         ) : (
-          <MyProfileInfo user={user} />
+          <MyProfileInfo user={userInfo} />
         )}
       </ProfileContents>
     </ProfileDiv>
