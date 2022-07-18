@@ -38,27 +38,33 @@ const HeaderTag = ({ name, target }) => {
   );
 };
 
+//nana@naver.com
+//@nana1234
+
 export default function Header() {
   const [isLogin, setIsLogin] = useState(false);
   const navigate = useNavigate();
   const handleLoginClick = () => {
-    if (localStorage.getItem("userToken") === "") {
-      setIsLogin(false);
+    if (localStorage.getItem("userToken") === null) {
+      setIsLogin(true);
       navigate("/login");
     } else {
-      localStorage.setItem("userToken", "");
-      setIsLogin(true);
+      localStorage.removeItem("userToken");
+      setIsLogin(false);
       navigate("/");
     }
   };
 
   useEffect(() => {
-    if (localStorage.getItem("userToken") === "") {
+    if (localStorage.getItem("userToken") === null) {
       setIsLogin(false);
     } else {
       setIsLogin(true);
     }
-  },);
+  });
+
+  
+
 
   return (
     <HeaderWrap>
@@ -69,7 +75,7 @@ export default function Header() {
         {isLogin ? <HeaderTag name="마이페이지" target="/mypage" /> : ``}
         <HeaderTag name="공지사항" target="/notice" />
         <TextWrap onClick={handleLoginClick}>
-          {localStorage.getItem("userToken") === "" ? `로그인` : "로그아웃"}
+          {localStorage.getItem("userToken") === null ? `로그인` : `로그아웃`}
         </TextWrap>
       </RightWrap>
     </HeaderWrap>
