@@ -23,7 +23,7 @@ import {
   ApiBasicAuth,
 } from '@nestjs/swagger';
 import { UserResExample } from './user.swagger.example';
-import { GetUser } from 'src/custom.decorator';
+import { GetAdminUser, GetUser } from 'src/custom.decorator';
 import { User } from './entities/users.entity';
 const userResExample = new UserResExample();
 
@@ -76,9 +76,10 @@ export class UsersController {
 
   // 유저 목록 조회
   @Get()
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '유저 목록 조회 API',
-    description: '전체 유저를 조회한다.',
+    description: '전체 유저를 조회한다.(admin)',
   })
   @ApiResponse({
     status: 200,
@@ -87,7 +88,7 @@ export class UsersController {
       example: userResExample.getAll,
     },
   })
-  async getAll() {
+  async getAll(@GetAdminUser() admin: User) {
     const users = await this.usersService.findAll();
     return {
       statusCode: 200,
@@ -123,9 +124,10 @@ export class UsersController {
 
   // admin 기능
   @Get('/:id')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '특정 유저 조회 API',
-    description: '특정 유저를 조회한다.',
+    description: '특정 유저를 조회한다.(admin)',
   })
   @ApiResponse({
     status: 200,
@@ -134,7 +136,7 @@ export class UsersController {
       example: userResExample.getOneById,
     },
   })
-  async getOneById(@Param('id') id: number) {
+  async getOneById(@Param('id') id: number, @GetAdminUser() admin: User) {
     const user = await this.usersService.findOne(id);
     return {
       statusCode: 200,
@@ -146,9 +148,10 @@ export class UsersController {
 
   // admin 기능
   @Get('/email/:email')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: 'email로 조회 API',
-    description: 'email로 특정 유저를 조회한다.',
+    description: 'email로 특정 유저를 조회한다.(admin)',
   })
   @ApiResponse({
     status: 200,
@@ -157,7 +160,10 @@ export class UsersController {
       example: userResExample.getOneByEmail,
     },
   })
-  async getOneByEmail(@Param('email') email: string) {
+  async getOneByEmail(
+    @Param('email') email: string,
+    @GetAdminUser() admin: User,
+  ) {
     const user = await this.usersService.findOneByEmail(email);
     return {
       status: 200,
@@ -192,9 +198,10 @@ export class UsersController {
 
   // admin 기능
   @Delete('/:id')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '특정 유저 삭제 API',
-    description: '특정 유저를 삭제한다.',
+    description: '특정 유저를 삭제한다.(admin)',
   })
   @ApiResponse({
     status: 201,
@@ -203,7 +210,7 @@ export class UsersController {
       example: userResExample.removeUser,
     },
   })
-  async removeUser(@Param('id') id: number) {
+  async removeUser(@Param('id') id: number, @GetAdminUser() admin: User) {
     await this.usersService.remove(id);
     return {
       status: 201,
