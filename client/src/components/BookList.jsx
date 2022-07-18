@@ -58,10 +58,13 @@ export default function BookList({ data, endpoint }) {
 }
 
 const Container = styled.div`
-  width: 90%;
+  width: 80%;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
 
   & table {
     width: 100%;
