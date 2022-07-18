@@ -4,8 +4,9 @@ import { useParams } from "react-router-dom";
 import PostcodePopup from "../../components/admin/PostcodePopup";
 import HashTag from "../../components/host/HashTag";
 import * as Api from "../../api";
+import { set } from "date-fns";
 
-export default function HostSpaceForm({ mode }) {
+export default function HostAddRoom({ mode }) {
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
   // hashTag state
@@ -35,19 +36,22 @@ export default function HostSpaceForm({ mode }) {
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-
-    const roomResponse = await Api.post(`api/rooms/${params.id}`, {
-      name: roomInfo.roomName, //공간명
-      capacity: Number(roomInfo.personal), //수용인원
-      price: Number(roomInfo.price), //공간타입
-      description: roomInfo.roomType,
-      spaceId: Number(params.id),
-      images: [
-        "https://t1.daumcdn.net/cfile/tistory/99C6A83359857E0609",
-        "https://pbs.twimg.com/media/B5eTRPKCIAAtXtK?format=jpg&name=small",
-      ],
-      //imgaes: [roomInfo.images],
-    });
+    let roomResponse;
+    if (!roomInfo.capacity || !roomInfo.price) {
+      console.log("err");
+    }
+    try {
+      roomResponse = await Api.post(`api/rooms/${params.spaceId}`, {
+        name: roomInfo.roomName, //공간명
+        capacity: Number(roomInfo.personal), //수용인원
+        price: Number(roomInfo.price), //공간타입
+        description: roomInfo.roomType,
+        spaceId: Number(params.spaceId),
+        //imgaes: [roomInfo.images],
+      });
+    } catch (err) {
+      console.log("er발생");
+    }
 
     console.log(roomResponse);
   };
@@ -75,34 +79,34 @@ export default function HostSpaceForm({ mode }) {
       };
     });
   };
+  const [alertMsg, setAlertMsg] = useState("");
+  // const getPreviewImg = () => {
+  //   if (images === null || images.length === 0) {
+  //     return (
+  //       <ImgAreaContainer>
+  //         <ImgArea>
+  //           <Img
+  //             src="https://k-startup.go.kr/images/homepage/prototype/noimage.gif"
+  //             alt="dd"
+  //           />
+  //         </ImgArea>
+  //         <ImgName>등록된 이미지가 없습니다.</ImgName>
+  //       </ImgAreaContainer>
+  //     );
+  //   } else {
+  //     return images.map((el, index) => {
+  //       return (
+  //         <ImgAreaContainer key={index}>
+  //           <ImgArea>
+  //             <Img src={images[index]} />
+  //           </ImgArea>
 
-  const getPreviewImg = () => {
-    if (images === null || images.length === 0) {
-      return (
-        <ImgAreaContainer>
-          <ImgArea>
-            <Img
-              src="https://k-startup.go.kr/images/homepage/prototype/noimage.gif"
-              alt="dd"
-            />
-          </ImgArea>
-          <ImgName>등록된 이미지가 없습니다.</ImgName>
-        </ImgAreaContainer>
-      );
-    } else {
-      return images.map((el, index) => {
-        return (
-          <ImgAreaContainer key={index}>
-            <ImgArea>
-              <Img src={images[index]} />
-            </ImgArea>
-
-            {/* <DeleteButton onClick={deleteImg}>❌</DeleteButton> */}
-          </ImgAreaContainer>
-        );
-      });
-    }
-  };
+  //           {/* <DeleteButton onClick={deleteImg}>❌</DeleteButton> */}
+  //         </ImgAreaContainer>
+  //       );
+  //     });
+  //   }
+  // };
 
   return (
     <Main>
@@ -138,9 +142,16 @@ export default function HostSpaceForm({ mode }) {
         <InputBox>
           <StyledLabel>룸 수용인원</StyledLabel>
           <StyledInput
+            onInput={(e) => {
+              setAlertMsg("숫자만 입력 가능합니다.");
+              e.target.value = e.target.value
+                .replace(/[^0-9.]/g, "")
+                .replace(/(\..*)\./g, "$1");
+            }}
             type="text"
             width="50%"
             name="personal"
+            min="1"
             value={roomInfo.personal}
             onChange={handleChangeRoomState}
           ></StyledInput>
@@ -149,8 +160,14 @@ export default function HostSpaceForm({ mode }) {
         <InputBox>
           <StyledLabel>룸 가격</StyledLabel>
           <StyledInput
+            onInput={(e) => {
+              e.target.value = e.target.value
+                .replace(/[^0-9.]/g, "")
+                .replace(/(\..*)\./g, "$1");
+            }}
             type="text"
             width="50%"
+            min="0"
             name="price"
             value={roomInfo.price}
             onChange={handleChangeRoomState}
@@ -162,7 +179,6 @@ export default function HostSpaceForm({ mode }) {
           <ImageView name="images" readonly>
             {imageSrc && <img src={imageSrc} alt="preview" readonly />}
           </ImageView>
-          {getPreviewImg()}
 
           <ImageInput
             name="roomInfo.images.image"
@@ -329,7 +345,15 @@ const Hr = styled.hr`
 `;
 
 const ImgAreaContainer = styled.div``;
+const Img = styled.div``;
+const ImgName = styled.div``;
 const ImgArea = styled.div``;
-const Img = styled.img``;
-const DeleteButton = styled.div``;
-const ImgName = styled.div;
+
+const AlertMsg = styled.div`
+  margin: 0 6rem;
+  text-align: left;
+  span {
+    font-size: 0.5rem;
+    color: red;
+  }
+`;
