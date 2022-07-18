@@ -3,6 +3,7 @@ import ReservedRoom from "./MyReservedRoom";
 import Pagination from "../Pagination";
 import { useEffect, useState } from "react";
 import { getCookie, setCookie} from "../../cookie";
+import * as Api from '../../api';
 
 const room = {
   image: "/images/partyRoom.png",
@@ -13,9 +14,10 @@ const room = {
   visitingTime: "2022년 7월 일 11시-2시",
 };
 
-
 const rooms = [];
-for (var i = 0; i < 12; i++) rooms.push(room);
+for(var i=0;i<8;i++){
+  rooms.push(room);
+}
 
 function MyReservation() {
 
@@ -25,9 +27,6 @@ function MyReservation() {
 
   const page_limit_elem = (page_limit*page-1 < total_elem-1) ? page_limit*page-1 : total_elem-1;
 
-  useEffect(()=>{
-    setCookie('page', page);
-  }, [page]);
 
   return (
     <ReservationDiv>
