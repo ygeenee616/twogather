@@ -31,7 +31,7 @@ const QnaComponent = ({ room, qna }) => {
 };
 
 const QnaDetailComponent = ({ qna }) => {
-  const { question, questionDate, answer, answerDate } = qna;
+  const { id, content, createdTime, reply } = qna;
 
   const trStyle = {
     display: "none",
@@ -49,8 +49,8 @@ const QnaDetailComponent = ({ qna }) => {
     <>
       <tr style={trStyle} className="detailTr">
         <td colSpan="4" style={tdStyle}>
-          <h2>Q. </h2> <span>질문일: {questionDate} </span> <p>{question}</p>
-          <h2>A. </h2> <span>답변일: {answerDate} </span> <p>{answer}</p>
+          <h2>Q. </h2> <span>질문일: {createdTime} </span> <p>{content}</p>
+          <h2>A. </h2> <span>답변일: ? </span> <p>{reply}</p>
         </td>
       </tr>
     </>
