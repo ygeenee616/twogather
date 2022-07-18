@@ -30,7 +30,7 @@ export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
   // room 생성
-  @Post()
+  @Post(':spaceId')
   @UseGuards(AuthGuard())
   @ApiOperation({
     summary: 'room 생성 API',
@@ -45,7 +45,7 @@ export class RoomsController {
   })
   async create(
     @Body() createRoomDto: CreateRoomDto,
-    @Body('spaceId') spaceId: number,
+    @Param('spaceId') spaceId: number,
   ) {
     const newRoom = await this.roomsService.create(createRoomDto, spaceId);
     return {
