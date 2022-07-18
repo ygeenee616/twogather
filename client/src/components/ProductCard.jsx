@@ -7,18 +7,20 @@ import reviewImg from "../assets/images/reviewIcon.png";
 const productTags = (hashtags) => {
   let result = "";
   let resultStr = "";
-  for (let i = 0; i < hashtags.length; i++) {
-    resultStr += hashtags[i];
-  }
-  if (resultStr.length >= 20) {
-    for (let i = 0; i <= 18; i++) {
-      result += resultStr[i];
+  if (hashtags) {
+    for (let i = 0; i < hashtags.length; i++) {
+      resultStr += hashtags[i];
     }
-    result += "···";
-  } else {
-    return resultStr;
+    if (resultStr.length >= 20) {
+      for (let i = 0; i <= 18; i++) {
+        result += resultStr[i];
+      }
+      result += "···";
+    } else {
+      return resultStr;
+    }
+    return result;
   }
-  return result;
 };
 
 export default function ProductCard({
