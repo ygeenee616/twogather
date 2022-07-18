@@ -8,6 +8,7 @@ import {
   UseGuards,
   Patch,
   Query,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { SpacesService } from './spaces.service';
 import { CreateSpaceDto } from './dto/create-space.dto';
@@ -15,7 +16,7 @@ import { UpdateSpaceDto } from './dto/update-space.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { SpaceResExample } from './space.swagger.example';
-import { GetUser } from 'src/custom.decorator';
+import { GetAdminUser, GetUser } from 'src/custom.decorator';
 import { User } from 'src/users/entities/users.entity';
 const spaceResExample = new SpaceResExample();
 
@@ -38,7 +39,10 @@ export class SpacesController {
       example: spaceResExample.create,
     },
   })
-  async create(@GetUser() user, @Body() createSpaceDto: CreateSpaceDto) {
+  async create(@GetUser() user: User, @Body() createSpaceDto: CreateSpaceDto) {
+    if (!user.businessNumber) {
+      throw new UnauthorizedException('사업자 등록번호가 필요합니다.');
+    }
     const newSpace = await this.spacesService.create(createSpaceDto, user);
     return {
       status: 201,
@@ -63,13 +67,15 @@ export class SpacesController {
     },
   })
   async findAll(@Query() query) {
-    const { page, perPage, keyword } = query;
+    const { page, perPage, keyword, dateOrder, priceOrder, type } = query;
 
     const startIndex: number = perPage * (page - 1);
     const spaces = await this.spacesService.findAll(
       startIndex,
       perPage,
       keyword,
+      dateOrder,
+      type,
     );
     return {
       status: 200,
@@ -80,34 +86,10 @@ export class SpacesController {
       },
     };
   }
-  // type으로 공간 목록 조회
-  @Get('/type/:type')
-  @ApiOperation({
-    summary: '공간 유형으로 공간 목록 조회 API',
-    description:
-      '공간 유형으로 공간 목록 조회(공간 목록 전체보기 페이지, 타입별 조회 성공)',
-  })
-  @ApiResponse({
-    status: 200,
-    description: '유형별 공간 목록 조회',
-    schema: {
-      example: spaceResExample.findByType,
-    },
-  })
-  async findByType(@Param('type') type: string) {
-    console.log(type);
-    const spaces = await this.spacesService.findByType(type);
-    return {
-      status: 200,
-      description:
-        '공간 유형으로 공간 목록 조회(공간 목록 전체보기 페이지, 타입별 조회 성공)',
-      success: true,
-      data: spaces,
-    };
-  }
 
   // 내 공간 목록 조회
   @Get('/host')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '내가 생성한 공간 목록 조회 API',
     description: '내가 생성한 공간 목록 조회',
@@ -123,9 +105,7 @@ export class SpacesController {
       example: spaceResExample.findMySpaces,
     },
   })
-  @UseGuards(AuthGuard())
   async findMySpaces(@GetUser() user: User) {
-    console.log(user.id);
     const spaces = await this.spacesService.findOneByUser(user.id);
     return {
       status: 200,
@@ -157,6 +137,7 @@ export class SpacesController {
   }
   // ID로 특정 공간 정보 수정
   @Patch(':id')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: 'ID로 특정 공간 정보 수정 API',
     description: 'ID로 특정 공간 정보 수정',
@@ -171,6 +152,7 @@ export class SpacesController {
   async updateSpace(
     @Param('id') id: number,
     @Body() updateSpaceDto: UpdateSpaceDto,
+    @GetAdminUser() admin: User,
   ) {
     const updatedSpace = await this.spacesService.update(id, updateSpaceDto);
 
@@ -220,6 +202,7 @@ export class SpacesController {
 
   // 특정 공간 삭제
   @Delete(':id')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '특정 공간 삭제 API',
     description: 'ID로 특정 공간을 삭제한다.',
@@ -231,7 +214,7 @@ export class SpacesController {
       example: spaceResExample.removeSpace,
     },
   })
-  async removeSpace(@Param('id') id: number) {
+  async removeSpace(@Param('id') id: number, @GetAdminUser() admin: User) {
     await this.spacesService.remove(id);
     return {
       status: 201,

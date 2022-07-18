@@ -15,13 +15,11 @@ import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
 import { Hashtag } from './entities/hashtag.entity';
 import { UpdateDateColumn } from 'typeorm';
 import { AuthGuard } from '@nestjs/passport';
+import { GetAdminUser } from 'src/custom.decorator';
+import { User } from 'src/users/entities/users.entity';
 
 @Controller('api/hashtags')
 @ApiTags('해시태그 API')
-@ApiHeader({
-  name: 'authorization',
-  description: 'Auth token',
-}) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
 export class HashtagsController {
   constructor(private readonly hashtagsService: HashtagsService) {}
 
@@ -35,6 +33,10 @@ export class HashtagsController {
     status: 201,
     description: '해시태그 생성 성공',
     type: Hashtag,
+  })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
   })
   async create(
     @Body() createHashtagDto: CreateHashtagDto,
@@ -52,11 +54,33 @@ export class HashtagsController {
     };
   }
 
+  // 전체 해시태그 목록 조회 API
   @Get()
-  findAll() {
-    return this.hashtagsService.findAll();
+  @UseGuards(AuthGuard())
+  @ApiOperation({
+    summary: '전체 해시태그 목록 조회 API',
+    description: '전체 해시태그 목록을 조회한다.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: '전체 해시태그 목록 조회 성공',
+    type: Hashtag,
+  })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
+  })
+  async findAll(@GetAdminUser() host: User) {
+    const hashtags = await this.hashtagsService.findAll();
+    return {
+      name: 'authorization',
+      description: 'Auth token',
+      success: true,
+      data: hashtags,
+    };
   }
 
+  // 특정 공간 해시태그 목록 조회 API
   @Get('space/:spaceId')
   @ApiOperation({
     summary: '특정 공간의 해시태그 목록 조회 API',
@@ -77,6 +101,7 @@ export class HashtagsController {
     };
   }
 
+  // ID로 해시태그 조회 API
   @Get(':id')
   @ApiOperation({
     summary: '특정 해시태그 찾는 API',
@@ -93,6 +118,7 @@ export class HashtagsController {
     };
   }
 
+  // ID로 해시태그 수정
   @Patch(':id')
   @ApiOperation({
     summary: '특정 해시태그 수정 API',
@@ -102,6 +128,10 @@ export class HashtagsController {
     status: 200,
     description: '해시태그 수정 성공',
     type: Hashtag,
+  })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
   })
   async update(
     @Param('id') id: number,
@@ -128,6 +158,10 @@ export class HashtagsController {
     status: 200,
     description: '해시태그 삭제 성공',
     type: Hashtag,
+  })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
   })
   async remove(@Param('id') id: number) {
     const deletedHashtag = await this.hashtagsService.remove(id);
