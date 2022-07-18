@@ -65,13 +65,14 @@ export default function Book() {
   // 예약 등록 함수
   async function submitBook(id) {
     try {
-      // const req = await Api.post(`/api/reservations/3`, {
-      //   startTime: 18,
-      //   endTime: 20,
-      //   date: "2022-07-20",
-      //   personnel: 3,
-      // });
-      console.log("예약완료");
+      const req = await Api.post(`api/reservations/${roomId}`, {
+        startTime: startTime,
+        endTime: endTime,
+        date: date,
+        personnel: people,
+        // 이름 연락처 이메일 요청사항 사용 목적 추가
+      });
+      // console.log(req);
     } catch (err) {
       console.log(err);
     }

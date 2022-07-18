@@ -42,7 +42,9 @@ export class Reservation {
   })
   user: User;
 
-  @OneToOne((type) => Review, (rewiew) => rewiew.reservation)
+  @OneToOne((type) => Review, (rewiew) => rewiew.reservation, {
+    eager: true,
+  })
   review: Review;
 
   @ManyToOne((type) => Room, (room) => room.reservations, {

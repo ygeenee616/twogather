@@ -9,12 +9,14 @@ import { RoomsModule } from 'src/rooms/rooms.module';
 import { RoomsService } from 'src/rooms/rooms.service';
 import { SpacesService } from 'src/spaces/spaces.service';
 import { SpacesModule } from 'src/spaces/spaces.module';
+import { PassportModule } from '@nestjs/passport';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Review]),
     ReservationsModule,
     RoomsModule,
     SpacesModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
   exports: [TypeOrmModule],
   controllers: [ReviewsController],

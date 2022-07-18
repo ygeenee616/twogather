@@ -66,8 +66,15 @@ export class UsersService {
   // id로 유저 조회
   async findOne(id: number): Promise<User> {
     try {
-      return await this.usersRepository.findOneByOrFail({
-        id,
+      return await this.usersRepository.findOne({
+        where: {
+          id,
+        },
+        relations: {
+          reservations: true,
+          qnas: true,
+          spaces: true,
+        },
       });
     } catch (error) {
       throw error;
