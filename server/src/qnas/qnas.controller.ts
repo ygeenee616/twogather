@@ -9,6 +9,7 @@ import {
   UseGuards,
   Query,
   UnauthorizedException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { QnasService } from './qnas.service';
 import { CreateQnaDto } from './dto/create-qna.dto';
@@ -138,6 +139,7 @@ export class QnasController {
 
   // qnaId로 특정 Q&A 수정
   @Patch(':id')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '특정 Q&A 수정 API',
     description: 'Q&A의 ID로 특정 Q&A를 수정한다.',
@@ -149,7 +151,16 @@ export class QnasController {
       example: qnaResExample.updateQna,
     },
   })
-  async updateQna(@Param('id') id: number, @Body() updateQnaDto: UpdateQnaDto) {
+  async updateQna(
+    @Param('id') id: number,
+    @Body() updateQnaDto: UpdateQnaDto,
+    @GetUser() host: User,
+  ) {
+    const qna = await this.qnasService.findOne(id);
+    if (host !== qna.space.user) {
+      throw new UnauthorizedException('권한 없음');
+    }
+
     const updatedQna = await this.qnasService.update(id, updateQnaDto);
     return {
       status: 201,
@@ -180,7 +191,7 @@ export class QnasController {
   ) {
     const qna = await this.qnasService.findOne(id);
     if (qna.user.id !== user.id) {
-      throw UnauthorizedException;
+      throw new UnauthorizedException('권한 없음');
     }
     const updatedQna = await this.qnasService.update(id, updateQnaDto);
     return {
@@ -230,7 +241,7 @@ export class QnasController {
   async removeMyQna(@Param('id') id: number, @GetUser() user: User) {
     const qna = await this.qnasService.findOne(id);
     if (qna.user.id !== user.id) {
-      throw UnauthorizedException;
+      throw new UnauthorizedException('권한 없음');
     }
     await this.qnasService.remove(id);
     return {

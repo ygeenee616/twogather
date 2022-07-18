@@ -103,7 +103,7 @@ export class ReviewsService {
       );
       console.log(review[0].userId);
       if (userId !== review[0].userId) {
-        throw UnauthorizedException;
+        throw new UnauthorizedException('권한 없음');
       }
       const updatedReview = await this.reviewsRepository.update(
         id,
@@ -138,7 +138,7 @@ export class ReviewsService {
       );
       console.log(review[0].userId);
       if (userId !== review[0].userId) {
-        throw UnauthorizedException;
+        throw new UnauthorizedException('권한 없음');
       }
       const deletedReview = await this.reviewsRepository.delete(id);
       if (!deletedReview.affected) {
