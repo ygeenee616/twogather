@@ -21,8 +21,11 @@ import HostHome from "./pages/HostHome";
 import AddHost from "./pages/AddHost";
 import AddSpace from "./pages/AddSpace";
 import HostBookList from "./pages/HostBookList";
-import HostSpaceList from "./pages/hostPage/HostSpaceList";
+import HostSpaceList2 from "./pages/hostPage/HostSpaceList2";
 import HostUpdateSpace from "./pages/HostUpdateSpace";
+import HostAddRoom from "./pages/hostPage/HostAddRoom";
+import HostUpdateRoom from "./pages/hostPage/HostUpdateRoom";
+
 import ProductList from "./pages/ProductList";
 import Detail from "./pages/Detail";
 import Book from "./pages/Book";
@@ -61,8 +64,10 @@ function App() {
             <Route path="/host" element={<HostHome />} />
             <Route path="/host/addHost" element={<AddHost />} />
             <Route path="/host/addSpace" element={<AddSpace />} />
+            <Route path="/host/addRoom/:id" element={<HostAddRoom />} />
+            <Route path="/host/updateRoom/:id" element={<HostUpdateRoom />} />
             <Route path="/host/bookList" element={<HostBookList />} />
-            <Route path="/host/spaceList" element={<HostSpaceList />} />
+            <Route path="/host/spaceList" element={<HostSpaceList2 />} />
             <Route path="/host/updateSpace/:id" element={<HostUpdateSpace />} />
 
             <Route path="/list" element={<ProductList />} />

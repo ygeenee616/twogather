@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useParams } from "react";
 import styled from "styled-components";
-import PostcodePopup from "../admin/PostcodePopup";
-import HashTag from "./HashTag";
+import PostcodePopup from "../../components/admin/PostcodePopup";
+import HashTag from "../../components/host/HashTag";
 import * as Api from "../../api";
 
 export default function HostSpaceForm({ mode }) {
@@ -10,20 +10,6 @@ export default function HostSpaceForm({ mode }) {
   // hashTag state
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState([]);
-
-  const { params } = useParams();
-  console.log(params);
-  
-  const [spaceInfo, setSpaceInfo] = useState({
-    name: "", //공간명
-    type: "세미나실", //공간타입
-    //spaceShortIntro: "", //공간한줄소개
-    intro: "", //공간소개
-    hashTags: [], //태그
-    images: "귀여운탱구사진",
-    notice: "", //주의사항
-    address: "", //실주소
-  });
 
   const [roomInfo, setRoomInfo] = useState({
     roomName: "",
@@ -36,14 +22,6 @@ export default function HostSpaceForm({ mode }) {
 
   const subViewInput = useRef();
 
-  const handleChangeState = (e) => {
-    setSpaceInfo({
-      ...spaceInfo,
-      [e.target.name]: e.target.value,
-    });
-    console.log(spaceInfo);
-  };
-
   const handleChangeRoomState = (e) => {
     setRoomInfo({
       ...roomInfo,
@@ -53,15 +31,6 @@ export default function HostSpaceForm({ mode }) {
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-
-    const response = await Api.post("api/spaces", {
-      name: spaceInfo.name, //공간명
-      address: spaceInfo.address, //실주소
-      type: "세미나실", //공간타입
-      notice: spaceInfo.notice, //주의사항
-      intro: spaceInfo.notice, //공간소개
-      //Images: "귀여운탱구사진",
-    });
 
     const roomResponse = await Api.post("api/rooms", {
       name: roomInfo.roomName, //공간명
@@ -119,133 +88,9 @@ export default function HostSpaceForm({ mode }) {
     }
   };
 
-  // hashTag  컴포넌트 함수
-  useEffect(() => {
-    // ['스터디룸', '모임', '강남'] 이런식으로 배열로 들어감
-    console.log(tagList);
-  }, [tagList]);
-
-  // 엔터 누르면 추가
-  const onKeyPress = (e) => {
-    if (e.target.value.length !== 0 && window.event.keyCode === 13) {
-      addHashTag();
-    }
-  };
-
-  // hashTag 추가 함수
-  const addHashTag = () => {
-    let updatedTagList = [...tagList];
-    updatedTagList.push(tagItem);
-    setTagList(updatedTagList);
-    setTagItem("");
-  };
-
-  // hashTag 삭제
-  const removeHashTag = (e) => {
-    const deleteTagItem = e.target.parentElement.firstChild.innerText;
-    const filteredTagList = tagList.filter(
-      (tagItem) => tagItem !== deleteTagItem
-    );
-    setTagList(filteredTagList);
-  };
-
   return (
     <Main>
       <SpaceForm>
-        <InputBox>
-          <Title>
-            공간 정보를 입력해주세요
-            <Hr></Hr>
-          </Title>
-        </InputBox>
-        <InputBox>
-          <StyledLabel>공간명</StyledLabel>
-          <StyledInput
-            type="text"
-            width="50%"
-            name="name"
-            value={spaceInfo.name}
-            onChange={handleChangeState}
-          ></StyledInput>
-        </InputBox>
-        {/* 
-        <InputBox>
-          <StyledLabel>메인 이미지</StyledLabel>
-          <ImageView name="spaceMainImage" readonly>
-            {imageSrc && <img src={imageSrc} alt="preview" readonly />}
-          </ImageView>
-          <ImageInput
-            name="spaceMainImage"
-            type={"file"}
-            accept="image/*"
-            onChange={(e) => {
-              encodeFileToBase64(e.target.files[0]);
-            }}
-          />
-        </InputBox> */}
-
-        <InputBox>
-          <StyledLabel>공간 소개</StyledLabel>
-          <StyledTextArea
-            type="text"
-            rows={"10"}
-            name="intro"
-            value={spaceInfo.intro}
-            onChange={handleChangeState}
-          ></StyledTextArea>
-        </InputBox>
-
-        <HashTag
-          tagItem={tagItem}
-          setTagItem={setTagItem}
-          tagList={tagList}
-          setTagList={setTagList}
-          onKeyPress={onKeyPress}
-          addHashTag={addHashTag}
-          removeHashTag={removeHashTag}
-        />
-
-        <InputBox>
-          <StyledLabel>예약 시 주의사항</StyledLabel>
-          <StyledTextArea
-            type="text"
-            name="notice"
-            value={spaceInfo.notice}
-            onChange={handleChangeState}
-          ></StyledTextArea>
-        </InputBox>
-
-        {/* <InputBox>
-          <StyledLabel>웹사이트 주소</StyledLabel>
-          <StyledInput
-            type="text"
-            name="webAddress"
-            value={spaceState.webAddress}
-            onChange={handleChangeState}
-          ></StyledInput>
-        </InputBox> */}
-
-        <InputBox>
-          <StyledLabel>주소지 입력</StyledLabel>
-          <PostcodePopup></PostcodePopup>
-        </InputBox>
-
-        <InputBox>
-          <StyledLabel>공간 이미지 선택</StyledLabel>
-          <SubImageView
-            name="spaceSubImages"
-            ref={subViewInput}
-            onChange={loadDetailImage}
-          ></SubImageView>
-          <ImageInput
-            name="spaceImages"
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={handleImageUpload}
-          ></ImageInput>
-        </InputBox>
-
         <InputBox>
           <Title>
             룸 정보를 입력해주세요
@@ -330,7 +175,7 @@ export default function HostSpaceForm({ mode }) {
             type="submit"
             value="submit"
           >
-            {mode === "UPDATE" ? "공간수정" : mode === "ADD" ? "공간등록" : ""}
+            {mode === "UPDATE" ? "룸수정" : mode === "ADD" ? "룸등록" : ""}
           </StyledButton>
         </ButtonBox>
       </SpaceForm>
