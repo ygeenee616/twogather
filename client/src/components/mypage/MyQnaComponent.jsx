@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
-const QnaComponent = ({ qna }) => {
-  const { space, question, questionDate, answer } = qna;
+const QnaComponent = ({ room, qna }) => {
+  // id 는 qna 아이디
+  const { id, content, createdTime, reply } = qna;
 
   const deleteBtnstyle = {
     display: "inline-block",
@@ -15,13 +16,13 @@ const QnaComponent = ({ qna }) => {
   return (
     <>
       <tr>
-        <td>{space}</td>
+        <td>{room}</td>
         <td>
-          {question.length > 30 ? question.slice(0, 30) + `...` : question}
+          {content.length > 30 ? content.slice(0, 30) + `...` : content}
         </td>
-        <td>{questionDate}</td>
+        <td>{createdTime.split('T')[0]}</td>
         <td>
-          {answer ? "    답변 완료 " : "답변 대기중 "}
+          {reply ? "    답변 완료 " : "답변 대기중 "}
           <button style={deleteBtnstyle}>삭제</button>
         </td>
       </tr>
