@@ -20,6 +20,8 @@ export default function Book() {
   const roomTitle = location.state.room.title;
   const host = location.state.host;
 
+  console.log(people, date, startTime, endTime, roomId, roomTitle, host);
+
   // 유저 입력 정보
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -65,12 +67,13 @@ export default function Book() {
   // 예약 등록 함수
   async function submitBook(id) {
     try {
-      // const req = await Api.post(`/api/reservations/3`, {
-      //   startTime: 18,
-      //   endTime: 20,
-      //   date: "2022-07-20",
-      //   personnel: 3,
-      // });
+      const req = await Api.post(`api/reservations/${roomId}`, {
+        startTime: startTime,
+        endTime: endTime,
+        date: date,
+        personnel: people,
+      });
+      console.log(req);
       console.log("예약완료");
     } catch (err) {
       console.log(err);
