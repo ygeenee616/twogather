@@ -18,7 +18,7 @@ function MyPage() {
         const res = await Api.get("api/users/info");
         const data = res.data.data;
 
-        console.log(data);
+        console.log(res);
 
         setUser({
           userId: data.id,
@@ -31,16 +31,9 @@ function MyPage() {
         });
 
         // data.reservation 과 data.rooms 합치기
-        const reservs = data.reservations;
-        const spaces = data.spaces;
-        const books = [];
-        for (var i = 0; i < reservs.length; i++) {
-          if(reservs[i] && spaces[i]){
-            books.push(Object.assign(reservs[i], spaces[i]));
-          }
-        }
-        setReservations(books);
-        
+       
+        setReservations(data.reservations);
+
         setQnas(data.qnas);
       } catch (err) {
         console.log(err);

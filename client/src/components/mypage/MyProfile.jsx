@@ -21,6 +21,8 @@ function MyProfile({userInfo}) {
 
   useEffect(()=>{
     setEditUser(false);
+
+    
   },[])
 
   return (
