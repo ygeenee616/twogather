@@ -79,7 +79,7 @@ function LoginForm() {
         setUserInfo({
           userId: userData.id,
           userName: userData.name,
-          nickName: userData.nickName,
+          nickName: userData.nickname,
           email: email,
           useType: userType,
         });
