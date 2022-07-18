@@ -35,7 +35,7 @@ export class SpacesService {
       if (keyword === undefined || keyword === null) {
         paginatedSpaces = await this.spacesRepository.find({
           relations: {
-            user: true,
+            rooms: true,
           },
           order: {
             id: 'DESC',
@@ -49,7 +49,7 @@ export class SpacesService {
             name: Like(`%${keyword}%`),
           },
           relations: {
-            user: true,
+            rooms: true,
           },
           order: {
             id: 'DESC',
@@ -77,6 +77,7 @@ export class SpacesService {
         },
         relations: {
           user: true,
+          rooms: true,
         },
         cache: true,
       });

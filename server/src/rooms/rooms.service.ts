@@ -67,6 +67,7 @@ export class RoomsService {
         },
         relations: {
           space: true,
+          reservations: true,
         },
         // cache: true,
       });
