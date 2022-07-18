@@ -202,4 +202,34 @@ export class RoomImageResExample {
     description: 'roomImageId로 특정 roomImage 삭제 성공',
     success: true,
   };
+
+  public readonly findAllByRoom = {
+    status: 200,
+    description: '특정 룸의 roomImages(URL) 목록 조회 성공',
+    success: true,
+    data: [
+      {
+        id: 4,
+        imageUrl: 'second_imageUrl',
+        room: {
+          id: 9,
+          name: '좋은방12',
+          capacity: 4,
+          price: 4000,
+          description: '좋은방12은 4,000원에 4명 수용가능합니다.',
+        },
+      },
+      {
+        id: 3,
+        imageUrl: 'first_imageUrl',
+        room: {
+          id: 9,
+          name: '좋은방12',
+          capacity: 4,
+          price: 4000,
+          description: '좋은방12은 4,000원에 4명 수용가능합니다.',
+        },
+      },
+    ],
+  };
 }

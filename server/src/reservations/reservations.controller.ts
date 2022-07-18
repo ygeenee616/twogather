@@ -30,7 +30,7 @@ export class ReservationsController {
   ) {}
 
   // 예약 등록
-  @Post('/:roomId')
+  @Post(':roomId')
   @UseGuards(AuthGuard())
   async reserve(
     @GetUser() user: User,
@@ -127,6 +127,25 @@ export class ReservationsController {
       description: '특정 예약 조회 성공',
       success: true,
       data: reservation,
+    };
+  }
+
+  // 내 예약 목록 조회
+  @Get('/mypage')
+  @UseGuards(AuthGuard())
+  async findMyReservation(@GetUser() user: User, @Query() query) {
+    const { page, perPage } = query;
+    const startIndex: number = Number(perPage) * (Number(page) - 1);
+    const reservations = await this.reservationsService.findMyReservation(
+      user,
+      startIndex,
+      perPage,
+    );
+    return {
+      status: 200,
+      description: '내 예약 정보 조회 성공',
+      success: true,
+      data: reservations,
     };
   }
 

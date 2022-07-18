@@ -36,6 +36,18 @@ export class Reservation {
   @Column({ type: 'timestamp', default: () => 'NOW()' })
   createdTime: Date;
 
+  @Column({ type: 'varchar', length: 400, nullable: false })
+  @ApiProperty({ description: '사용 목적' })
+  purpose: string;
+
+  @Column({ type: 'varchar', length: 400, nullable: false })
+  @ApiProperty({ description: '요청 사항' })
+  requirement: string;
+
+  @Column({ type: 'varchar', length: 400, nullable: false })
+  @ApiProperty({ description: '총 금액' })
+  totalPrice: number;
+
   @ManyToOne((type) => User, (user) => user.reservations, {
     onDelete: 'CASCADE',
     eager: false,

@@ -39,6 +39,26 @@ export class RoomImagesService {
     });
   }
 
+  async findAllByRoom(roomId: number) {
+    try {
+      return await this.roomImagesRepository.find({
+        where: {
+          room: {
+            id: roomId,
+          },
+        },
+        relations: {
+          room: true,
+        },
+        order: {
+          id: 'DESC',
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // roomImageId로 특정 roomImage 조회
   async findOne(id: number) {
     try {
