@@ -30,7 +30,7 @@ export class ReservationsController {
   ) {}
 
   // 예약 등록
-  @Post('/:roomId')
+  @Post(':roomId')
   @UseGuards(AuthGuard())
   async reserve(
     @GetUser() user: User,
@@ -130,6 +130,26 @@ export class ReservationsController {
     };
   }
 
+  // 내 예약 목록 조회
+  @Get('/mypage')
+  @UseGuards(AuthGuard())
+  async findMyReservation(@GetUser() user: User, @Query() query) {
+    const { page, perPage } = query;
+    const startIndex: number = Number(perPage) * (Number(page) - 1);
+    const reservations = await this.reservationsService.findMyReservation(
+      user,
+      startIndex,
+      perPage,
+    );
+    return {
+      status: 200,
+      description: '내 예약 정보 조회 성공',
+      success: true,
+      data: reservations,
+    };
+  }
+
+  // 내 예약 수정
   @Patch(':id')
   @UseGuards(AuthGuard())
   @ApiOperation({
@@ -148,7 +168,7 @@ export class ReservationsController {
   ) {
     const reservation = await this.reservationsService.findOne(id);
     if (reservation.user.id !== user.id) {
-      throw UnauthorizedException;
+      throw new UnauthorizedException('권한 없음');
     }
     const updateReservation = await this.reservationsService.update(
       id,
@@ -162,6 +182,7 @@ export class ReservationsController {
     };
   }
 
+  // 내 예약 삭제
   @Delete('mypage/:id')
   @UseGuards(AuthGuard())
   @ApiOperation({
@@ -172,7 +193,7 @@ export class ReservationsController {
   async deleteReservation(@Param('id') id: number, @GetUser() user: User) {
     const reservation = await this.reservationsService.findOne(id);
     if (reservation.user.id !== user.id) {
-      throw UnauthorizedException;
+      throw new UnauthorizedException('권한 없음');
     }
     const removeReservation = await this.reservationsService.remove(id);
     return {

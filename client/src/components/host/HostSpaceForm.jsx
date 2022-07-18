@@ -55,6 +55,14 @@ export default function HostSpaceForm({ mode, data }) {
       ...spaceInfo,
       [e.target.name]: e.target.value,
     });
+    console.log(spaceInfo);
+  };
+
+  const handleChangeRoomState = (e) => {
+    setRoomInfo({
+      ...roomInfo,
+      [e.target.name]: e.target.value,
+    });
   };
 
   //공간수정 버튼 누를 시 patch 요청
@@ -257,6 +265,73 @@ export default function HostSpaceForm({ mode, data }) {
             onChange={handleImageUpload}
           ></ImageInput>
         </InputBox>
+
+        <InputBox>
+          <Title>
+            룸 정보를 입력해주세요
+            <Hr></Hr>
+          </Title>
+        </InputBox>
+        <InputBox>
+          <StyledLabel>룸 이름</StyledLabel>
+          <StyledInput
+            type="text"
+            width="50%"
+            name="roomName"
+            value={roomInfo.roomName}
+            onChange={handleChangeRoomState}
+          ></StyledInput>
+        </InputBox>
+
+        <InputBox>
+          <StyledLabel>룸 타입</StyledLabel>
+          <StyledInput
+            type="text"
+            width="50%"
+            name="roomType"
+            value={roomInfo.roomType}
+            onChange={handleChangeRoomState}
+          ></StyledInput>
+        </InputBox>
+
+        <InputBox>
+          <StyledLabel>룸 수용인원</StyledLabel>
+          <StyledInput
+            type="text"
+            width="50%"
+            name="personal"
+            value={roomInfo.personal}
+            onChange={handleChangeRoomState}
+          ></StyledInput>
+        </InputBox>
+
+        <InputBox>
+          <StyledLabel>룸 가격</StyledLabel>
+          <StyledInput
+            type="text"
+            width="50%"
+            name="price"
+            value={roomInfo.price}
+            onChange={handleChangeRoomState}
+          ></StyledInput>
+        </InputBox>
+
+        <InputBox>
+          <StyledLabel>룸 이미지 선택</StyledLabel>
+          <SubImageView
+            name="images"
+            ref={subViewInput}
+            onChange={loadDetailImage}
+          ></SubImageView>
+          <ImageInput
+            name="roomInfo.images.image"
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleImageUpload}
+          ></ImageInput>
+        </InputBox>
+
         <ButtonBox>
           <StyledButton
             name="cancel"
