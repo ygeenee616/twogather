@@ -3,6 +3,7 @@ import styled from "styled-components";
 import StripeLayout from "../components/StripeLayout";
 import AdminBookDetail from "./AdminBookDetail";
 import axios from "axios";
+import * as Api from "../api";
 
 function AdminBookList() {
   const [data, setData] = useState("");
@@ -10,7 +11,8 @@ function AdminBookList() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const req = await axios.get("/dummyBookList.json");
+        const req = await Api.get("api/reservations?page=1&perPage=5");
+        console.log(req);
         const data = await req.data.data;
         setData(data);
         console.log(data);

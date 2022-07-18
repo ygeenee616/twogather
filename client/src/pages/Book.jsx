@@ -70,6 +70,7 @@ export default function Book() {
         endTime: endTime,
         date: date,
         personnel: people,
+        // 이름 연락처 이메일 요청사항 사용 목적 추가
       });
       // console.log(req);
     } catch (err) {
