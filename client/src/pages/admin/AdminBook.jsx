@@ -25,7 +25,7 @@ export default function AdminBook() {
   return (
     <div>
       <AdminNav />
-      <BookList data={data} endpoint={"bookDetail/"} />
+      <BookList data={data} endpoint={"/admin/bookList/bookDetail/"} />
     </div>
   );
 }
