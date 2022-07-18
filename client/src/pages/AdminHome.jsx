@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Chart from "../components/Chart";
 import AdminPage from "./AddHost";
@@ -9,21 +9,38 @@ import { FaUserCircle } from "react-icons/fa";
 import { FaUserTie } from "react-icons/fa";
 import Notice from "./Notice";
 import HostQnA from "./HostQnA";
+import NewAdminBookList from "../components/admin/NewAdminBookList";
+import * as Api from "../api";
 
 const name = "강예정";
 function AdminHome() {
-  const [content, setContent] = useState("Greetings");
+  const [content, setContent] = useState("manageBooked");
+  const [bookdata, setBookData] = useState([]);
 
   function menuClick(props) {
     setContent(props);
   }
 
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const req = await Api.get(`api/reservations?page=1&perPage=5`);
+        console.log(req);
+        const data = await req.data.data.spaces.paginatedSpaces;
+        setBookData(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    content === "manageBooked" && getData();
+  }, [content]);
+  console.log(bookdata);
+
   const array = [
     { idx: 0, menuName: "공지사항", stateName: "manageNotice" },
-    { idx: 1, menuName: "차트보기", stateName: "Greetings" },
-    { idx: 2, menuName: "예약관리", stateName: "manageBooked" },
-    { idx: 3, menuName: "유저관리", stateName: "manageUsers" },
-    { idx: 4, menuName: "Q & A관리", stateName: "manageQA" },
+    { idx: 1, menuName: "예약관리", stateName: "manageBooked" },
+    { idx: 2, menuName: "유저관리", stateName: "manageUsers" },
   ];
 
   return (
@@ -55,16 +72,12 @@ function AdminHome() {
             <Label className="username">{name}</Label>
             <Label>님!</Label>
           </Header>
-          {content === "Greetings" ? (
-            <Greetings></Greetings>
-          ) : content === "manageBooked" ? (
-            <AdminBookList></AdminBookList>
+          {content === "manageBooked" ? (
+            <NewAdminBookList data={bookdata} />
           ) : content === "manageUsers" ? (
             <AdminUserList></AdminUserList>
           ) : content === "manageNotice" ? (
-            <Notice></Notice>
-          ) : content === "manageQA" ? (
-            <HostQnA></HostQnA>
+            <Notice />
           ) : (
             <div></div>
           )}

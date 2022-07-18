@@ -1,0 +1,99 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
+import { FcSettings } from "react-icons/fc";
+import * as Api from "../../api";
+
+export default function NewAdminBookList({ data, endpoint }) {
+  return (
+    data && (
+      <Container>
+        <table>
+          <caption>예약 내역</caption>
+          <colgroup>
+            <col width={"10%"} />
+            <col width={"15%"} />
+            <col width={"20%"} />
+            <col width={"10%"} />
+            <col width={"10%"} />
+            <col width={"25%"} />
+            <col width={"10%"} />
+          </colgroup>
+          <thead>
+            <tr align="center">
+              <th>예약자</th>
+              <th>룸</th>
+              <th>날짜</th>
+              <th>인원</th>
+              <th>금액</th>
+              <th>연락처</th>
+              <th>관리</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((item, i) => {
+              return (
+                // <Link to ={`${endpoint}/${item.id}`}>
+                <tr align="center">
+                  <td>{item.user.name}</td>
+                  {/* <td>{item.room.id}</td> */}
+                  <td>파티룸</td>
+                  <td>{item.date}</td>
+                  <td>{item.personnel}</td>
+                  {/* <td>{item.room.totalPrice}</td> */}
+                  <td>1억</td>
+                  <td>{item.user.phoneNumber}</td>
+                  <td>
+                    <FcSettings className="icon" />
+                  </td>
+                </tr>
+                // </Link>
+              );
+            })}
+          </tbody>
+        </table>
+      </Container>
+    )
+  );
+}
+
+const Container = styled.div`
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & table {
+    width: 100%;
+    border: 1px solid #577bc1;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  & caption {
+    background-color: #577bc1;
+    color: #fff;
+    padding: 5px;
+  }
+
+  & th {
+    color: #577bc1;
+    padding: 5px;
+  }
+
+  & tr {
+    border-bottom: 1px solid #577bc1;
+  }
+
+  & td {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 5px;
+  }
+
+  & .icon:hover {
+    transform: scale(1.1);
+    transition: 0.3s;
+  }
+`;

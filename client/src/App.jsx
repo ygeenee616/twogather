@@ -32,6 +32,7 @@ import Book from "./pages/Book";
 import Home from "./pages/Home";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
+import NewAdminBookList from "./components/admin/NewAdminBookList";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <ScrollToTop />
           <Header></Header>
           <Routes>
+            <Route path="/bookList" element={<NewAdminBookList />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
             <Route path="/registerComplete" element={<RegisterComplete />} />
