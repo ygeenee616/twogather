@@ -16,17 +16,13 @@ import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
 import { Review } from './entities/review.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { ReviewResExample } from './review.swagger.example';
-import { GetUser } from 'src/custom.decorator';
+import { GetAdminUser, GetUser } from 'src/custom.decorator';
 import { User } from 'src/users/entities/users.entity';
 import { ReservationsService } from 'src/reservations/reservations.service';
 const reviewResExample = new ReviewResExample();
 
 @Controller('api/reviews')
 @ApiTags('리뷰 API')
-// @ApiHeader({
-//   name: 'authorization',
-//   description: 'Auth token',
-// }) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
 export class ReviewsController {
   constructor(
     private readonly reviewsService: ReviewsService,
@@ -46,6 +42,10 @@ export class ReviewsController {
     schema: {
       example: reviewResExample.create,
     },
+  })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
   })
   async create(
     @Body() createReviewDto: CreateReviewDto,
@@ -115,6 +115,10 @@ export class ReviewsController {
       example: reviewResExample.findMyReviews,
     },
   })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
+  })
   async findMyReviews(@GetUser() user: User) {
     const reviews = await this.reviewsService.findMyReviews(user.id);
     return {
@@ -147,12 +151,12 @@ export class ReviewsController {
     };
   }
 
-  // reviewId로 특정 리뷰 수정
+  // reviewId로 특정 리뷰 수정(admin)
   @Patch(':id')
   @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '특정 리뷰 수정 API',
-    description: '리뷰 ID로 특정 리뷰를 수정한다.',
+    description: '리뷰 ID로 특정 리뷰를 수정한다.(admin)',
   })
   @ApiResponse({
     status: 201,
@@ -161,15 +165,15 @@ export class ReviewsController {
       example: reviewResExample.updateReview,
     },
   })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
+  })
   async updateReview(
     @Param('id') id: number,
     @Body() updateReviewDto: UpdateReviewDto,
-    @GetUser() user: User,
+    @GetAdminUser() host: User,
   ) {
-    const review = await this.reviewsService.findOne(id);
-    if (review.reservation.user !== user) {
-      throw new UnauthorizedException('권한없음');
-    }
     const updatedReview = await this.reviewsService.update(
       +id,
       updateReviewDto,
@@ -220,6 +224,7 @@ export class ReviewsController {
 
   // reviewId로 특정 review 삭제
   @Delete(':id')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '특정 리뷰 삭제 API',
     description: '리뷰 ID로 특정 리뷰를 삭제한다.',
@@ -231,7 +236,11 @@ export class ReviewsController {
       example: reviewResExample.removeReview,
     },
   })
-  async removeReview(@Param('id') id: number) {
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Auth token-> Bearer {token} 이렇게 넣기 ',
+  })
+  async removeReview(@Param('id') id: number, @GetAdminUser() host: User) {
     await this.reviewsService.remove(+id);
     return {
       status: 201,
@@ -247,16 +256,16 @@ export class ReviewsController {
     summary: '내가 쓴 특정 리뷰 삭제 API',
     description: '내가 쓴 특정 리뷰를 삭제한다.',
   })
-  @ApiHeader({
-    name: 'Authorization',
-    description: 'Auth token-> Bearer {token} 이렇게 넣기 ',
-  }) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
   @ApiResponse({
     status: 201,
     description: '내가 쓴 특정 삭제된 리뷰 삭제 성공',
     schema: {
       example: reviewResExample.removeMyReview,
     },
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Auth token-> Bearer {token} 이렇게 넣기 ',
   })
   async removeMyReview(@GetUser() user: User, @Param('id') id: number) {
     await this.reviewsService.removeMyReview(user.id, id);

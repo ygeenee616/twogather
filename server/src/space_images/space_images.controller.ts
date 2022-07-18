@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { SpaceImagesService } from './space_images.service';
 import { CreateSpaceImageDto } from './dto/create-space_image.dto';
@@ -13,6 +15,10 @@ import { UpdateSpaceImageDto } from './dto/update-space_image.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
 import { SpaceImage } from './entities/space_image.entity';
 import { SpaceImageResExample } from './space_image.swagger.example';
+import { GetUser } from 'src/custom.decorator';
+import { User } from 'src/users/entities/users.entity';
+import { AuthGuard } from '@nestjs/passport';
+import { SpacesService } from 'src/spaces/spaces.service';
 const spaceImageResExample = new SpaceImageResExample();
 
 @Controller('api/space-images')
@@ -22,10 +28,14 @@ const spaceImageResExample = new SpaceImageResExample();
 //   description: 'Auth token',
 // }) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
 export class SpaceImagesController {
-  constructor(private readonly spaceImagesService: SpaceImagesService) {}
+  constructor(
+    private readonly spaceImagesService: SpaceImagesService,
+    private spacesService: SpacesService,
+  ) {}
 
   // spaceImage 등록
   @Post(':spaceId')
+  @UseGuards()
   @ApiOperation({
     summary: 'space 이미지(URL) 생성 API',
     description: 'space 이미지(URL)를 생성한다.',
@@ -40,7 +50,12 @@ export class SpaceImagesController {
   async create(
     @Body() createSpaceImageDto: CreateSpaceImageDto,
     @Param('spaceId') spaceId: number,
+    @GetUser() host: User,
   ) {
+    const space = await this.spacesService.findOne(spaceId);
+    if (space.user !== host) {
+      throw new UnauthorizedException('권한 없음');
+    }
     const newSpaceImage = await this.spaceImagesService.create(
       createSpaceImageDto,
       spaceId,
@@ -124,6 +139,7 @@ export class SpaceImagesController {
 
   // spaceImageId로 특정 spaceImage(URL) 수정
   @Patch(':id')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '특정 space 이미지(URL) 수정 API',
     description: 'space 이미지(URL) ID로 특정 space 이미지(URL)를 수정한다.',
@@ -138,7 +154,12 @@ export class SpaceImagesController {
   async updateSpaceImage(
     @Param('id') id: number,
     @Body() updateSpaceImageDto: UpdateSpaceImageDto,
+    @GetUser() host: User,
   ) {
+    const spaceImage = await this.spaceImagesService.findOne(id);
+    if (spaceImage.space.user !== host) {
+      throw new UnauthorizedException('권한 없음');
+    }
     const updatedSpaceImage = await this.spaceImagesService.update(
       +id,
       updateSpaceImageDto,
@@ -153,6 +174,7 @@ export class SpaceImagesController {
 
   // 특정 spaceImage 삭제
   @Delete(':id')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '특정 space 이미지(URL) 삭제 API',
     description: 'space 이미지(URL) ID로 특정 space 이미지(URL) 삭제한다.',
@@ -164,7 +186,11 @@ export class SpaceImagesController {
       example: spaceImageResExample.removeSpaceImage,
     },
   })
-  async removeSpaceImage(@Param('id') id: number) {
+  async removeSpaceImage(@Param('id') id: number, @GetUser() host: User) {
+    const spaceImage = await this.spaceImagesService.findOne(id);
+    if (spaceImage.space.user !== host) {
+      throw new UnauthorizedException('권한 없음');
+    }
     await this.spaceImagesService.remove(+id);
     return {
       status: 201,

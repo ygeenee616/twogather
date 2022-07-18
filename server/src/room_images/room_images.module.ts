@@ -7,9 +7,15 @@ import { RoomsModule } from 'src/rooms/rooms.module';
 import { RoomsService } from 'src/rooms/rooms.service';
 import { SpacesModule } from 'src/spaces/spaces.module';
 import { SpacesService } from 'src/spaces/spaces.service';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([RoomImage]), RoomsModule, SpacesModule],
+  imports: [
+    TypeOrmModule.forFeature([RoomImage]),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    RoomsModule,
+    SpacesModule,
+  ],
   exports: [TypeOrmModule],
   controllers: [RoomImagesController],
   providers: [RoomImagesService, RoomsService, SpacesService],

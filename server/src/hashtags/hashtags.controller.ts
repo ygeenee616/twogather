@@ -18,10 +18,6 @@ import { AuthGuard } from '@nestjs/passport';
 
 @Controller('api/hashtags')
 @ApiTags('해시태그 API')
-@ApiHeader({
-  name: 'authorization',
-  description: 'Auth token',
-}) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
 export class HashtagsController {
   constructor(private readonly hashtagsService: HashtagsService) {}
 
@@ -35,6 +31,10 @@ export class HashtagsController {
     status: 201,
     description: '해시태그 생성 성공',
     type: Hashtag,
+  })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
   })
   async create(
     @Body() createHashtagDto: CreateHashtagDto,
@@ -103,6 +103,10 @@ export class HashtagsController {
     description: '해시태그 수정 성공',
     type: Hashtag,
   })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
+  })
   async update(
     @Param('id') id: number,
     @Body() updateHashtagDto: UpdateHashtagDto,
@@ -128,6 +132,10 @@ export class HashtagsController {
     status: 200,
     description: '해시태그 삭제 성공',
     type: Hashtag,
+  })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
   })
   async remove(@Param('id') id: number) {
     const deletedHashtag = await this.hashtagsService.remove(id);

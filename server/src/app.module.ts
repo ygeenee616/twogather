@@ -24,6 +24,7 @@ import { Review } from './reviews/entities/review.entity';
 import { ReservationsModule } from './reservations/reservations.module';
 import { HashtagsModule } from './hashtags/hashtags.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -71,6 +72,7 @@ import { ReviewsModule } from './reviews/reviews.module';
     ReservationsModule,
     HashtagsModule,
     ReviewsModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
   controllers: [AppController],
   providers: [AppService],
