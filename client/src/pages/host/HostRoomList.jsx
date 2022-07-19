@@ -2,42 +2,23 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import * as Api from "../../api";
-import HostNav from "../../components/host/HostNav";
-import BookList from "../../components/BookList";
 
-export default function HostRoomBook() {
-  const [data, setData] = useState("");
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const req = await Api.get(`api/rooms/host`);
-        const data = await req.data.data;
-        console.log(req);
-        setData(data);
-        console.log(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getData();
-  }, []);
-
-  return data ? (
-    <div>
-      <HostNav />
-      <RoomContainer>
-        {data.map((room, id) => {
-          return (
-            <RoomLink to={`/host/bookList/${room.id}`}>
-              <RoomList>{room.name}</RoomList>
-            </RoomLink>
-          );
-        })}
-      </RoomContainer>
-    </div>
-  ) : (
-    <p>등록된 룸이 없습니다.</p>
+export default function HostRoomList({ data, title, link }) {
+  return (
+    data && (
+      <div>
+        <RoomContainer>
+          <Title>{title}</Title>
+          {data.map((room, id) => {
+            return (
+              <RoomLink to={`${link}${room.id}?page=1`} key={id}>
+                <RoomList>{room.name}</RoomList>
+              </RoomLink>
+            );
+          })}
+        </RoomContainer>
+      </div>
+    )
   );
 }
 
@@ -61,4 +42,12 @@ const RoomList = styled.div`
   margin: 0 auto;
   border: 1px solid #8daef2;
   padding: 10px;
+`;
+
+const Title = styled.div`
+  text-align: center;
+  padding: 15px;
+  font-size: 1rem;
+  background-color: #8daef2;
+  color: #fff;
 `;
