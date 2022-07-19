@@ -225,7 +225,7 @@ export default function HostAddRoom({ mode }) {
           <Modal
             className="updateModal"
             title="룸 추가"
-            content="룸이 추가되었습니다."
+            content="룸이 수정되었습니다.."
             clickEvent={() => navigate("/host/spaceList")}
           />
         </ModalWrap>
