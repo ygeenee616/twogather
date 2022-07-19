@@ -63,15 +63,16 @@ export default function Header() {
     }
   });
 
-  
-
-
   return (
     <HeaderWrap>
       <Logo className="headerLogo" />
       <SearchBar />
       <RightWrap>
-        {isLogin ? <HeaderTag name="호스트등록하기" target="/addHost" /> : ``}
+        {isLogin ? (
+          <HeaderTag name="호스트등록하기" target="/host/addHost" />
+        ) : (
+          ``
+        )}
         {isLogin ? <HeaderTag name="마이페이지" target="/mypage" /> : ``}
         <HeaderTag name="공지사항" target="/notice" />
         <TextWrap onClick={handleLoginClick}>
@@ -94,7 +95,7 @@ const LogoWrap = styled.div`
   display: flex;
   cursor: pointer;
   .logoImg {
-    margin: auto 1%;
+    margin: autㅐ;
     width: 2vw;
     height: 2vw;
   }

@@ -23,11 +23,7 @@ export default function HostRoomBook() {
   return (
     <div>
       <HostNav />
-      {data ? (
-        <BookList data={data} endpoint={"bookDetail/"} />
-      ) : (
-        <p>예약 내역이 없습니다.</p>
-      )}
+      {data && <BookList data={data} endpoint={"bookDetail/"} />}
     </div>
   );
 }

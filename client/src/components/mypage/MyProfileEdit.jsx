@@ -1,47 +1,57 @@
 import styled from "styled-components";
 import { TagTD, InputTD, AlertTR, RegisterBtn } from "../register/Register";
 import { useEffect, useState } from "react";
-import { validatePassword} from "../../assets/utils/UsefulFunction";
+import { validatePassword } from "../../assets/utils/UsefulFunction";
 import { useNavigate } from "react-router-dom";
 import * as Api from "../../api";
 
 function MyProfileEdit({ user, handleEditUserDone }) {
-
-  const navigate = useNavigate();
-
   const { nickname, name, sex, phoneNumber } = user;
-  const [newNickname, setNewNickname] = useState(nickname || "");
-  const [newName, setNewName] = useState(name || "");
-  const [newSex, setNewSex] = useState(sex || "");
-  const [newPhoneNumber, setNewPhoneNumber] = useState(phoneNumber || "");
-  const [newPassword , setNewPassword] = useState("");
-  const isNicknameValid = (newNickname) => { return newNickname.length >= 2 && newNickname.length <= 10};
-  const isPasswordValid = (newPassword) => { return validatePassword(newPassword) || newPassword!==""};
+  const [newNickname, setNewNickname] = useState(nickname ?? "");
+  const [newName, setNewName] = useState(name ?? "");
+  const [newSex, setNewSex] = useState(sex ?? "");
+  const [newPhoneNumber, setNewPhoneNumber] = useState(phoneNumber ?? "");
+  const [newPassword, setNewPassword] = useState("");
+  const [newUser, setNewUser] = useState({
+    nickname: "",
+    name: "이름",
+    sex: "",
+    phoneNumber: "",
+  });
+  const isNicknameValid = newNickname.length >= 2 && newNickname.length <= 10;
+  const isPasswordValid = validatePassword(newPassword) || newPassword === "";
   const isFormValid = isNicknameValid && isPasswordValid;
+
+  useEffect(() => {
+    setNewUser({
+      ...newUser,
+      nickname: newNickname,
+      name: newName,
+      password: newPassword,
+      sex: newSex,
+      phoneNumber: newPhoneNumber,
+    });
+  }, [newNickname, newName, newPassword, newSex, newPhoneNumber]);
 
   const handleDoneEdit = async (e) => {
     e.preventDefault();
-    const newUser = {};
-    if (nickname !== newNickname) newUser.nickname = newNickname;
-    if (name !== "") newUser.name = newName;
-    if (newPassword !== "" && isPasswordValid) newUser.password = newPassword;
-    if (sex !== newSex || newSex !== "") newUser.sex = newSex;
-    if (phoneNumber !== newPhoneNumber || newPhoneNumber !== "")
-      newUser.phoneNumber = newPhoneNumber;
+    console.log(newUser);
 
-    console.log(newUser); 
-    
-    handleEditUserDone();
-    
+    const userData = newUser;
+    for (var prop in userData) {
+      if (userData[prop] === "") {
+        delete userData[prop];
+      }
+    }
+
     if (isFormValid && newUser !== null) {
       try {
-        const res = Api.patch("api/users", newUser);
+        const res = await Api.patch("api/users", userData);
         handleEditUserDone();
       } catch (err) {
         console.log(err);
       }
     }
-
   };
 
   return (
@@ -59,7 +69,7 @@ function MyProfileEdit({ user, handleEditUserDone }) {
                 ></input>
               </InputTD>
             </tr>
-            {!isNicknameValid(newNickname) && (
+            {!isNicknameValid && (
               <AlertTR>
                 <td colSpan="2">2~10자로 입력해주세요.</td>
               </AlertTR>
@@ -86,7 +96,7 @@ function MyProfileEdit({ user, handleEditUserDone }) {
                 />
               </InputTD>
             </tr>
-            {!isPasswordValid(newPassword) && (
+            {!isPasswordValid && (
               <AlertTR>
                 <td colSpan="2">8~16자 영어, 숫자, 특수문자를 사용하세요.</td>
               </AlertTR>
@@ -129,7 +139,7 @@ function MyProfileEdit({ user, handleEditUserDone }) {
             </tr>
           </tbody>
         </EditProfileTable>
-        <RegisterBtn onClick={()=> handleDoneEdit() }>수정 완료</RegisterBtn>
+        <RegisterBtn onClick={(e)=>handleDoneEdit(e)}>수정 완료</RegisterBtn>
       </form>
     </Container>
   );

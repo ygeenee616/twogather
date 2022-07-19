@@ -9,21 +9,19 @@ import MyProfileInfo from "./MyProfileInfo";
 import MyProfileEdit from "./MyProfileEdit";
 import * as Api from "../../api";
 
-function MyProfile({userInfo}) {
+function MyProfile({ userInfo }) {
   const [editUser, setEditUser] = useState(false);
-  const handleEditUser = () => {
+  function handleEditUser() {
     setEditUser(true);
-  };
+  }
 
-  const handleEditUserDone = () => {
+  function handleEditUserDone() {
     setEditUser(false);
-  };
+  }
 
-  useEffect(()=>{
+  useEffect(() => {
     setEditUser(false);
-
-    
-  },[])
+  }, []);
 
   return (
     <ProfileDiv>
@@ -45,7 +43,11 @@ function MyProfile({userInfo}) {
         {editUser ? (
           <MyProfileEdit user={userInfo} />
         ) : (
-          <MyProfileInfo user={userInfo} handleEditUserDone={handleEditUserDone}/>
+          <MyProfileInfo
+            user={userInfo}
+            editUser={editUser}
+            handleEditUserDone={handleEditUserDone}
+          />
         )}
       </ProfileContents>
     </ProfileDiv>

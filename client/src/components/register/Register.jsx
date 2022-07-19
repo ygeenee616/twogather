@@ -21,7 +21,7 @@ function Register() {
   const [privacyAgree, setPrivacyAgree] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
 
-  const isNicknameValid = nickname.length >= 2 && nickname.length <= 10;
+  const isNicknameValid = nickname.length >= 4 && nickname.length <= 10;
   const isEmailValid = validateEmail(email);
   const isPasswordValid = validatePassword(password);
   const isPasswordSame = password === confirmPassword;
@@ -82,7 +82,7 @@ function Register() {
         </tr>
         {!isNicknameValid && (
           <AlertTR className="alert-msg">
-            <td colspan="2">2~10자로 입력해주세요.</td>
+            <td colspan="2">4~10자로 입력해주세요.</td>
           </AlertTR>
         )}
         <tr className="email-input">

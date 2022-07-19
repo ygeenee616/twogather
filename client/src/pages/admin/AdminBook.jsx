@@ -11,7 +11,6 @@ export default function AdminBook() {
     const getData = async () => {
       try {
         const req = await Api.get(`api/reservations?page=1&perPage=5`);
-        console.log(req);
         const data = await req.data.data.spaces.paginatedSpaces;
         setData(data);
       } catch (err) {
@@ -24,10 +23,8 @@ export default function AdminBook() {
   return (
     <div>
       <AdminNav />
-      {data ? (
+      {data && (
         <BookList data={data} endpoint={"/admin/bookList/bookDetail/"} />
-      ) : (
-        <p>예약 내역이 없습니다.</p>
       )}
     </div>
   );

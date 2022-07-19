@@ -10,18 +10,20 @@ export const CommentInfo = () => {
   return (
     <CommentInfoContainer>
       <table className="comment-info">
-        <tr>
-          <td style={{ fontWeight: "bold" }}> 공간명: </td>
-          <td> 딘어게인성수 - 브라이덜 샤워 생일파티 </td>
-        </tr>
-        <tr>
-          <td style={{ fontWeight: "bold" }}> 작성자: </td>
-          <td> 닉네임 </td>
-        </tr>
-        <tr>
-          <td style={{ fontWeight: "bold" }}> 작성일 </td>
-          <td> 2022-02-02 </td>
-        </tr>
+        <tbody>
+          <tr>
+            <td style={{ fontWeight: "bold" }}> 공간명: </td>
+            <td> 딘어게인성수 - 브라이덜 샤워 생일파티 </td>
+          </tr>
+          <tr>
+            <td style={{ fontWeight: "bold" }}> 작성자: </td>
+            <td> 닉네임 </td>
+          </tr>
+          <tr>
+            <td style={{ fontWeight: "bold" }}> 작성일 </td>
+            <td> 2022-02-02 </td>
+          </tr>
+        </tbody>
       </table>
     </CommentInfoContainer>
   );
