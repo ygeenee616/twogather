@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Room } from 'src/rooms/entities/rooms.entity';
 import { RoomsService } from 'src/rooms/rooms.service';
 import { SpacesService } from 'src/spaces/spaces.service';
 import { User } from 'src/users/entities/users.entity';
@@ -18,7 +19,11 @@ export class ReservationsService {
   ) {}
 
   // 예약 등록
-  async create(createReservationDto: CreateReservationDto, user: User, room) {
+  async create(
+    createReservationDto: CreateReservationDto,
+    user: User,
+    room: Room,
+  ) {
     try {
       const newReservation = await this.reservationRepository.create({
         ...createReservationDto,
