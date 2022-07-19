@@ -36,7 +36,7 @@ export class Room {
 
   @ManyToOne(() => Space, (space) => space.rooms, {
     onDelete: 'CASCADE',
-    eager: false,
+    eager: true,
   })
   @JoinColumn({ name: 'spaceId', referencedColumnName: 'id' })
   space: Space;
