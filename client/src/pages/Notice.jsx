@@ -108,7 +108,7 @@ export default function Notice() {
             className="deleteNoticeModal"
             title=""
             content="공지사항이 삭제되었습니다."
-            clickEvent={() => nav("/notice")}
+            clickEvent={() => window.location.replace(`/notice?page=${page}`)}
           />
         </ModalWrap>
       </div>
