@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
@@ -7,17 +7,15 @@ import Pagination from "../components/Pagination";
 import Modal from "../components/Modal";
 import * as Api from "../api";
 
-export default function Notice() {
+export default function Notice({ url }) {
   const [data, setData] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [totalPage, setTotalPage] = useState(1);
 
   const nav = useNavigate();
   const { search } = window.location;
   const params = new URLSearchParams(search);
   const page = Number(params.get("page"));
-
-  const limit = 10;
-  const offset = (page - 1) * limit;
 
   const [clickedNumber, setClickedNumber] = useState(0);
 
@@ -49,6 +47,7 @@ export default function Notice() {
     window.scrollTo(0, 0);
   };
 
+  //데이터, 유저role 불러옴, admin계정일경우 추가, 수정, 삭제버튼 보임
   useEffect(() => {
     async function getData() {
       const res = await Api.get(`api/notices?page=${page}&perPage=10`);
@@ -57,8 +56,15 @@ export default function Notice() {
       setData(datas);
     }
     getData();
+
+    async function getUser() {
+      const response = await Api.get("api/users/info");
+      setIsAdmin(response.data.data.isAdmin);
+    }
+    getUser();
   }, []);
 
+  //불러온 데이터 렌더링
   const renderData = (data) => {
     return data.map((cur, i) => {
       return (
@@ -67,7 +73,10 @@ export default function Notice() {
             <div className={cur.id}>공지사항</div>
             <div className={cur.id}>{cur.title}</div>
             <div className={cur.id}>{cur.writtenDate}</div>
-            <div className={cur.id}>
+            <div
+              className={"updateDeleteButton"}
+              style={isAdmin ? { display: "block" } : { display: "none" }}
+            >
               <NoticeUpdateButton
                 id={cur.id}
                 onClick={(e) => handleClickUpdateButton(e)}
@@ -94,7 +103,11 @@ export default function Notice() {
       <div>
         <NoticeWrap>
           <NoticeTitle>공지사항</NoticeTitle>
-          <ButtonGoToAddNotice onClick={() => nav("/addNotice")}>
+          <ButtonGoToAddNotice
+            id="addButton"
+            style={isAdmin ? { display: "flex" } : { display: "none" }}
+            onClick={() => nav("/addNotice")}
+          >
             <AiOutlinePlus />
             <div>공지사항 추가</div>
           </ButtonGoToAddNotice>
@@ -102,7 +115,11 @@ export default function Notice() {
             {renderData(data)}
           </NoticeTable>
         </NoticeWrap>
-        <Pagination total={totalPage} limit={limit} currentPage={page} />
+        <Pagination
+          total={totalPage}
+          currentPage={page}
+          url={url ?? "/notice"}
+        />
         <ModalWrap className="modalWrap">
           <Modal
             className="deleteNoticeModal"
@@ -185,7 +202,6 @@ const NoticeTable = styled.div`
 `;
 
 const ButtonGoToAddNotice = styled.button`
-  display: flex;
   background-color: white;
   border: 2px solid #8daef2;
   font-size: 20px;
