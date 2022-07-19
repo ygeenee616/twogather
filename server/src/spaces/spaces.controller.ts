@@ -13,7 +13,13 @@ import {
 import { SpacesService } from './spaces.service';
 import { CreateSpaceDto } from './dto/create-space.dto';
 import { UpdateSpaceDto } from './dto/update-space.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiHeader,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { SpaceResExample } from './space.swagger.example';
 import { GetAdminUser, GetUser } from 'src/custom.decorator';
@@ -28,6 +34,7 @@ export class SpacesController {
   // space 등록
   @Post()
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '공간 등록 API',
     description: '새로운 공간 등록(로그인한 호스트 유저만 가능).',
@@ -90,6 +97,7 @@ export class SpacesController {
   // 내 공간 목록 조회
   @Get('/host')
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '내가 생성한 공간 목록 조회 API',
     description: '내가 생성한 공간 목록 조회',
@@ -167,6 +175,7 @@ export class SpacesController {
   // 내 공간 정보 수정
   @Patch('host/:id')
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '내 공간 정보 수정 API',
     description: '내 공간 정보 수정',
@@ -226,6 +235,7 @@ export class SpacesController {
   // 내 공간 삭제
   @Delete('host/:id')
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '내 공간 삭제 API',
     description: 'ID로 특정 공간을 삭제한다.',
