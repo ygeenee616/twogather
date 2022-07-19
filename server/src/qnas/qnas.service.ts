@@ -33,7 +33,6 @@ export class QnasService {
     return await this.qnasRepository.find({
       relations: {
         space: true,
-        user: true,
       },
       order: {
         id: 'DESC',
@@ -41,7 +40,25 @@ export class QnasService {
     });
   }
 
-  async findAllBySpace(spaceId: number, startIndex: number, perPage: number) {
+  async findBySpace(spaceId: number) {
+    try {
+      return await this.qnasRepository.find({
+        where: {
+          space: {
+            id: spaceId,
+          },
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findBySpacePaginated(
+    spaceId: number,
+    startIndex: number,
+    perPage: number,
+  ) {
     try {
       const totalQna = await this.qnasRepository.find({
         where: {
