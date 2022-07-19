@@ -19,7 +19,7 @@ import AdminBookList from "./pages/AdminBookList";
 import AdminBookDetail from "./pages/AdminBookDetail";
 import HostHome from "./pages/HostHome";
 import AddHost from "./pages/AddHost";
-import AddSpace from "./pages/AddSpace";
+import HostAddSpace from "./pages/hostPage/HostAddSpace";
 import HostBookList from "./pages/HostBookList";
 import HostSpaceList2 from "./pages/hostPage/HostSpaceList2";
 import HostUpdateSpace from "./pages/HostUpdateSpace";
@@ -79,7 +79,7 @@ function App() {
             {/* 호스트 정보 추가 */}
             <Route path="/host/addHost" element={<AddHost />} />
             {/* 공간 추가 */}
-            <Route path="/host/addSpace" element={<AddSpace />} />
+            <Route path="/host/addSpace" element={<HostAddSpace />} />
             {/* 공간 리스트 */}
             <Route path="/host/spaceList" element={<HostSpaceList2 />} />
             {/* 룸 리스트 */}

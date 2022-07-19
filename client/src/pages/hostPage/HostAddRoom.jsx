@@ -5,6 +5,9 @@ import PostcodePopup from "../../components/admin/PostcodePopup";
 import HashTag from "../../components/host/HashTag";
 import * as Api from "../../api";
 import { set } from "date-fns";
+import { useNavigate } from "react-router-dom";
+import Modal from "../../components/Modal";
+import { RiNotificationBadgeFill } from "react-icons/ri";
 
 export default function HostAddRoom({ mode }) {
   const [imageSrc, setImageSrc] = useState("");
@@ -12,7 +15,7 @@ export default function HostAddRoom({ mode }) {
   // hashTag state
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState([]);
-
+  const [alert, setAlert] = useState("");
   const [roomInfo, setRoomInfo] = useState({
     roomName: "",
     roomType: "",
@@ -21,6 +24,8 @@ export default function HostAddRoom({ mode }) {
     images: { image: [] },
     // spaceId: null,
   });
+
+  const navigate = useNavigate();
 
   const params = useParams();
   const subViewInput = useRef();
@@ -38,7 +43,7 @@ export default function HostAddRoom({ mode }) {
     e.preventDefault();
     let roomResponse;
     if (!roomInfo.capacity || !roomInfo.price) {
-      console.log("err");
+      setAlert("값을 입력해 주세요");
     }
     try {
       roomResponse = await Api.post(`api/rooms/${params.spaceId}`, {
@@ -49,11 +54,13 @@ export default function HostAddRoom({ mode }) {
         spaceId: Number(params.spaceId),
         //imgaes: [roomInfo.images],
       });
+
+      const modal = document.querySelector(".modalWrap");
+      modal.style.display = "block";
+      window.scrollTo(0, 0);
     } catch (err) {
       console.log("er발생");
     }
-
-    console.log(roomResponse);
   };
 
   const loadDetailImage = (e) => {
@@ -79,7 +86,7 @@ export default function HostAddRoom({ mode }) {
       };
     });
   };
-  const [alertMsg, setAlertMsg] = useState("");
+
   // const getPreviewImg = () => {
   //   if (images === null || images.length === 0) {
   //     return (
@@ -143,7 +150,6 @@ export default function HostAddRoom({ mode }) {
           <StyledLabel>룸 수용인원</StyledLabel>
           <StyledInput
             onInput={(e) => {
-              setAlertMsg("숫자만 입력 가능합니다.");
               e.target.value = e.target.value
                 .replace(/[^0-9.]/g, "")
                 .replace(/(\..*)\./g, "$1");
@@ -155,6 +161,7 @@ export default function HostAddRoom({ mode }) {
             value={roomInfo.personal}
             onChange={handleChangeRoomState}
           ></StyledInput>
+          <AlertMsg>{alert}</AlertMsg>
         </InputBox>
 
         <InputBox>
@@ -172,6 +179,7 @@ export default function HostAddRoom({ mode }) {
             value={roomInfo.price}
             onChange={handleChangeRoomState}
           ></StyledInput>
+          <AlertMsg>{alert}</AlertMsg>
         </InputBox>
 
         <InputBox>
@@ -197,6 +205,7 @@ export default function HostAddRoom({ mode }) {
             className="cancle"
             backGroundColor="#8daef2"
             color="white"
+            onClick={() => navigate(-1)}
           >
             취소
           </StyledButton>
@@ -209,9 +218,17 @@ export default function HostAddRoom({ mode }) {
             type="submit"
             value="submit"
           >
-            {mode === "UPDATE" ? "룸수정" : mode === "ADD" ? "룸등록" : ""}
+            룸추가
           </StyledButton>
         </ButtonBox>
+        <ModalWrap className="modalWrap">
+          <Modal
+            className="updateModal"
+            title="룸 추가"
+            content="룸이 추가되었습니다."
+            clickEvent={() => navigate("/host/spaceList")}
+          />
+        </ModalWrap>
       </SpaceForm>
     </Main>
   );
@@ -350,10 +367,15 @@ const ImgName = styled.div``;
 const ImgArea = styled.div``;
 
 const AlertMsg = styled.div`
-  margin: 0 6rem;
+  color: red;
   text-align: left;
-  span {
-    font-size: 0.5rem;
-    color: red;
-  }
+`;
+
+const ModalWrap = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 244vh;
+  background-color: rgba(90, 90, 90, 0.2);
+  display: none;
 `;
