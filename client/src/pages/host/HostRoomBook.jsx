@@ -11,9 +11,7 @@ export default function HostRoomBook() {
     const getData = async () => {
       try {
         const req = await Api.get(`api/reservations?page=1&perPage=5`);
-        console.log(req);
         const data = await req.data.data.spaces.paginatedSpaces;
-        console.log("데이터" + data);
         setData(data);
       } catch (err) {
         console.log(err);
@@ -25,7 +23,11 @@ export default function HostRoomBook() {
   return (
     <div>
       <HostNav />
-      <BookList data={data} endpoint={"bookDetail/"} />
+      {data ? (
+        <BookList data={data} endpoint={"bookDetail/"} />
+      ) : (
+        <p>예약 내역이 없습니다.</p>
+      )}
     </div>
   );
 }

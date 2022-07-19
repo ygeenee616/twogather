@@ -8,21 +8,11 @@ import BookList from "../../components/BookList";
 export default function HostRoomBook() {
   const [data, setData] = useState("");
 
-  // const roomList = [
-  //   { id: 1, name: "예정룸" },
-  //   { id: 2, name: "해란룸" },
-  //   { id: 3, name: "연진룸" },
-  //   { id: 4, name: "종원룸" },
-  //   { id: 5, name: "태훈룸" },
-  // ];
-
   useEffect(() => {
     const getData = async () => {
       try {
         const req = await Api.get(`api/rooms/host`);
-        console.log(req);
         const data = await req.data.data;
-        console.log("데이터" + data);
         setData(data);
       } catch (err) {
         console.log(err);
@@ -31,23 +21,21 @@ export default function HostRoomBook() {
     getData();
   }, []);
 
-  console.log(data);
-
-  return (
-    data && (
-      <div>
-        <HostNav />
-        <RoomContainer>
-          {data.map((room, id) => {
-            return (
-              <RoomLink to={`/host/bookList/${room.id}`}>
-                <RoomList>{room.name}</RoomList>
-              </RoomLink>
-            );
-          })}
-        </RoomContainer>
-      </div>
-    )
+  return data ? (
+    <div>
+      <HostNav />
+      <RoomContainer>
+        {data.map((room, id) => {
+          return (
+            <RoomLink to={`/host/bookList/${room.id}`}>
+              <RoomList>{room.name}</RoomList>
+            </RoomLink>
+          );
+        })}
+      </RoomContainer>
+    </div>
+  ) : (
+    <p>등록된 룸이 없습니다.</p>
   );
 }
 

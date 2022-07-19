@@ -16,7 +16,6 @@ export default function HostQnA() {
         const req = await axios.get("/dummyQnA.json");
         const data = await req.data.data;
         setData(data);
-        console.log(data);
       } catch (err) {
         console.log(err);
       }
