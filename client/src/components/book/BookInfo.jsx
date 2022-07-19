@@ -20,8 +20,8 @@ export default function BookInfo({
   function dateToString(date) {
     const fullDate = String(date);
     const year = fullDate.substring(0, 4);
-    const month = fullDate.substring(4, 6);
-    const day = fullDate.substring(6, 8);
+    const month = fullDate.substring(5, 7);
+    const day = fullDate.substring(8, 10);
 
     return `${year}년 ${month}월 ${day}일`;
   }

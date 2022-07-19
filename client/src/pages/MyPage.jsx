@@ -1,26 +1,58 @@
 import styled from "styled-components";
 import MyProfile from "../components/mypage/MyProfile";
-import MyReservation from "../components/mypage/MyReservation"
+import MyReservation from "../components/mypage/MyReservation";
 import MyQnA from "../components/mypage/MyQnA";
 import { PageTitle } from "../components/register/UserForm";
-import {useSelector} from 'react-redux';
-
+import { useState, useEffect } from "react";
+import * as Api from "../api";
+import { id } from "date-fns/locale";
 
 function MyPage() {
-  const user = useSelector((store) => store.user);
+  const [user, setUser] = useState({});
+  const [reservations, setReservations] = useState([]);
+  const [qnas, setQnas] = useState([]);
 
-  console.log(user);
+  useEffect(() => {
+    async function getUser() {
+      try {
+        const res = await Api.get("api/users/info");
+        const data = res.data.data;
+
+        console.log(res);
+
+        setUser({
+          userId: data.id,
+          email: data.email,
+          name: data.name,
+          nickname: data.nickname,
+          sex: data.sex,
+          phoneNumber: data.phoneNumber,
+          profileImage: data.profileImage,
+        });
+
+        // data.reservation 과 data.rooms 합치기
+       
+        setReservations(data.reservations);
+
+        setQnas(data.qnas);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getUser();
+  }, []);
 
   return (
     <Container>
       <PageTitle>마이페이지</PageTitle>
-      <MyProfile></MyProfile>
-      <MyReservation></MyReservation>
-      <MyQnA></MyQnA>
+      {user && <MyProfile userInfo={user}></MyProfile>}
+      {reservations && (
+        <MyReservation reservations={reservations}></MyReservation>
+      )}
+      {qnas && <MyQnA qnas={qnas}></MyQnA>}
     </Container>
   );
 }
-
 
 export const Container = styled.div`
   display: flex;
@@ -29,7 +61,5 @@ export const Container = styled.div`
   top: 5rem;
   margin: 0 15vw;
 `;
-
-
 
 export default MyPage;

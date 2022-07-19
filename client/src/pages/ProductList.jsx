@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useParams, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Pagination from "../components/Pagination";
 import ProductCard from "../components/ProductCard";
@@ -12,6 +12,7 @@ import SortingSelector from "../components/list/SortingSelector";
 import exImg1 from "../assets/images/ex1.png";
 import exImg2 from "../assets/images/ex2.png";
 import * as api from "../api";
+import { set } from "date-fns/esm";
 
 const ex1 = [
   {
@@ -81,15 +82,33 @@ export default function ProductList() {
   const offset = (page - 1) * limit;
 
   const { search } = window.location;
+  const location = useLocation();
 
   const params = new URLSearchParams(search);
-  const category = params.get("category");
-  const date = parseInt(params.get("date"));
+  const categoryInput = useRef(params.get("category"));
+  const dateInput = useRef(parseInt(params.get("date")));
+  const searchInput = useRef(params.get("search"));
+  const orderInput = useRef(params.get("order"));
+
+  //url이 바뀔시 query 받아오는 함수
+  useEffect(() => {
+    categoryInput.current = params.get("category");
+    dateInput.current = parseInt(params.get("date"));
+    searchInput.current = params.get("search");
+    orderInput.current = params.get("order");
+
+    console.log(
+      categoryInput.current,
+      dateInput.current,
+      searchInput.current,
+      orderInput.current
+    );
+  }, [location.search]);
 
   useEffect(() => {
     async function getData() {
       try {
-        const res = await api.get(`api/spaces/type/${category}`);
+        const res = await api.get(`api/spaces/type/${categoryInput.current}`);
         const datas = res.data;
         console.log(datas);
       } catch (err) {
@@ -120,7 +139,7 @@ export default function ProductList() {
       <SelectorWrap>
         <CategoryWrap>
           <div onClick={handelClickSelector}>
-            <CategorySelector category={category} />
+            <CategorySelector category={categoryInput.current} />
           </div>
           <CategoryModal display={categoryModalDisplay} />
         </CategoryWrap>
@@ -130,7 +149,7 @@ export default function ProductList() {
           </div>
           <DateModal display={DateModalDisplay} />
         </DateWrap>
-        <SelecotrResetBtn category={category} />
+        <SelecotrResetBtn category={categoryInput.current} />
       </SelectorWrap>
       <SortingSelector />
       <ProductWrap>{renderData(offset, limit, exData)}</ProductWrap>

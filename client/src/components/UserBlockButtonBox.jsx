@@ -10,7 +10,7 @@ export default function UserBlockButtonBox() {
         backGroundColor="#BBD3F2"
         color="white"
       >
-        <FaUserSlash class="block"></FaUserSlash>
+        <FaUserSlash className="block"></FaUserSlash>
       </Button>
     </ButtonBox>
   );

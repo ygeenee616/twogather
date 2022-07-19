@@ -7,7 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
-  UnauthorizedException,
+  NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
@@ -25,6 +26,9 @@ import { ReviewResExample } from './review.swagger.example';
 import { GetAdminUser, GetUser } from 'src/custom.decorator';
 import { User } from 'src/users/entities/users.entity';
 import { ReservationsService } from 'src/reservations/reservations.service';
+import { Reservation } from 'src/reservations/entities/reservation.entity';
+import { identity } from 'rxjs';
+import { object } from 'joi';
 const reviewResExample = new ReviewResExample();
 
 @Controller('api/reviews')
@@ -35,7 +39,7 @@ export class ReviewsController {
     private reservationsService: ReservationsService,
   ) {}
 
-  // review 등록
+  // review 등록(api data 수정 완료)
   @Post('/:reservationId')
   @UseGuards(AuthGuard())
   @ApiBearerAuth('userToken')
@@ -58,20 +62,33 @@ export class ReviewsController {
     @Body() createReviewDto: CreateReviewDto,
     @Param('reservationId') reservationId: number,
     @GetUser() user: User,
-  ) {
-    const reservation = await this.reservationsService.findOne(reservationId);
-    if (reservation.user !== user) {
-      throw new UnauthorizedException('권한없음');
+  ): Promise<any> {
+    //Get reservation Information for using user Id. It throw Forbidden Exception when you try to creat a review for other's reservation.
+    const reqReservation = await this.reservationsService.findOne(
+      reservationId,
+    );
+    const spaceId = reqReservation.room.space.id;
+    if (reqReservation.user.id !== user.id) {
+      throw new ForbiddenException('자신의 리뷰만 쓸 수 있습니다. ');
     }
     const newReview = await this.reviewsService.create(
       createReviewDto,
       reservationId,
+      spaceId,
     );
+    const { id, content, reservation, space } = newReview;
+    const resReview = {
+      id,
+      content,
+      reservationId: reservation.id,
+      spaceId: space.id,
+    };
+
     return {
       status: 201,
       description: '새로운 리뷰 등록 완료',
       success: true,
-      data: newReview,
+      data: resReview,
     };
   }
 
@@ -89,21 +106,15 @@ export class ReviewsController {
     },
   })
   async findAll() {
-    const reviews = await this.reviewsService.findAll();
+    const rawReviews = await this.reviewsService.findAll();
+
     return {
       status: 200,
       description: '전체 리뷰 목록 조회 성공',
       success: true,
-      data: reviews,
+      data: rawReviews,
     };
   }
-
-  /* Todo
-    1. space 별로 review 수 count
-    2. space별로 reivew 가져오기(페이지네이션 추가된)
-     
-  */
-
   // 내가 쓴 리뷰 목록 조회
   @Get('/my/info')
   @UseGuards(AuthGuard())
@@ -156,6 +167,31 @@ export class ReviewsController {
       success: true,
       description: 'reviewId로 review 조회 성공',
       data: review,
+    };
+  }
+
+  @Get('space/:spaceId')
+  @ApiOperation({
+    summary: 'space ID로 리뷰 조회 API',
+    description: 'space ID로 특정 리뷰를 불러온다.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '특정 리뷰',
+    schema: {
+      example: reviewResExample.findOne,
+    },
+  })
+  async findBySpace(@Param('spaceId') spaceId: number) {
+    const reviews = await this.reviewsService.findBySpace(spaceId);
+    if (!reviews || reviews === undefined || reviews === null) {
+      throw new NotFoundException('리뷰가 없습니다.');
+    }
+    return {
+      status: 200,
+      description: 'space ID로 리뷰 목록을 조회한다.',
+      success: true,
+      data: reviews,
     };
   }
 
@@ -218,6 +254,12 @@ export class ReviewsController {
     @Param('id') id: number,
     @Body() updateReviewDto: UpdateReviewDto,
   ) {
+    const review = await this.reviewsService.findOne(id);
+    const reservation = review.reservation;
+    if (reservation.user.id !== user.id) {
+      throw new ForbiddenException('자신의 리뷰만 수정할 수 있습니다. ');
+    }
+
     const updatedReview = await this.reviewsService.updateMyReview(
       user.id,
       id,
@@ -278,6 +320,12 @@ export class ReviewsController {
     description: 'Auth token-> Bearer {token} 이렇게 넣기 ',
   })
   async removeMyReview(@GetUser() user: User, @Param('id') id: number) {
+    const review = await this.reviewsService.findOne(id);
+    const reservation = review.reservation;
+    if (reservation.user.id !== user.id) {
+      throw new ForbiddenException('자신의 리뷰만 삭제할 수 있습니다. ');
+    }
+
     await this.reviewsService.removeMyReview(user.id, id);
     return {
       status: 201,
