@@ -36,11 +36,7 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alertMsg, setAlertMsg] = useState("");
-
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-
-  const a = useRecoilValue(userInfoState);
-
   const getData = async () => {
     const datas = await Api.get(`api/users/email/${email}`);
     return datas.data.data;
@@ -51,8 +47,7 @@ function LoginForm() {
 
     if (email === "") setAlertMsg("아이디를 입력해 주세요.");
     else if (password === "") setAlertMsg("비밀번호를 입력해 주세요.");
-    else if (!validateEmail(email))
-      setAlertMsg("이메일 형식이 올바르지 않습니다.");
+    else if (!validateEmail(email)) setAlertMsg("이메일 형식이 올바르지 않습니다.");
     else {
       //로그인 성공
       try {
@@ -66,10 +61,7 @@ function LoginForm() {
         // dispatch 함수를 이용해 로그인 성공 상태로 만듦.
         dispatch(login(data));
 
-        //저장된 이메일로 유저조회 => 이메일로 조회 시 나오는
-
-        //const datas = await Api.get(`api/users/email/${email}`);
-
+        setAlertMsg("");
         
         const userData = await getData();
 
