@@ -74,7 +74,7 @@ export default function Header() {
           ``
         )}
         {isLogin ? <HeaderTag name="마이페이지" target="/mypage" /> : ``}
-        <HeaderTag name="공지사항" target="/notice" />
+        <HeaderTag name="공지사항" target="/notice?page=1" />
         <TextWrap onClick={handleLoginClick}>
           {localStorage.getItem("userToken") === null ? `로그인` : `로그아웃`}
         </TextWrap>
