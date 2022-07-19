@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
+import * as Api from "../../api";
 import styled from "styled-components";
-import axios from "axios";
+import { Link } from "react-router-dom";
 import HostNav from "../../components/host/HostNav";
 
-function submitAnswer(e) {
-  // submit answer
-}
-
-export default function HostQnA() {
+export default function HostRoomBook() {
   const [data, setData] = useState("");
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const req = await axios.get("/dummyQnA.json");
+        const req = await Api.get(`api/spaces/host`);
         const data = await req.data.data;
+        console.log(req);
         setData(data);
+        console.log(data);
       } catch (err) {
         console.log(err);
       }
@@ -24,77 +23,52 @@ export default function HostQnA() {
   }, []);
 
   return (
-    <div>
-      <HostNav />
-      {data && (
-        <QnAContainer>
-          {data.map((item, i) => {
-            return (
-              <QnABox key={i}>
-                <Question>{item.content}</Question>
-                <Answer placeholder="아직 등록된 답변이 없습니다. 답변을 등록해보세요!">
-                  {item.reply}
-                </Answer>
-                <SubmitBtn onClick={(e) => submitAnswer(e.target.value)}>
-                  답변 등록
-                </SubmitBtn>
-              </QnABox>
-            );
-          })}
-        </QnAContainer>
-      )}
-    </div>
+    data && (
+      <div>
+        <HostNav />
+        <div>
+          <RoomContainer>
+            <Title>공간별 Q&A</Title>
+            {data.map((space, id) => {
+              return (
+                <RoomLink to={`/host/qna/${space.id}?page=1`} key={id}>
+                  <RoomList>{space.name}</RoomList>
+                </RoomLink>
+              );
+            })}
+          </RoomContainer>
+        </div>
+      </div>
+    )
   );
 }
 
-const QnAContainer = styled.div`
+const RoomContainer = styled.div`
   width: 80%;
   margin: 0 auto;
   margin-top: 80px;
   margin-bottom: 80px;
-  display: flex;
-  flex-direction: column;
 `;
 
-const QnABox = styled.details`
+const RoomLink = styled(Link)`
+  text-decoration: none;
+  color: #000;
+  font-size: 1.1rem;
+`;
+
+const RoomList = styled.div`
+  box-sizing: border-box;
   width: 100%;
-  margin: 10px 0;
-  position: relative;
-`;
-
-const Question = styled.summary`
-  cursor: pointer;
-
-  &::marker {
-    content: "❓";
-  }
-`;
-
-const Answer = styled.textarea`
-  width: 95%;
-  height: 80px;
+  text-align: center;
+  margin: 0 auto;
+  border: 1px solid #8daef2;
   padding: 10px;
-  margin-top: 10px;
-  margin-left: 3%;
-  border-radius: 10px;
-  background-color: #f2f2f2;
-  border: none;
 `;
 
-const SubmitBtn = styled.button`
-  position: absolute;
-  right: 0;
-  bottom: -30px;
-  width: 100px;
-  padding: 5px;
-  border-radius: 10px;
-  border: none;
-  background-color: #646fd4;
+const Title = styled.div`
+  text-align: center;
+  padding: 15px;
+  font-size: 1rem;
+  background-color: #8daef2;
   color: #fff;
-  transition: all 0.2s;
-
-  &:hover {
-    background-color: #ffe69a;
-    color: #000;
-  }
 `;

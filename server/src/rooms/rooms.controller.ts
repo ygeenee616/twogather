@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   UnauthorizedException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
@@ -183,8 +184,8 @@ export class RoomsController {
     @Body() updateRoomDto: UpdateRoomDto,
   ) {
     const room = await this.roomsService.findOne(id);
-    if (room.space.user.id !== user.id) {
-      throw new UnauthorizedException('권한 없음');
+    if (user.id !== room.space.user.id) {
+      throw new ForbiddenException('자신의 룸만 수정 가능합니다. ');
     }
     const updatedRoom = await this.roomsService.updateMyRoom(id, updateRoomDto);
     return {
