@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-function Pagination({ total, currentPage }) {
+function Pagination({ total, currentPage, url }) {
   //total: totalpage수, currentPage: 현재 페이지(querystring)
   return (
     <>
       <Nav>
         <Button
           onClick={() =>
-            window.location.replace(`/notice?page=${currentPage - 1}`)
+            window.location.replace(`${url}?page=${currentPage - 1}`)
           }
           disabled={currentPage === 1}
         >
@@ -18,7 +18,7 @@ function Pagination({ total, currentPage }) {
           .map((_, i) => (
             <Button
               key={i + 1}
-              onClick={() => window.location.replace(`/notice?page=${i + 1}`)}
+              onClick={() => window.location.replace(`${url}?page=${i + 1}`)}
               aria-current={currentPage === i + 1 ? "page" : null}
             >
               {i + 1}
@@ -26,7 +26,7 @@ function Pagination({ total, currentPage }) {
           ))}
         <Button
           onClick={() =>
-            window.location.replace(`/notice?page=${currentPage + 1}`)
+            window.location.replace(`${url}?page=${currentPage + 1}`)
           }
           disabled={currentPage === total}
         >
