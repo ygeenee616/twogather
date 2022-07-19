@@ -52,6 +52,10 @@ export class QnasController {
       example: qnaResExample.create,
     },
   })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
+  })
   async create(
     @GetUser() user,
     @Body() createQnaDto: CreateQnaDto,
@@ -146,8 +150,10 @@ export class QnasController {
 
   // qnaId로 특정 Q&A 수정
   @Patch(':id')
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   @ApiOperation({
-    summary: '특정 Q&A 수정 API',
+    summary: '특정 Q&A 수정 API(호스트가 답글다는 API)',
     description: 'Q&A의 ID로 특정 Q&A를 수정한다.',
   })
   @ApiResponse({
@@ -157,7 +163,20 @@ export class QnasController {
       example: qnaResExample.updateQna,
     },
   })
-  async updateQna(@Param('id') id: number, @Body() updateQnaDto: UpdateQnaDto) {
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Auth token',
+  })
+  async updateQna(
+    @Param('id') id: number,
+    @Body() updateQnaDto: UpdateQnaDto,
+    @GetUser() host: User,
+  ) {
+    const qna = await this.qnasService.findOne(id);
+    if (host.id !== qna.space.user.id) {
+      throw new UnauthorizedException('권한 없음');
+    }
+
     const updatedQna = await this.qnasService.update(id, updateQnaDto);
     return {
       status: 201,
@@ -172,7 +191,7 @@ export class QnasController {
   @UseGuards(AuthGuard())
   @ApiBearerAuth('userToken')
   @ApiOperation({
-    summary: '내가 작성한 특정 Q&A 수정 API',
+    summary: '내가 작성한 특정 Q&A 수정 API(유저가 자신의 Q&A 수정)',
     description: 'Q&A의 ID로 내가 작성한 특정 Q&A를 수정한다.',
   })
   @ApiResponse({
@@ -181,6 +200,10 @@ export class QnasController {
     schema: {
       example: qnaResExample.updateMyQna,
     },
+  })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
   })
   async updateMyQna(
     @Param('id') id: number,
@@ -213,6 +236,10 @@ export class QnasController {
       example: qnaResExample.removeQna,
     },
   })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
+  })
   async removeQna(@Param('id') id: number) {
     await this.qnasService.remove(id);
     return {
@@ -236,6 +263,10 @@ export class QnasController {
     schema: {
       example: qnaResExample.removeQna,
     },
+  })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
   })
   async removeMyQna(@Param('id') id: number, @GetUser() user: User) {
     const qna = await this.qnasService.findOne(id);
