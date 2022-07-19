@@ -6,22 +6,26 @@ export const CommentTitle = styled.h1`
 `;
 
 // 게시물 정보
-export const CommentInfo = () => {
+export const CommentInfo = ({ spaceName }) => {
+  const date = new Date();
   return (
     <CommentInfoContainer>
       <table className="comment-info">
         <tbody>
           <tr>
             <td style={{ fontWeight: "bold" }}> 공간명: </td>
-            <td> 딘어게인성수 - 브라이덜 샤워 생일파티 </td>
+            <td> {spaceName} </td>
           </tr>
           <tr>
             <td style={{ fontWeight: "bold" }}> 작성자: </td>
-            <td> 닉네임 </td>
+            <td> {localStorage.getItem("nickname")} </td>
           </tr>
           <tr>
-            <td style={{ fontWeight: "bold" }}> 작성일 </td>
-            <td> 2022-02-02 </td>
+            <td style={{ fontWeight: "bold" }}> 작성일: </td>
+            <td>
+              {" "}
+              {date.getFullYear()}-{date.getMonth() + 1}-{date.getDate()}{" "}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -30,15 +34,6 @@ export const CommentInfo = () => {
 };
 
 // 입력란
-export const CommentInput = ({ commentType, placeholder }) => {
-  return (
-    <div>
-      <h4 style={{ color: "#BBD3F2" }}>{commentType}</h4>
-      <CommentTextArea placeholder={placeholder}></CommentTextArea>
-    </div>
-  );
-};
-
 export const StarDiv = () => {
   return (
     <div>
@@ -47,30 +42,29 @@ export const StarDiv = () => {
   );
 };
 
-export const AddCommentBtnDiv = () => {
-  return (
-    <BtnContainer>
-      <button>취소</button>
-      <button style={{ backgroundColor: "#8DAEF2" }}>작성 완료</button>
-    </BtnContainer>
-  );
-};
+export const CommentTextArea = styled.textarea`
+  width: 60vw;
+  height: 10rem;
+  padding: 1rem;
+`;
 
 const CommentInfoContainer = styled.div`
   width: 20rem;
   margin: 3rem;
   background-color: ;
 `;
-const CommentTextArea = styled.textarea`
-    width: 60vw;
-    height: 10rem;
-    placeholder: {props => props.value}
-    padding: 1rem;
-`;
-const BtnContainer = styled.div`
+
+export const BtnContainer = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
+
+  .cancel {
+    background-color: lightgrey;
+  }
+  .submit {
+    background-color: #8daef2;
+  }
 
   button {
     border: none;

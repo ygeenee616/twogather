@@ -2,34 +2,48 @@ import styled from "styled-components";
 import ReservedRoom from "./MyReservedRoom";
 import Pagination from "../Pagination";
 import { useEffect, useState } from "react";
-import { getCookie, setCookie} from "../../cookie";
-import * as Api from '../../api';
+import { getCookie, setCookie } from "../../cookie";
+import * as Api from "../../api";
 
-function MyReservation({reservations}) {
-
+function MyReservation({ reservations }) {
   const total_elem = reservations.length;
   const page_limit = 5;
   const [page, setPage] = useState(1);
-  const page_limit_elem = (page_limit*page-1 < total_elem-1) ? page_limit*page-1 : total_elem-1;
-
+  const page_limit_elem =
+    page_limit * (page - 1) + 1 < total_elem
+      ? page_limit * (page - 1) + 1
+      : total_elem;
 
   return (
     <ReservationDiv>
       <h3>나의 예약 정보</h3>
-      <Line></Line>
-      <Reservations>
-        {
-          reservations
-          .slice(page_limit*(page-1),page_limit_elem)
-          .map( (reservation, idx )=> <ReservedRoom reservation={reservation} key={idx} className="reservedRoom"/>)
-        }
-      </Reservations>
-      <Pagination
-        total={total_elem}
-        limit={page_limit}
-        page={page}
-        setPage={setPage}
-      ></Pagination>
+
+      {reservations.length === 0 ? (
+        <EmptyReservation>
+          <p> 예약내역이 없습니다. </p>
+        </EmptyReservation>
+      ) : (
+        <>
+          <Line />
+          <Reservations>
+            {reservations
+              .slice(page_limit * (page - 1), page_limit_elem)
+              .map((reservation, idx) => (
+                <ReservedRoom
+                  reservation={reservation}
+                  key={idx}
+                  className="reservedRoom"
+                />
+              ))}
+          </Reservations>
+          <Pagination
+            total={total_elem}
+            limit={page_limit}
+            page={page}
+            setPage={setPage}
+          ></Pagination>
+        </>
+      )}
     </ReservationDiv>
   );
 }
@@ -61,6 +75,15 @@ const Reservations = styled.div`
   .reservedRoom {
     border-bottom: #bbd3f2;
   }
+`;
+
+const EmptyReservation = styled.div`
+  width: 100%;
+  height: 15rem;
+  border: solid 3px #bbd3f2;
+  font-size: 1rem;
+  text-align: center;
+  color: #bbd3f2;
 `;
 
 export default MyReservation;
