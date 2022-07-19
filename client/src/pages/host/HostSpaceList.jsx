@@ -8,60 +8,26 @@ import HostUpdateSpace from "../HostUpdateSpace";
 import * as api from "../../api";
 import { useNavigate } from "react-router-dom";
 import { Container } from "../../components/register/UserForm";
-ProductList.defaultProps = {
+
+import Modal from "../../components/Modal";
+import * as Api from "../../api";
+
+import HostNav from "../../components/host/HostNav";
+
+HostSpaceList.defaultProps = {
   host: {
     id: "host123",
     name: "김민수",
   },
 };
 
-// const ex1 = [
-//   {
-//     src: [exImg1, exImg2],
-//     tag: [
-//       "#강남모임공간",
-//       "#강남파티룸",
-//       "#강남럭셔리파티룸",
-//       "#강남럭셔리모임공간",
-//       "#앤틱공간대여",
-//     ],
-//     title: "강남최대 앤틱모임공간 공유먼트청담",
-//     address: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
-//     price: "150,000",
-//     review: "12",
-//   },
-// ];
-// const ex2 = [
-//   {
-//     src: [exImg1, exImg2],
-//     tag: [
-//       "#강남모임공간",
-//       "#강남파티룸",
-//       "#강남럭셔리파티룸",
-//       "#강남럭셔리모임공간",
-//       "#앤틱공간대여",
-//     ],
-//     title: "강남최대 앤틱모임공간 공유먼트청담",
-//     address: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
-//     price: "150,000",
-//     review: "12",
-//   },
-// ];
-
-// let exData = [];
-// for (let i = 0; i < 4; i++) {
-//   exData = exData.concat(ex1);
-// }
-// for (let i = 4; i < 8; i++) {
-//   exData = exData.concat(ex2);
-// }
-
-export default function ProductList({ host }) {
+export default function HostSpaceList({ host }) {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [datas, setDatas] = useState(false);
   const limit = 4;
   const offset = (page - 1) * limit;
+  const [dataTrigger, setDataTrigger] = useState(0);
 
   useEffect(() => {
     async function getData() {
@@ -75,7 +41,30 @@ export default function ProductList({ host }) {
       }
     }
     getData();
-  }, []);
+  }, [dataTrigger]);
+
+  const openModalDeletePopup = async () => {
+    const modal = document.querySelector(".modalWrap");
+    modal.style.display = "block";
+    window.scrollTo(0, 0);
+  };
+
+  const closeDeleteSpacePopup = async (props) => {
+    const spaceId = props;
+    //확인 누르면 삭제하고 딜리트함
+    try {
+      setDataTrigger(dataTrigger + 1);
+      const response = await Api.delete(`api/spaces/host/${spaceId}`);
+      console.log(response);
+      document.querySelector(".deleteModal").content = "삭제되었습니다.";
+    } catch (err) {
+      console.log("err");
+    }
+
+    const modal = document.querySelector(".modalWrap");
+    modal.style.display = "none";
+    window.scrollTo(0, 0);
+  };
 
   const renderData = (offset, limit, data) => {
     return data.slice(offset, offset + limit).map((data, i) => (
@@ -94,7 +83,7 @@ export default function ProductList({ host }) {
           <Menu onClick={() => navigate(`/host/updateSpace/${data.id}`)}>
             1.공간수정
           </Menu>
-          <Menu>2.공간삭제</Menu>
+          <Menu onClick={() => openModalDeletePopup(data.id)}>2.공간삭제</Menu>
           {/* 공간삭제 */}
           <Menu onClick={() => navigate(`/host/addRoom/${data.id}`)}>
             3.룸추가
@@ -103,9 +92,18 @@ export default function ProductList({ host }) {
             4.룸수정
           </Menu>
           {/* 룸수정에서 삭제하기? */}
-          <Menu>5.룸삭제</Menu>
+          <Menu onClick>5.룸삭제</Menu>
           {/* {// 룸삭제 구현?//} */}
         </SubMenuBar>
+        <ModalWrap className="modalWrap">
+          <Modal
+            className="deleteModal"
+            title="공간 삭제"
+            content="정말 삭제하시겠습니까?
+            공간의 룸들도 모두 삭제됩니다."
+            clickEvent={() => closeDeleteSpacePopup(data.id)}
+          />
+        </ModalWrap>
       </>
     ));
   };
@@ -115,35 +113,30 @@ export default function ProductList({ host }) {
   }
 
   return (
-    datas && (
-      <BottomWrap>
-        <TitleContanier>
-          <MainTitle>{host.name}님 </MainTitle>
-          <Title>공간내역</Title>
-        </TitleContanier>
-        <div onClick={clickToModSpace}>
-          <ProductWrap>{renderData(offset, limit, datas)}</ProductWrap>
-          <div>
-            <Pagination
-              total={datas.length}
-              limit={limit}
-              page={page}
-              setPage={setPage}
-            />
+    <div>
+      <HostNav />
+      {datas && (
+        <BottomWrap>
+          <TitleContanier>
+            <MainTitle>{host.name}님 </MainTitle>
+            <Title>공간내역</Title>
+          </TitleContanier>
+          <div onClick={clickToModSpace}>
+            <ProductWrap>{renderData(offset, limit, datas)}</ProductWrap>
+            <div>
+              <Pagination
+                total={datas.length}
+                limit={limit}
+                page={page}
+                setPage={setPage}
+              />
+            </div>
           </div>
-        </div>
-      </BottomWrap>
-    )
+        </BottomWrap>
+      )}
+    </div>
   );
 }
-
-const MainContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-`;
 
 const SubMenuBar = styled.div`
   paddin: 3%;
@@ -162,14 +155,17 @@ const Menu = styled.div`
   }
 `;
 const BottomWrap = styled.div`
-  margin: 0 15%;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 80px;
+  margin-bottom: 80px;
 `;
 
 const TitleContanier = styled.div`
   border-bottom: 2px solid #8daef2;
   display: flex;
   justify-content: center;
-  margin: 10%;
+  width: 100%;
 `;
 
 const MainTitle = styled.span`
@@ -190,4 +186,13 @@ const ProductWrap = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 2%;
+`;
+
+const ModalWrap = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 244vh;
+  background-color: rgba(90, 90, 90, 0.2);
+  display: none;
 `;

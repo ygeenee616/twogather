@@ -1,25 +1,33 @@
-import React, { useState, useRef, useEffect, useParams } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
 import PostcodePopup from "../../components/admin/PostcodePopup";
 import HashTag from "../../components/host/HashTag";
 import * as Api from "../../api";
+import { set } from "date-fns";
+import { useNavigate } from "react-router-dom";
+import Modal from "../../components/Modal";
+import { RiNotificationBadgeFill } from "react-icons/ri";
 
-export default function HostSpaceForm({ mode }) {
+export default function HostAddRoom({ mode }) {
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
   // hashTag state
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState([]);
-
+  const [alert, setAlert] = useState("");
   const [roomInfo, setRoomInfo] = useState({
     roomName: "",
     roomType: "",
     personal: "",
     price: "",
     images: { image: [] },
-    spaceId: null,
+    // spaceId: null,
   });
 
+  const navigate = useNavigate();
+
+  const params = useParams();
   const subViewInput = useRef();
 
   const handleChangeRoomState = (e) => {
@@ -29,18 +37,30 @@ export default function HostSpaceForm({ mode }) {
     });
   };
 
+  const images = [];
+
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
+    let roomResponse;
+    if (!roomInfo.capacity || !roomInfo.price) {
+      setAlert("값을 입력해 주세요");
+    }
+    try {
+      roomResponse = await Api.post(`api/rooms/${params.spaceId}`, {
+        name: roomInfo.roomName, //공간명
+        capacity: Number(roomInfo.personal), //수용인원
+        price: Number(roomInfo.price), //공간타입
+        description: roomInfo.roomType,
+        spaceId: Number(params.spaceId),
+        //imgaes: [roomInfo.images],
+      });
 
-    const roomResponse = await Api.post("api/rooms", {
-      name: roomInfo.roomName, //공간명
-      capacity: roomInfo.personal, //수용인원
-      price: roomInfo.price, //공간타입
-      description: roomInfo.roomType,
-      imgaes: roomInfo.images,
-    });
-
-    console.log(roomResponse);
+      const modal = document.querySelector(".modalWrap");
+      modal.style.display = "block";
+      window.scrollTo(0, 0);
+    } catch (err) {
+      console.log("er발생");
+    }
   };
 
   const loadDetailImage = (e) => {
@@ -67,26 +87,33 @@ export default function HostSpaceForm({ mode }) {
     });
   };
 
-  const handleImageUpload = (e) => {
-    const fileArr = e.target.files;
+  // const getPreviewImg = () => {
+  //   if (images === null || images.length === 0) {
+  //     return (
+  //       <ImgAreaContainer>
+  //         <ImgArea>
+  //           <Img
+  //             src="https://k-startup.go.kr/images/homepage/prototype/noimage.gif"
+  //             alt="dd"
+  //           />
+  //         </ImgArea>
+  //         <ImgName>등록된 이미지가 없습니다.</ImgName>
+  //       </ImgAreaContainer>
+  //     );
+  //   } else {
+  //     return images.map((el, index) => {
+  //       return (
+  //         <ImgAreaContainer key={index}>
+  //           <ImgArea>
+  //             <Img src={images[index]} />
+  //           </ImgArea>
 
-    let fileURLs = [];
-
-    let file;
-    let filesLength = fileArr.length > 5 ? 5 : fileArr.length;
-
-    for (let i = 0; i < filesLength; i++) {
-      file = fileArr[i];
-
-      let reader = new FileReader();
-      reader.onload = () => {
-        console.log(reader.result);
-        fileURLs[i] = reader.result;
-        setDatailImgs([...fileURLs]);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  //           {/* <DeleteButton onClick={deleteImg}>❌</DeleteButton> */}
+  //         </ImgAreaContainer>
+  //       );
+  //     });
+  //   }
+  // };
 
   return (
     <Main>
@@ -122,39 +149,54 @@ export default function HostSpaceForm({ mode }) {
         <InputBox>
           <StyledLabel>룸 수용인원</StyledLabel>
           <StyledInput
+            onInput={(e) => {
+              e.target.value = e.target.value
+                .replace(/[^0-9.]/g, "")
+                .replace(/(\..*)\./g, "$1");
+            }}
             type="text"
             width="50%"
             name="personal"
+            min="1"
             value={roomInfo.personal}
             onChange={handleChangeRoomState}
           ></StyledInput>
+          <AlertMsg>{alert}</AlertMsg>
         </InputBox>
 
         <InputBox>
           <StyledLabel>룸 가격</StyledLabel>
           <StyledInput
+            onInput={(e) => {
+              e.target.value = e.target.value
+                .replace(/[^0-9.]/g, "")
+                .replace(/(\..*)\./g, "$1");
+            }}
             type="text"
             width="50%"
+            min="0"
             name="price"
             value={roomInfo.price}
             onChange={handleChangeRoomState}
           ></StyledInput>
+          <AlertMsg>{alert}</AlertMsg>
         </InputBox>
 
         <InputBox>
           <StyledLabel>룸 이미지 선택</StyledLabel>
-          <SubImageView
-            name="images"
-            ref={subViewInput}
-            onChange={loadDetailImage}
-          ></SubImageView>
+          <ImageView name="images" readonly>
+            {imageSrc && <img src={imageSrc} alt="preview" readonly />}
+          </ImageView>
+
           <ImageInput
             name="roomInfo.images.image"
             type="file"
             multiple
             accept="image/*"
-            onChange={handleImageUpload}
-          ></ImageInput>
+            onChange={(e) => {
+              encodeFileToBase64(e.target.files[0]);
+            }}
+          />
         </InputBox>
 
         <ButtonBox>
@@ -163,6 +205,7 @@ export default function HostSpaceForm({ mode }) {
             className="cancle"
             backGroundColor="#8daef2"
             color="white"
+            onClick={() => navigate(-1)}
           >
             취소
           </StyledButton>
@@ -175,9 +218,17 @@ export default function HostSpaceForm({ mode }) {
             type="submit"
             value="submit"
           >
-            {mode === "UPDATE" ? "룸수정" : mode === "ADD" ? "룸등록" : ""}
+            룸추가
           </StyledButton>
         </ButtonBox>
+        <ModalWrap className="modalWrap">
+          <Modal
+            className="updateModal"
+            title="룸 추가"
+            content="룸이 추가되었습니다."
+            clickEvent={() => navigate("/host/spaceList")}
+          />
+        </ModalWrap>
       </SpaceForm>
     </Main>
   );
@@ -308,4 +359,23 @@ const ButtonBox = styled.div`
 
 const Hr = styled.hr`
   border: 2px #8daef2 solid;
+`;
+
+const ImgAreaContainer = styled.div``;
+const Img = styled.div``;
+const ImgName = styled.div``;
+const ImgArea = styled.div``;
+
+const AlertMsg = styled.div`
+  color: red;
+  text-align: left;
+`;
+
+const ModalWrap = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 244vh;
+  background-color: rgba(90, 90, 90, 0.2);
+  display: none;
 `;

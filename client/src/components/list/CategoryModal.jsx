@@ -7,23 +7,23 @@ export default function CategoryModal({ display }) {
   const params = new URLSearchParams(search);
 
   //category 중복방지
-  params.get("category")
-    ? params.delete("category")
-    : console.log("category없음");
+  params.get("category") && params.delete("category");
   const stringParams = params.toString();
 
   //다른 요소(order, date) 존재에 따른 링크
   const handleClickCategoryLink = (category) => {
+    const categoryModal = document.querySelector("#categoryModal");
+    categoryModal.style.display = "none;";
     if (stringParams) {
       nav(`/list?category=${category}&${stringParams}`);
     } else {
+      display = "none";
       nav(`/list?category=${category}`);
     }
-    display = "none";
   };
 
   return (
-    <ModalWrap display={display}>
+    <ModalWrap id="categoryModal" display={display}>
       <StyledLink onClick={() => handleClickCategoryLink("파티룸")}>
         파티룸
       </StyledLink>
@@ -50,7 +50,7 @@ const ModalWrap = styled.div`
   z-index: 100;
   border: 1px solid #8daef2;
   border-radius: 10px;
-  display: ${(props) => props.display};
+  ${(props) => `display:${props.display}`};
   flex-direction: column;
   justify-content: space-between;
   background-color: white;
