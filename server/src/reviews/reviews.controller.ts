@@ -83,7 +83,6 @@ export class ReviewsController {
       reservationId: reservation.id,
       spaceId: space.id,
     };
-    console.log(resReview);
 
     return {
       status: 201,

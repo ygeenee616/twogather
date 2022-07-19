@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState, memo, useRef } from "react";
 import { RiEdit2Fill, RiExternalLinkFill } from "react-icons/ri";
 import ListItem from "./StripeListItem";
-import AdminBookDetail from "../pages/AdminBookDetail";
+import BookDetail from "../pages/BookDetail";
 import UserInfo from "../components/UserInfo";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -77,11 +77,10 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
 
 const Container = styled.div`
   margin: 0 auto;
-  width: 90%;
+  width: 80%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: 50px;
   margin-bottom: 50px;
 `;
 const ListContainer = styled.div``;
@@ -123,7 +122,6 @@ const Header = styled.div`
 
 const UserContainer = styled.div`
   width: 100%;
-
   display: flex;
   justify-content: center;
   align-items: center;
