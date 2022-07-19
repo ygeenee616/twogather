@@ -37,9 +37,10 @@ export class ReservationsService {
     try {
       const totalSpace = await this.reservationRepository.find();
       const totalPage = parseInt((totalSpace.length / perPage).toString()) + 1;
-      const paginatedSpaces = await this.reservationRepository.find({
+      const paginatedReservations = await this.reservationRepository.find({
         relations: {
           user: true,
+          room: true,
         },
         order: {
           id: 'DESC',
@@ -49,7 +50,7 @@ export class ReservationsService {
       });
       return {
         totalPage,
-        paginatedSpaces,
+        paginatedReservations,
       };
     } catch (error) {
       throw error;
