@@ -16,8 +16,7 @@ import {
   useRecoilValue,
 } from "recoil";
 
-// 제발
-export default function AdminBookDetail() {
+export default function BookDetail() {
   const [data, setData] = useState("");
 
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);

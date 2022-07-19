@@ -4,7 +4,7 @@ import * as Api from "../../api";
 import HostNav from "../../components/host/HostNav";
 import BookList from "../../components/BookList";
 
-export default function HostBook() {
+export default function HostRoomBook() {
   const [data, setData] = useState("");
 
   useEffect(() => {
