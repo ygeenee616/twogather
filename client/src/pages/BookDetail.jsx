@@ -43,8 +43,6 @@ export default function BookDetail() {
     getData(bookId);
   }, []);
 
-  console.log(data);
-
   // 예약 삭제 함수
   async function deleteBook(bookId) {
     try {
@@ -94,16 +92,19 @@ const FullContainer = styled.div`
   margin: 5% 15%;
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 const Button = styled.button`
-  width: 50%;
+  width: 30%;
   padding: 5px;
-  margin: 0 10px;
   border-radius: 10px;
   border: none;
   background: #ff8b8b;
   color: #fff;
+  position: absolute;
+  right: 0;
+  bottom: 0;
 
   &:hover {
     box-shadow: 2px 2px 5px -1px #a6a9b6;

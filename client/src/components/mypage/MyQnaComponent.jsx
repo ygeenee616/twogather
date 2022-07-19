@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
-const QnaComponent = ({ qna }) => {
-  const { space, question, questionDate, answer } = qna;
+const QnaComponent = ({ room, qna }) => {
+  // id 는 qna 아이디
+  const { id, content, createdTime, reply } = qna;
 
   const deleteBtnstyle = {
     display: "inline-block",
@@ -15,13 +16,13 @@ const QnaComponent = ({ qna }) => {
   return (
     <>
       <tr>
-        <td>{space}</td>
+        <td>{room}</td>
         <td>
-          {question.length > 30 ? question.slice(0, 30) + `...` : question}
+          {content.length > 30 ? content.slice(0, 30) + `...` : content}
         </td>
-        <td>{questionDate}</td>
+        <td>{createdTime.split('T')[0]}</td>
         <td>
-          {answer ? "    답변 완료 " : "답변 대기중 "}
+          {reply ? "    답변 완료 " : "답변 대기중 "}
           <button style={deleteBtnstyle}>삭제</button>
         </td>
       </tr>
@@ -30,7 +31,7 @@ const QnaComponent = ({ qna }) => {
 };
 
 const QnaDetailComponent = ({ qna }) => {
-  const { question, questionDate, answer, answerDate } = qna;
+  const { id, content, createdTime, reply } = qna;
 
   const trStyle = {
     display: "none",
@@ -48,8 +49,8 @@ const QnaDetailComponent = ({ qna }) => {
     <>
       <tr style={trStyle} className="detailTr">
         <td colSpan="4" style={tdStyle}>
-          <h2>Q. </h2> <span>질문일: {questionDate} </span> <p>{question}</p>
-          <h2>A. </h2> <span>답변일: {answerDate} </span> <p>{answer}</p>
+          <h2>Q. </h2> <span>질문일: {createdTime} </span> <p>{content}</p>
+          <h2>A. </h2> <span>답변일: ? </span> <p>{reply}</p>
         </td>
       </tr>
     </>

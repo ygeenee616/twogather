@@ -5,6 +5,8 @@ import { FcSettings } from "react-icons/fc";
 import * as Api from "../api";
 
 export default function BookList({ data, endpoint }) {
+  console.log(data);
+
   return (
     data && (
       <Container>
@@ -39,8 +41,7 @@ export default function BookList({ data, endpoint }) {
                   <td>파티룸</td>
                   <td>{item.date}</td>
                   <td>{item.personnel}</td>
-                  {/* <td>{item.room.totalPrice}</td> */}
-                  <td>1억</td>
+                  <td>{item.totalPrice}</td>
                   <td>{item.user.phoneNumber}</td>
                   <td>
                     <Link to={`${endpoint}${item.id}`}>

@@ -47,7 +47,7 @@ function MyReservedRoom({ reservation, idx }) {
       </InfoDiv>
       <EditDiv>
         <span onClick={(e) => handleCancelReservation(id)}> 예약취소 </span>
-        <a href={`/myPage/addReview?reviewId=${id}`}> 리뷰작성</a>
+        <a href={`/myPage/addReview?reservationId=${id}`}> 리뷰작성</a>
       </EditDiv>
     </RoomDiv>
   );
