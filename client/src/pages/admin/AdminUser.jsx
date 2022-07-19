@@ -11,14 +11,11 @@ export default function AdminUser() {
   useEffect(() => {
     async function getData() {
       const response = await Api.get("api/users");
-      console.log(response);
       const data = response.data.data;
       setData(data);
     }
     getData();
   }, []);
-
-  console.log(data);
 
   const headers = ["닉네임", "E-Mail", "전화번호", "성별", "Role", "가입날짜"];
   const keys = ["nickname", "email", "phoneNumber", "sexs", "role", "date"];

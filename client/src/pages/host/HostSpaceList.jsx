@@ -6,6 +6,7 @@ import exImg1 from "../../assets/images/ex1.png";
 import exImg2 from "../../assets/images/ex2.png";
 import HostUpdateSpace from "../HostUpdateSpace";
 import * as api from "../../api";
+import HostNav from "../../components/host/HostNav";
 
 ProductList.defaultProps = {
   host: {
@@ -95,25 +96,28 @@ export default function ProductList({ host }) {
   }
 
   return (
-    data && (
-      <BottomWrap>
-        <TitleContanier>
-          <MainTitle>{host.name}님 </MainTitle>
-          <Title>공간내역</Title>
-        </TitleContanier>
-        <div onClick={clickToModSpace}>
-          <ProductWrap>{renderData(offset, limit, data)}</ProductWrap>
-          <div>
-            <Pagination
-              total={data.length}
-              limit={limit}
-              page={page}
-              setPage={setPage}
-            />
+    <div>
+      <HostNav />
+      {data && (
+        <BottomWrap>
+          <TitleContanier>
+            <MainTitle>{host.name}님 </MainTitle>
+            <Title>공간내역</Title>
+          </TitleContanier>
+          <div onClick={clickToModSpace}>
+            <ProductWrap>{renderData(offset, limit, data)}</ProductWrap>
+            <div>
+              <Pagination
+                total={data.length}
+                limit={limit}
+                page={page}
+                setPage={setPage}
+              />
+            </div>
           </div>
-        </div>
-      </BottomWrap>
-    )
+        </BottomWrap>
+      )}
+    </div>
   );
 }
 
