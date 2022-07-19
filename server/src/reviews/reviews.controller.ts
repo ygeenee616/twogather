@@ -27,6 +27,8 @@ import { GetAdminUser, GetUser } from 'src/custom.decorator';
 import { User } from 'src/users/entities/users.entity';
 import { ReservationsService } from 'src/reservations/reservations.service';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
+import { identity } from 'rxjs';
+import { object } from 'joi';
 const reviewResExample = new ReviewResExample();
 
 @Controller('api/reviews')
@@ -37,7 +39,7 @@ export class ReviewsController {
     private reservationsService: ReservationsService,
   ) {}
 
-  // review 등록
+  // review 등록(api data 수정 완료)
   @Post('/:reservationId')
   @UseGuards(AuthGuard())
   @ApiBearerAuth('userToken')
@@ -60,10 +62,13 @@ export class ReviewsController {
     @Body() createReviewDto: CreateReviewDto,
     @Param('reservationId') reservationId: number,
     @GetUser() user: User,
-  ) {
-    const reservation = await this.reservationsService.findOne(reservationId);
-    const spaceId = reservation.room.space.id;
-    if (reservation.user.id !== user.id) {
+  ): Promise<any> {
+    //Get reservation Information for using user Id. It throw Forbidden Exception when you try to creat a review for other's reservation.
+    const reqReservation = await this.reservationsService.findOne(
+      reservationId,
+    );
+    const spaceId = reqReservation.room.space.id;
+    if (reqReservation.user.id !== user.id) {
       throw new ForbiddenException('자신의 리뷰만 쓸 수 있습니다. ');
     }
     const newReview = await this.reviewsService.create(
@@ -71,11 +76,20 @@ export class ReviewsController {
       reservationId,
       spaceId,
     );
+    const { id, content, reservation, space } = newReview;
+    const resReview = {
+      id,
+      content,
+      reservationId: reservation.id,
+      spaceId: space.id,
+    };
+    console.log(resReview);
+
     return {
       status: 201,
       description: '새로운 리뷰 등록 완료',
       success: true,
-      data: newReview,
+      data: resReview,
     };
   }
 
@@ -93,21 +107,15 @@ export class ReviewsController {
     },
   })
   async findAll() {
-    const reviews = await this.reviewsService.findAll();
+    const rawReviews = await this.reviewsService.findAll();
+
     return {
       status: 200,
       description: '전체 리뷰 목록 조회 성공',
       success: true,
-      data: reviews,
+      data: rawReviews,
     };
   }
-
-  /* Todo
-    1. space 별로 review 수 count
-    2. space별로 reivew 가져오기(페이지네이션 추가된)
-     
-  */
-
   // 내가 쓴 리뷰 목록 조회
   @Get('/my/info')
   @UseGuards(AuthGuard())
