@@ -35,8 +35,8 @@ export class SpacesService {
     type: string,
   ) {
     try {
-      const totalSpace = await this.spacesRepository.find();
-      const totalPage = parseInt((totalSpace.length / perPage).toString()) + 1;
+      const totalSpaces = await this.spacesRepository.find();
+      const totalPage = parseInt((totalSpaces.length / perPage).toString()) + 1;
       let paginatedSpaces: Space[];
 
       // no type?
@@ -202,14 +202,53 @@ export class SpacesService {
     }
   }
 
-  // HostId로 공간 목록 조회
-  async findOneByUser(hostId: number): Promise<Space[]> {
+  // HostId로 공간 목록 조회(paginated)
+  async findByUserPaginated(
+    hostId: number,
+    startIndex: number,
+    perPage: number,
+  ) {
     try {
-      return this.spacesRepository.find({
+      const totalSpaces: Array<Space> = await this.spacesRepository.find({
+        select: {
+          rooms: true,
+        },
         where: {
           user: {
             id: hostId,
           },
+        },
+        relations: {
+          rooms: true,
+        },
+        skip: startIndex,
+        take: perPage,
+      });
+      const totalPage = parseInt((totalSpaces.length / perPage).toString()) + 1;
+
+      return {
+        totalPage,
+        totalSpaces,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // HostId로 공간 목록 조회
+  async findByUser(hostId: number): Promise<Space[]> {
+    try {
+      return this.spacesRepository.find({
+        select: {
+          rooms: true,
+        },
+        where: {
+          user: {
+            id: hostId,
+          },
+        },
+        relations: {
+          rooms: true,
         },
       });
     } catch (error) {

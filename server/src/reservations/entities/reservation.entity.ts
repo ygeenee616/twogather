@@ -67,7 +67,7 @@ export class Reservation {
   user: User;
 
   @OneToOne((type) => Review, (rewiew) => rewiew.reservation, {
-    eager: true,
+    eager: false,
   })
   review: Review;
 
