@@ -39,6 +39,10 @@ function MyProfileEdit({ user, handleEditUserDone }) {
       }
     }
 
+    if(userData[nickname]) {
+      localStorage.setItem("nickname", userData[nickname])
+    }
+
     if (isFormValid && newUser !== null) {
       try {
         const res = await Api.patch("api/users", userData);
