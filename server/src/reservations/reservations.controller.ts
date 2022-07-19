@@ -14,7 +14,13 @@ import {
 import { ReservationsService } from './reservations.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiHeader,
+} from '@nestjs/swagger';
 import { Reservation } from './entities/reservation.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/users/entities/users.entity';
@@ -32,6 +38,20 @@ export class ReservationsController {
   // 예약 등록
   @Post(':roomId')
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
+  @ApiOperation({
+    summary: '예약 등록 API',
+    description: '예약을 등록한다.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: '예약 성공',
+    type: Reservation,
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Auth token',
+  })
   async reserve(
     @GetUser() user: User,
     @Body() createReservationDto: CreateReservationDto,
@@ -44,14 +64,14 @@ export class ReservationsController {
       roomInfo,
     );
     return {
-      status: 200,
+      status: 201,
       success: true,
       description: '예약 성공',
       data: newReservation,
     };
   }
 
-  // 예약 전제 조회
+  // 예약 전체 조회
   @Get()
   @ApiOperation({
     summary: '예약 findAll API',
@@ -131,8 +151,22 @@ export class ReservationsController {
   }
 
   // 내 예약 목록 조회
-  @Get('/mypage')
+  @Get('/my/info')
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
+  @ApiOperation({
+    summary: '내 예약 찾는 API',
+    description: '내 예약을 불러온다.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '내 예약 조회 성공',
+    type: Reservation,
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Auth token',
+  })
   async findMyReservation(@GetUser() user: User, @Query() query) {
     const { page, perPage } = query;
     const startIndex: number = Number(perPage) * (Number(page) - 1);
@@ -143,7 +177,7 @@ export class ReservationsController {
     );
     return {
       status: 200,
-      description: '내 예약 정보 조회 성공',
+      description: '내 예약 조회 성공',
       success: true,
       data: reservations,
     };
@@ -152,14 +186,19 @@ export class ReservationsController {
   // 내 예약 수정
   @Patch(':id')
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   @ApiOperation({
-    summary: '특정 예약 수정 API',
+    summary: '내 예약 수정 API',
     description: '예약 ID로 나의 예약을 수정한다.',
   })
   @ApiResponse({
     status: 200,
     description: '내 예약 정보 수정 성공',
     type: Reservation,
+  })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
   })
   async update(
     @Param('id') id: number,
@@ -183,13 +222,18 @@ export class ReservationsController {
   }
 
   // 내 예약 삭제
-  @Delete('mypage/:id')
+  @Delete('my/:id')
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '내 예약 삭제 API',
     description: '예약 ID로 내 예약을 삭제한다.',
   })
   @ApiResponse({ status: 200, description: '삭제된 예약', type: Reservation })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
+  })
   async deleteReservation(@Param('id') id: number, @GetUser() user: User) {
     const reservation = await this.reservationsService.findOne(id);
     if (reservation.user.id !== user.id) {
@@ -204,12 +248,17 @@ export class ReservationsController {
     };
   }
 
+  // 예약 삭제(admin)
   @Delete(':id')
   @ApiOperation({
     summary: '특정 예약 삭제 API',
     description: '예약 ID로 특정 예약 삭제한다.',
   })
   @ApiResponse({ status: 200, description: '삭제된 예약', type: Reservation })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
+  })
   async deleteMyReservation(@Param('id') id: number) {
     const removeReservation = await this.reservationsService.remove(id);
     return {

@@ -101,7 +101,6 @@ export class ReviewsService {
         C.id as userId, C.nickname, C.email, C.name, C.phoneNumber
         from review A, reservation B, user C WHERE A.reservationId = B.id and B.userId = C.id and A.id = ${id};`,
       );
-      console.log(review[0].userId);
       if (userId !== review[0].userId) {
         throw new UnauthorizedException('권한 없음');
       }
@@ -136,7 +135,6 @@ export class ReviewsService {
         C.id as userId, C.nickname, C.email, C.name, C.phoneNumber
         from review A, reservation B, user C WHERE A.reservationId = B.id and B.userId = C.id and A.id = ${id};`,
       );
-      console.log(review[0].userId);
       if (userId !== review[0].userId) {
         throw new UnauthorizedException('권한 없음');
       }
