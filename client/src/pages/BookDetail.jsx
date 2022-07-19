@@ -32,9 +32,9 @@ export default function BookDetail() {
         // 나중에 url 해당 BookId 사용해서 API 연결
         const req = await Api.get(`api/reservations/${bookId}`);
         // const req = await axios.get("/dummyBookDetail.json");
-        const datas = await req.data.data;
+        const data = await req.data.data;
         console.log(req);
-        setData(datas);
+        setData(data);
         console.log(data);
       } catch (err) {
         console.log(err);
@@ -42,6 +42,8 @@ export default function BookDetail() {
     };
     getData(bookId);
   }, []);
+
+  console.log(data);
 
   // 예약 삭제 함수
   async function deleteBook(bookId) {
