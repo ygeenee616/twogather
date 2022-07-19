@@ -58,7 +58,7 @@ export default function HostSpaceList({ host }) {
       console.log(response);
       document.querySelector(".deleteModal").content = "삭제되었습니다.";
     } catch (err) {
-      console.log("err");
+      console.log(err);
     }
 
     const modal = document.querySelector(".modalWrap");

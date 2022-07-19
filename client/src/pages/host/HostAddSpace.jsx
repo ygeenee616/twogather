@@ -180,7 +180,6 @@ export default function HostAddSpace({ mode }) {
       imgDiv.classList.add("imgDiv");
 
       img.onclick = function (e) {
-        console.log(e.target);
         imgDiv.remove();
       };
 
