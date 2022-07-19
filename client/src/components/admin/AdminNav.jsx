@@ -12,9 +12,9 @@ export default function AdminNav() {
           <span style={{ marginLeft: "15px" }}>Admin</span>
         </Profile>
       </Menu>
-      <Menu to={"/admin/notice"}>공지사항</Menu>
+      <Menu to={"/admin/notice?page=1"}>공지사항</Menu>
       <Menu to={"/admin/userList"}>유저 관리</Menu>
-      <Menu to={"/admin/bookList"}>예약 관리</Menu>
+      <Menu to={"/admin/bookList?page=1"}>예약 관리</Menu>
     </Nav>
   );
 }

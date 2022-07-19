@@ -5,7 +5,6 @@ import HostInfo from "../components/book/HostInfo";
 import BookInfo from "../components/book/BookInfo";
 import PostBookerInfo from "../components/book/PostBookerInfo";
 import ToTop from "../components/ToTop";
-import axios from "axios";
 import * as Api from "../api";
 import userInfoState from "../atom/userInfoState";
 import {
@@ -31,7 +30,6 @@ export default function BookDetail() {
       try {
         // 나중에 url 해당 BookId 사용해서 API 연결
         const req = await Api.get(`api/reservations/${bookId}`);
-        // const req = await axios.get("/dummyBookDetail.json");
         const data = await req.data.data;
         console.log(req);
         setData(data);

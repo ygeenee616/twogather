@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FcSettings } from "react-icons/fc";
-import * as Api from "../api";
 
 export default function BookList({ data, endpoint }) {
   console.log(data);
@@ -35,7 +34,7 @@ export default function BookList({ data, endpoint }) {
           <tbody>
             {data.map((item, i) => {
               return (
-                <tr align="center">
+                <tr align="center" key={i}>
                   <td>{item.user.name}</td>
                   {/* <td>{item.room.id}</td> */}
                   <td>파티룸</td>

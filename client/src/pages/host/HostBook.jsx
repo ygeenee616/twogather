@@ -10,7 +10,7 @@ export default function HostRoomBook() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const req = await Api.get(`api/spaces/host`);
+        const req = await Api.get(`api/rooms/host`);
         const data = await req.data.data;
         console.log(req);
         setData(data);
@@ -26,18 +26,16 @@ export default function HostRoomBook() {
     data && (
       <div>
         <HostNav />
-        <div>
-          <RoomContainer>
-            <Title>공간별 Q&A</Title>
-            {data.map((space, id) => {
-              return (
-                <RoomLink to={`/host/qna/${space.id}?page=1`} key={id}>
-                  <RoomList>{space.name}</RoomList>
-                </RoomLink>
-              );
-            })}
-          </RoomContainer>
-        </div>
+        <RoomContainer>
+          <Title>룸별 예약 내역</Title>
+          {data.map((room, id) => {
+            return (
+              <RoomLink to={`/host/bookList/${room.id}?page=1`} key={id}>
+                <RoomList>{room.name}</RoomList>
+              </RoomLink>
+            );
+          })}
+        </RoomContainer>
       </div>
     )
   );

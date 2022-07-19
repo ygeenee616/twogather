@@ -9,23 +9,23 @@ export default function HostInfo({ host }) {
 
         <Content>
           <div>공간 상호</div>
-          <div>{host.placeName}</div>
+          <div>{host.businessName}</div>
         </Content>
         <Content>
           <div>대표자명</div>
-          <div>{host.hostName}</div>
+          <div>{host.name}</div>
         </Content>
         <Content>
           <div>사업자 번호</div>
-          <div>{host.businessNum}</div>
+          <div>{host.businessNumber}</div>
         </Content>
         <Content>
           <div>연락처</div>
-          <div>{host.hostPhone}</div>
+          <div>{host.phoneNumber}</div>
         </Content>
         <Content>
           <div>이메일</div>
-          <div>{host.hostEmail}</div>
+          <div>{host.email}</div>
         </Content>
       </Container>
 
