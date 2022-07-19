@@ -21,6 +21,7 @@ import {
   ApiOperation,
   ApiResponse,
   ApiBasicAuth,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { UserResExample } from './user.swagger.example';
 import { GetAdminUser, GetUser } from 'src/custom.decorator';
@@ -112,6 +113,7 @@ export class UsersController {
     },
   })
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   async getMyInfo(@GetUser() user: User) {
     const userInfo = await this.usersService.findOne(user.id);
     return {
@@ -176,6 +178,7 @@ export class UsersController {
   //마이페이지 수정
   @Patch()
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '내 정보 수정 API',
     description: '내 정보를 수정한다.',
@@ -222,7 +225,7 @@ export class UsersController {
   // 회원 탈퇴
   @Delete()
   @UseGuards(AuthGuard())
-  @ApiBasicAuth()
+  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '회원 탈퇴 API',
     description: '회원 탈퇴를 진행한다.',

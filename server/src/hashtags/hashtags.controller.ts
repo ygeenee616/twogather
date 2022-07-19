@@ -11,7 +11,13 @@ import {
 import { HashtagsService } from './hashtags.service';
 import { CreateHashtagDto } from './dto/create-hashtag.dto';
 import { UpdateHashtagDto } from './dto/update-hashtag.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiHeader,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { Hashtag } from './entities/hashtag.entity';
 import { UpdateDateColumn } from 'typeorm';
 import { AuthGuard } from '@nestjs/passport';
@@ -25,6 +31,7 @@ export class HashtagsController {
 
   @Post(':spaceId')
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '해시태그 생성 API',
     description: '해시태그를 생성한다.',
@@ -57,6 +64,7 @@ export class HashtagsController {
   // 전체 해시태그 목록 조회 API
   @Get()
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '전체 해시태그 목록 조회 API',
     description: '전체 해시태그 목록을 조회한다.',
@@ -67,14 +75,14 @@ export class HashtagsController {
     type: Hashtag,
   })
   @ApiHeader({
-    name: 'authorization',
+    name: 'Authorization',
     description: 'Auth token',
   })
   async findAll(@GetAdminUser() host: User) {
     const hashtags = await this.hashtagsService.findAll();
     return {
-      name: 'authorization',
-      description: 'Auth token',
+      status: 201,
+      description: '전체 해시태그 목록 조회 성공',
       success: true,
       data: hashtags,
     };

@@ -12,7 +12,13 @@ import {
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiHeader,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { Room } from './entities/rooms.entity';
 import { RoomResExample } from './room.swagger.example';
 import { AuthGuard } from '@nestjs/passport';
@@ -32,6 +38,7 @@ export class RoomsController {
   // room 생성
   @Post(':spaceId')
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: 'room 생성 API',
     description: 'room을 생성한다.',
@@ -102,6 +109,7 @@ export class RoomsController {
   // My Room 목록 조회
   @Get('/host')
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '내 room 목록 조회 API',
     description: '내 room 목록 조회',
@@ -153,6 +161,7 @@ export class RoomsController {
   // 내 room 정보 수정
   @Patch('host/:id')
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '내 room 정보 수정 API',
     description: '내 room 정보를 수정한다.',
@@ -240,6 +249,7 @@ export class RoomsController {
   // 내 room 삭제
   @Delete('host/:id')
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '내 room 삭제 API',
     description: '내 room을 삭제한다.',

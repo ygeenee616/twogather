@@ -12,7 +12,13 @@ import {
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiHeader,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { Review } from './entities/review.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { ReviewResExample } from './review.swagger.example';
@@ -32,6 +38,7 @@ export class ReviewsController {
   // review 등록
   @Post('/:reservationId')
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '리뷰 등록 API',
     description: '리뷰를 등록한다.',
@@ -98,8 +105,9 @@ export class ReviewsController {
   */
 
   // 내가 쓴 리뷰 목록 조회
-  @Get('/mypage')
+  @Get('/my/info')
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '내가 쓴 리뷰 findAll API',
     description: '내가 쓴 리뷰 목록을 불러온다.',
@@ -153,7 +161,6 @@ export class ReviewsController {
 
   // reviewId로 특정 리뷰 수정(admin)
   @Patch(':id')
-  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '특정 리뷰 수정 API',
     description: '리뷰 ID로 특정 리뷰를 수정한다.(admin)',
@@ -166,7 +173,7 @@ export class ReviewsController {
     },
   })
   @ApiHeader({
-    name: 'authorization',
+    name: 'Authorization',
     description: 'Auth token',
   })
   async updateReview(
@@ -189,6 +196,8 @@ export class ReviewsController {
   // 내가 쓴 특정 리뷰 수정
   @Patch('mypage/:id')
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
+  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '내가 쓴 특정 리뷰 수정 API',
     description: '내가 쓴 특정 리뷰를 수정한다.',
@@ -252,6 +261,7 @@ export class ReviewsController {
   // 내가 쓴 특정 review 삭제
   @Delete('mypage/:id')
   @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '내가 쓴 특정 리뷰 삭제 API',
     description: '내가 쓴 특정 리뷰를 삭제한다.',

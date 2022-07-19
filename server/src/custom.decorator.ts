@@ -1,6 +1,7 @@
 import {
   createParamDecorator,
   ExecutionContext,
+  ForbiddenException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { User } from 'src/users/entities/users.entity';
@@ -17,7 +18,7 @@ export const GetAdminUser = createParamDecorator(
   (data, ctx: ExecutionContext): User => {
     const req = ctx.switchToHttp().getRequest();
     if (!req.user.isAdmin) {
-      throw new UnauthorizedException('권한 없음(Admin)');
+      throw new ForbiddenException('관리자만 접근 가능힙니다.');
     }
     return req.user;
   },
