@@ -31,7 +31,6 @@ export default function BookDetail() {
       try {
         // 나중에 url 해당 BookId 사용해서 API 연결
         const req = await Api.get(`api/reservations/${bookId}`);
-        // const req = await axios.get("/dummyBookDetail.json");
         const data = await req.data.data;
         console.log(req);
         setData(data);

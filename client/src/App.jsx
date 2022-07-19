@@ -20,6 +20,7 @@ import HostUpdateSpace from "./pages/HostUpdateSpace";
 import HostAddRoom from "./pages/host/HostAddRoom";
 import HostUpdateRoom from "./pages/host/HostUpdateRoom";
 import HostQnA from "./pages/host/HostQnA";
+import HostQnAList from "./pages/host/HostQnAList";
 import ProductList from "./pages/ProductList";
 import Detail from "./pages/Detail";
 import Book from "./pages/Book";
@@ -29,7 +30,7 @@ import Footer from "./layout/Footer";
 import AdminNotice from "./pages/admin/AdminNotice";
 import AdminUser from "./pages/admin/AdminUser";
 import AdminBook from "./pages/admin/AdminBook";
-import HostRoomList from "./pages/host/HostRoomList";
+import HostBook from "./pages/host/HostBook";
 import HostRoomBook from "./pages/host/HostRoomBook";
 import BookDetail from "../src/pages/BookDetail";
 
@@ -61,8 +62,8 @@ function App() {
               element={<BookDetail />}
             />
 
-            <Route path="/host/bookList" element={<HostRoomList />} />
-            <Route path="/host/bookList/:bookId" element={<HostRoomBook />} />
+            <Route path="/host/bookList" element={<HostBook />} />
+            <Route path="/host/bookList/:roomId" element={<HostRoomBook />} />
 
             <Route
               path="/host/bookList/:roomId/bookDetail/:bookId"
@@ -94,6 +95,8 @@ function App() {
             />
             {/* Q&A 관리 */}
             <Route path="/host/qna" element={<HostQnA />} />
+            <Route path="/host/qna/:spaceId" element={<HostQnAList />} />
+
             <Route path="/list" element={<ProductList />} />
             <Route path="/detail/:spaceId" element={<Detail />} />
             <Route path="/book" element={<Book />} />
