@@ -7,7 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
-  UnauthorizedException,
+  NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
@@ -25,6 +26,7 @@ import { ReviewResExample } from './review.swagger.example';
 import { GetAdminUser, GetUser } from 'src/custom.decorator';
 import { User } from 'src/users/entities/users.entity';
 import { ReservationsService } from 'src/reservations/reservations.service';
+import { Reservation } from 'src/reservations/entities/reservation.entity';
 const reviewResExample = new ReviewResExample();
 
 @Controller('api/reviews')
@@ -60,12 +62,14 @@ export class ReviewsController {
     @GetUser() user: User,
   ) {
     const reservation = await this.reservationsService.findOne(reservationId);
-    if (reservation.user !== user) {
-      throw new UnauthorizedException('권한없음');
+    const spaceId = reservation.room.space.id;
+    if (reservation.user.id !== user.id) {
+      throw new ForbiddenException('자신의 리뷰만 쓸 수 있습니다. ');
     }
     const newReview = await this.reviewsService.create(
       createReviewDto,
       reservationId,
+      spaceId,
     );
     return {
       status: 201,
@@ -159,6 +163,31 @@ export class ReviewsController {
     };
   }
 
+  @Get('space/:spaceId')
+  @ApiOperation({
+    summary: 'space ID로 리뷰 조회 API',
+    description: 'space ID로 특정 리뷰를 불러온다.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '특정 리뷰',
+    schema: {
+      example: reviewResExample.findOne,
+    },
+  })
+  async findBySpace(@Param('spaceId') spaceId: number) {
+    const reviews = await this.reviewsService.findBySpace(spaceId);
+    if (!reviews || reviews === undefined || reviews === null) {
+      throw new NotFoundException('리뷰가 없습니다.');
+    }
+    return {
+      status: 200,
+      description: 'space ID로 리뷰 목록을 조회한다.',
+      success: true,
+      data: reviews,
+    };
+  }
+
   // reviewId로 특정 리뷰 수정(admin)
   @Patch(':id')
   @ApiOperation({
@@ -218,6 +247,12 @@ export class ReviewsController {
     @Param('id') id: number,
     @Body() updateReviewDto: UpdateReviewDto,
   ) {
+    const review = await this.reviewsService.findOne(id);
+    const reservation = review.reservation;
+    if (reservation.user.id !== user.id) {
+      throw new ForbiddenException('자신의 리뷰만 수정할 수 있습니다. ');
+    }
+
     const updatedReview = await this.reviewsService.updateMyReview(
       user.id,
       id,
@@ -278,6 +313,12 @@ export class ReviewsController {
     description: 'Auth token-> Bearer {token} 이렇게 넣기 ',
   })
   async removeMyReview(@GetUser() user: User, @Param('id') id: number) {
+    const review = await this.reviewsService.findOne(id);
+    const reservation = review.reservation;
+    if (reservation.user.id !== user.id) {
+      throw new ForbiddenException('자신의 리뷰만 삭제할 수 있습니다. ');
+    }
+
     await this.reviewsService.removeMyReview(user.id, id);
     return {
       status: 201,

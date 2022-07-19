@@ -189,6 +189,7 @@ export class SpacesService {
           rooms: true,
           qnas: true,
           hashtags: true,
+          reviews: true,
         },
         cache: true,
       });

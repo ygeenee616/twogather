@@ -12,6 +12,7 @@ import { Hashtag } from 'src/hashtags/entities/hashtag.entity';
 import { Room } from 'src/rooms/entities/rooms.entity';
 import { Qna } from 'src/qnas/entities/qna.entity';
 import { SpaceImage } from 'src/space_images/entities/space_image.entity';
+import { Review } from 'src/reviews/entities/review.entity';
 
 @Entity()
 export class Space {
@@ -68,4 +69,9 @@ export class Space {
   })
   @ApiPropertyOptional({ description: 'spaceImage와의 관계' })
   spaceImages: SpaceImage[];
+
+  @OneToMany(() => Review, (reviews) => reviews.space, {
+    eager: false,
+  })
+  reviews: Review[];
 }
