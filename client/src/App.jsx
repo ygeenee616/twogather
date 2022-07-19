@@ -16,16 +16,16 @@ import UpdateNotice from "./pages/UpdateNotice";
 import AdminHome from "./pages/AdminHome";
 import AdminUserList from "./pages/AdminUserList";
 import AdminBookList from "./pages/AdminBookList";
-import AdminBookDetail from "./pages/AdminBookDetail";
+import AdminBookDetail from "./pages/BookDetail";
 import HostHome from "./pages/HostHome";
-import AddHost from "./pages/AddHost";
+import AddHost from "./pages/host/AddHost";
 import AddSpace from "./pages/AddSpace";
 import HostBookList from "./pages/HostBookList";
-import HostSpaceList2 from "./pages/hostPage/HostSpaceList2";
+import HostSpaceList2 from "./pages/host/HostSpaceList2";
 import HostUpdateSpace from "./pages/HostUpdateSpace";
-import HostAddRoom from "./pages/hostPage/HostAddRoom";
-import HostUpdateRoom from "./pages/hostPage/HostUpdateRoom";
-import HostQnA from "./pages/HostQnA";
+import HostAddRoom from "./pages/host/HostAddRoom";
+import HostUpdateRoom from "./pages/host/HostUpdateRoom";
+import HostQnA from "./pages/host/HostQnA";
 import ProductList from "./pages/ProductList";
 import Detail from "./pages/Detail";
 import Book from "./pages/Book";
@@ -38,6 +38,9 @@ import AdminNav from "./components/admin/AdminNav";
 import AdminNotice from "./pages/admin/AdminNotice";
 import AdminUser from "./pages/admin/AdminUser";
 import AdminBook from "./pages/admin/AdminBook";
+import HostRoomList from "./pages/host/HostRoomList";
+import HostRoomBook from "./pages/host/HostRoomBook";
+import BookDetail from "../src/pages/BookDetail";
 
 function App() {
   return (
@@ -64,13 +67,15 @@ function App() {
 
             <Route
               path="/admin/bookList/bookDetail/:bookId"
-              element={<AdminBookDetail />}
+              element={<BookDetail />}
             />
+
             <Route path="/host/bookList" element={<BookList />} />
             <Route path="/host/bookList/:bookId" element={<BookList />} />
+
             <Route
-              path="/host/bookList/bookDetail/:bookId"
-              element={<AdminBookDetail />}
+              path="/host/bookList/:roomId/bookDetail/:bookId"
+              element={<BookDetail />}
             />
 
             <Route path="/hostHome" element={<HostNav />} />

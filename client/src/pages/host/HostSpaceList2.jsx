@@ -8,6 +8,8 @@ import HostUpdateSpace from "../HostUpdateSpace";
 import * as api from "../../api";
 import { useNavigate } from "react-router-dom";
 import { Container } from "../../components/register/UserForm";
+import HostNav from "../../components/host/HostNav";
+
 ProductList.defaultProps = {
   host: {
     id: "host123",
@@ -115,35 +117,30 @@ export default function ProductList({ host }) {
   }
 
   return (
-    datas && (
-      <BottomWrap>
-        <TitleContanier>
-          <MainTitle>{host.name}님 </MainTitle>
-          <Title>공간내역</Title>
-        </TitleContanier>
-        <div onClick={clickToModSpace}>
-          <ProductWrap>{renderData(offset, limit, datas)}</ProductWrap>
-          <div>
-            <Pagination
-              total={datas.length}
-              limit={limit}
-              page={page}
-              setPage={setPage}
-            />
+    <div>
+      <HostNav />
+      {datas && (
+        <BottomWrap>
+          <TitleContanier>
+            <MainTitle>{host.name}님 </MainTitle>
+            <Title>공간내역</Title>
+          </TitleContanier>
+          <div onClick={clickToModSpace}>
+            <ProductWrap>{renderData(offset, limit, datas)}</ProductWrap>
+            <div>
+              <Pagination
+                total={datas.length}
+                limit={limit}
+                page={page}
+                setPage={setPage}
+              />
+            </div>
           </div>
-        </div>
-      </BottomWrap>
-    )
+        </BottomWrap>
+      )}
+    </div>
   );
 }
-
-const MainContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-`;
 
 const SubMenuBar = styled.div`
   paddin: 3%;
@@ -162,14 +159,17 @@ const Menu = styled.div`
   }
 `;
 const BottomWrap = styled.div`
-  margin: 0 15%;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 80px;
+  margin-bottom: 80px;
 `;
 
 const TitleContanier = styled.div`
   border-bottom: 2px solid #8daef2;
   display: flex;
   justify-content: center;
-  margin: 10%;
+  width: 100%;
 `;
 
 const MainTitle = styled.span`

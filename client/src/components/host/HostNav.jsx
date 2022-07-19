@@ -6,9 +6,9 @@ import { FaUserCircle } from "react-icons/fa";
 export default function HostNav() {
   return (
     <Nav>
-      <Menu to={"/myPage"}>
+      <Menu to={"/host/addHost"}>
         <Profile>
-          <FaUserCircle size={"2rem"} color="lightgrey" />
+          <FaUserCircle size={"2rem"} color="white" />
           <span style={{ marginLeft: "15px" }}>HOST</span>
         </Profile>
       </Menu>
@@ -37,7 +37,7 @@ const Profile = styled.span`
 
 const Menu = styled(Link)`
   text-decoration: none;
-  color: #000;
+  color: #fff;
   font-size: 1.1rem;
   font-weight: bold;
 `;

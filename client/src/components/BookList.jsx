@@ -63,8 +63,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin-top: 80px;
+  margin-bottom: 80px;
 
   & table {
     width: 100%;
@@ -76,12 +76,12 @@ const Container = styled.div`
   & caption {
     background-color: #577bc1;
     color: #fff;
-    padding: 5px;
+    padding: 10px;
   }
 
   & th {
     color: #577bc1;
-    padding: 5px;
+    padding: 10px;
   }
 
   & tr {
