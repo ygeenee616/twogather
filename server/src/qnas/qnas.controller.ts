@@ -14,13 +14,7 @@ import {
 import { QnasService } from './qnas.service';
 import { CreateQnaDto } from './dto/create-qna.dto';
 import { UpdateQnaDto } from './dto/update-qna.dto';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiHeader,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
 import { Qna } from './entities/qna.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/custom.decorator';
@@ -38,9 +32,8 @@ export class QnasController {
   constructor(private readonly qnasService: QnasService) {}
 
   // Q&A 등록
-  @Post(':spaceId')
+  @Post()
   @UseGuards(AuthGuard())
-  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: 'Q&A 작성 API',
     description: 'Q&A를 작성한다.(로그인한 유저만 가능)',
@@ -55,7 +48,7 @@ export class QnasController {
   async create(
     @GetUser() user,
     @Body() createQnaDto: CreateQnaDto,
-    @Param('spaceId') spaceId: number,
+    @Body('spaceId') spaceId: number,
   ) {
     const newQna = await this.qnasService.create(createQnaDto, user, spaceId);
     return {
@@ -146,6 +139,7 @@ export class QnasController {
 
   // qnaId로 특정 Q&A 수정
   @Patch(':id')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '특정 Q&A 수정 API',
     description: 'Q&A의 ID로 특정 Q&A를 수정한다.',
@@ -157,7 +151,16 @@ export class QnasController {
       example: qnaResExample.updateQna,
     },
   })
-  async updateQna(@Param('id') id: number, @Body() updateQnaDto: UpdateQnaDto) {
+  async updateQna(
+    @Param('id') id: number,
+    @Body() updateQnaDto: UpdateQnaDto,
+    @GetUser() host: User,
+  ) {
+    const qna = await this.qnasService.findOne(id);
+    if (host !== qna.space.user) {
+      throw new UnauthorizedException('권한 없음');
+    }
+
     const updatedQna = await this.qnasService.update(id, updateQnaDto);
     return {
       status: 201,
@@ -170,7 +173,6 @@ export class QnasController {
   // 내가 작성한 특정 Q&A 수정
   @Patch('mypage/:id')
   @UseGuards(AuthGuard())
-  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '내가 작성한 특정 Q&A 수정 API',
     description: 'Q&A의 ID로 내가 작성한 특정 Q&A를 수정한다.',
@@ -225,7 +227,6 @@ export class QnasController {
   // qnaId로 내가 작성한 특정 Q&A 삭제
   @Delete('mypage/:id')
   @UseGuards(AuthGuard())
-  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '내가 작성한 특정 Q&A 삭제 API',
     description: 'Q&A ID로 내가 작성한 특정 Q&A를 삭제한다.',

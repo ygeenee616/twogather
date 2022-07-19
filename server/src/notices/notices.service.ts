@@ -24,22 +24,12 @@ export class NoticesService {
     }
   }
 
-  async findAll(startIndex: number, perPage: number) {
-    try {
-      const [notices, noticeLength] =
-        await this.noticesRepository.findAndCount();
-      const totlaPage = Math.ceil(noticeLength / perPage);
-      const paginatedNotices = await this.noticesRepository.find({
-        order: {
-          id: 'DESC',
-        },
-        skip: startIndex,
-        take: perPage,
-      });
-      return { totlaPage, paginatedNotices };
-    } catch (error) {
-      throw error;
-    }
+  async findAll() {
+    return await this.noticesRepository.find({
+      order: {
+        id: 'DESC',
+      },
+    });
   }
 
   async findOne(id: number) {

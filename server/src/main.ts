@@ -10,16 +10,6 @@ async function bootstrap() {
     .setTitle('TWOGATHER')
     .setDescription('TWOGATHER API description')
     .setVersion('1.0')
-    .addBearerAuth(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'Token',
-        name: 'JWT',
-        in: 'header',
-      },
-      'userToken',
-    )
     .addTag('TWOGATHER')
     .build();
   const document = SwaggerModule.createDocument(app, config);

@@ -8,19 +8,12 @@ import {
   Delete,
   UseGuards,
   UnauthorizedException,
-  Query,
 } from '@nestjs/common';
 import { NoticesService } from './notices.service';
 import { CreateNoticeDto } from './dto/create-notice.dto';
 import { UpdateNoticeDto } from './dto/update-notice.dto';
 import { NoticeResExample } from './notice.swagger.example';
-import {
-  ApiBearerAuth,
-  ApiHeader,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/custom.decorator';
 import { User } from 'src/users/entities/users.entity';
@@ -34,16 +27,11 @@ export class NoticesController {
 
   // 공지사항 등록
   @Post()
-  @ApiBearerAuth('userToken')
   @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '공지사항 등록 API',
     description: '공지사항을 작성한다.(관리자만 가능)',
   })
-  @ApiHeader({
-    name: 'Authorization',
-    description: 'Auth token-> Bearer {token} 이렇게 넣기 ',
-  }) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
   @ApiResponse({
     status: 201,
     description: '공지사항 등록 성공',
@@ -71,8 +59,7 @@ export class NoticesController {
   @Get()
   @ApiOperation({
     summary: '공지사항 findAll API',
-    description:
-      '전체 공지사항 목록을 불러온다. 페이지네이션 가능(localhost:3000/api/notices/3?page=1&perPage=10',
+    description: '전체 공지사항 목록을 불러온다.',
   })
   @ApiResponse({
     status: 200,
@@ -81,13 +68,8 @@ export class NoticesController {
       example: noticeResExample.findAll,
     },
   })
-  async findAll(@Query() query) {
-    const { page, perPage } = query;
-    const startIndex: number = Number(perPage) * (Number(page) - 1);
-    const notices = await this.noticesService.findAll(
-      startIndex,
-      Number(perPage),
-    );
+  async findAll() {
+    const notices = await this.noticesService.findAll();
     return {
       status: 200,
       description: '전체 공지사항 목록 조회 성공',
@@ -120,15 +102,10 @@ export class NoticesController {
 
   @Patch(':id')
   @UseGuards(AuthGuard())
-  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '특정 공지사항 수정 API',
     description: '공지사항 Id로 특정 공지사항을 수정한다.(관리자만 가능)',
   })
-  @ApiHeader({
-    name: 'Authorization',
-    description: 'Auth token-> Bearer {token} 이렇게 넣기 ',
-  }) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
   @ApiResponse({
     status: 201,
     description: '수정된 공지사항',
@@ -158,11 +135,6 @@ export class NoticesController {
 
   @Delete(':id')
   @UseGuards(AuthGuard())
-  @ApiBearerAuth('userToken')
-  @ApiHeader({
-    name: 'Authorization',
-    description: 'Auth token-> Bearer {token} 이렇게 넣기 ',
-  }) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
   @ApiOperation({
     summary: '특정 공지사항 삭제 API',
     description: '공지사항Id로 특정 공지사항을 삭제한다.',
