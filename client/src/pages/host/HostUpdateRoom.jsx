@@ -28,6 +28,8 @@ export default function HostAddRoom({ mode }) {
   const navigate = useNavigate();
 
   const params = useParams();
+  const roomId = params.roomId;
+  console.log(roomId);
   const subViewInput = useRef();
 
   const handleChangeRoomState = (e) => {
@@ -46,12 +48,12 @@ export default function HostAddRoom({ mode }) {
       setAlert("값을 입력해 주세요");
     }
     try {
-      roomResponse = await Api.post(`api/rooms/${params.spaceId}`, {
+      roomResponse = await Api.patch(`api/rooms/${roomId}`, {
         name: roomInfo.roomName, //공간명
         capacity: Number(roomInfo.personal), //수용인원
         price: Number(roomInfo.price), //공간타입
         description: roomInfo.roomType,
-        spaceId: Number(params.spaceId),
+        // spaceId: Number(params.spaceId),
         //imgaes: [roomInfo.images],
       });
 
@@ -59,61 +61,42 @@ export default function HostAddRoom({ mode }) {
       modal.style.display = "block";
       window.scrollTo(0, 0);
     } catch (err) {
-      console.log("er발생");
+      console.log("err발생");
     }
   };
+
+  //**************************이미지 처리 api***********************/
 
   const loadDetailImage = (e) => {
-    for (let i = 0; i < detailImgs.length(); i++) {
-      <img src={detailImgs[i]} multiple alt="preview" />;
-    }
-  };
-  //TODO
-  //데이터들 STATE객체화 시켜서 받기
-  //onClick 이벤트 만들기
-  //주소 api 따와서 주소불러오기
-  //이미지 그리드로 보여주기
-  // - 동적으로 생성해야됨
+    setDatailImgs(e.target.files);
+    const fileArr = Array.from(e.target.files);
 
-  const encodeFileToBase64 = (fileBlob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setImageSrc(reader.result);
-        console.log(imageSrc);
-        resolve();
+    const imgBox = document.querySelector(".imgBox");
+
+    fileArr.forEach((file, index) => {
+      const reader = new FileReader();
+
+      //이미지 박스와 이미지 생성
+      const imgDiv = document.createElement("div");
+      const img = document.createElement("img");
+      img.classList.add("image"); //이미지에 이미지 태그 붙이기
+      imgDiv.classList.add("imgDiv");
+
+      img.onclick = function (e) {
+        imgDiv.remove();
       };
+
+      imgDiv.appendChild(img);
+
+      reader.onload = () => {
+        img.src = reader.result;
+      }; //end on load
+
+      imgBox.appendChild(imgDiv);
+
+      reader.readAsDataURL(file);
     });
   };
-
-  // const getPreviewImg = () => {
-  //   if (images === null || images.length === 0) {
-  //     return (
-  //       <ImgAreaContainer>
-  //         <ImgArea>
-  //           <Img
-  //             src="https://k-startup.go.kr/images/homepage/prototype/noimage.gif"
-  //             alt="dd"
-  //           />
-  //         </ImgArea>
-  //         <ImgName>등록된 이미지가 없습니다.</ImgName>
-  //       </ImgAreaContainer>
-  //     );
-  //   } else {
-  //     return images.map((el, index) => {
-  //       return (
-  //         <ImgAreaContainer key={index}>
-  //           <ImgArea>
-  //             <Img src={images[index]} />
-  //           </ImgArea>
-
-  //           {/* <DeleteButton onClick={deleteImg}>❌</DeleteButton> */}
-  //         </ImgAreaContainer>
-  //       );
-  //     });
-  //   }
-  // };
 
   return (
     <Main>
@@ -184,19 +167,19 @@ export default function HostAddRoom({ mode }) {
 
         <InputBox>
           <StyledLabel>룸 이미지 선택</StyledLabel>
-          <ImageView name="images" readonly>
-            {imageSrc && <img src={imageSrc} alt="preview" readonly />}
-          </ImageView>
-
+          <SubImageView
+            className="imgBox"
+            name="spaceSubImages"
+            ref={subViewInput}
+            onChange={loadDetailImage}
+          ></SubImageView>
           <ImageInput
             name="roomInfo.images.image"
             type="file"
             multiple
             accept="image/*"
-            onChange={(e) => {
-              encodeFileToBase64(e.target.files[0]);
-            }}
-          />
+            onChange={loadDetailImage}
+          ></ImageInput>
         </InputBox>
 
         <ButtonBox>
@@ -316,6 +299,13 @@ const SubImageView = styled.div`
   width: 100%;
   overflow: auto;
   border-radius: 4px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+
+  .image {
+    width: 100%;
+    display: block;
+  }
 `;
 
 const StyledButton = styled.button`

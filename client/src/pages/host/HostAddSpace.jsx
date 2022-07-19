@@ -143,7 +143,6 @@ export default function HostAddSpace({ mode }) {
   const handleComplete = (data) => {
     let fullAddress = data.address;
     let zoneCode = data.zonecode;
-    console.log(data);
 
     const newItem = {
       ...addressState,
