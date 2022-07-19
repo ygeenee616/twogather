@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState, memo, useRef } from "react";
 import { RiEdit2Fill, RiExternalLinkFill } from "react-icons/ri";
 import ListItem from "./StripeListItem";
-import AdminBookDetail from "../pages/AdminBookDetail";
+import BookDetail from "../pages/BookDetail";
 import UserInfo from "../components/UserInfo";
 import { Link, useNavigate } from "react-router-dom";
 

@@ -16,7 +16,7 @@ import UpdateNotice from "./pages/UpdateNotice";
 import AdminHome from "./pages/AdminHome";
 import AdminUserList from "./pages/AdminUserList";
 import AdminBookList from "./pages/AdminBookList";
-import AdminBookDetail from "./pages/AdminBookDetail";
+import AdminBookDetail from "./pages/BookDetail";
 import HostHome from "./pages/HostHome";
 import AddHost from "./pages/host/AddHost";
 import AddSpace from "./pages/AddSpace";
@@ -38,7 +38,9 @@ import AdminNav from "./components/admin/AdminNav";
 import AdminNotice from "./pages/admin/AdminNotice";
 import AdminUser from "./pages/admin/AdminUser";
 import AdminBook from "./pages/admin/AdminBook";
-import HostBook from "./pages/host/HostBook";
+import HostRoomList from "./pages/host/HostRoomList";
+import HostRoomBook from "./pages/host/HostRoomBook";
+import BookDetail from "../src/pages/BookDetail";
 
 function App() {
   return (
@@ -65,14 +67,14 @@ function App() {
             <Route path="/admin/bookList" element={<AdminBook />} />
             <Route
               path="/admin/bookList/bookDetail/:bookId"
-              element={<AdminBookDetail />}
+              element={<BookDetail />}
             />
 
-            <Route path="/host/bookList" element={<HostBook />} />
-            <Route path="/host/bookList/:bookId" element={<BookList />} />
+            <Route path="/host/bookList" element={<HostRoomList />} />
+            <Route path="/host/bookList/:roomId" element={<HostRoomBook />} />
             <Route
-              path="/host/bookList/bookDetail/:bookId"
-              element={<AdminBookDetail />}
+              path="/host/bookList/:roomId/bookDetail/:bookId"
+              element={<BookDetail />}
             />
 
             <Route path="/hostHome" element={<HostNav />} />

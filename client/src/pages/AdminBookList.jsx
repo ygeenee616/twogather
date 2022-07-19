@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import StripeLayout from "../components/StripeLayout";
-import AdminBookDetail from "./AdminBookDetail";
+import BookDetail from "./BookDetail";
 import axios from "axios";
 import * as Api from "../api";
 
