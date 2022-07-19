@@ -6,14 +6,18 @@ import { useNavigate } from "react-router-dom";
 import * as Api from "../../api";
 
 function MyProfileEdit({ user, handleEditUserDone }) {
-
   const { nickname, name, sex, phoneNumber } = user;
   const [newNickname, setNewNickname] = useState(nickname ?? "");
   const [newName, setNewName] = useState(name ?? "");
   const [newSex, setNewSex] = useState(sex ?? "");
   const [newPhoneNumber, setNewPhoneNumber] = useState(phoneNumber ?? "");
   const [newPassword, setNewPassword] = useState("");
-  const [newUser, setNewUser] = useState({});
+  const [newUser, setNewUser] = useState({
+    nickname: "",
+    name: "이름",
+    sex: "",
+    phoneNumber: "",
+  });
   const isNicknameValid = newNickname.length >= 2 && newNickname.length <= 10;
   const isPasswordValid = validatePassword(newPassword) || newPassword === "";
   const isFormValid = isNicknameValid && isPasswordValid;
@@ -31,9 +35,9 @@ function MyProfileEdit({ user, handleEditUserDone }) {
 
   const handleDoneEdit = async (e) => {
     e.preventDefault();
+    console.log(newUser);
 
     const userData = newUser;
-
     for (var prop in userData) {
       if (userData[prop] === "") {
         delete userData[prop];
@@ -43,7 +47,7 @@ function MyProfileEdit({ user, handleEditUserDone }) {
     if (isFormValid && newUser !== null) {
       try {
         const res = await Api.patch("api/users", userData);
-
+        handleEditUserDone();
       } catch (err) {
         console.log(err);
       }
@@ -52,7 +56,7 @@ function MyProfileEdit({ user, handleEditUserDone }) {
 
   return (
     <Container>
-      <form onSubmit={handleDoneEdit}>
+      <form>
         <EditProfileTable>
           <tbody>
             <tr>
@@ -135,7 +139,7 @@ function MyProfileEdit({ user, handleEditUserDone }) {
             </tr>
           </tbody>
         </EditProfileTable>
-        <RegisterBtn onClick={handleEditUserDone}>수정 완료</RegisterBtn>
+        <RegisterBtn onClick={(e)=>handleDoneEdit(e)}>수정 완료</RegisterBtn>
       </form>
     </Container>
   );
