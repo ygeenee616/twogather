@@ -8,12 +8,11 @@ import HostUpdateSpace from "../HostUpdateSpace";
 import * as api from "../../api";
 import { useNavigate } from "react-router-dom";
 import { Container } from "../../components/register/UserForm";
-<<<<<<< HEAD:client/src/pages/hostPage/HostSpaceList2.jsx
+
 import Modal from "../../components/Modal";
 import * as Api from "../../api";
-=======
+
 import HostNav from "../../components/host/HostNav";
->>>>>>> front:client/src/pages/host/HostSpaceList2.jsx
 
 ProductList.defaultProps = {
   host: {

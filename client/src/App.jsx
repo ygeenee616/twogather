@@ -18,10 +18,8 @@ import AdminUserList from "./pages/AdminUserList";
 import AdminBookList from "./pages/AdminBookList";
 import AdminBookDetail from "./pages/BookDetail";
 import HostHome from "./pages/HostHome";
-
-import AddHost from "./pages/AddHost";
-import HostAddSpace from "./pages/hostPage/HostAddSpace";
-
+import AddHost from "./pages/host/AddHost";
+import HostAddSpace from "./pages/host/HostAddSpace";
 import HostBookList from "./pages/HostBookList";
 import HostSpaceList2 from "./pages/host/HostSpaceList2";
 import HostUpdateSpace from "./pages/HostUpdateSpace";
