@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import * as Api from "../../api";
 import HostNav from "../../components/host/HostNav";
 import BookList from "../../components/BookList";
@@ -10,6 +9,8 @@ export default function HostRoomBook() {
   const [data, setData] = useState("");
   const [totalPage, setTotalPage] = useState(1);
 
+  const { roomId } = useParams();
+
   let location = useLocation();
   const params = new URLSearchParams(location.search);
   const page = Number(params.get("page"));
@@ -17,9 +18,11 @@ export default function HostRoomBook() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const req = await Api.get(`api/reservations?page=${page}&perPage=5`);
-        const data = await req.data.data.spaces.paginatedReservations;
-        setTotalPage(req.data.data.spaces.totalPage);
+        const req = await Api.get(
+          `api/reservations/room/${roomId}?page=${page}&perPage=5`
+        );
+        const data = await req.data.data.paginatedReservations;
+        setTotalPage(req.data.data.totalPage);
         setData(data);
         console.log(req);
         console.log(data);
