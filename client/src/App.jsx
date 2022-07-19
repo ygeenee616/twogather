@@ -21,7 +21,7 @@ import HostHome from "./pages/HostHome";
 import AddHost from "./pages/host/AddHost";
 import HostAddSpace from "./pages/host/HostAddSpace";
 import HostBookList from "./pages/HostBookList";
-import HostSpaceList2 from "./pages/host/HostSpaceList2";
+import HostSpaceList from "./pages/host/HostSpaceList";
 import HostUpdateSpace from "./pages/HostUpdateSpace";
 import HostAddRoom from "./pages/host/HostAddRoom";
 import HostUpdateRoom from "./pages/host/HostUpdateRoom";
@@ -70,27 +70,24 @@ function App() {
               element={<BookDetail />}
             />
 
-            <Route path="/host/bookList" element={<BookList />} />
-            <Route path="/host/bookList/:bookId" element={<BookList />} />
+            <Route path="/host/bookList" element={<HostRoomList />} />
+            <Route path="/host/bookList/:bookId" element={<HostRoomBook />} />
 
             <Route
               path="/host/bookList/:roomId/bookDetail/:bookId"
               element={<BookDetail />}
             />
 
-            <Route path="/hostHome" element={<HostNav />} />
-            <Route path="/adminHome" element={<AdminNav />} />
-
             {/* 호스트 정보 추가 */}
             <Route path="/host/addHost" element={<AddHost />} />
             {/* 공간 추가 */}
             <Route path="/host/addSpace" element={<HostAddSpace />} />
             {/* 공간 리스트 */}
-            <Route path="/host/spaceList" element={<HostSpaceList2 />} />
+            <Route path="/host/spaceList" element={<HostSpaceList />} />
             {/* 룸 리스트 */}
             <Route
               path="/host/spaceList/:spaceId"
-              element={<HostSpaceList2 />}
+              element={<HostSpaceList />}
             />
             {/* 공간 수정 */}
             <Route

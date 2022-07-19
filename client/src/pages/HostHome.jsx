@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Chart from "../components/Chart";
-import HostSpaceList2 from "./host/HostSpaceList2";
+import HostSpaceList from "./host/HostSpaceList";
 import HostBookList from "./HostBookList";
 import { FaUserCircle } from "react-icons/fa";
 import StripeLayout from "../components/StripeLayout";
@@ -72,7 +72,7 @@ function HostHome() {
           {content === "manageBooked" ? (
             <BookList data={bookdata} endpoint={"host/bookList/bookDetail/"} />
           ) : content === "manageSpace" ? (
-            <HostSpaceList2 /> //추후 공간내역이 들어가야함
+            <HostSpaceList /> //추후 공간내역이 들어가야함
           ) : content === "manageQA" ? (
             <HostQnA />
           ) : (

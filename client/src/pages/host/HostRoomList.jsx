@@ -14,6 +14,7 @@ export default function HostRoomBook() {
         const req = await Api.get(`api/rooms/host`);
         const data = await req.data.data;
         setData(data);
+        console.log(data);
       } catch (err) {
         console.log(err);
       }
