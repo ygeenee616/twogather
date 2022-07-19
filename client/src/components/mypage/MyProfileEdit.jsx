@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { TagTD, InputTD, AlertTR, RegisterBtn } from "../register/Register";
 import { useEffect, useState } from "react";
 import { validatePassword } from "../../assets/utils/UsefulFunction";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import * as Api from "../../api";
 
 function MyProfileEdit({ user, handleEditUserDone }) {
@@ -12,12 +12,7 @@ function MyProfileEdit({ user, handleEditUserDone }) {
   const [newSex, setNewSex] = useState(sex ?? "");
   const [newPhoneNumber, setNewPhoneNumber] = useState(phoneNumber ?? "");
   const [newPassword, setNewPassword] = useState("");
-  const [newUser, setNewUser] = useState({
-    nickname: "",
-    name: "이름",
-    sex: "",
-    phoneNumber: "",
-  });
+  const [newUser, setNewUser] = useState({});
   const isNicknameValid = newNickname.length >= 2 && newNickname.length <= 10;
   const isPasswordValid = validatePassword(newPassword) || newPassword === "";
   const isFormValid = isNicknameValid && isPasswordValid;
@@ -33,8 +28,8 @@ function MyProfileEdit({ user, handleEditUserDone }) {
     });
   }, [newNickname, newName, newPassword, newSex, newPhoneNumber]);
 
-  const handleDoneEdit = async (e) => {
-    e.preventDefault();
+  // 쿼리
+  const handleDoneEdit = async () => {
     console.log(newUser);
 
     const userData = newUser;
@@ -47,7 +42,8 @@ function MyProfileEdit({ user, handleEditUserDone }) {
     if (isFormValid && newUser !== null) {
       try {
         const res = await Api.patch("api/users", userData);
-        handleEditUserDone();
+        console.log(res);
+        window.location.replace('/mypage');
       } catch (err) {
         console.log(err);
       }
@@ -139,7 +135,14 @@ function MyProfileEdit({ user, handleEditUserDone }) {
             </tr>
           </tbody>
         </EditProfileTable>
-        <RegisterBtn onClick={(e)=>handleDoneEdit(e)}>수정 완료</RegisterBtn>
+        <RegisterBtn
+          onClick={(e) => {
+            e.preventDefault();
+            handleDoneEdit();
+          }}
+        >
+          수정 완료
+        </RegisterBtn>
       </form>
     </Container>
   );

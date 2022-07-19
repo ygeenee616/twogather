@@ -12,7 +12,7 @@ export default function AdminBook() {
       try {
         const req = await Api.get(`api/reservations?page=1&perPage=5`);
         console.log(req);
-        const data = await req.data.data.spaces.paginatedSpaces;
+        const data = await req.data.data.spaces.paginatedReservations;
         setData(data);
         console.log(data);
       } catch (err) {
