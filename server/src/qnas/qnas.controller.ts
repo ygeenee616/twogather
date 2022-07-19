@@ -9,7 +9,6 @@ import {
   UseGuards,
   Query,
   UnauthorizedException,
-  ForbiddenException,
 } from '@nestjs/common';
 import { QnasService } from './qnas.service';
 import { CreateQnaDto } from './dto/create-qna.dto';
@@ -23,17 +22,13 @@ import {
 } from '@nestjs/swagger';
 import { Qna } from './entities/qna.entity';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUser } from 'src/custom.decorator';
+import { GetAdminUser, GetUser } from 'src/custom.decorator';
 import { QnaResExample } from './qna.swagger.example';
 import { User } from 'src/users/entities/users.entity';
 const qnaResExample = new QnaResExample();
 
 @Controller('api/qnas')
 @ApiTags('Q&A API')
-// @ApiHeader({
-//   name: 'authorization',
-//   description: 'Auth token',
-// }) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
 export class QnasController {
   constructor(private readonly qnasService: QnasService) {}
 
@@ -52,10 +47,7 @@ export class QnasController {
       example: qnaResExample.create,
     },
   })
-  @ApiHeader({
-    name: 'authorization',
-    description: 'Auth token',
-  })
+  @ApiBearerAuth('userToken')
   async create(
     @GetUser() user,
     @Body() createQnaDto: CreateQnaDto,
@@ -72,9 +64,10 @@ export class QnasController {
 
   // 전체 Q&A 목록 조회
   @Get()
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: 'Q&A findAll API',
-    description: '전체 Q&A 목록을 불러온다.',
+    description: '전체 Q&A 목록을 불러온다.(admin)',
   })
   @ApiResponse({
     status: 200,
@@ -83,7 +76,8 @@ export class QnasController {
       example: qnaResExample.findAll,
     },
   })
-  async findAll() {
+  @ApiBearerAuth('userToken')
+  async findAll(@GetAdminUser() admin: User) {
     const qnas = await this.qnasService.findAll();
     return {
       status: 200,
@@ -109,12 +103,24 @@ export class QnasController {
   })
   async findAllBySpace(@Param('spaceId') spaceId: number, @Query() query) {
     const { page, perPage } = query;
+    if (!query || query === undefined || query === null) {
+      const qnas = this.qnasService.findBySpace(spaceId);
+      return {
+        status: 200,
+        description: '특정 공간의 Q&A 목록 조회 성공',
+        success: true,
+        data: {
+          qnas,
+        },
+      };
+    }
     const startIndex: number = Number(perPage) * (Number(page) - 1);
-    const { totalPage, paginatedQnas } = await this.qnasService.findAllBySpace(
-      spaceId,
-      startIndex,
-      Number(perPage),
-    );
+    const { totalPage, paginatedQnas } =
+      await this.qnasService.findBySpacePaginated(
+        spaceId,
+        startIndex,
+        Number(perPage),
+      );
     return {
       status: 200,
       description: '특정 공간의 Q&A 목록 조회 성공',
@@ -126,6 +132,7 @@ export class QnasController {
     };
   }
 
+  //qna Id로 조회
   @Get(':id')
   @ApiOperation({
     summary: '특정 Q&A 찾는 API',
