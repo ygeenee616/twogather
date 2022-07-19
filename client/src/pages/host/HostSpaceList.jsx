@@ -6,88 +6,105 @@ import exImg1 from "../../assets/images/ex1.png";
 import exImg2 from "../../assets/images/ex2.png";
 import HostUpdateSpace from "../HostUpdateSpace";
 import * as api from "../../api";
+import { useNavigate } from "react-router-dom";
+import { Container } from "../../components/register/UserForm";
+
+import Modal from "../../components/Modal";
+import * as Api from "../../api";
+
 import HostNav from "../../components/host/HostNav";
 
-ProductList.defaultProps = {
+HostSpaceList.defaultProps = {
   host: {
     id: "host123",
     name: "김민수",
   },
 };
 
-// const ex1 = [
-//   {
-//     src: [exImg1, exImg2],
-//     tag: [
-//       "#강남모임공간",
-//       "#강남파티룸",
-//       "#강남럭셔리파티룸",
-//       "#강남럭셔리모임공간",
-//       "#앤틱공간대여",
-//     ],
-//     title: "강남최대 앤틱모임공간 공유먼트청담",
-//     address: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
-//     price: "150,000",
-//     review: "12",
-//   },
-// ];
-// const ex2 = [
-//   {
-//     src: [exImg1, exImg2],
-//     tag: [
-//       "#강남모임공간",
-//       "#강남파티룸",
-//       "#강남럭셔리파티룸",
-//       "#강남럭셔리모임공간",
-//       "#앤틱공간대여",
-//     ],
-//     title: "강남최대 앤틱모임공간 공유먼트청담",
-//     address: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
-//     price: "150,000",
-//     review: "12",
-//   },
-// ];
-
-// let exData = [];
-// for (let i = 0; i < 4; i++) {
-//   exData = exData.concat(ex1);
-// }
-// for (let i = 4; i < 8; i++) {
-//   exData = exData.concat(ex2);
-// }
-
-export default function ProductList({ host }) {
+export default function HostSpaceList({ host }) {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
-  const [data, setData] = useState(false);
+  const [datas, setDatas] = useState(false);
   const limit = 4;
   const offset = (page - 1) * limit;
+  const [dataTrigger, setDataTrigger] = useState(0);
 
   useEffect(() => {
     async function getData() {
       try {
         const res = await api.get("api/spaces/host");
-        const resData = res.data.data;
-        setData(resData);
+        const data = res.data.data;
+        setDatas(data);
         console.log(data);
       } catch (err) {
         console.log(err);
       }
     }
     getData();
-  }, []);
+  }, [dataTrigger]);
+
+  const openModalDeletePopup = async () => {
+    const modal = document.querySelector(".modalWrap");
+    modal.style.display = "block";
+    window.scrollTo(0, 0);
+  };
+
+  const closeDeleteSpacePopup = async (props) => {
+    const spaceId = props;
+    //확인 누르면 삭제하고 딜리트함
+    try {
+      setDataTrigger(dataTrigger + 1);
+      const response = await Api.delete(`api/spaces/host/${spaceId}`);
+      console.log(response);
+      document.querySelector(".deleteModal").content = "삭제되었습니다.";
+    } catch (err) {
+      console.log("err");
+    }
+
+    const modal = document.querySelector(".modalWrap");
+    modal.style.display = "none";
+    window.scrollTo(0, 0);
+  };
 
   const renderData = (offset, limit, data) => {
     return data.slice(offset, offset + limit).map((data, i) => (
-      <ProductCard
-        key={i}
-        src={[exImg1, exImg2]} //아직없음
-        hashtags={data.hashtags}
-        name={data.name}
-        address={data.address}
-        price={15000}
-        review={13} //아직없음
-        link={`/host/updateSpace/${data.id}`}
-      />
+      <>
+        <ProductCard
+          key={i}
+          src={[exImg1, exImg2]} //아직없음
+          hashtags={["#강남모임공간", "#블라블라"]}
+          name={data.name}
+          address={data.address}
+          price={15000}
+          review={13} //아직없음
+          link={`/host/updateSpace/${data.id}`}
+        ></ProductCard>
+        <SubMenuBar>
+          <Menu onClick={() => navigate(`/host/updateSpace/${data.id}`)}>
+            1.공간수정
+          </Menu>
+          <Menu onClick={() => openModalDeletePopup(data.id)}>2.공간삭제</Menu>
+          {/* 공간삭제 */}
+          <Menu onClick={() => navigate(`/host/addRoom/${data.id}`)}>
+            3.룸추가
+          </Menu>
+          <Menu onClick={() => navigate(`/host/updateRoom/${data.id}`)}>
+            4.룸수정
+          </Menu>
+          {/* 룸수정에서 삭제하기? */}
+          <Menu onClick>5.룸삭제</Menu>
+          {/* {// 룸삭제 구현?//} */}
+        </SubMenuBar>
+        <ModalWrap className="modalWrap">
+          <Modal
+            className="deleteModal"
+            title="공간 삭제"
+            content="정말 삭제하시겠습니까?
+            공간의 룸들도 모두 삭제됩니다."
+            clickEvent={() => closeDeleteSpacePopup(data.id)}
+          />
+        </ModalWrap>
+      </>
     ));
   };
 
@@ -98,17 +115,17 @@ export default function ProductList({ host }) {
   return (
     <div>
       <HostNav />
-      {data && (
+      {datas && (
         <BottomWrap>
           <TitleContanier>
             <MainTitle>{host.name}님 </MainTitle>
             <Title>공간내역</Title>
           </TitleContanier>
           <div onClick={clickToModSpace}>
-            <ProductWrap>{renderData(offset, limit, data)}</ProductWrap>
+            <ProductWrap>{renderData(offset, limit, datas)}</ProductWrap>
             <div>
               <Pagination
-                total={data.length}
+                total={datas.length}
                 limit={limit}
                 page={page}
                 setPage={setPage}
@@ -121,16 +138,34 @@ export default function ProductList({ host }) {
   );
 }
 
+const SubMenuBar = styled.div`
+  paddin: 3%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+`;
+
+const Menu = styled.div`
+  cursor: pointer;
+  :hover {
+    color: blue;
+  }
+`;
 const BottomWrap = styled.div`
-  margin: 0 15%;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 80px;
+  margin-bottom: 80px;
 `;
 
 const TitleContanier = styled.div`
-  width: 160px;
   border-bottom: 2px solid #8daef2;
   display: flex;
-  justify-content: space-around;
-  margin: 10% auto;
+  justify-content: center;
+  width: 100%;
 `;
 
 const MainTitle = styled.span`
@@ -150,5 +185,14 @@ const ProductWrap = styled.div`
   width: 100%;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 2vw;
+  gap: 2%;
+`;
+
+const ModalWrap = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 244vh;
+  background-color: rgba(90, 90, 90, 0.2);
+  display: none;
 `;

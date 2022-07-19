@@ -59,7 +59,7 @@ export default function BookDetail() {
     data && (
       <FullContainer>
         <BookInfo
-          roomTitle={data.room}
+          roomTitle={data.room.name}
           date={data.date}
           startTime={data.startTime}
           endTime={data.endTime}
