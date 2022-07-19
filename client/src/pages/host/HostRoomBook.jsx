@@ -13,6 +13,8 @@ export default function HostRoomBook() {
         const req = await Api.get(`api/reservations?page=1&perPage=5`);
         const data = await req.data.data.spaces.paginatedSpaces;
         setData(data);
+        console.log(req);
+        console.log(data);
       } catch (err) {
         console.log(err);
       }
