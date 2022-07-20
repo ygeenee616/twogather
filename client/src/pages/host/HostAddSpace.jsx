@@ -70,7 +70,9 @@ export default function HostAddSpace({ mode }) {
 
     const response = await Api.post(`api/spaces`, {
       name: spaceInfo.name, //공간명
-      address: stringAddress, //실주소
+      address1: addressState.myZoneCode, //실주소
+      address2: addressState.myFullAddress,
+      address3: addressState.myPersonalAddress,
       type: spaceInfo.type, //공간타입
       notice: spaceInfo.notice, //주의사항
       intro: spaceInfo.intro, //공간소개

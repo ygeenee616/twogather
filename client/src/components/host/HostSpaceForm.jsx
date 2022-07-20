@@ -33,7 +33,9 @@ export default function HostSpaceForm({ mode, data }) {
     hashTags: data.hashTags, //태그
     Images: "귀여운탱구사진",
     notice: data.notice, //주의사항
-    address: addressState, //실주소
+    address1: addressState.myZoneCode, //실주소
+    address2: addressState.myFullAddress,
+    address3: addressState.myPersonalAddress,
   });
 
   //주소창 handlechange
@@ -70,10 +72,12 @@ export default function HostSpaceForm({ mode, data }) {
 
     await Api.patch(`api/spaces/host/${data.id}`, {
       name: spaceInfo.name, //공간명
-      address: stringAddress, //실주소
       type: spaceInfo.type, //공간타입
       notice: spaceInfo.notice, //주의사항
       intro: spaceInfo.intro, //공간소개
+      address1: addressState.myZoneCode, //실주소
+      address2: addressState.myFullAddress,
+      address3: addressState.myPersonalAddress,
       //hashTags: spaceInfo.hashTags,
       //Images: "귀여운탱구사진",
     });

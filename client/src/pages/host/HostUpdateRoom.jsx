@@ -66,27 +66,20 @@ export default function HostAddRoom({ mode }) {
   };
 
   const handleDeleteSubmit = async (e) => {
+    console.log("Adasdasd");
     e.preventDefault();
     let roomResponse;
     if (!roomInfo.capacity || !roomInfo.price) {
       setAlert("값을 입력해 주세요");
     }
     try {
-      roomResponse = await Api.patch(`api/rooms/host/${roomId}`, {
-        name: roomInfo.roomName, //공간명
-        capacity: Number(roomInfo.personal), //수용인원
-        price: Number(roomInfo.price), //공간타입
-        description: roomInfo.roomType,
-        // spaceId: Number(params.spaceId),
-        //imgaes: [roomInfo.images],
-      });
+      roomResponse = await Api.delete(`api/rooms/host/${roomId}`);
 
-      const modal = document.querySelector(".modalWrap");
-      const modalDelete = document.querySelector(".updateModal");
+      console.log(roomResponse);
+      const modal = document.querySelector(".deleteWrap");
+
       modal.style.display = "block";
       window.scrollTo(0, 0);
-
-      modalDelete.title = "졸려용";
     } catch (err) {
       console.log("err발생");
     }
@@ -245,9 +238,18 @@ export default function HostAddRoom({ mode }) {
 
         <ModalWrap className="modalWrap">
           <Modal
-            className="updateModal"
+            className="modal"
             title="룸 수정"
             content="룸이 수정되었습니다.."
+            clickEvent={() => navigate("/host/spaceList")}
+          />
+        </ModalWrap>
+
+        <ModalWrap className="deleteWrap">
+          <Modal
+            className="modal"
+            title="룸 삭제"
+            content="룸이 삭제되었습니다.."
             clickEvent={() => navigate("/host/spaceList")}
           />
         </ModalWrap>
