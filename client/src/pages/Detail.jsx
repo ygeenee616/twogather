@@ -170,7 +170,7 @@ export default function Detail() {
         <DetailContainer>
           <LeftContainer>
             <ImageSlider images={images} />
-            <Tab contents={contents} />
+            <Tab contents={contents} title={title} />
             <Map title={title} address={address} />
           </LeftContainer>
 

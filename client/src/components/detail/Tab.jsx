@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // 탭 스크롤 함수
 function changeTab(props) {
@@ -8,8 +8,9 @@ function changeTab(props) {
   thisContent.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
-export default function Tab({ contents }) {
+export default function Tab({ contents, title }) {
   const navigate = useNavigate();
+  const { spaceId } = useParams();
 
   return (
     contents && (
@@ -51,7 +52,13 @@ export default function Tab({ contents }) {
           </TabContent>
           <TabContent className="tab4">
             <h2>Q&A</h2>
-            <AddQnA onClick={() => navigate("/mypage/addQna")}>
+            <AddQnA
+              onClick={() =>
+                navigate("/mypage/addQna", {
+                  state: { spaceId: spaceId, spaceName: title },
+                })
+              }
+            >
               질문 작성하기
             </AddQnA>
             {contents.qna.map((item, i) => {
