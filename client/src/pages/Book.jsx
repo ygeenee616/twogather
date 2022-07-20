@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import GetBookerInfo from "../components/book/GetBookerInfo";
 import HostInfo from "../components/book/HostInfo";
 import BookInfo from "../components/book/BookInfo";
@@ -11,13 +11,16 @@ import * as Api from "../api";
 
 export default function Book() {
   const location = useLocation();
+  const navigate = useNavigate();
+
   // detail로 부터 받은 예약 정보
   const people = location.state.people;
   const date = location.state.date;
   const startTime = location.state.startTime;
   const endTime = location.state.endTime;
   const roomId = location.state.room.id;
-  const roomTitle = location.state.room.title;
+  const roomName = location.state.room.name;
+  const roomPay = location.state.room.pay;
   const host = location.state.host;
 
   // 유저 입력 정보
@@ -28,6 +31,9 @@ export default function Book() {
   const request = useRef("");
   // 예약 가능 여부
   const possible = useRef(false);
+
+  // 총액 계산
+  const totalPay = roomPay * people * (endTime - startTime);
 
   // 이름 입력 함수
   function onChangeName(e) {
@@ -54,6 +60,17 @@ export default function Book() {
     request.current = e;
   }
 
+  // API 호출용 날짜 포맷팅
+  function dateToBook(date) {
+    const fullDate = String(date);
+    const year = fullDate.substring(0, 4);
+    const month = fullDate.substring(4, 6);
+    const day = fullDate.substring(6, 8);
+
+    console.log(`${year}-${month}-${day}`);
+    return `${year}-${month}-${day}`;
+  }
+
   // 필수 예약 정보를 모두 입력했을 때만 예약 버튼을 활성화하는 함수
   function checkPossible(e) {
     e.preventDefault();
@@ -68,11 +85,17 @@ export default function Book() {
       const req = await Api.post(`api/reservations/${roomId}`, {
         startTime: startTime,
         endTime: endTime,
-        date: date,
-        personnel: people,
-        // 이름 연락처 이메일 요청사항 사용 목적 추가
+        date: dateToBook(date),
+        personnel: Number(people),
+        totalPrice: totalPay,
+        reserveUsername: name,
+        reservePhoneNumber: phone,
+        reserveEmail: email,
+        purpose: purpose.current,
+        requirement: request.current,
       });
-      // console.log(req);
+      navigate("/mypage");
+      console.log(req);
     } catch (err) {
       console.log(err);
     }
@@ -96,11 +119,12 @@ export default function Book() {
       <HostInfo host={host} />
       <BookInfo
         roomId={roomId}
-        roomTitle={roomTitle}
+        roomName={roomName}
         people={people}
         date={date}
         startTime={startTime}
         endTime={endTime}
+        totalPay={totalPay}
       />
       <BookBox possible={possible.current}>
         <p className="required">*예약 필수 정보를 입력해주세요</p>
