@@ -63,7 +63,6 @@ function LoginForm() {
         setAlertMsg("");
 
         // const userData = await getData();
-
         // const userType = userData.isAdmin
         //   ? "Admin"
         //   : userData.businessNumber
