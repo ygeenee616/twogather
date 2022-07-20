@@ -48,7 +48,11 @@ export class SpacesService {
 
       // no type?
       if (type === undefined || type === null) {
-        if (dateOrder === undefined || dateOrder === null) {
+        if (
+          dateOrder === undefined ||
+          dateOrder === null ||
+          dateOrder === 'DESC'
+        ) {
           // keyword?
           if (keyword === undefined || keyword === null) {
             paginatedSpaces = await this.spacesRepository.find({
@@ -139,7 +143,11 @@ export class SpacesService {
         }
       } else {
         // type?
-        if (dateOrder === undefined || dateOrder === null) {
+        if (
+          dateOrder === undefined ||
+          dateOrder === null ||
+          dateOrder === 'DESC'
+        ) {
           // keyword?
           if (keyword === undefined || keyword === null) {
             paginatedSpaces = await this.spacesRepository.find({
@@ -191,6 +199,11 @@ export class SpacesService {
         } else {
           if (keyword === undefined || keyword === null) {
             paginatedSpaces = await this.spacesRepository.find({
+              select: {
+                rooms: true,
+                hashtags: true,
+                reviews: true,
+              },
               where: {
                 type,
               },
@@ -241,13 +254,20 @@ export class SpacesService {
             minVal = room.price;
           }
         });
+        let reviewsLength;
+        if (space.reviews === null || space.reviews === undefined) {
+          reviewsLength = 0;
+        } else {
+          reviewsLength = space.reviews.length;
+        }
         resPaginatedSpaces.push({
           id: space.id,
           name: space.name,
           type: space.type,
-          reviewsLength: space.reviews.length,
+          reviewsLength: reviewsLength,
           minPrice: minVal,
           rooms: space.rooms,
+          hashtags: space.hashtags,
         });
       });
 
@@ -383,13 +403,20 @@ export class SpacesService {
             minVal = room.price;
           }
         });
+        let reviewsLength;
+        if (space.reviews === null || space.reviews === undefined) {
+          reviewsLength = 0;
+        } else {
+          reviewsLength = space.reviews.length;
+        }
         resPaginatedSpaces.push({
           id: space.id,
           name: space.name,
           type: space.type,
-          reviewsLength: space.reviews.length,
+          reviewsLength: reviewsLength,
           minPrice: minVal,
           rooms: space.rooms,
+          hashtags: space.hashtags,
         });
       });
       return {
@@ -430,13 +457,20 @@ export class SpacesService {
             minVal = room.price;
           }
         });
+        let reviewsLength;
+        if (space.reviews === null || space.reviews === undefined) {
+          reviewsLength = 0;
+        } else {
+          reviewsLength = space.reviews.length;
+        }
         resSpaces.push({
           id: space.id,
           name: space.name,
           type: space.type,
-          reviewsLength: space.reviews.length,
+          reviewsLength: reviewsLength,
           minPrice: minVal,
           rooms: space.rooms,
+          hashtags: space.hashtags,
         });
       });
 
