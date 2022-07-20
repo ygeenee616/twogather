@@ -105,20 +105,44 @@ export class ReservationsService {
         },
       });
       const totalPage = Math.ceil(totalReservation.length / perPage);
-      const paginatedReservations = await this.reservationRepository.find({
-        where: {
-          date,
-        },
-        relations: {
-          user: true,
-          room: true,
-        },
-        order: {
-          id: 'DESC',
-        },
-        skip: startIndex,
-        take: perPage,
-      });
+      let paginatedReservations;
+      if (!date || date === undefined || date === null) {
+        paginatedReservations = await this.reservationRepository.find({
+          where: {
+            room: {
+              id: roomId,
+            },
+          },
+          relations: {
+            user: true,
+            room: true,
+          },
+          order: {
+            id: 'DESC',
+          },
+          skip: startIndex,
+          take: perPage,
+        });
+      } else {
+        paginatedReservations = await this.reservationRepository.find({
+          where: {
+            date,
+            room: {
+              id: roomId,
+            },
+          },
+          relations: {
+            user: true,
+            room: true,
+          },
+          order: {
+            id: 'DESC',
+          },
+          skip: startIndex,
+          take: perPage,
+        });
+      }
+
       return {
         totalPage,
         paginatedReservations,
