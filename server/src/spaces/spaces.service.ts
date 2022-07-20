@@ -1,6 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { reverse } from 'dns';
+import { userInfo } from 'os';
 import { User } from 'src/users/entities/users.entity';
 import { UsersService } from 'src/users/users.service';
 import { FindOptionsOrder, Like, MoreThanOrEqual, Repository } from 'typeorm';
@@ -254,10 +260,70 @@ export class SpacesService {
     }
   }
 
-  // id로 공간 조회
+  // hostId, id로 특정 공간 조회
+  async findOneByhostId(id: number, host: User) {
+    const space = await this.spacesRepository.findOne({
+      where: {
+        id,
+        user: host,
+      },
+    });
+    if (!space || space === null || space === undefined) {
+      throw new ForbiddenException(
+        '자신이 호스팅하는 공간에만 룸을 생성할 수 있습니다.',
+      );
+    }
+    return space;
+  }
+  // 단일 조회
   async findOne(id: number): Promise<Space> {
     try {
       const space = await this.spacesRepository.findOne({
+        select: {
+          user: {
+            id: true,
+          },
+          reviews: {
+            id: true,
+          },
+          hashtags: {
+            id: true,
+          },
+          rooms: {
+            id: true,
+          },
+        },
+        where: {
+          id,
+        },
+        relations: {
+          user: true,
+          hashtags: true,
+          rooms: true,
+          reviews: true,
+        },
+      });
+      return space;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // detail 페이지에서의 조회
+  async findOneInDetail(id: number): Promise<Space> {
+    try {
+      const space = await this.spacesRepository.findOne({
+        select: {
+          user: {
+            id: true,
+            businessAddress: true,
+            businessName: true,
+            businessNumber: true,
+            email: true,
+            phoneNumber: true,
+            name: true,
+          },
+        },
         where: {
           id,
         },
@@ -338,7 +404,7 @@ export class SpacesService {
   // HostId로 공간 목록 조회
   async findByUser(hostId: number): Promise<Space[]> {
     try {
-      return this.spacesRepository.find({
+      const totalSpaces: Array<Space> = await this.spacesRepository.find({
         select: {
           rooms: true,
           hashtags: true,
@@ -356,6 +422,25 @@ export class SpacesService {
           reviews: true,
         },
       });
+      const resSpaces = [];
+      totalSpaces.forEach((space) => {
+        let minVal = 999999;
+        space.rooms.forEach((room) => {
+          if (room.price && room.price < minVal) {
+            minVal = room.price;
+          }
+        });
+        resSpaces.push({
+          id: space.id,
+          name: space.name,
+          type: space.type,
+          reviewsLength: space.reviews.length,
+          minPrice: minVal,
+          rooms: space.rooms,
+        });
+      });
+
+      return resSpaces;
     } catch (error) {
       throw error;
     }
@@ -368,6 +453,11 @@ export class SpacesService {
         id,
         UpdateSpaceDto,
       );
+      if (updatedSpace.affected === 0) {
+        throw new UnauthorizedException(
+          '자신이 호스팅하는 공간 정보만 수정 가능합니다.',
+        );
+      }
       return updatedSpace.affected === 1;
     } catch (error) {
       throw error;
@@ -383,6 +473,20 @@ export class SpacesService {
     UpdateSpaceDto: UpdateSpaceDto,
   ) {
     try {
+      const space: Space = await this.spacesRepository.findOne({
+        where: {
+          id: spaceId,
+        },
+        relations: {
+          user: true,
+        },
+      });
+      if (space === null || space === undefined || !space) {
+        throw new NotFoundException('수정할 공간이 없습니다.');
+      }
+      if (space.user.id !== hostId) {
+        throw new ForbiddenException('호스트만 수정 가능합니다.');
+      }
       const updateSpace = await this.spacesRepository.update(
         {
           user: {
@@ -392,17 +496,21 @@ export class SpacesService {
         },
         UpdateSpaceDto,
       );
-
       return updateSpace.affected === 1;
     } catch (error) {
       throw error;
     }
   }
 
-  // 공간 삭제
-  async remove(id: number): Promise<void> {
+  // 내 공간 삭제
+  async removeMySpace(id: number, userId: number): Promise<void> {
     try {
-      const deletedSpace = await this.spacesRepository.delete(id);
+      const deletedSpace = await this.spacesRepository.delete({
+        id,
+        user: {
+          id: userId,
+        },
+      });
       if (!deletedSpace.affected) {
         throw new NotFoundException({
           description: '삭제할 공간이 없습니다.',

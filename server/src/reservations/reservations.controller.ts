@@ -26,13 +26,14 @@ import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/users/entities/users.entity';
 import { GetUser } from 'src/custom.decorator';
 import { RoomsService } from 'src/rooms/rooms.service';
+import { Json } from 'aws-sdk/clients/robomaker';
 
 @Controller('api/reservations')
 @ApiTags('예약 API')
 export class ReservationsController {
   constructor(
     private readonly reservationsService: ReservationsService,
-    private roomsService: RoomsService,
+    private readonly roomsService: RoomsService,
   ) {}
 
   // 예약 등록
@@ -58,11 +59,25 @@ export class ReservationsController {
     @Param('roomId') roomId: number,
   ) {
     const roomInfo = await this.roomsService.findOne(roomId);
-    const newReservation = await this.reservationsService.create(
+    const reservation = await this.reservationsService.create(
       createReservationDto,
       user,
       roomInfo,
     );
+
+    const newReservation = {
+      ...reservation,
+      user: {
+        id: reservation.user.id,
+        nickname: reservation.user.nickname,
+      },
+      room: {
+        id: reservation.room.id,
+        name: reservation.room.name,
+        price: reservation.room.price,
+      },
+    };
+    console.log(newReservation);
     return {
       status: 201,
       success: true,
