@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 
-export default function Map({ title, address }) {
+export default function Map({ name, address }) {
   useEffect(() => {
     const container = document.getElementById("map");
     const options = {
@@ -26,7 +26,7 @@ export default function Map({ title, address }) {
 
         // 인포윈도우로 장소에 대한 설명을 표시합니다
         var infowindow = new window.kakao.maps.InfoWindow({
-          content: `<div style="width:150px; text-align:center; padding:0;">${title}</div>`,
+          content: `<div style="width:150px; text-align:center; padding:0;">${name}</div>`,
         });
         infowindow.open(map, marker);
 

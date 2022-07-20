@@ -28,13 +28,17 @@ export default function HostRoomBook() {
         <HostNav />
         <RoomContainer>
           <Title>룸별 예약 내역</Title>
-          {data.map((room, id) => {
-            return (
-              <RoomLink to={`/host/bookList/${room.id}?page=1`} key={id}>
-                <RoomList>{room.name}</RoomList>
-              </RoomLink>
-            );
-          })}
+          {data.length === 0 ? (
+            <RoomList>아직 등록된 룸이 없습니다.</RoomList>
+          ) : (
+            data.map((room, id) => {
+              return (
+                <RoomLink to={`/host/bookList/${room.id}?page=1`} key={id}>
+                  <RoomList>{room.name}</RoomList>
+                </RoomLink>
+              );
+            })
+          )}
         </RoomContainer>
       </div>
     )

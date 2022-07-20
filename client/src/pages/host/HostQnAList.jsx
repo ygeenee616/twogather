@@ -35,9 +35,9 @@ export default function HostQnA() {
   }, []);
 
   // 답변 등록 함수
-  async function submitAnswer(e) {
+  async function submitAnswer(id) {
     try {
-      const req = await Api.patch(`api/qnas/${spaceId}`, {
+      const req = await Api.patch(`api/qnas/${id}`, {
         reply: answer,
       });
       console.log(req);
@@ -62,7 +62,7 @@ export default function HostQnA() {
                   {item.reply}
                 </Answer>
                 <SubmitBtn onClick={(e) => submitAnswer(item.id)}>
-                  답변 등록
+                  답변 등록 및 수정
                 </SubmitBtn>
               </QnABox>
             );
@@ -116,7 +116,7 @@ const SubmitBtn = styled.button`
   position: absolute;
   right: 0;
   bottom: -30px;
-  width: 100px;
+  width: 150px;
   padding: 5px;
   border-radius: 10px;
   border: none;
