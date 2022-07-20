@@ -13,7 +13,7 @@ export default function HostNav() {
         </Profile>
       </Menu>
       <Menu to={"/host/bookList"}>예약 관리</Menu>
-      <Menu to={"/host/spaceList"}>공간 관리</Menu>
+      <Menu to={"/host/spaceList?page=1"}>공간 관리</Menu>
       <Menu to={"/host/qna"}>Q&A 관리</Menu>
     </Nav>
   );
