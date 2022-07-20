@@ -1,13 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 import GetBookerInfo from "../components/book/GetBookerInfo";
 import HostInfo from "../components/book/HostInfo";
 import BookInfo from "../components/book/BookInfo";
 import ToTop from "../components/ToTop";
-import axios from "axios";
-import { useEffect } from "react";
 import * as Api from "../api";
+import Modal from "../components/Modal";
 
 export default function Book() {
   const location = useLocation();
@@ -94,7 +93,9 @@ export default function Book() {
         purpose: purpose.current,
         requirement: request.current,
       });
-      navigate("/mypage");
+      const modal = document.querySelector(".modalWrap");
+      modal.style.display = "block";
+      window.scrollTo(0, 0);
       console.log(req);
     } catch (err) {
       console.log(err);
@@ -133,6 +134,13 @@ export default function Book() {
         </button>
       </BookBox>
       <ToTop />
+      <ModalWrap className="modalWrap">
+        <Modal
+          title={"예약 성공"}
+          content={"룸 예약이 되었습니다."}
+          clickEvent={() => window.location.replace("/mypage")}
+        />
+      </ModalWrap>
     </FullContainer>
   );
 }
@@ -180,4 +188,17 @@ const BookBox = styled.div`
       color: #fff;
       `};
   }
+`;
+
+const ModalWrap = styled.div`
+  width: 100%;
+  position: fixed;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  vertical-allign: middle;
+  display: none;
+  background-color: rgba(90, 90, 90, 0.2);
 `;

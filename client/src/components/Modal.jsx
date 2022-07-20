@@ -25,6 +25,7 @@ const Container = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
+  vertical-align: middle;
   justify-content: center;
   align-items: center;
   z-index: 181800;
