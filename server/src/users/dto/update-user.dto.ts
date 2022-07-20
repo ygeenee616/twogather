@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsEmail,
   IsString,
@@ -10,4 +10,8 @@ import {
 import { CreateUserDto } from './create-user.dto';
 
 // UpdateUserDto는 CreateMovieDto와 인터페이스 동일하나 필수 값이 아니다
-export class UpdateUserDto extends PartialType(CreateUserDto) {}
+export class UpdateUserDto extends PartialType(CreateUserDto) {
+  @IsString()
+  @ApiPropertyOptional({ description: '프로필 사진' })
+  readonly profileImage: string;
+}

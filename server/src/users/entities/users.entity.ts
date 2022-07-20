@@ -41,7 +41,7 @@ export class User {
   @ApiPropertyOptional({ description: '성별' })
   sex: string;
 
-  @Column({ type: 'varchar', length: 45, nullable: true })
+  @Column({ type: 'varchar', length: 300, nullable: true })
   @ApiPropertyOptional({ description: '프로필 사진' })
   profileImage: string;
 

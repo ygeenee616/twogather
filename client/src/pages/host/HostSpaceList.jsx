@@ -36,8 +36,6 @@ export default function HostSpaceList({ host }) {
         const data = res.data.data;
         setDatas(data);
         console.log(data);
-        host.id = data[0].user.id;
-        host.name = data[0].user.nickname;
       } catch (err) {
         console.log(err);
       }
@@ -58,7 +56,6 @@ export default function HostSpaceList({ host }) {
     try {
       const response = await Api.delete(`api/spaces/host/${spaceId}`);
       console.log(response);
-      document.querySelector(".deleteModal").content = "삭제되었습니다.";
       setDataTrigger(dataTrigger + 1);
     } catch (err) {
       console.log(err);
@@ -79,8 +76,8 @@ export default function HostSpaceList({ host }) {
           name={data.name}
           address2={data.address2}
           address3={data.address3}
-          price={15000}
-          review={13} //아직없음
+          price={data.minPrice}
+          review={data.reviewsLength} //아직없음
           link={`/host/updateSpace/${data.id}`}
         ></ProductCard>
         <SubMenuBar>

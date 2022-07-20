@@ -8,9 +8,14 @@ import HashTag from "../../components/host/HashTag";
 import * as Api from "../../api";
 import { FiPrinter } from "react-icons/fi";
 import axios from "axios";
+import TypeSelector from "../../components/TypeSelector";
 
 export default function HostAddSpace({ mode }) {
   const nav = useNavigate();
+  const [select, setSelect] = useState({
+    items: ["파티룸", "스터디룸", "회의실", "연습실", "스튜디오"],
+    selectItem: "",
+  });
 
   //imgState
   const [imageSrc, setImageSrc] = useState("");
@@ -70,10 +75,7 @@ export default function HostAddSpace({ mode }) {
     e.preventDefault();
     const response = await Api.post(`api/spaces`, {
       name: spaceInfo.name, //공간명
-      address1: spaceInfo.address1,
-      address2: spaceInfo.address2,
-      address3: spaceInfo.address3,
-      type: spaceInfo.type, //공간타입
+      type: select.selectItem, //공간타입
       notice: spaceInfo.notice, //주의사항
       intro: spaceInfo.intro, //공간소개
       address1: addressState.myZoneCode, //실주소
@@ -93,7 +95,6 @@ export default function HostAddSpace({ mode }) {
     }
 
     //const res = formDataSend(detailImgs, spaceId);
-    console.log("Adadsadadasda");
 
     const modal = document.querySelector(".modalWrap");
     modal.style.display = "block";
@@ -148,12 +149,13 @@ export default function HostAddSpace({ mode }) {
   const handleComplete = (data) => {
     let fullAddress = data.address;
     let zoneCode = data.zonecode;
-
+    //let zoneCode = data.myPersonalAddress;
     const newItem = {
       ...addressState,
       myFullAddress: fullAddress,
       myZoneCode: zoneCode,
     };
+
     console.log(newItem);
     setAddressState(newItem);
     console.log("addressState:", addressState); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
@@ -168,24 +170,35 @@ export default function HostAddSpace({ mode }) {
 
   //**************************이미지 처리 api***********************/
 
+  const imgClickHandler = (e) => {
+    const fileArr = Array.from(e.target.files);
+    console.log(e.target);
+    console.log(e.target.value);
+  };
+
   const loadDetailImage = (e) => {
     setDatailImgs(e.target.files);
+
     const fileArr = Array.from(e.target.files);
 
     const imgBox = document.querySelector(".imgBox");
-
     fileArr.forEach((file, index) => {
       const reader = new FileReader();
 
       //이미지 박스와 이미지 생성
       const imgDiv = document.createElement("div");
       const img = document.createElement("img");
+
       img.classList.add("image"); //이미지에 이미지 태그 붙이기
       imgDiv.classList.add("imgDiv");
 
-      img.onclick = function (e) {
+      imgDiv.addEventListener("click", (e) => {
+        console.log("미지미지");
+        fileArr.splice(index, 1);
+        setDatailImgs(fileArr);
+        e.target.remove();
         imgDiv.remove();
-      };
+      });
 
       imgDiv.appendChild(img);
 
@@ -194,7 +207,6 @@ export default function HostAddSpace({ mode }) {
       }; //end on load
 
       imgBox.appendChild(imgDiv);
-
       reader.readAsDataURL(file);
     });
   };
@@ -237,6 +249,11 @@ export default function HostAddSpace({ mode }) {
             value={spaceInfo.intro}
             onChange={(e) => handleChangeState(e)}
           ></StyledTextArea>
+        </InputBox>
+
+        <InputBox className="selectBox">
+          <StyledLabel>공간 타입</StyledLabel>
+          <NewSelector state={select} setState={setSelect}></NewSelector>
         </InputBox>
 
         <HashTag
@@ -284,7 +301,14 @@ export default function HostAddSpace({ mode }) {
             multiple
             accept="image/*"
             onChange={loadDetailImage}
+            id="imgs"
+            style={{ display: "none" }}
           ></ImageInput>
+          <label for="imgs" id="imgs" type="file">
+            업로드
+          </label>
+          {/* <input type="file" name="uploadfile" id="img" style="display:none;" />{" "}
+          <label for="img">Click me to upload image</label> */}
         </InputBox>
 
         <ButtonBox>
@@ -293,6 +317,9 @@ export default function HostAddSpace({ mode }) {
             className="cancle"
             backGroundColor="#8daef2"
             color="white"
+            onClick={() => {
+              nav(-1);
+            }}
           >
             취소
           </StyledButton>
@@ -462,4 +489,9 @@ const ModalWrap = styled.div`
   height: 244vh;
   background-color: rgba(90, 90, 90, 0.2);
   display: none;
+`;
+const NewSelector = styled(TypeSelector)`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 `;

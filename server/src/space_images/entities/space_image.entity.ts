@@ -14,7 +14,7 @@ export class SpaceImage {
   @ApiProperty({ description: 'primary key Id' })
   id: number;
 
-  @Column({ type: 'varchar', length: 200 })
+  @Column({ type: 'varchar', length: 300 })
   @ApiProperty({ description: 'space 이미지 URL' })
   imageUrl: string;
 
