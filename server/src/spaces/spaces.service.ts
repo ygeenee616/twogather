@@ -366,7 +366,7 @@ export class SpacesService {
   }
 
   // HostId로 공간 목록 조회(paginated)
-  async findByUserPaginated(
+  async findByHostPaginated(
     hostId: number,
     startIndex: number,
     perPage: number,
@@ -413,6 +413,9 @@ export class SpacesService {
           id: space.id,
           name: space.name,
           type: space.type,
+          address1: space.address1,
+          address2: space.address2,
+          address3: space.address3,
           reviewsLength: reviewsLength,
           minPrice: minVal,
           rooms: space.rooms,
@@ -429,7 +432,7 @@ export class SpacesService {
   }
 
   // HostId로 공간 목록 조회
-  async findByUser(hostId: number): Promise<Space[]> {
+  async findByHost(hostId: number): Promise<Space[]> {
     try {
       const totalSpaces: Array<Space> = await this.spacesRepository.find({
         select: {
@@ -467,6 +470,9 @@ export class SpacesService {
           id: space.id,
           name: space.name,
           type: space.type,
+          address1: space.address1,
+          address2: space.address2,
+          address3: space.address3,
           reviewsLength: reviewsLength,
           minPrice: minVal,
           rooms: space.rooms,
