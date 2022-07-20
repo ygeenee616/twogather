@@ -79,6 +79,9 @@ export default function HostSpaceForm({ data }) {
       type: spaceInfo.type, //공간타입
       notice: spaceInfo.notice, //주의사항
       intro: spaceInfo.intro, //공간소개
+      address1: addressState.myZoneCode, //실주소
+      address2: addressState.myFullAddress,
+      address3: addressState.myPersonalAddress,
       //hashTags: spaceInfo.hashTags,
       //Images: "귀여운탱구사진",
     });
@@ -93,45 +96,6 @@ export default function HostSpaceForm({ data }) {
     const modal = document.querySelector(".modalWrap");
     modal.style.display = "block";
     window.scrollTo(0, 0);
-  };
-
-  const loadDetailImage = (e) => {
-    for (let i = 0; i < detailImgs.length(); i++) {
-      <img src={detailImgs[i]} multiple alt="preview" />;
-    }
-  };
-
-  const encodeFileToBase64 = (fileBlob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setImageSrc(reader.result);
-        console.log(imageSrc);
-        resolve();
-      };
-    });
-  };
-
-  const handleImageUpload = (e) => {
-    const fileArr = e.target.files;
-
-    let fileURLs = [];
-
-    let file;
-    let filesLength = fileArr.length > 5 ? 5 : fileArr.length;
-
-    for (let i = 0; i < filesLength; i++) {
-      file = fileArr[i];
-
-      let reader = new FileReader();
-      reader.onload = () => {
-        console.log(reader.result);
-        fileURLs[i] = reader.result;
-        setDatailImgs([...fileURLs]);
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   // hashTag  컴포넌트 함수
@@ -196,6 +160,48 @@ export default function HostSpaceForm({ data }) {
   const handleClick = () => {
     open({ onComplete: handleComplete });
   };
+
+  //**************************이미지 처리 api***********************/
+
+  const loadDetailImage = (e) => {
+    setDatailImgs(e.target.files);
+    const fileArr = Array.from(e.target.files);
+
+    const imgBox = document.querySelector(".imgBox");
+
+    fileArr.forEach((file, index) => {
+      const reader = new FileReader();
+
+      //이미지 박스와 이미지 생성
+      const imgDiv = document.createElement("div");
+      const img = document.createElement("img");
+      img.classList.add("image"); //이미지에 이미지 태그 붙이기
+      imgDiv.classList.add("imgDiv");
+
+      img.onclick = function (e) {
+        imgDiv.remove();
+      };
+
+      imgDiv.appendChild(img);
+
+      reader.onload = () => {
+        img.src = reader.result;
+      }; //end on load
+
+      imgBox.appendChild(imgDiv);
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+  // const formDataSend = async (images, spaceId) => {
+  //   let formdata = new FormData();
+  //   formdata.append("uploadImage", images[0]);
+
+  //   const res = await axios.imgPost(`{api/space-images/${spaceId}}`, formdata);
+  //   console.log(res);
+  //   return res;
+  // };
 
   return (
     <Main>
@@ -262,6 +268,7 @@ export default function HostSpaceForm({ data }) {
         <InputBox>
           <StyledLabel>공간 이미지 선택</StyledLabel>
           <SubImageView
+            className="imgBox"
             name="spaceSubImages"
             ref={subViewInput}
             onChange={loadDetailImage}
@@ -271,7 +278,7 @@ export default function HostSpaceForm({ data }) {
             type="file"
             multiple
             accept="image/*"
-            onChange={handleImageUpload}
+            onChange={loadDetailImage}
           ></ImageInput>
         </InputBox>
 
@@ -391,6 +398,13 @@ const SubImageView = styled.div`
   width: 100%;
   overflow: auto;
   border-radius: 4px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+
+  .image {
+    width: 100%;
+    display: block;
+  }
 `;
 
 const StyledButton = styled.button`

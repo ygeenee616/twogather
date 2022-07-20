@@ -33,7 +33,7 @@ import AdminBook from "./pages/admin/AdminBook";
 import HostBook from "./pages/host/HostBook";
 import HostRoomBook from "./pages/host/HostRoomBook";
 import BookDetail from "../src/pages/BookDetail";
-
+import HostRoomList from "../src/pages/host/HostRoomList";
 function App() {
   return (
     <Provider store={Store}>
@@ -86,11 +86,15 @@ function App() {
               path="/host/updateSpace/:spaceId"
               element={<HostUpdateSpace />}
             />
+
+            {/* 룸 리스트 */}
+            <Route path="/host/roomList/:spaceId" element={<HostRoomList />} />
+
             {/* 룸 추가 */}
             <Route path="/host/addRoom/:spaceId" element={<HostAddRoom />} />
             {/* 룸 수정 */}
             <Route
-              path="/host/updateRoom/:spaceId"
+              path="/host/updateRoom/:roomId"
               element={<HostUpdateRoom />}
             />
             {/* Q&A 관리 */}
