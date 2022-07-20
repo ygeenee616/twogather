@@ -18,14 +18,6 @@ export const Logo = () => {
   );
 };
 
-const HostPage = () => {
-  return (
-    <TextWrap>
-      <div>공간등록 및 관리</div>
-    </TextWrap>
-  );
-};
-
 const HeaderTag = ({ name, target }) => {
   const navigate = useNavigate();
   const handleClick = () => {
@@ -73,8 +65,10 @@ export default function Header() {
           <HeaderTag name="관리자 페이지" target="/admin/notice" />
         ) : loginType === "host" ? (
           <HeaderTag name="공간등록 및 관리" target="/host/spaceList" />
+        ) : isLogin ? (
+          <HeaderTag name="호스트 등록하기" target="/host/addHost" />
         ) : (
-          <HeaderTag name="호스트등록하기" target="/host/addHost" />
+          ``
         )}
         {isLogin ? <HeaderTag name="마이페이지" target="/mypage" /> : ``}
         <HeaderTag name="공지사항" target="/notice?page=1" />
