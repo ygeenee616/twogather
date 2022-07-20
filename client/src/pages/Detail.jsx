@@ -25,6 +25,8 @@ export default function Detail() {
   const [lessTime, setLessTime] = useState(true);
   // 예약 중복 내역
   const [overlap, setOverlap] = useState(false);
+  // 해당 날짜에 예약내역이 있는 시간대
+  const [bookedTime, setBookedTime] = useState([]);
 
   // 선택한 룸의 수용 가능 인원
   const acceptPeople = useRef(0);
@@ -146,6 +148,9 @@ export default function Detail() {
 
   // 날짜 선택시 해당 날짜의 예약 내역 가져오는 함수
   const handleDateChange = async (date) => {
+    clearTimePicker();
+    setBookedTime([]);
+
     // 클릭한 date에 따른 예약 내역
     const req = await Api.get(
       `api/reservations/room/${room.current.id}?date=${date}`
@@ -155,12 +160,18 @@ export default function Detail() {
     const data = await req.data.data.reservations;
 
     // 예약 내역이 있는 시간 배열
-    let bookedTime = [];
-    data.map((time) => {
+    const booked = data.map((time) => {
       for (let t = time.startTime; t <= time.endTime; t++) {
         bookedTime.push(t);
       }
     });
+
+    // undefined 제거
+    const bookedArr = booked.filter(Boolean);
+    console.log(bookedArr);
+
+    console.log(bookedTime);
+    setBookedTime(bookedArr);
 
     let startTimeList = document.querySelectorAll(".startTime");
     let endTimeList = document.querySelectorAll(".endTime");
@@ -175,6 +186,20 @@ export default function Detail() {
       endTimeList[num].style.textDecoration = "line-through";
     });
   };
+
+  // 타임피커 초기화
+  function clearTimePicker() {
+    let bookedList = document.querySelectorAll(".disable");
+    console.log(bookedList);
+
+    if (bookedList.length !== 0 || bookedList !== undefined) {
+      bookedList.forEach((i) => {
+        i.disabled = false;
+        i.classList.remove("disable");
+        i.style.textDecoration = "none";
+      });
+    }
+  }
 
   // 예약 시작 시간과 종료 시간 사이에 이미 예약된 시간이 있을 시 주의를 주는 함수
   function handleTimeChange(startTime, endTime) {
@@ -238,6 +263,7 @@ export default function Detail() {
               onChangeDate={onChangeDate}
               onClickStartTime={onClickStartTime}
               onClickEndTime={onClickEndTime}
+              // clearTimePicker={clearTimePicker}
             />
             <Personnel possible={possible.current}>
               <InputPeople>
