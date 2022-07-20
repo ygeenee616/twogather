@@ -9,7 +9,7 @@ import { PassportModule } from '@nestjs/passport';
     TypeOrmModule.forFeature([Space]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
-  exports: [TypeOrmModule],
+  exports: [TypeOrmModule, SpacesModule],
   controllers: [SpacesController],
   providers: [SpacesService],
 })

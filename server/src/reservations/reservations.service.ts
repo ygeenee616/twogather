@@ -65,9 +65,10 @@ export class ReservationsService {
   // 내 예약 조회
   async findMyReservation(user: User, startIndex: number, perPage: number) {
     try {
-      const totalSpace = await this.reservationRepository.find();
-      const totalPage = parseInt((totalSpace.length / perPage).toString()) + 1;
-      const paginatedSpaces = await this.reservationRepository.find({
+      const totalReservation = await this.reservationRepository.find();
+      const totalPage =
+        parseInt((totalReservation.length / perPage).toString()) + 1;
+      const paginatedReservations = await this.reservationRepository.find({
         where: {
           user,
         },
@@ -82,7 +83,7 @@ export class ReservationsService {
       });
       return {
         totalPage,
-        paginatedSpaces,
+        paginatedReservations,
       };
     } catch (error) {
       throw error;
