@@ -2,38 +2,35 @@ import React, { useState, useRef, useEffect } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
-import PostcodePopup from "../admin/PostcodePopup";
-import Modal from "../Modal";
-import HashTag from "./HashTag";
+import PostcodePopup from "../../components/admin/PostcodePopup";
+import Modal from "../../components/Modal";
+import HashTag from "../../components/host/HashTag";
 import * as Api from "../../api";
 
-export default function HostSpaceForm({ mode, data }) {
+export default function HostAddSpace({ mode }) {
   const nav = useNavigate();
+
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
+
   // hashTag state
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState([]);
 
-  let { params } = useParams();
-  console.log(params);
-
   //address가 object로 바뀌어야할듯
   const [addressState, setAddressState] = useState({
     myFullAddress: "",
-    myPersonalAddress: data.address,
+    myPersonalAddress: "",
     myZoneCode: "",
   });
-
   const [spaceInfo, setSpaceInfo] = useState({
-    name: data.name, //공간명
-    type: data.type, //공간타입
-    intro: data.intro, //공간소개
-    hashTags: data.hashTags, //태그
+    name: "", //공간명
+    type: "", //공간타입
+    intro: "", //공간소개
+    hashTags: [], //태그
     Images: "귀여운탱구사진",
-    notice: data.notice, //주의사항
-    address: addressState, //실주소
+    notice: "", //주의사항
+    address: "", //실주소
   });
 
   //주소창 handlechange
@@ -68,15 +65,25 @@ export default function HostSpaceForm({ mode, data }) {
     const stringAddress =
       addressState.myFullAddress + addressState.myPersonalAddress;
 
-    await Api.patch(`api/spaces/host/${data.id}`, {
+    const response = await Api.post(`api/spaces`, {
       name: spaceInfo.name, //공간명
       address: stringAddress, //실주소
       type: spaceInfo.type, //공간타입
       notice: spaceInfo.notice, //주의사항
       intro: spaceInfo.intro, //공간소개
-      //hashTags: spaceInfo.hashTags,
-      //Images: "귀여운탱구사진",
+      //hashtags: spaceInfo.tagList,
+      //   images:
+      //     "https://z-images.s3.amazonaws.com/5/51/%EC%9D%BC%EC%96%B4%EB%82%98_%EC%BD%94%EB%94%A9%ED%95%B4%EC%95%BC%EC%A7%80.jpg",
     });
+    const data = response.data.data;
+    const spaceId = data.id;
+    let responseTag = "";
+
+    for (let i = 0; i < tagList.length; i++) {
+      responseTag = await Api.post(`api/hashtags/${spaceId}`, tagList[i]);
+      console.log(responseTag);
+    }
+
     const modal = document.querySelector(".modalWrap");
     modal.style.display = "block";
     window.scrollTo(0, 0);
@@ -131,30 +138,37 @@ export default function HostSpaceForm({ mode, data }) {
   const onKeyPress = (e) => {
     if (e.target.value.length !== 0 && window.event.keyCode === 13) {
       addHashTag();
+      console.log("Asdasdasdasdasdsaadsadad");
     }
   };
 
   // hashTag 추가 함수
   const addHashTag = () => {
     let updatedTagList = [...tagList];
-    updatedTagList.push(`#${tagItem}`);
+
+    let a = { tag: `#${tagItem}` };
+
+    updatedTagList.push(a);
+
     setTagList(updatedTagList);
+    console.log(updatedTagList);
     setTagItem("");
+    console.log(tagItem);
   };
 
   useEffect(() => {
     setSpaceInfo({
       ...spaceInfo,
-      hashTags: tagList,
     });
-  }, [tagList]);
+  }, []);
 
   // hashTag 삭제
   const removeHashTag = (e) => {
     const deleteTagItem = e.target.parentElement.firstChild.innerText;
     const filteredTagList = tagList.filter(
-      (tagItem) => tagItem !== deleteTagItem
+      (tagItem) => tagItem.tag !== deleteTagItem
     );
+
     setTagList(filteredTagList);
   };
 
@@ -288,14 +302,14 @@ export default function HostSpaceForm({ mode, data }) {
             type="submit"
             value="submit"
           >
-            공간수정
+            공간등록
           </StyledButton>
         </ButtonBox>
         <ModalWrap className="modalWrap">
           <Modal
-            className="updateModal"
-            title=""
-            content="수정이 완료되었습니다."
+            className="addModal"
+            title="공간 등록"
+            content="공간 등록이 완료되었습니다."
             clickEvent={() => nav("/host/spaceList")}
           />
         </ModalWrap>

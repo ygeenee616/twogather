@@ -7,6 +7,7 @@ export default function CategorySelector() {
   const { search } = window.location;
   const params = new URLSearchParams(search);
 
+  //click시 query 바꿔주는 함수
   const handelClickSortSelect = (order) => {
     params.set("order", order);
     const stringParam = params.toString();
@@ -19,9 +20,10 @@ export default function CategorySelector() {
         className="sortSelector"
         onChange={(e) => handelClickSortSelect(e.target.value)}
       >
-        <option value="hightPrice">가격 높은 순</option>
-        <option value="lowPrice">가격 낮은 순</option>
-        <option value="review">리뷰 많은 순</option>
+        <option value="recent">최근순</option>
+        <option value="past">오래된순</option>
+        <option value="hightPrice">가격 높은순</option>
+        <option value="lowPrice">가격 낮은순</option>
       </SortSelector>
     </SortWrap>
   );

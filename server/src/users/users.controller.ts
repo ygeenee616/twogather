@@ -20,7 +20,6 @@ import {
   ApiTags,
   ApiOperation,
   ApiResponse,
-  ApiBasicAuth,
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { UserResExample } from './user.swagger.example';
@@ -89,6 +88,7 @@ export class UsersController {
       example: userResExample.getAll,
     },
   })
+  @ApiBearerAuth('userToken')
   async getAll(@GetAdminUser() admin: User) {
     const users = await this.usersService.findAll();
     return {
@@ -101,6 +101,7 @@ export class UsersController {
 
   // 내 정보조회
   @Get('/info')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '내 정보 조회 API',
     description: '내 정보를 조회한다.',
@@ -112,7 +113,6 @@ export class UsersController {
       example: userResExample.getMyInfo,
     },
   })
-  @UseGuards(AuthGuard())
   @ApiBearerAuth('userToken')
   async getMyInfo(@GetUser() user: User) {
     const userInfo = await this.usersService.findOne(user.id);
@@ -138,6 +138,7 @@ export class UsersController {
       example: userResExample.getOneById,
     },
   })
+  @ApiBearerAuth('userToken')
   async getOneById(@Param('id') id: number, @GetAdminUser() admin: User) {
     const user = await this.usersService.findOne(id);
     return {
@@ -148,7 +149,7 @@ export class UsersController {
     };
   }
 
-  // admin 기능
+  // 이메일로 유저 조회
   @Get('/email/:email')
   @UseGuards(AuthGuard())
   @ApiOperation({
@@ -162,6 +163,7 @@ export class UsersController {
       example: userResExample.getOneByEmail,
     },
   })
+  @ApiBearerAuth('userToken')
   async getOneByEmail(
     @Param('email') email: string,
     @GetAdminUser() admin: User,
@@ -178,7 +180,6 @@ export class UsersController {
   //마이페이지 수정
   @Patch()
   @UseGuards(AuthGuard())
-  @ApiBearerAuth('userToken')
   @ApiOperation({
     summary: '내 정보 수정 API',
     description: '내 정보를 수정한다.',
@@ -190,6 +191,7 @@ export class UsersController {
       example: userResExample.updateUserInfo,
     },
   })
+  @ApiBearerAuth('userToken')
   async updateUserInfo(
     @Req() req,
     @Body(ValidationPipe) userData: UpdateUserDto,
@@ -213,6 +215,7 @@ export class UsersController {
       example: userResExample.removeUser,
     },
   })
+  @ApiBearerAuth('userToken')
   async removeUser(@Param('id') id: number, @GetAdminUser() admin: User) {
     await this.usersService.remove(id);
     return {

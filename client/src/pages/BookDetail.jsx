@@ -16,8 +16,7 @@ import {
   useRecoilValue,
 } from "recoil";
 
-// 제발
-export default function AdminBookDetail() {
+export default function BookDetail() {
   const [data, setData] = useState("");
 
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
@@ -25,31 +24,32 @@ export default function AdminBookDetail() {
   console.log(userInfo);
 
   const navigate = useNavigate();
-  const { params } = useParams();
+  const { bookId } = useParams();
 
   useEffect(() => {
-    const getData = async (params) => {
+    const getData = async (bookId) => {
       try {
         // 나중에 url 해당 BookId 사용해서 API 연결
-        const req = await Api.get(`api/reservations/${params}`);
+        const req = await Api.get(`api/reservations/${bookId}`);
         // const req = await axios.get("/dummyBookDetail.json");
-        const data = await req.data.book;
+        const data = await req.data.data;
+        console.log(req);
         setData(data);
         console.log(data);
       } catch (err) {
         console.log(err);
       }
     };
-    getData();
+    getData(bookId);
   }, []);
 
   // 예약 삭제 함수
-  async function deleteBook(params) {
+  async function deleteBook(bookId) {
     try {
       // 나중에 url 해당 BookId 사용해서 API 연결
-      const req = await Api.delete(`api/reservations/${params}`);
+      const req = await Api.delete(`api/reservations/${bookId}`);
       console.log(req);
-      navigate("/admin");
+      navigate("/admin/bookList");
     } catch (err) {
       console.log(err);
     }
@@ -59,30 +59,28 @@ export default function AdminBookDetail() {
     data && (
       <FullContainer>
         <BookInfo
-          roomTitle={data.room}
+          roomTitle={data.room.name}
           date={data.date}
           startTime={data.startTime}
           endTime={data.endTime}
-          people={data.people}
-          pay={data.pay}
+          people={data.personnel}
+          pay={data.totalPrice}
         />
         <PostBookerInfo
-          name={data.name}
-          phone={data.phone}
-          email={data.email}
+          name={data.user.name}
+          phone={data.user.phoneNumber}
+          email={data.user.email}
           purpose={data.purpose}
-          request={data.request}
+          request={data.requirement}
         />
-        <HostInfo host={data.host} />
-        <ButtonContainer>
-          <Button
-            onClick={() => {
-              deleteBook(params);
-            }}
-          >
-            삭제하기
-          </Button>
-        </ButtonContainer>
+        <HostInfo host={data.user} />
+        <Button
+          onClick={() => {
+            deleteBook(bookId);
+          }}
+        >
+          삭제하기
+        </Button>
         <ToTop />
       </FullContainer>
     )
@@ -94,25 +92,19 @@ const FullContainer = styled.div`
   margin: 5% 15%;
   display: flex;
   flex-direction: column;
-`;
-
-const ButtonContainer = styled.div`
   position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
 `;
 
 const Button = styled.button`
-  width: 50%;
+  width: 30%;
   padding: 5px;
-  margin: 0 10px;
   border-radius: 10px;
   border: none;
   background: #ff8b8b;
   color: #fff;
+  position: absolute;
+  right: 0;
+  bottom: 0;
 
   &:hover {
     box-shadow: 2px 2px 5px -1px #a6a9b6;

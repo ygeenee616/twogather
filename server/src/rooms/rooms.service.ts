@@ -34,7 +34,6 @@ export class RoomsService {
       order: {
         id: 'DESC',
       },
-      // cache:true, 캐시는 할 지 말지.
     });
   }
 
@@ -67,6 +66,9 @@ export class RoomsService {
         },
         relations: {
           reservations: true,
+          space: {
+            user: true,
+          },
         },
         // cache: true,
       });

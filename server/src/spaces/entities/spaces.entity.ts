@@ -12,6 +12,7 @@ import { Hashtag } from 'src/hashtags/entities/hashtag.entity';
 import { Room } from 'src/rooms/entities/rooms.entity';
 import { Qna } from 'src/qnas/entities/qna.entity';
 import { SpaceImage } from 'src/space_images/entities/space_image.entity';
+import { Review } from 'src/reviews/entities/review.entity';
 
 @Entity()
 export class Space {
@@ -19,13 +20,21 @@ export class Space {
   @ApiProperty({ description: 'primary key Id' })
   id: number;
 
-  @Column({ type: 'varchar', length: 45, nullable: false })
+  @Column({ type: 'varchar', length: 30, nullable: false })
   @ApiProperty({ description: 'space의 카테고리' })
   type: string;
 
-  @Column({ type: 'varchar', length: 45, nullable: false })
-  @ApiProperty({ description: '주소' })
-  address: string;
+  @Column({ type: 'varchar', length: 100, nullable: false })
+  @ApiProperty({ description: '주소1' })
+  address1: string;
+
+  @Column({ type: 'varchar', length: 100, nullable: false })
+  @ApiProperty({ description: '주소2' })
+  address2: string;
+
+  @Column({ type: 'varchar', length: 100, nullable: false })
+  @ApiProperty({ description: '주소3' })
+  address3: string;
 
   @Column({ type: 'varchar', length: 45, nullable: true })
   @ApiProperty({ description: 'space 이름' })
@@ -68,4 +77,9 @@ export class Space {
   })
   @ApiPropertyOptional({ description: 'spaceImage와의 관계' })
   spaceImages: SpaceImage[];
+
+  @OneToMany(() => Review, (reviews) => reviews.space, {
+    eager: false,
+  })
+  reviews: Review[];
 }
