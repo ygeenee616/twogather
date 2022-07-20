@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import partyIcon from "../assets/images/partyIcon.png";
-import studyIcon from "../assets/images/studyIcon.png";
+import studyIcon from "../assets/images/studyIcon.png"; 
 import meetingIcon from "../assets/images/meetingIcon.png";
 import danceIcon from "../assets/images/danceIcon.png";
 import cameraIcon from "../assets/images/cameraIcon.png";

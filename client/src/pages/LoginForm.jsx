@@ -37,6 +37,7 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [alertMsg, setAlertMsg] = useState("");
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+
   const getData = async () => {
     const datas = await Api.get(`api/users/email/${email}`);
     return datas.data.data;
@@ -47,7 +48,8 @@ function LoginForm() {
 
     if (email === "") setAlertMsg("아이디를 입력해 주세요.");
     else if (password === "") setAlertMsg("비밀번호를 입력해 주세요.");
-    else if (!validateEmail(email)) setAlertMsg("이메일 형식이 올바르지 않습니다.");
+    else if (!validateEmail(email))
+      setAlertMsg("이메일 형식이 올바르지 않습니다.");
     else {
       //로그인 성공
       try {
@@ -58,26 +60,23 @@ function LoginForm() {
         const jwtToken = `Bearer ${res.data.accessToken}`;
         // sessionStorage에 "userToken"이라는 키로 JWT 토큰을 저장함.
         localStorage.setItem("userToken", jwtToken);
-        // dispatch 함수를 이용해 로그인 성공 상태로 만듦.
-        dispatch(login(data));
-
         setAlertMsg("");
-        
-        const userData = await getData();
 
-        const userType = userData.isAdmin
-          ? "Admin"
-          : userData.businessNumber
-          ? "Host"
-          : "User";
+        // const userData = await getData();
 
-        setUserInfo({
-          userId: userData.id,
-          userName: userData.name,
-          nickName: userData.nickname,
-          email: email,
-          useType: userType,
-        });
+        // const userType = userData.isAdmin
+        //   ? "Admin"
+        //   : userData.businessNumber
+        //   ? "Host"
+        //   : "User";
+
+        // setUserInfo({
+        //   userId: userData.id,
+        //   userName: userData.name,
+        //   nickName: userData.nickname,
+        //   email: email,
+        //   useType: userType,
+        // });
 
         navigate("/", { replace: true });
       } catch (err) {

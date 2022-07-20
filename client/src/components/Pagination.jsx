@@ -1,26 +1,35 @@
 import styled from "styled-components";
 
-function Pagination({ total, limit, page, setPage }) {
-  const numPages = Math.ceil(total / limit);
-
+function Pagination({ total, currentPage, url }) {
+  //total: totalpage수, currentPage: 현재 페이지(querystring)
   return (
     <>
       <Nav>
-        <Button onClick={() => setPage(page - 1)} disabled={page === 1}>
+        <Button
+          onClick={() =>
+            window.location.replace(`${url}?page=${currentPage - 1}`)
+          }
+          disabled={currentPage === 1}
+        >
           &lt;
         </Button>
-        {Array(numPages)
+        {Array(total)
           .fill()
           .map((_, i) => (
             <Button
               key={i + 1}
-              onClick={() => setPage(i + 1)}
-              aria-current={page === i + 1 ? "page" : null}
+              onClick={() => window.location.replace(`${url}?page=${i + 1}`)}
+              aria-current={currentPage === i + 1 ? "page" : null}
             >
               {i + 1}
             </Button>
           ))}
-        <Button onClick={() => setPage(page + 1)} disabled={page === numPages}>
+        <Button
+          onClick={() =>
+            window.location.replace(`${url}?page=${currentPage + 1}`)
+          }
+          disabled={currentPage === total}
+        >
           &gt;
         </Button>
       </Nav>

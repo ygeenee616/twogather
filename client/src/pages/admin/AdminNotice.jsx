@@ -6,7 +6,7 @@ export default function AdminNotice() {
   return (
     <>
       <AdminNav />
-      <Notice />
+      <Notice url={"/admin/notice"} />
     </>
   );
 }

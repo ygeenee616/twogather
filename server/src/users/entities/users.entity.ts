@@ -15,6 +15,12 @@ export class User {
   @ApiPropertyOptional({ description: '관리자 여부' })
   isAdmin: boolean;
 
+  @Column({ type: 'varchar', length: 45, default: 'local' })
+  @ApiPropertyOptional({
+    description: '로그인된 계정 유형(구글, 카카오, 로컬 등)',
+  })
+  loginType: string;
+
   @Column({ type: 'varchar', length: 45, nullable: false, unique: true })
   @ApiProperty({ description: '닉네임' })
   nickname: string;
