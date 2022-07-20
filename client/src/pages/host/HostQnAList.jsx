@@ -5,13 +5,10 @@ import * as Api from "../../api";
 import HostNav from "../../components/host/HostNav";
 import Pagination from "../../components/Pagination";
 
-function submitAnswer(e) {
-  // submit answer
-}
-
 export default function HostQnA() {
   const [data, setData] = useState("");
   const [totalPage, setTotalPage] = useState(1);
+  const [answer, setAnswer] = useState("");
 
   const { spaceId } = useParams();
 
@@ -37,6 +34,18 @@ export default function HostQnA() {
     getData();
   }, []);
 
+  // 답변 등록 함수
+  async function submitAnswer(e) {
+    try {
+      const req = await Api.patch(`api/qnas/${spaceId}`, {
+        reply: answer,
+      });
+      console.log(req);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div>
       <HostNav />
@@ -46,10 +55,13 @@ export default function HostQnA() {
             return (
               <QnABox key={i}>
                 <Question>{item.content}</Question>
-                <Answer placeholder="아직 등록된 답변이 없습니다. 답변을 등록해보세요!">
+                <Answer
+                  placeholder="아직 등록된 답변이 없습니다. 답변을 등록해보세요!"
+                  onChange={(e) => setAnswer(e.target.value)}
+                >
                   {item.reply}
                 </Answer>
-                <SubmitBtn onClick={(e) => submitAnswer(e.target.value)}>
+                <SubmitBtn onClick={(e) => submitAnswer(item.id)}>
                   답변 등록
                 </SubmitBtn>
               </QnABox>

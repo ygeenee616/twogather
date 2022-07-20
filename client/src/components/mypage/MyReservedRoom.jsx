@@ -5,7 +5,6 @@ function MyReservedRoom({ reservation, idx }) {
   // id는 예약번호, name은 공간이름 , 예약자명 ??
   const {
     id,
-    name,
     image,
     address,
     personnel,
@@ -15,6 +14,10 @@ function MyReservedRoom({ reservation, idx }) {
     startTime,
     endTime,
   } = reservation;
+
+  ///// reservation room 없을 경우. 추후 api 수정후 삭제 ////
+  let room;
+  if (!reservation.hasOwnProperty(room)) room = "무슨무슨방";
 
   const handleCancelReservation = async () => {
     try {
@@ -33,7 +36,7 @@ function MyReservedRoom({ reservation, idx }) {
         <InfoText>
           <InfoTag color="bold">
             <a href={`http://localhost:5001/detail/${id}`}>
-              {name} {id}
+              {room} {id}
             </a>
           </InfoTag>{" "}
           <br />
@@ -47,7 +50,14 @@ function MyReservedRoom({ reservation, idx }) {
       </InfoDiv>
       <EditDiv>
         <span onClick={(e) => handleCancelReservation(id)}> 예약취소 </span>
-        <a href={`/myPage/addReview?reservationId=${id}`}> 리뷰작성</a>
+        <a
+          href={`/myPage/addReview?bookId=${id}&spaceName=${
+            room || "무슨무슨룸"
+          }`}
+        >
+          {" "}
+          리뷰작성
+        </a>
       </EditDiv>
     </RoomDiv>
   );
@@ -89,7 +99,8 @@ const InfoTag = styled.p`
   font-size: 1rem;
   ${(props) => {
     if (props.color === "bold") return `font-weight: bold;`;
-    else if(props.color ==="italic") return `color: #bbd3f2; font-style: italic;`;
+    else if (props.color === "italic")
+      return `color: #bbd3f2; font-style: italic;`;
     else return `color: ${props.color};`;
   }}
   margin: 0.5rem 2rem;

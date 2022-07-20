@@ -1,43 +1,51 @@
 import {
   CommentTitle,
   CommentInfo,
-  CommentInput,
-  AddCommentBtnDiv,
+  CommentTextArea,
+  BtnContainer,
 } from "../components/addComment/CommentForm";
 import styled from "styled-components";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useRef } from "react";
+import { useLocation } from "react-router-dom";
 import * as Api from "../api";
 
 function AddReview() {
-  const params = useParams();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const contentTextarea = useRef(null); // 작성란
+  const bookId = params.get("bookId");
+  const spaceName = params.get("spaceName");
 
-  useEffect(() => {
-    async function getReservationData() {
-      try {
-        const res = await Api.get(`api/reservations/${params.reservationId}`);
-      } catch (err) {
-        console.log(err);
-      }
+  const registerReview = async (e) => {
+    e.preventDefault();
+    try {
+      const data = {
+        content: contentTextarea.current.value,
+      };
+      const res = await Api.post(`/api/reviews/${bookId}`, data);
+      console.log(res);
+    } catch (err) {
+      console.error(err);
     }
-    console.log(params);
-
-    getReservationData();
-
-  }, []);
-
-  const registerReview = () => {};
+  };
 
   return (
     <ReviewContainer>
       <CommentTitle> 이용후기 등록 </CommentTitle>
-      <CommentInfo></CommentInfo>
+      <CommentInfo spaceName={spaceName} />
       <form>
-        <CommentInput
-          commentType="이용후기 등록"
+        <h4 style={{ color: "#BBD3F2" }}>이용후기 등록</h4>
+        <CommentTextArea
+          CommentTextAreaname="contents"
           placeholder="이용후기를 작성해주세요. (200자 이내)"
-        ></CommentInput>
-        <AddCommentBtnDiv></AddCommentBtnDiv>
+          ref={contentTextarea}
+        />
+        <BtnContainer>
+          <button className="cancel">취소</button>
+          <button type="submit" className="submit" onClick={registerReview}>
+            작성 완료
+          </button>
+        </BtnContainer>
       </form>
     </ReviewContainer>
   );
