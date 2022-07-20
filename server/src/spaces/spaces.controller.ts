@@ -128,14 +128,14 @@ export class SpacesController {
         description: '내가 생성한 공간 목록 조회 성공',
         data: spaces,
       };
-    } else {
-      const startIndex: number = perPage * (page - 1);
-      spaces = await this.spacesService.findByUserPaginated(
-        user.id,
-        startIndex,
-        perPage,
-      );
     }
+    const startIndex: number = perPage * (page - 1);
+    spaces = await this.spacesService.findByUserPaginated(
+      user.id,
+      startIndex,
+      perPage,
+    );
+
     return {
       status: 200,
       success: true,
