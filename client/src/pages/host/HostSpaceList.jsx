@@ -8,7 +8,7 @@ import HostUpdateSpace from "./HostUpdateSpace";
 import * as api from "../../api";
 import { useNavigate } from "react-router-dom";
 import { Container } from "../../components/register/UserForm";
-
+import { AiOutlinePlusSquare } from "react-icons/ai";
 import Modal from "../../components/Modal";
 import * as Api from "../../api";
 
@@ -122,23 +122,33 @@ export default function HostSpaceList({ host }) {
     <div>
       <HostNav />
       {datas && (
-        <BottomWrap>
-          <TitleContanier>
-            <MainTitle>{host.name}님 </MainTitle>
-            <Title>공간내역</Title>
-          </TitleContanier>
-          <div onClick={clickToModSpace}>
-            <ProductWrap>{renderData(offset, limit, datas)}</ProductWrap>
-            <div>
-              <Pagination
-                total={datas.length}
-                limit={limit}
-                page={page}
-                setPage={setPage}
-              />
+        <>
+          <BottomWrap>
+            <TitleContanier>
+              <MainTitle>{host.name}님 </MainTitle>
+              <Title>공간내역</Title>
+            </TitleContanier>
+            <div onClick={clickToModSpace}>
+              <ProductWrap>{renderData(offset, limit, datas)}</ProductWrap>
+
+              <AddSpaceButton
+                onClick={() => {
+                  navigate(`/host/addSpace`);
+                }}
+              >
+                <p className="label">공간추가하기</p>
+              </AddSpaceButton>
+              <div>
+                <Pagination
+                  total={datas.length}
+                  limit={limit}
+                  page={page}
+                  setPage={setPage}
+                />
+              </div>
             </div>
-          </div>
-        </BottomWrap>
+          </BottomWrap>
+        </>
       )}
     </div>
   );
@@ -187,8 +197,8 @@ const Title = styled.span`
 
 const ProductWrap = styled.div`
   display: grid;
-  margin: 0 auto;
-  width: 100%;
+  margin: 10% auto;
+  width: 70%;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 2%;
@@ -201,4 +211,38 @@ const ModalWrap = styled.div`
   height: 244vh;
   background-color: rgba(90, 90, 90, 0.2);
   display: none;
+`;
+
+const AddSpaceButton = styled.button`
+  width: 100%;
+  height: 50px;
+  font-size: 1rem;
+  color: white;
+  text-align: center;
+
+  border-radius: 10px;
+  border: none;
+
+  background-color: #8daef2;
+  opacity: 0.8;
+  cursor: pointer;
+  transition-duration: 0.2s;
+  box-shadow: 5px 5px 5px black;
+
+  p {
+    transition-duration: 0.2s;
+  }
+
+  :active {
+    box-shadow: none;
+    transform: scale(0.8);
+  }
+  :hover {
+    transform: scale(1.02);
+
+    & .label {
+      font-size: 1rem;
+      transform: scale(1.1);
+    }
+  }
 `;
