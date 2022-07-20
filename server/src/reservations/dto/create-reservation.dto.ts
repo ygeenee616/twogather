@@ -9,9 +9,9 @@ export class CreateReservationDto {
   @ApiProperty({ description: '종료 시간' })
   endTime: number;
 
-  @IsDateString()
+  @IsString()
   @ApiProperty({ description: '예약 날짜' })
-  date: Date;
+  date: string;
 
   @IsNumber()
   @ApiProperty({ description: '예약 인원' })

@@ -25,9 +25,9 @@ export class Reservation {
   @ApiProperty({ description: '종료 시간' })
   endTime: number;
 
-  @Column({ type: 'date', nullable: false })
+  @Column({ type: 'varchar', nullable: false })
   @ApiProperty({ description: '예약 날짜' })
-  date: Date;
+  date: string;
 
   @Column({ type: 'int', nullable: false })
   @ApiProperty({ description: '예약 인원' })
