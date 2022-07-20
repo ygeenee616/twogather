@@ -47,6 +47,8 @@ export class SpacesService {
             paginatedSpaces = await this.spacesRepository.find({
               relations: {
                 rooms: true,
+                user: true,
+                hashtags: true,
               },
               order: {
                 id: 'DESC',
@@ -62,6 +64,8 @@ export class SpacesService {
               },
               relations: {
                 rooms: true,
+                user: true,
+                hashtags: true,
               },
               order: {
                 id: 'DESC',
@@ -75,6 +79,8 @@ export class SpacesService {
             paginatedSpaces = await this.spacesRepository.find({
               relations: {
                 rooms: true,
+                user: true,
+                hashtags: true,
               },
               order: {
                 id: 'ASC',
@@ -90,6 +96,8 @@ export class SpacesService {
               },
               relations: {
                 rooms: true,
+                user: true,
+                hashtags: true,
               },
               order: {
                 id: 'ASC',
@@ -110,6 +118,8 @@ export class SpacesService {
               },
               relations: {
                 rooms: true,
+                user: true,
+                hashtags: true,
               },
               order: {
                 id: 'DESC',
@@ -126,6 +136,8 @@ export class SpacesService {
               },
               relations: {
                 rooms: true,
+                user: true,
+                hashtags: true,
               },
               order: {
                 id: 'DESC',
@@ -142,6 +154,8 @@ export class SpacesService {
               },
               relations: {
                 rooms: true,
+                user: true,
+                hashtags: true,
               },
               order: {
                 id: 'ASC',
@@ -158,6 +172,8 @@ export class SpacesService {
               },
               relations: {
                 rooms: true,
+                user: true,
+                hashtags: true,
               },
               order: {
                 id: 'ASC',
