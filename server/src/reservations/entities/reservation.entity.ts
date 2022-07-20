@@ -60,18 +60,18 @@ export class Reservation {
   @ApiProperty({ description: '총 금액' })
   totalPrice: number;
 
-  @ManyToOne((type) => User, (user) => user.reservations, {
+  @ManyToOne(() => User, (user) => user.reservations, {
     onDelete: 'CASCADE',
     eager: false,
   })
   user: User;
 
-  @OneToOne((type) => Review, (rewiew) => rewiew.reservation, {
+  @OneToOne(() => Review, (rewiew) => rewiew.reservation, {
     eager: false,
   })
   review: Review;
 
-  @ManyToOne((type) => Room, (room) => room.reservations, {
+  @ManyToOne(() => Room, (room) => room.reservations, {
     onDelete: 'CASCADE',
     eager: false,
   })

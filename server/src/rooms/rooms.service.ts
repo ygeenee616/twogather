@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Space } from 'src/spaces/entities/spaces.entity';
 import { SpacesService } from 'src/spaces/spaces.service';
 import { Repository } from 'typeorm';
 import { CreateRoomDto } from './dto/create-room.dto';
@@ -11,11 +12,11 @@ export class RoomsService {
   constructor(
     @InjectRepository(Room) private roomsRepository: Repository<Room>,
     private spaceService: SpacesService,
+    @InjectRepository(Space) private spacesRepository: Repository<Room>,
   ) {}
 
-  async create(createRoomDto: CreateRoomDto, spaceId: number) {
+  async create(createRoomDto: CreateRoomDto, space: Space) {
     try {
-      const space = await this.spaceService.findOne(spaceId);
       const newRoom = {
         ...createRoomDto,
         space,
@@ -61,6 +62,15 @@ export class RoomsService {
   async findOne(id: number) {
     try {
       const room = await this.roomsRepository.findOne({
+        select: {
+          reservations: true,
+          space: {
+            id: true,
+            user: {
+              id: true,
+            },
+          },
+        },
         where: {
           id,
         },
@@ -85,6 +95,15 @@ export class RoomsService {
   async findRoomsByUser(hostId: number) {
     try {
       const rooms = await this.roomsRepository.find({
+        select: {
+          space: {
+            id: true,
+            name: true,
+            user: {
+              id: true,
+            },
+          },
+        },
         where: {
           space: {
             user: {
@@ -104,16 +123,6 @@ export class RoomsService {
 
   // roomId로 room 수정
   async update(id: number, updateRoomDto: UpdateRoomDto) {
-    try {
-      const updatedRoom = await this.roomsRepository.update(id, updateRoomDto);
-      return updatedRoom.affected === 1;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  // 내 room 수정
-  async updateMyRoom(id: number, updateRoomDto: UpdateRoomDto) {
     try {
       const updatedRoom = await this.roomsRepository.update(id, updateRoomDto);
       return updatedRoom.affected === 1;

@@ -28,7 +28,8 @@ export default function ProductCard({
   src,
   hashtags,
   name,
-  address,
+  address1,
+  address2,
   price,
   review,
   link,
@@ -56,7 +57,7 @@ export default function ProductCard({
           <Title>{name}</Title>
         </Line>
         <Line>
-          <SubTag>{address}</SubTag>
+          <SubTag>{`${address1} ${address2}`}</SubTag>
         </Line>
         <Line style={{ justifyContent: "flex-end", marginTop: "0.6vh" }}>
           <Price>{price}</Price>

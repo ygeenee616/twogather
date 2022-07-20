@@ -26,13 +26,14 @@ import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/users/entities/users.entity';
 import { GetUser } from 'src/custom.decorator';
 import { RoomsService } from 'src/rooms/rooms.service';
+import { Json } from 'aws-sdk/clients/robomaker';
 
 @Controller('api/reservations')
 @ApiTags('예약 API')
 export class ReservationsController {
   constructor(
     private readonly reservationsService: ReservationsService,
-    private roomsService: RoomsService,
+    private readonly roomsService: RoomsService,
   ) {}
 
   // 예약 등록
@@ -58,11 +59,25 @@ export class ReservationsController {
     @Param('roomId') roomId: number,
   ) {
     const roomInfo = await this.roomsService.findOne(roomId);
-    const newReservation = await this.reservationsService.create(
+    const reservation = await this.reservationsService.create(
       createReservationDto,
       user,
       roomInfo,
     );
+
+    const newReservation = {
+      ...reservation,
+      user: {
+        id: reservation.user.id,
+        nickname: reservation.user.nickname,
+      },
+      room: {
+        id: reservation.room.id,
+        name: reservation.room.name,
+        price: reservation.room.price,
+      },
+    };
+    console.log(newReservation);
     return {
       status: 201,
       success: true,
@@ -111,9 +126,23 @@ export class ReservationsController {
   })
   async findAllByRoom(@Param('roomId') roomId: number, @Query() query) {
     const { page, perPage, date } = query;
+    if (page === null || page === undefined || !page) {
+      console.log('not page');
+      console.log(date);
+      const reservations = await this.reservationsService.findAllByRoom(
+        roomId,
+        date,
+      );
+      return {
+        status: 200,
+        description: '특정 룸의 예약 목록 조회 성공',
+        success: true,
+        data: reservations,
+      };
+    }
     const startIndex: number = Number(perPage) * (Number(page) - 1);
     const { totalPage, paginatedReservations } =
-      await this.reservationsService.findAllByRoom(
+      await this.reservationsService.findAllByRoomPaginated(
         roomId,
         startIndex,
         Number(perPage),

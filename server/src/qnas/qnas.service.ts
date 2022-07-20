@@ -97,7 +97,9 @@ export class QnasService {
           id,
         },
         relations: {
-          space: true,
+          space: {
+            user: true,
+          },
           user: true,
         },
       });

@@ -25,8 +25,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { SpaceResExample } from './space.swagger.example';
 import { GetAdminUser, GetUser } from 'src/custom.decorator';
 import { User } from 'src/users/entities/users.entity';
-import { query } from 'express';
-import { Space } from './entities/spaces.entity';
 const spaceResExample = new SpaceResExample();
 
 @Controller('api/spaces')
@@ -156,7 +154,7 @@ export class SpacesController {
     schema: {},
   })
   async findOne(@Param('id') id: number) {
-    const space = await this.spacesService.findOne(+id);
+    const space = await this.spacesService.findOneInDetail(+id);
     return {
       status: 200,
       success: true,
@@ -214,7 +212,7 @@ export class SpacesController {
   })
   async updateMySpace(
     @GetUser() user: User,
-    @Param('id') id,
+    @Param('id') id: number,
     @Body() updateSpaceDto: UpdateSpaceDto,
   ) {
     const updatedSpace = await this.spacesService.updateMySpace(
@@ -222,6 +220,7 @@ export class SpacesController {
       id,
       updateSpaceDto,
     );
+
     return {
       status: 201,
       description: '내 공간 정보 수정 성공',
@@ -231,27 +230,27 @@ export class SpacesController {
   }
 
   // 특정 공간 삭제
-  @Delete(':id')
-  @UseGuards(AuthGuard())
-  @ApiOperation({
-    summary: '특정 공간 삭제 API',
-    description: 'ID로 특정 공간을 삭제한다.',
-  })
-  @ApiResponse({
-    status: 201,
-    description: 'ID로 특정 공간 삭제 성공',
-    schema: {
-      example: spaceResExample.removeSpace,
-    },
-  })
-  async removeSpace(@Param('id') id: number, @GetAdminUser() admin: User) {
-    await this.spacesService.remove(id);
-    return {
-      status: 201,
-      description: 'ID로 특정 공간 삭제 성공',
-      success: true,
-    };
-  }
+  // @Delete(':id')
+  // @UseGuards(AuthGuard())
+  // @ApiOperation({
+  //   summary: '특정 공간 삭제 API',
+  //   description: 'ID로 특정 공간을 삭제한다.',
+  // })
+  // @ApiResponse({
+  //   status: 201,
+  //   description: 'ID로 특정 공간 삭제 성공',
+  //   schema: {
+  //     example: spaceResExample.removeSpace,
+  //   },
+  // })
+  // async removeSpace(@Param('id') id: number, @GetAdminUser() admin: User) {
+  //   await this.spacesService.remove(id);
+  //   return {
+  //     status: 201,
+  //     description: 'ID로 특정 공간 삭제 성공',
+  //     success: true,
+  //   };
+  // }
 
   // 내 공간 삭제
   @Delete('host/:id')
@@ -273,7 +272,7 @@ export class SpacesController {
     },
   })
   async removeMySpace(@GetUser() user: User, @Param('id') id: number) {
-    await this.spacesService.remove(id);
+    await this.spacesService.removeMySpace(id, user.id);
     return {
       status: 201,
       description: '내 공간 삭제 성공',

@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { identity } from 'rxjs';
 import { Room } from 'src/rooms/entities/rooms.entity';
 import { RoomsService } from 'src/rooms/rooms.service';
 import { SpacesService } from 'src/spaces/spaces.service';
@@ -14,8 +15,6 @@ export class ReservationsService {
   constructor(
     @InjectRepository(Reservation)
     private readonly reservationRepository: Repository<Reservation>,
-    private roomsService: RoomsService,
-    private spaceService: SpacesService,
   ) {}
 
   // 예약 등록
@@ -43,9 +42,36 @@ export class ReservationsService {
       const totalSpace = await this.reservationRepository.find();
       const totalPage = parseInt((totalSpace.length / perPage).toString()) + 1;
       const paginatedReservations = await this.reservationRepository.find({
+        select: {
+          user: {
+            id: true,
+            email: true,
+            phoneNumber: true,
+            nickname: true,
+          },
+          room: {
+            id: true,
+            name: true,
+            capacity: true,
+            price: true,
+            space: {
+              id: true,
+              name: true,
+              user: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+          },
+        },
         relations: {
           user: true,
-          room: true,
+          room: {
+            space: {
+              user: true,
+            },
+          },
         },
         order: {
           id: 'DESC',
@@ -65,14 +91,34 @@ export class ReservationsService {
   // 내 예약 조회
   async findMyReservation(user: User, startIndex: number, perPage: number) {
     try {
-      const totalSpace = await this.reservationRepository.find();
-      const totalPage = parseInt((totalSpace.length / perPage).toString()) + 1;
-      const paginatedSpaces = await this.reservationRepository.find({
+      const totalReservation = await this.reservationRepository.find();
+      const totalPage =
+        parseInt((totalReservation.length / perPage).toString()) + 1;
+      const paginatedReservations = await this.reservationRepository.find({
+        select: {
+          user: {
+            id: true,
+            name: true,
+            email: true,
+          },
+          room: {
+            id: true,
+            name: true,
+            price: true,
+            space: {
+              id: true,
+              name: true,
+            },
+          },
+        },
         where: {
           user,
         },
         relations: {
           user: true,
+          room: {
+            space: true,
+          },
         },
         order: {
           id: 'DESC',
@@ -82,15 +128,74 @@ export class ReservationsService {
       });
       return {
         totalPage,
-        paginatedSpaces,
+        paginatedReservations,
       };
     } catch (error) {
       throw error;
     }
   }
 
-  // 특정 룸의 전체 예약 목록 조회
-  async findAllByRoom(
+  // 룸으로 예약 목록 조회
+  async findAllByRoom(roomId: number, date: string) {
+    try {
+      let reservations;
+      if (!date || date === undefined || date === null) {
+        reservations = await this.reservationRepository.find({
+          select: {
+            user: {
+              id: true,
+              name: true,
+              email: true,
+              nickname: true,
+            },
+          },
+          where: {
+            room: {
+              id: roomId,
+            },
+          },
+          relations: {
+            user: true,
+          },
+          order: {
+            id: 'DESC',
+          },
+        });
+      } else {
+        reservations = await this.reservationRepository.find({
+          select: {
+            user: {
+              id: true,
+              name: true,
+              email: true,
+              nickname: true,
+            },
+          },
+          where: {
+            date,
+            room: {
+              id: roomId,
+            },
+          },
+          relations: {
+            user: true,
+          },
+          order: {
+            id: 'DESC',
+          },
+        });
+      }
+
+      return {
+        reservations,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // 룸으로 예약 목록 조회(paginated)
+  async findAllByRoomPaginated(
     roomId: number,
     startIndex: number,
     perPage: number,
@@ -108,6 +213,14 @@ export class ReservationsService {
       let paginatedReservations;
       if (!date || date === undefined || date === null) {
         paginatedReservations = await this.reservationRepository.find({
+          select: {
+            user: {
+              id: true,
+              name: true,
+              email: true,
+              nickname: true,
+            },
+          },
           where: {
             room: {
               id: roomId,
@@ -115,7 +228,6 @@ export class ReservationsService {
           },
           relations: {
             user: true,
-            room: true,
           },
           order: {
             id: 'DESC',
@@ -125,6 +237,14 @@ export class ReservationsService {
         });
       } else {
         paginatedReservations = await this.reservationRepository.find({
+          select: {
+            user: {
+              id: true,
+              name: true,
+              email: true,
+              nickname: true,
+            },
+          },
           where: {
             date,
             room: {
@@ -133,7 +253,6 @@ export class ReservationsService {
           },
           relations: {
             user: true,
-            room: true,
           },
           order: {
             id: 'DESC',
@@ -155,13 +274,40 @@ export class ReservationsService {
   async findOne(id: number) {
     try {
       const reservation = await this.reservationRepository.findOne({
+        select: {
+          user: {
+            id: true,
+            name: true,
+            email: true,
+            nickname: true,
+          },
+          room: {
+            id: true,
+            name: true,
+            price: true,
+            capacity: true,
+
+            space: {
+              id: true,
+              name: true,
+              user: {
+                id: true,
+                email: true,
+                name: true,
+                nickname: true,
+              },
+            },
+          },
+        },
         where: {
           id,
         },
         relations: {
           user: true,
           room: {
-            space: true,
+            space: {
+              user: true,
+            },
           },
         },
       });

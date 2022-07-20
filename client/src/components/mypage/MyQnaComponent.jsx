@@ -17,10 +17,8 @@ const QnaComponent = ({ room, qna }) => {
     <>
       <tr>
         <td>{room}</td>
-        <td>
-          {content.length > 30 ? content.slice(0, 30) + `...` : content}
-        </td>
-        <td>{createdTime.split('T')[0]}</td>
+        <td>{content.length > 30 ? content.slice(0, 30) + `...` : content}</td>
+        <td>{createdTime.split("T")[0]}</td>
         <td>
           {reply ? "    답변 완료 " : "답변 대기중 "}
           <button style={deleteBtnstyle}>삭제</button>
@@ -44,12 +42,12 @@ const QnaDetailComponent = ({ qna }) => {
     width: "3rem",
   };
 
-
   return (
     <>
       <tr style={trStyle} className="detailTr">
         <td colSpan="4" style={tdStyle}>
-          <h2>Q. </h2> <span>질문일: {createdTime} </span> <p>{content}</p>
+          <h2>Q. </h2> <span>질문일: {createdTime.split("T")[0]} </span>{" "}
+          <p>{content}</p>
           <h2>A. </h2> <p>{reply}</p>
         </td>
       </tr>
