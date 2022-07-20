@@ -7,8 +7,16 @@ export class CreateSpaceDto {
   readonly name: string;
 
   @IsString()
-  @ApiProperty({ description: '공간 주소' })
-  readonly address: string;
+  @ApiProperty({ description: '공간 주소1' })
+  readonly address1: string;
+
+  @IsString()
+  @ApiProperty({ description: '공간 주소2' })
+  readonly address2: string;
+
+  @IsString()
+  @ApiProperty({ description: '공간 주소3' })
+  readonly address3: string;
 
   @IsString()
   @ApiProperty({ description: '공간 유형' })
