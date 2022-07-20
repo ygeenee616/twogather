@@ -90,8 +90,50 @@ export class ReservationsService {
     }
   }
 
+  async findAllByRoom(roomId: number, date: string) {
+    try {
+      let reservations;
+      if (!date || date === undefined || date === null) {
+        reservations = await this.reservationRepository.find({
+          where: {
+            room: {
+              id: roomId,
+            },
+          },
+          relations: {
+            user: true,
+            room: true,
+          },
+          order: {
+            id: 'DESC',
+          },
+        });
+      } else {
+        reservations = await this.reservationRepository.find({
+          where: {
+            date,
+            room: {
+              id: roomId,
+            },
+          },
+          relations: {
+            user: true,
+            room: true,
+          },
+          order: {
+            id: 'DESC',
+          },
+        });
+      }
+
+      return {
+        reservations,
+      };
+    } catch (error) {}
+  }
+
   // 특정 룸의 전체 예약 목록 조회
-  async findAllByRoom(
+  async findAllByRoomPaginated(
     roomId: number,
     startIndex: number,
     perPage: number,
