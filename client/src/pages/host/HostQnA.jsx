@@ -27,36 +27,40 @@ export default function HostRoomBook() {
       <div>
         <HostNav />
         <div>
-          <RoomContainer>
+          <SpaceContainer>
             <Title>공간별 Q&A</Title>
-            {data.map((space, id) => {
-              return (
-                <RoomLink to={`/host/qna/${space.id}?page=1`} key={id}>
-                  <RoomList>{space.name}</RoomList>
-                </RoomLink>
-              );
-            })}
-          </RoomContainer>
+            {data.length === 0 ? (
+              <SpaceList>아직 등록된 공간이 없습니다.</SpaceList>
+            ) : (
+              data.map((space, id) => {
+                return (
+                  <SpaceLink to={`/host/qna/${space.id}?page=1`} key={id}>
+                    <SpaceList>{space.name}</SpaceList>
+                  </SpaceLink>
+                );
+              })
+            )}
+          </SpaceContainer>
         </div>
       </div>
     )
   );
 }
 
-const RoomContainer = styled.div`
+const SpaceContainer = styled.div`
   width: 80%;
   margin: 0 auto;
   margin-top: 80px;
   margin-bottom: 80px;
 `;
 
-const RoomLink = styled(Link)`
+const SpaceLink = styled(Link)`
   text-decoration: none;
   color: #000;
   font-size: 1.1rem;
 `;
 
-const RoomList = styled.div`
+const SpaceList = styled.div`
   box-sizing: border-box;
   width: 100%;
   text-align: center;

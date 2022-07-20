@@ -62,7 +62,7 @@ export default function Header() {
       <SearchBar />
       <RightWrap>
         {loginType === "admin" ? (
-          <HeaderTag name="관리자 페이지" target="/admin/notice" />
+          <HeaderTag name="관리자 페이지" target="/admin/notice?page=1" />
         ) : loginType === "host" ? (
           <HeaderTag name="공간등록 및 관리" target="/host/spaceList" />
         ) : isLogin ? (

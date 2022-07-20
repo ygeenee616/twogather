@@ -79,7 +79,7 @@ export class Space {
   spaceImages: SpaceImage[];
 
   @OneToMany(() => Review, (reviews) => reviews.space, {
-    eager: true,
+    eager: false,
   })
   reviews: Review[];
 }
