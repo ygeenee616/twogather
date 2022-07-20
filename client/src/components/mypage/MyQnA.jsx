@@ -3,7 +3,7 @@ import MyQnaComponent from "./MyQnaComponent.jsx";
 import Pagination from "../Pagination";
 import { useState } from "react";
 
-function MyQnA({qnas}) {
+function MyQnA({ qnas }) {
   // const {}
   const total_elem = qnas.length;
   const page_limit = 5;
@@ -17,9 +17,10 @@ function MyQnA({qnas}) {
     let target = e.target.closest("tr");
     let detailTr = target.nextElementSibling;
     if (!detailTr) return;
-    if (target.className==="detailTr") return; // detail tr이면 클릭 무시
+    if (target.className === "detailTr") return; // detail tr이면 클릭 무시
     // 기존 detail tr 숨기기
-    if (targetDetailTr!=="") targetDetailTr.style.setProperty("display", "none");
+    if (targetDetailTr !== "")
+      targetDetailTr.style.setProperty("display", "none");
 
     // 타겟 detail tr 변경하고 보이기
     setTargetDetailTr(detailTr);
@@ -29,27 +30,35 @@ function MyQnA({qnas}) {
   return (
     <QnADiv>
       <h3>나의 질문</h3>
-      <QnATable onClick={handleToggle}>
-        <QnATableHead>
-          <tr>
-            <th className="space"> 공간정보 </th>
-            <th className="description"> 문의내용 </th>
-            <th className="registered-on"> 작성일 </th>
-            <th className="replyed"> 답변유무 </th>
-          </tr>
-        </QnATableHead>
-        <tbody>
-          {qnas.slice(page_limit * (page - 1), page_limit_elem).map(
-            (qna, idx) => <MyQnaComponent qna={qna} key={idx}/>
-          )}
-        </tbody>
-      </QnATable>
-      <Pagination
-        total={total_elem}
-        limit={page_limit}
-        page={page}
-        setPage={setPage}
-      ></Pagination>
+      {qnas.length === 0 ? (
+        <EmptyQna><p>질문 내역이 없습니다.</p></EmptyQna>
+      ) : (
+        <>
+          <QnATable onClick={handleToggle}>
+            <QnATableHead>
+              <tr>
+                <th className="space"> 공간정보 </th>
+                <th className="description"> 문의내용 </th>
+                <th className="registered-on"> 작성일 </th>
+                <th className="replyed"> 답변유무 </th>
+              </tr>
+            </QnATableHead>
+            <tbody>
+              {qnas
+                .slice(page_limit * (page - 1), page_limit_elem)
+                .map((qna, idx) => (
+                  <MyQnaComponent qna={qna} key={idx} />
+                ))}
+            </tbody>
+          </QnATable>
+          <Pagination
+            total={total_elem}
+            limit={page_limit}
+            page={page}
+            setPage={setPage}
+          ></Pagination>
+        </>
+      )}
     </QnADiv>
   );
 }
@@ -81,6 +90,15 @@ const QnATableHead = styled.thead`
   td {
     padding: 1rem 0;
   }
+`;
+
+const EmptyQna = styled.div`
+  width: 100%;
+  height: 15rem;
+  border: solid 3px #bbd3f2;
+  font-size: 1rem;
+  text-align: center;
+  color: #bbd3f2;
 `;
 
 export default MyQnA;
