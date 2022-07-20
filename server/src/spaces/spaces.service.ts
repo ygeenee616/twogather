@@ -236,6 +236,8 @@ export class SpacesService {
         },
         relations: {
           rooms: true,
+          user: true,
+          hashtags: true,
         },
         skip: startIndex,
         take: perPage,
@@ -266,6 +268,8 @@ export class SpacesService {
         },
         relations: {
           rooms: true,
+          user: true,
+          hashtags: true,
         },
       });
     } catch (error) {
