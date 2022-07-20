@@ -3,42 +3,27 @@ import ReservedRoom from "./MyReservedRoom";
 import Pagination from "../Pagination";
 import { useEffect, useState } from "react";
 import { getCookie, setCookie} from "../../cookie";
+import * as Api from '../../api';
 
-const room = {
-  image: "/images/partyRoom.png",
-  space: "딘어게인 성수 - 브라이덜 샤워 생일파티",
-  booker: "홍길동",
-  personnel: "4",
-  location: "서울 성동구 성덕정 17길 12 4층",
-  visitingTime: "2022년 7월 일 11시-2시",
-};
+function MyReservation({reservations}) {
 
-
-const rooms = [];
-for (var i = 0; i < 12; i++) rooms.push(room);
-
-console.log(rooms);
-
-function MyReservation() {
-
-  const total_elem = rooms.length;
+  const total_elem = reservations.length;
   const page_limit = 5;
   const [page, setPage] = useState(1);
-  console.log('cookie:' + getCookie('page'));
-
   const page_limit_elem = (page_limit*page-1 < total_elem-1) ? page_limit*page-1 : total_elem-1;
 
-  useEffect(()=>{
-    setCookie('page', page);
-  }, [page]);
 
   return (
     <ReservationDiv>
       <h3>나의 예약 정보</h3>
       <Line></Line>
-      <ReservationTable>
-        {rooms.slice(page_limit*(page-1),page_limit_elem).map( (room, idx )=> <ReservedRoom room={room} idx={idx+1}/>)}
-      </ReservationTable>
+      <Reservations>
+        {
+          reservations
+          .slice(page_limit*(page-1),page_limit_elem)
+          .map( (reservation, idx )=> <ReservedRoom reservation={reservation} key={idx} className="reservedRoom"/>)
+        }
+      </Reservations>
       <Pagination
         total={total_elem}
         limit={page_limit}
@@ -70,8 +55,10 @@ const Line = styled.div`
   background-color: #bbd3f2;
 `;
 
-const ReservationTable = styled.table`
-  div {
+const Reservations = styled.div`
+  display: flex;
+  flex-direction: column;
+  .reservedRoom {
     border-bottom: #bbd3f2;
   }
 `;

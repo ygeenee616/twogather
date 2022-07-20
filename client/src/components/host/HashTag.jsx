@@ -18,7 +18,7 @@ export default function HashTag({
         {tagList.map((tagItem, index) => {
           return (
             <HashTagItem key={index}>
-              <span>{tagItem}</span>
+              <span>{tagItem.tag}</span>
               <Button onClick={(e) => removeHashTag(e)}>X</Button>
             </HashTagItem>
           );

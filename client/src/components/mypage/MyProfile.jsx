@@ -1,53 +1,58 @@
 import styled from "styled-components";
-import { useSelector } from 'react-redux';
-import { useState } from "react"
-import { validatePassword } from "../../assets/utils/UsefulFunction";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import {
+  validateEmail,
+  validatePassword,
+} from "../../assets/utils/UsefulFunction";
 import MyProfileInfo from "./MyProfileInfo";
 import MyProfileEdit from "./MyProfileEdit";
+import * as Api from "../../api";
 
-const user = {
-  nickname: "연두부",
-  email: "dubu@kakao.com",
-  password: "******",
-  socialLogin: "카카오",
-  gender: "여",
-  birthDate: "1999.06.16"
-}
-
-function MyProfile() {
-
+function MyProfile({ userInfo }) {
   const [editUser, setEditUser] = useState(false);
-
- 
-  const handleEditUser = () => {
+  function handleEditUser() {
     setEditUser(true);
   }
-  // 로그인이 안되어 있을 경우
+
+  function handleEditUserDone() {
+    setEditUser(false);
+  }
+
+  useEffect(() => {
+    setEditUser(false);
+  }, []);
+
   return (
     <ProfileDiv>
       <ProfileImgDiv>
         <img src="/images/duck.png" alt="프로필 사진" />
         <EditBtnDiv>
-          {/* <input type="file" accept="image/*" value="프로필 사진 변경"/>  */}
-          <input type="button" value="유저 정보 수정" onClick={handleEditUser} />
-        </EditBtnDiv>   
+          <label htmlFor="imgUpload">
+            <div id="img_upload">프로필 사진 변경</div>
+          </label>
+          <input type="file" accept="image/*" id="imgUpload" />
+          <input
+            type="button"
+            value="유저 정보 수정"
+            onClick={handleEditUser}
+          />
+        </EditBtnDiv>
       </ProfileImgDiv>
       <ProfileContents>
-      {
-      editUser ?
-        <MyProfileEdit 
-          oldNickname={user.nickname} 
-          oldGender={user.gender} 
-          oldBirthDate={user.birthDate} /> :
-        <MyProfileInfo user={user}/> 
-      }
+        {editUser ? (
+          <MyProfileEdit user={userInfo} />
+        ) : (
+          <MyProfileInfo
+            user={userInfo}
+            editUser={editUser}
+            handleEditUserDone={handleEditUserDone}
+          />
+        )}
       </ProfileContents>
     </ProfileDiv>
-
   );
 }
-
-
 
 const ProfileDiv = styled.div`
   display: flex;
@@ -64,7 +69,7 @@ const ProfileDiv = styled.div`
 
 const ProfileContents = styled.div`
   width: 80%;
-`
+`;
 
 const ProfileImgDiv = styled.div`
   display: flex;
@@ -85,23 +90,32 @@ const ProfileImgDiv = styled.div`
 `;
 
 const EditBtnDiv = styled.div`
-  input {
+  input[type="file"] {
+    display: none;
+  }
+
+  label,
+  input[type="button"] {
+    display: inline-block;
     background-color: white;
     color: #bbd3f2;
     width: 8rem;
     height: 2.5rem;
-    padding: 0.5rem;
     margin: 0.5rem;
     border: solid #bbd3f2;
     border-radius: 10px;
     font-weight: bold;
+    font-size: 0.8rem;
+
+    #img_upload {
+      padding: 0.6rem;
+    }
 
     :hover {
       box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
     }
-
   }
-`
+`;
 
 const AlertMsg = styled.div`
   margin: 0 6rem;
@@ -110,8 +124,6 @@ const AlertMsg = styled.div`
     font-size: 0.5rem;
     color: red;
   }
-`
-
-
+`;
 
 export default MyProfile;

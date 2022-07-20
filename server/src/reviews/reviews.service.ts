@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Get,
   Injectable,
   NotFoundException,
@@ -18,12 +19,18 @@ export class ReviewsService {
     private reservationService: ReservationsService,
   ) {}
 
-  async create(createReviewDto: CreateReviewDto, reservationId: number) {
+  async create(
+    createReviewDto: CreateReviewDto,
+    reservationId: number,
+    spaceId: number,
+  ) {
     try {
       const reservation = await this.reservationService.findOne(reservationId);
+      const space = reservation.room.space;
       const newReview = {
         ...createReviewDto,
         reservation,
+        space,
         createdTime: new Date(),
       };
       return await this.reviewsRepository.save(newReview);
@@ -36,6 +43,7 @@ export class ReviewsService {
     return await this.reviewsRepository.find({
       relations: {
         reservation: true,
+        space: true,
       },
       order: {
         id: 'DESC',
@@ -75,8 +83,16 @@ export class ReviewsService {
     }
   }
 
+  async findBySpace(spaceId: number): Promise<Review[]> {
+    try {
+      return await this.reviewsRepository.find({});
+    } catch (error) {
+      throw error;
+    }
+  }
+
   //reviewId로 review 수정
-  async update(id: number, updateReviewDto: UpdateReviewDto) {
+  async update(id: number, updateReviewDto: UpdateReviewDto): Promise<boolean> {
     try {
       const updatedReview = await this.reviewsRepository.update(
         id,

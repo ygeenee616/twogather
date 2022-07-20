@@ -9,6 +9,7 @@ import {
   Patch,
   Query,
   UnauthorizedException,
+  Req,
 } from '@nestjs/common';
 import { SpacesService } from './spaces.service';
 import { CreateSpaceDto } from './dto/create-space.dto';
@@ -24,6 +25,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { SpaceResExample } from './space.swagger.example';
 import { GetAdminUser, GetUser } from 'src/custom.decorator';
 import { User } from 'src/users/entities/users.entity';
+import { query } from 'express';
+import { Space } from './entities/spaces.entity';
 const spaceResExample = new SpaceResExample();
 
 @Controller('api/spaces')
@@ -113,13 +116,31 @@ export class SpacesController {
       example: spaceResExample.findMySpaces,
     },
   })
-  async findMySpaces(@GetUser() user: User) {
-    const spaces = await this.spacesService.findOneByUser(user.id);
+  async findMySpaces(@GetUser() user: User, @Query() query) {
+    let spaces;
+    const { page, perPage } = query;
+    console.log(page);
+    if (!page || page === undefined || page === null || page === 0) {
+      spaces = await this.spacesService.findByUser(user.id);
+      return {
+        status: 200,
+        success: true,
+        description: '내가 생성한 공간 목록 조회 성공',
+        data: spaces,
+      };
+    }
+    const startIndex: number = perPage * (page - 1);
+    spaces = await this.spacesService.findByUserPaginated(
+      user.id,
+      startIndex,
+      perPage,
+    );
+
     return {
       status: 200,
       success: true,
-      description: '내가 생성한 공간 목록 조회 성공',
-      data: spaces,
+      description: '내가 생성한 공간 목록 조회 성공(paginated)',
+      data: { spaces },
     };
   }
 

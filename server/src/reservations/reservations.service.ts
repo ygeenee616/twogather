@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Room } from 'src/rooms/entities/rooms.entity';
 import { RoomsService } from 'src/rooms/rooms.service';
 import { SpacesService } from 'src/spaces/spaces.service';
 import { User } from 'src/users/entities/users.entity';
@@ -18,7 +19,11 @@ export class ReservationsService {
   ) {}
 
   // 예약 등록
-  async create(createReservationDto: CreateReservationDto, user: User, room) {
+  async create(
+    createReservationDto: CreateReservationDto,
+    user: User,
+    room: Room,
+  ) {
     try {
       const newReservation = await this.reservationRepository.create({
         ...createReservationDto,
@@ -86,7 +91,12 @@ export class ReservationsService {
   }
 
   // 특정 룸의 전체 예약 목록 조회
-  async findAllByRoom(roomId: number, startIndex: number, perPage: number) {
+  async findAllByRoom(
+    roomId: number,
+    startIndex: number,
+    perPage: number,
+    date: string,
+  ) {
     try {
       const totalReservation = await this.reservationRepository.find({
         where: {
@@ -96,22 +106,44 @@ export class ReservationsService {
         },
       });
       const totalPage = Math.ceil(totalReservation.length / perPage);
-      const paginatedReservations = await this.reservationRepository.find({
-        where: {
-          room: {
-            id: roomId,
+      let paginatedReservations;
+      if (!date || date === undefined || date === null) {
+        paginatedReservations = await this.reservationRepository.find({
+          where: {
+            room: {
+              id: roomId,
+            },
           },
-        },
-        relations: {
-          user: true,
-          room: true,
-        },
-        order: {
-          id: 'DESC',
-        },
-        skip: startIndex,
-        take: perPage,
-      });
+          relations: {
+            user: true,
+            room: true,
+          },
+          order: {
+            id: 'DESC',
+          },
+          skip: startIndex,
+          take: perPage,
+        });
+      } else {
+        paginatedReservations = await this.reservationRepository.find({
+          where: {
+            date,
+            room: {
+              id: roomId,
+            },
+          },
+          relations: {
+            user: true,
+            room: true,
+          },
+          order: {
+            id: 'DESC',
+          },
+          skip: startIndex,
+          take: perPage,
+        });
+      }
+
       return {
         totalPage,
         paginatedReservations,

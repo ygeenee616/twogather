@@ -1,63 +1,58 @@
 import React, { useState } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import styled from "styled-components";
-const PostcodePopup = () => {
-  const open = useDaumPostcodePopup();
 
-  const [state, setState] = useState({
-    myFullAddress: "",
-    myPersonalAddress: "",
-    myZoneCode: "",
-  });
+const PostcodePopup = ({ state, onChange, handleClick }) => {
+  // const handleComplete = (data) => {
+  //   let fullAddress = data.address;
+  //   let extraAddress = "";
+  //   let zoneCode = data.zonecode;
 
-  const handleComplete = (data) => {
-    let fullAddress = data.address;
-    let extraAddress = "";
-    let zoneCode = data.zonecode;
+  //   if (data.addressType === "R") {
+  //     if (data.bname !== "") {
+  //       extraAddress += data.bname;
+  //     }
+  //     if (data.buildingName !== "") {
+  //       extraAddress +=
+  //         extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+  //     }
+  //     fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+  //   }
 
-    if (data.addressType === "R") {
-      if (data.bname !== "") {
-        extraAddress += data.bname;
-      }
-      if (data.buildingName !== "") {
-        extraAddress +=
-          extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
-      }
-      fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
-    }
-
-    const newItem = {
-      ...state,
-      myFullAddress: fullAddress,
-      myZoneCode: zoneCode,
-    };
-
-    setState(newItem);
-    console.log(state);
-    // console.log(state); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
-  };
-
-  const handleClick = () => {
-    open({ onComplete: handleComplete });
-  };
+  //   const newItem = {
+  //     ...state,
+  //     myFullAddress: fullAddress,
+  //     myZoneCode: zoneCode,
+  //   };
+  //   setState(newItem);
+  //   setSpaceInfo(newItem);
+  //   console.log("state", state); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+  //   console.log("spaceInfo:", spaceInfo);
+  // };
 
   return (
     <>
       <StyledInput
         className="postNum"
+        name="myZoneCode"
+        value={state.myZoneCode}
+        onChange={onChange}
         placeholder={state.myZoneCode}
         width="100%"
       ></StyledInput>
-      <StyledInput width="100%" placeholder={state.myFullAddress}></StyledInput>
       <StyledInput
         width="100%"
-        onChange={(e) => {
-          setState({
-            ...state,
-            myPersonalAddress: e.target.value,
-          });
-        }}
-        placeholder={state.myExtraAddress}
+        name="myFullAddress"
+        value={state.myFullAddress}
+        onChange={onChange}
+        placeholder={state.myFullAddress}
+      ></StyledInput>
+      <StyledInput
+        width="100%"
+        name="myPersonalAddress"
+        value={state.myPersonalAddress}
+        onChange={onChange}
+        placeholder={state.myPersonalAddress}
       ></StyledInput>
       <ButtonContainer>
         <SmallButton
