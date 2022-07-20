@@ -33,7 +33,9 @@ export default function HostAddSpace({ mode }) {
     hashTags: [], //태그
     imageUrl: "",
     notice: "", //주의사항
-    address: "", //실주소
+    address1: "",
+    address2: "",
+    address3: "", //실주소
   });
 
   //주소창 handlechange
@@ -47,7 +49,9 @@ export default function HostAddSpace({ mode }) {
   useEffect(() => {
     setSpaceInfo({
       ...spaceInfo,
-      address: addressState,
+      address1: addressState.myFullAddress,
+      address2: addressState.myPersonalAddress,
+      address3: addressState.myZoneCode,
     });
   }, [addressState]);
 
@@ -64,12 +68,11 @@ export default function HostAddSpace({ mode }) {
   //공간수정 버튼 누를 시 patch 요청
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-    console.log(addressState.myFullAddress);
-    const stringAddress =
-      addressState.myFullAddress + addressState.myPersonalAddress;
-
     const response = await Api.post(`api/spaces`, {
       name: spaceInfo.name, //공간명
+      address1: spaceInfo.address1,
+      address2: spaceInfo.address2,
+      address3: spaceInfo.address3,
       type: spaceInfo.type, //공간타입
       notice: spaceInfo.notice, //주의사항
       intro: spaceInfo.intro, //공간소개

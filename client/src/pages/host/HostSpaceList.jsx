@@ -77,8 +77,8 @@ export default function HostSpaceList({ host }) {
           src={[exImg1, exImg2]} //아직없음
           hashtags={data.hashtags}
           name={data.name}
-          address1={data.address1}
           address2={data.address2}
+          address3={data.address3}
           price={15000}
           review={13} //아직없음
           link={`/host/updateSpace/${data.id}`}
