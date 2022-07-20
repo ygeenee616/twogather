@@ -71,9 +71,11 @@ export class UsersService {
           id,
         },
         relations: {
-          reservations: true,
+          reservations: {
+            review: true,
+            room: true,
+          },
           qnas: true,
-          spaces: true,
         },
       });
     } catch (error) {

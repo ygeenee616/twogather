@@ -214,7 +214,7 @@ export class SpacesController {
   })
   async updateMySpace(
     @GetUser() user: User,
-    @Param('id') id,
+    @Param('id') id: number,
     @Body() updateSpaceDto: UpdateSpaceDto,
   ) {
     const updatedSpace = await this.spacesService.updateMySpace(

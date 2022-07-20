@@ -10,10 +10,7 @@ function MyReservation({ reservations }) {
   const page_limit = 5;
   const [page, setPage] = useState(1);
   const page_limit_elem =
-    page_limit * (page - 1) + 1 < total_elem
-      ? page_limit * (page - 1) + 1
-      : total_elem;
-
+    page_limit * page < total_elem ? page_limit * page : total_elem;
   return (
     <ReservationDiv>
       <h3>나의 예약 정보</h3>
@@ -27,7 +24,10 @@ function MyReservation({ reservations }) {
           <Line />
           <Reservations>
             {reservations
-              .slice(page_limit * (page - 1), page_limit_elem)
+              .slice(
+                page_limit * (page - 1),
+                page_limit * (page - 1) + page_limit_elem
+              )
               .map((reservation, idx) => (
                 <ReservedRoom
                   reservation={reservation}

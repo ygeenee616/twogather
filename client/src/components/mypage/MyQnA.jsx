@@ -31,7 +31,9 @@ function MyQnA({ qnas }) {
     <QnADiv>
       <h3>나의 질문</h3>
       {qnas.length === 0 ? (
-        <EmptyQna><p>질문 내역이 없습니다.</p></EmptyQna>
+        <EmptyQna>
+          <p>질문 내역이 없습니다.</p>
+        </EmptyQna>
       ) : (
         <>
           <QnATable onClick={handleToggle}>
@@ -45,7 +47,10 @@ function MyQnA({ qnas }) {
             </QnATableHead>
             <tbody>
               {qnas
-                .slice(page_limit * (page - 1), page_limit_elem)
+                .slice(
+                  page_limit * (page - 1),
+                  page_limit * (page - 1) + page_limit_elem
+                )
                 .map((qna, idx) => (
                   <MyQnaComponent qna={qna} key={idx} />
                 ))}

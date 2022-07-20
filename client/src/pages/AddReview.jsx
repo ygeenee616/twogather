@@ -6,11 +6,12 @@ import {
 } from "../components/addComment/CommentForm";
 import styled from "styled-components";
 import { useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as Api from "../api";
 
 function AddReview() {
   const location = useLocation();
+  const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
   const contentTextarea = useRef(null); // 작성란
   const bookId = params.get("bookId");
@@ -22,7 +23,8 @@ function AddReview() {
       const data = {
         content: contentTextarea.current.value,
       };
-      const res = await Api.post(`/api/reviews/${bookId}`, data);
+      const res = await Api.post(`api/reviews/${bookId}`, data);
+      navigate("/mypage", { replace: true });
       console.log(res);
     } catch (err) {
       console.error(err);
