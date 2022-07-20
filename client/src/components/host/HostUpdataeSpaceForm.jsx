@@ -12,29 +12,33 @@ export default function HostSpaceForm({ data }) {
   const nav = useNavigate();
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
+
   // hashTag state
+  const tagIdList = data.hashtags.map((item) => item.id);
   const [tagItem, setTagItem] = useState("");
-  const [tagList, setTagList] = useState([]);
+  const [tagList, setTagList] = useState(
+    data.hashtags.map((item) => {
+      return { tag: item.tag };
+    })
+  );
 
-  let { params } = useParams();
-
-  //address가 object로 바뀌어야할듯
+  //address state
   const [addressState, setAddressState] = useState({
-    myFullAddress: data.address1,
-    myPersonalAddress: data.address2,
-    myZoneCode: data.address3,
+    myFullAddress: data.address2,
+    myPersonalAddress: data.address3,
+    myZoneCode: data.address1,
   });
 
   const [spaceInfo, setSpaceInfo] = useState({
     name: data.name, //공간명
     type: data.type, //공간타입
     intro: data.intro, //공간소개
-    hashTags: data.hashTags, //태그
+    //hashTags: data.hashTags, //태그
     Images: "귀여운탱구사진",
     notice: data.notice, //주의사항
-    address1: addressState.myFullAddress,
-    address2: addressState.myPersonalAddress,
-    address3: addressState.myZoneCode,
+    address1: addressState.myZoneCode,
+    address2: addressState.myFullAddress,
+    address3: addressState.myPersonalAddress,
   });
 
   //주소창 handlechange
@@ -48,9 +52,9 @@ export default function HostSpaceForm({ data }) {
   useEffect(() => {
     setSpaceInfo({
       ...spaceInfo,
-      address1: addressState.myFullAddress,
-      address2: addressState.myPersonalAddress,
-      address3: addressState.myZoneCode,
+      address1: addressState.myZoneCode,
+      address2: addressState.myFullAddress,
+      address3: addressState.myPersonalAddress,
     });
   }, [addressState]);
 
@@ -69,15 +73,23 @@ export default function HostSpaceForm({ data }) {
     e.preventDefault();
     await Api.patch(`api/spaces/host/${data.id}`, {
       name: spaceInfo.name, //공간명
-      address1: addressState.myFullAddress,
-      address2: addressState.myPersonalAddress,
-      address3: addressState.myZoneCode,
+
+      address2: addressState.myFullAddress,
+      address3: addressState.myPersonalAddress,
       type: spaceInfo.type, //공간타입
       notice: spaceInfo.notice, //주의사항
       intro: spaceInfo.intro, //공간소개
       //hashTags: spaceInfo.hashTags,
       //Images: "귀여운탱구사진",
     });
+
+    tagIdList.map(async (id, i) => {
+      return await Api.delete(`api/hashtags/${id}`);
+    });
+    tagList.map(async (item, i) => {
+      return await Api.post(`api/hashtags/${data.id}`, item);
+    });
+
     const modal = document.querySelector(".modalWrap");
     modal.style.display = "block";
     window.scrollTo(0, 0);
@@ -123,11 +135,6 @@ export default function HostSpaceForm({ data }) {
   };
 
   // hashTag  컴포넌트 함수
-  useEffect(() => {
-    // ['스터디룸', '모임', '강남'] 이런식으로 배열로 들어감
-    console.log(tagList);
-  }, [tagList]);
-
   // 엔터 누르면 추가
   const onKeyPress = (e) => {
     if (e.target.value.length !== 0 && window.event.keyCode === 13) {
@@ -138,23 +145,23 @@ export default function HostSpaceForm({ data }) {
   // hashTag 추가 함수
   const addHashTag = () => {
     let updatedTagList = [...tagList];
-    updatedTagList.push(`#${tagItem}`);
+    updatedTagList.push({ tag: `#${tagItem}` });
     setTagList(updatedTagList);
     setTagItem("");
   };
 
-  useEffect(() => {
-    setSpaceInfo({
-      ...spaceInfo,
-      hashTags: tagList,
-    });
-  }, [tagList]);
+  // useEffect(() => {
+  //   setSpaceInfo({
+  //     ...spaceInfo,
+  //     hashTags: tagList,
+  //   });
+  // }, [tagList]);
 
   // hashTag 삭제
   const removeHashTag = (e) => {
     const deleteTagItem = e.target.parentElement.firstChild.innerText;
     const filteredTagList = tagList.filter(
-      (tagItem) => tagItem !== deleteTagItem
+      (tagItem) => tagItem.tag !== deleteTagItem
     );
     setTagList(filteredTagList);
   };
