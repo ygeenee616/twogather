@@ -110,13 +110,14 @@ export class ReservationsController {
     type: Reservation,
   })
   async findAllByRoom(@Param('roomId') roomId: number, @Query() query) {
-    const { page, perPage } = query;
+    const { page, perPage, date } = query;
     const startIndex: number = Number(perPage) * (Number(page) - 1);
     const { totalPage, paginatedReservations } =
       await this.reservationsService.findAllByRoom(
         roomId,
         startIndex,
         Number(perPage),
+        date,
       );
     return {
       status: 200,
