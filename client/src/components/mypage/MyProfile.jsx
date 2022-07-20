@@ -49,8 +49,9 @@ function MyProfile({ userInfo }) {
       const formData = new FormData();
       if (file) {
         formData.append("profileImage", file);
-        await Api.patchImg("api/users", formData);
         encodeFileToBase64(file);
+        // 프로필 사진 변경
+        await Api.patchImg("api/users", formData);
       }
     } catch (err) {
       console.log(err);
