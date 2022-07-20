@@ -6,6 +6,7 @@ import { Room } from './entities/rooms.entity';
 import { SpacesModule } from 'src/spaces/spaces.module';
 import { SpacesService } from 'src/spaces/spaces.service';
 import { PassportModule } from '@nestjs/passport';
+import { Space } from 'src/spaces/entities/spaces.entity';
 
 @Module({
   imports: [
