@@ -65,6 +65,33 @@ export default function HostAddRoom({ mode }) {
     }
   };
 
+  const handleDeleteSubmit = async (e) => {
+    e.preventDefault();
+    let roomResponse;
+    if (!roomInfo.capacity || !roomInfo.price) {
+      setAlert("값을 입력해 주세요");
+    }
+    try {
+      roomResponse = await Api.patch(`api/rooms/host/${roomId}`, {
+        name: roomInfo.roomName, //공간명
+        capacity: Number(roomInfo.personal), //수용인원
+        price: Number(roomInfo.price), //공간타입
+        description: roomInfo.roomType,
+        // spaceId: Number(params.spaceId),
+        //imgaes: [roomInfo.images],
+      });
+
+      const modal = document.querySelector(".modalWrap");
+      const modalDelete = document.querySelector(".updateModal");
+      modal.style.display = "block";
+      window.scrollTo(0, 0);
+
+      modalDelete.title = "졸려용";
+    } catch (err) {
+      console.log("err발생");
+    }
+  };
+
   //**************************이미지 처리 api***********************/
 
   const loadDetailImage = (e) => {
@@ -192,6 +219,17 @@ export default function HostAddRoom({ mode }) {
           >
             취소
           </StyledButton>
+
+          <StyledButton
+            name="delete"
+            className="delete"
+            backGroundColor="#8daef2"
+            color="white"
+            onClick={(e) => handleDeleteSubmit(e)}
+          >
+            룸 삭제
+          </StyledButton>
+
           <StyledButton
             onClick={(e) => handleUpdateSubmit(e)}
             color="white"
@@ -201,13 +239,14 @@ export default function HostAddRoom({ mode }) {
             type="submit"
             value="submit"
           >
-            룸추가
+            룸수정
           </StyledButton>
         </ButtonBox>
+
         <ModalWrap className="modalWrap">
           <Modal
             className="updateModal"
-            title="룸 추가"
+            title="룸 수정"
             content="룸이 수정되었습니다.."
             clickEvent={() => navigate("/host/spaceList")}
           />

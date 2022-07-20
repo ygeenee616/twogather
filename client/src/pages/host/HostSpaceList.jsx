@@ -90,7 +90,7 @@ export default function HostSpaceList({ host }) {
             3.룸추가
           </Menu>
           {/* 룸리스트로 가서 수정하게 하기 */}
-          <Menu onClick={() => navigate(`/host/roomList/${data.id}`)}> 
+          <Menu onClick={() => navigate(`/host/roomList/${data.id}`)}>
             4.룸수정
           </Menu>
           {/* 룸수정에서 삭제하기? */}
