@@ -7,10 +7,16 @@ import {
 } from "../../assets/utils/UsefulFunction";
 import MyProfileInfo from "./MyProfileInfo";
 import MyProfileEdit from "./MyProfileEdit";
+import defaultProfile from "../../assets/images/defaultProfile.png";
 import * as Api from "../../api";
+
+// form 타입 multitype / formdata // nmae -> images
 
 function MyProfile({ userInfo }) {
   const [editUser, setEditUser] = useState(false);
+  const [imageSrc, setImageSrc] = useState(defaultProfile);
+  const [alertMsg, setAlertMsg] = useState(false);
+
   function handleEditUser() {
     setEditUser(true);
   }
@@ -23,15 +29,43 @@ function MyProfile({ userInfo }) {
     setEditUser(false);
   }, []);
 
+  const encodeFileToBase64 = (fileBlob) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBlob);
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setImageSrc(reader.result);
+        resolve();
+      };
+    });
+  };
+
+  const handleImageUpload = async (e) => {
+    try {
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append("profileImage", file);
+      encodeFileToBase64(file);
+      const res = await Api.patchImg("api/users", formData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <ProfileDiv>
       <ProfileImgDiv>
-        <img src="/images/duck.png" alt="프로필 사진" />
+        {imageSrc && <img src={imageSrc} alt="내 프로필 사진" />}
         <EditBtnDiv>
-          <label htmlFor="imgUpload">
+          <label htmlFor="imgUpload" name="image">
             <div id="img_upload">프로필 사진 변경</div>
           </label>
-          <input type="file" accept="image/*" id="imgUpload" />
+          <input
+            type="file"
+            accept="image/*"
+            id="imgUpload"
+            onChange={handleImageUpload}
+          />
           <input
             type="button"
             value="유저 정보 수정"
@@ -79,9 +113,10 @@ const ProfileImgDiv = styled.div`
   width: 20vw;
 
   img {
-    width: 10rem;
-    height: 10rem;
-    border-radius: 10rem;
+    width: 200px;
+    height: 200px;
+    border-radius: 200px;
+    margin-bottom: 1rem;
   }
 
   button {

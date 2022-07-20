@@ -38,6 +38,7 @@ function LoginForm() {
   const [alertMsg, setAlertMsg] = useState("");
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
 
+
   const getData = async () => {
     const datas = await Api.get(`api/users/email/${email}`);
     return datas.data.data;
