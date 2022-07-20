@@ -7,11 +7,16 @@ import PostcodePopup from "../admin/PostcodePopup";
 import Modal from "../Modal";
 import HashTag from "./HashTag";
 import * as Api from "../../api";
+import TypeSelector from "../../components/TypeSelector";
 
 export default function HostSpaceForm({ data }) {
   const nav = useNavigate();
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
+  const [select, setSelect] = useState({
+    items: ["파티룸", "스터디룸", "회의실", "연습실", "스튜디오"],
+    selectItem: "",
+  });
 
   // hashTag state
   const tagIdList = data.hashtags.map((item) => item.id);
@@ -40,6 +45,7 @@ export default function HostSpaceForm({ data }) {
     address2: addressState.myFullAddress,
     address3: addressState.myPersonalAddress,
   });
+  console.log(spaceInfo);
 
   //주소창 handlechange
   const handleChangeAddressState = (e) => {
@@ -50,8 +56,10 @@ export default function HostSpaceForm({ data }) {
   };
 
   useEffect(() => {
+    setSelect({ ...select, selectItem: spaceInfo.type });
     setSpaceInfo({
       ...spaceInfo,
+      type: select.selectItem,
       address1: addressState.myZoneCode,
       address2: addressState.myFullAddress,
       address3: addressState.myPersonalAddress,
@@ -73,9 +81,6 @@ export default function HostSpaceForm({ data }) {
     e.preventDefault();
     await Api.patch(`api/spaces/host/${data.id}`, {
       name: spaceInfo.name, //공간명
-
-      address2: addressState.myFullAddress,
-      address3: addressState.myPersonalAddress,
       type: spaceInfo.type, //공간타입
       notice: spaceInfo.notice, //주의사항
       intro: spaceInfo.intro, //공간소개
@@ -232,6 +237,11 @@ export default function HostSpaceForm({ data }) {
             value={spaceInfo.intro}
             onChange={(e) => handleChangeState(e)}
           ></StyledTextArea>
+        </InputBox>
+
+        <InputBox className="selectBox">
+          <StyledLabel>공간 타입</StyledLabel>
+          <NewSelector state={select} setState={setSelect}></NewSelector>
         </InputBox>
 
         <HashTag
@@ -457,4 +467,9 @@ const ModalWrap = styled.div`
   height: 244vh;
   background-color: rgba(90, 90, 90, 0.2);
   display: none;
+`;
+const NewSelector = styled(TypeSelector)`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 `;
