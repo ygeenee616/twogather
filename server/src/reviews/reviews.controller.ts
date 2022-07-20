@@ -60,7 +60,7 @@ export class ReviewsController {
     @GetUser() user: User,
   ) {
     const reservation = await this.reservationsService.findOne(reservationId);
-    if (reservation.user !== user) {
+    if (reservation.user.id !== user.id) {
       throw new UnauthorizedException('권한없음');
     }
     const newReview = await this.reviewsService.create(

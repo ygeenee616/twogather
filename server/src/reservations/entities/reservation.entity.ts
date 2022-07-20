@@ -61,7 +61,7 @@ export class Reservation {
 
   @ManyToOne((type) => Room, (room) => room.reservations, {
     onDelete: 'CASCADE',
-    eager: false,
+    eager: true,
   })
   room: Room;
 }
