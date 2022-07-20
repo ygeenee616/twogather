@@ -6,10 +6,9 @@ import {
   validateEmail,
   validatePassword,
 } from "../../assets/utils/UsefulFunction";
-import * as Api from '../../api';
+import * as Api from "../../api";
 
 function Register() {
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -33,7 +32,9 @@ function Register() {
     serviceAgree &&
     privacyAgree;
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setAlertMsg("");
+  }, [nickname, email, password, confirmPassword]);
 
   const handleAllAgree = () => {
     // 전체동의 클릭시
@@ -48,22 +49,19 @@ function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-
-    if(isFormValid){
+    if (isFormValid) {
       try {
-        const data = {email, password, nickname};
+        const data = { email, password, nickname };
         // "/apiusers/sign-in" 엔드포인트로 post요청함.
         const res = await Api.post("api/users/sign-up", data);
 
-        navigate("/registerComplete", { replace: true, state: {nickname} });
-
+        navigate("/registerComplete", { replace: true, state: { nickname } });
       } catch (err) {
-
         setAlertMsg(err.response.data.message);
         console.log("회원가입에 실패하였습니다.", err);
         // setAlertMsg("아이디 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해주세요.")
       }
-    }  
+    }
   };
 
   return (
@@ -116,9 +114,7 @@ function Register() {
         </tr>
         {!isPasswordValid && (
           <AlertTR className="alert-msg">
-            <td colspan="2">
-              8~16자 영어, 숫자, 특수문자를 사용하세요.
-            </td>
+            <td colspan="2">8~16자 영어, 숫자, 특수문자를 사용하세요.</td>
           </AlertTR>
         )}
         <tr className="password-confirm-input">
@@ -208,7 +204,7 @@ const InputTD = styled.td`
     padding: 0.4rem;
     border: solid #d9d9d9;
     border-radius: 10px;
-    margin: 0.2rem 0
+    margin: 0.2rem 0;
   }
 `;
 const AlertTR = styled.tr`
@@ -250,6 +246,5 @@ const RegisterBtn = styled.button`
   }
 `;
 
-
-export {RegisterDiv, TagTD, InputTD, AlertTR, RegisterBtn };
+export { RegisterDiv, TagTD, InputTD, AlertTR, RegisterBtn };
 export default Register;

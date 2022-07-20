@@ -8,7 +8,7 @@ import HostUpdateSpace from "./HostUpdateSpace";
 import * as api from "../../api";
 import { useNavigate } from "react-router-dom";
 import { Container } from "../../components/register/UserForm";
-
+import { AiOutlinePlusSquare } from "react-icons/ai";
 import Modal from "../../components/Modal";
 import * as Api from "../../api";
 
@@ -17,7 +17,7 @@ import HostNav from "../../components/host/HostNav";
 HostSpaceList.defaultProps = {
   host: {
     id: "host123",
-    name: "김민수",
+    name: "호스트",
   },
 };
 
@@ -43,7 +43,7 @@ export default function HostSpaceList({ host }) {
     getData();
   }, [dataTrigger]);
 
-  const openModalDeletePopup = async () => {
+  const openModalDeletePopup = () => {
     const modal = document.querySelector(".modalWrap");
     modal.style.display = "block";
     window.scrollTo(0, 0);
@@ -51,14 +51,14 @@ export default function HostSpaceList({ host }) {
 
   const closeDeleteSpacePopup = async (props) => {
     const spaceId = props;
+    console.log(spaceId);
     //확인 누르면 삭제하고 딜리트함
     try {
-      setDataTrigger(dataTrigger + 1);
       const response = await Api.delete(`api/spaces/host/${spaceId}`);
       console.log(response);
-      document.querySelector(".deleteModal").content = "삭제되었습니다.";
+      setDataTrigger(dataTrigger + 1);
     } catch (err) {
-      console.log("err");
+      console.log(err);
     }
 
     const modal = document.querySelector(".modalWrap");
@@ -72,12 +72,12 @@ export default function HostSpaceList({ host }) {
         <ProductCard
           key={i}
           src={[exImg1, exImg2]} //아직없음
-          hashtags={["#강남모임공간", "#블라블라"]}
+          hashtags={data.hashtags}
           name={data.name}
-          address1={data.address1}
           address2={data.address2}
-          price={15000}
-          review={13} //아직없음
+          address3={data.address3}
+          price={data.minPrice}
+          review={data.reviewsLength} //아직없음
           link={`/host/updateSpace/${data.id}`}
         ></ProductCard>
         <SubMenuBar>
@@ -89,11 +89,14 @@ export default function HostSpaceList({ host }) {
           <Menu onClick={() => navigate(`/host/addRoom/${data.id}`)}>
             3.룸추가
           </Menu>
-          <Menu onClick={() => navigate(`/host/updateRoom/${data.id}`)}>
+          {/* 룸리스트로 가서 수정하게 하기 */}
+          <Menu onClick={() => navigate(`/host/roomList/${data.id}`)}>
             4.룸수정
           </Menu>
           {/* 룸수정에서 삭제하기? */}
-          <Menu onClick>5.룸삭제</Menu>
+          <Menu onClick={() => navigate(`/host/roomList/${data.id}`)}>
+            5.룸삭제
+          </Menu>
           {/* {// 룸삭제 구현?//} */}
         </SubMenuBar>
         <ModalWrap className="modalWrap">
@@ -117,23 +120,33 @@ export default function HostSpaceList({ host }) {
     <div>
       <HostNav />
       {datas && (
-        <BottomWrap>
-          <TitleContanier>
-            <MainTitle>{host.name}님 </MainTitle>
-            <Title>공간내역</Title>
-          </TitleContanier>
-          <div onClick={clickToModSpace}>
-            <ProductWrap>{renderData(offset, limit, datas)}</ProductWrap>
-            <div>
-              <Pagination
-                total={datas.length}
-                limit={limit}
-                page={page}
-                setPage={setPage}
-              />
+        <>
+          <BottomWrap>
+            <TitleContanier>
+              <MainTitle>{host.name}님 </MainTitle>
+              <Title>공간내역</Title>
+            </TitleContanier>
+            <div onClick={clickToModSpace}>
+              <ProductWrap>{renderData(offset, limit, datas)}</ProductWrap>
+
+              <AddSpaceButton
+                onClick={() => {
+                  navigate(`/host/addSpace`);
+                }}
+              >
+                <p className="label">공간추가하기</p>
+              </AddSpaceButton>
+              <div>
+                <Pagination
+                  total={datas.length}
+                  limit={limit}
+                  page={page}
+                  setPage={setPage}
+                />
+              </div>
             </div>
-          </div>
-        </BottomWrap>
+          </BottomWrap>
+        </>
       )}
     </div>
   );
@@ -182,8 +195,8 @@ const Title = styled.span`
 
 const ProductWrap = styled.div`
   display: grid;
-  margin: 0 auto;
-  width: 100%;
+  margin: 10% auto;
+  width: 70%;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 2%;
@@ -196,4 +209,38 @@ const ModalWrap = styled.div`
   height: 244vh;
   background-color: rgba(90, 90, 90, 0.2);
   display: none;
+`;
+
+const AddSpaceButton = styled.button`
+  width: 100%;
+  height: 50px;
+  font-size: 1rem;
+  color: white;
+  text-align: center;
+
+  border-radius: 10px;
+  border: none;
+
+  background-color: #8daef2;
+  opacity: 0.8;
+  cursor: pointer;
+  transition-duration: 0.2s;
+  box-shadow: 5px 5px 5px black;
+
+  p {
+    transition-duration: 0.2s;
+  }
+
+  :active {
+    box-shadow: none;
+    transform: scale(0.8);
+  }
+  :hover {
+    transform: scale(1.02);
+
+    & .label {
+      font-size: 1rem;
+      transform: scale(1.1);
+    }
+  }
 `;

@@ -6,7 +6,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import * as Api from "../../api";
 
 function MyProfileEdit({ user, handleEditUserDone }) {
-  const { nickname, name, sex, phoneNumber } = user;
+  const { nickname, name, sex, phoneNumber, loginType } = user;
   const [newNickname, setNewNickname] = useState(nickname ?? "");
   const [newName, setNewName] = useState(name ?? "");
   const [newSex, setNewSex] = useState(sex ?? "");
@@ -39,15 +39,15 @@ function MyProfileEdit({ user, handleEditUserDone }) {
       }
     }
 
-    if(userData[nickname]) {
-      localStorage.setItem("nickname", userData[nickname])
+    if (userData[nickname]) {
+      localStorage.setItem("nickname", userData[nickname]);
     }
 
     if (isFormValid && newUser !== null) {
       try {
         const res = await Api.patch("api/users", userData);
         console.log(res);
-        window.location.replace('/mypage');
+        window.location.replace("/mypage");
       } catch (err) {
         console.log(err);
       }
@@ -88,12 +88,18 @@ function MyProfileEdit({ user, handleEditUserDone }) {
             <tr>
               <TagTD>비밀번호</TagTD>
               <InputTD>
-                <input
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="새 비밀번호를 입력하세요."
-                />
+                {loginType === "local" ? (
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="새 비밀번호를 입력하세요."
+                  />
+                ) : (
+                  <p style={{ fontSize: 5, color: "#ccd3f2" }}>
+                    소셜로그인된 회원은 비밀번호를 바꿀 수 없습니다.
+                  </p>
+                )}
               </InputTD>
             </tr>
             {!isPasswordValid && (
