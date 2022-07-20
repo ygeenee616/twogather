@@ -43,7 +43,7 @@ export default function HostSpaceList({ host }) {
     getData();
   }, [dataTrigger]);
 
-  const openModalDeletePopup = async () => {
+  const openModalDeletePopup = () => {
     const modal = document.querySelector(".modalWrap");
     modal.style.display = "block";
     window.scrollTo(0, 0);
@@ -51,12 +51,13 @@ export default function HostSpaceList({ host }) {
 
   const closeDeleteSpacePopup = async (props) => {
     const spaceId = props;
+    console.log(spaceId);
     //확인 누르면 삭제하고 딜리트함
     try {
-      setDataTrigger(dataTrigger + 1);
       const response = await Api.delete(`api/spaces/host/${spaceId}`);
       console.log(response);
       document.querySelector(".deleteModal").content = "삭제되었습니다.";
+      setDataTrigger(dataTrigger + 1);
     } catch (err) {
       console.log(err);
     }

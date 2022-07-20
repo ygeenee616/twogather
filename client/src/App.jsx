@@ -33,7 +33,7 @@ import AdminBook from "./pages/admin/AdminBook";
 import HostBook from "./pages/host/HostBook";
 import HostRoomBook from "./pages/host/HostRoomBook";
 import BookDetail from "../src/pages/BookDetail";
-
+import HostRoomList from "../src/pages/host/HostRoomList";
 function App() {
   return (
     <Provider store={Store}>
