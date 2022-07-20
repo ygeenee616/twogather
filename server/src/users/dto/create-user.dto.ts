@@ -19,10 +19,6 @@ export class CreateUserDto {
   @ApiProperty({ description: '비밀번호(4~20자)' })
   readonly password: string;
 
-  @IsString()
-  @MinLength(4)
-  @MaxLength(20)
-  @IsString()
   @MinLength(4)
   @MaxLength(20)
   @ApiProperty({
