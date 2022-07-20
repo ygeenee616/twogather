@@ -4,6 +4,8 @@ import MyReservation from "../components/mypage/MyReservation";
 import MyQnA from "../components/mypage/MyQnA";
 import { PageTitle } from "../components/register/UserForm";
 import { useState, useEffect } from "react";
+import partypeople from "../assets/images/partypeople.png";
+
 import * as Api from "../api";
 import { id } from "date-fns/locale";
 
@@ -31,7 +33,7 @@ function MyPage() {
         });
 
         // data.reservation 과 data.rooms 합치기
-       
+
         setReservations(data.reservations);
 
         setQnas(data.qnas);
@@ -60,6 +62,8 @@ export const Container = styled.div`
   justify-contents: center;
   top: 5rem;
   margin: 0 15vw;
+  ${'' /* background-image: url(${partypeople});
+  background-repeat: no-repeat; */}
 `;
 
 export default MyPage;
