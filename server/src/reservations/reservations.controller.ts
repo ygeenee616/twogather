@@ -112,6 +112,8 @@ export class ReservationsController {
   async findAllByRoom(@Param('roomId') roomId: number, @Query() query) {
     const { page, perPage, date } = query;
     if (page === null || page === undefined || !page) {
+      console.log('not page');
+      console.log(date);
       const reservations = await this.reservationsService.findAllByRoom(
         roomId,
         date,

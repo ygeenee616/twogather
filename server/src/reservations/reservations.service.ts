@@ -90,6 +90,7 @@ export class ReservationsService {
     }
   }
 
+  // 룸으로 예약 목록 조회
   async findAllByRoom(roomId: number, date: string) {
     try {
       let reservations;
@@ -129,10 +130,12 @@ export class ReservationsService {
       return {
         reservations,
       };
-    } catch (error) {}
+    } catch (error) {
+      throw error;
+    }
   }
 
-  // 특정 룸의 전체 예약 목록 조회
+  // 특정 룸의 전체 예약 목록 조회(paginated)
   async findAllByRoomPaginated(
     roomId: number,
     startIndex: number,
