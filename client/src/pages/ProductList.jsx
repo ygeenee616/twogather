@@ -25,7 +25,8 @@ const ex1 = [
       "#앤틱공간대여",
     ],
     name: "강남최대 앤틱모임공간 공유먼트청담",
-    address: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
+    address1: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
+    address2: "지하1층",
     price: "150,000",
     review: "12",
   },
@@ -41,7 +42,8 @@ const ex2 = [
       "#앤틱공간대여",
     ],
     name: "강남최대 앤틱모임공간 공유먼트청담",
-    address: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
+    address1: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
+    address2: "지하1층",
     price: "150,000",
     review: "12",
   },
@@ -64,7 +66,8 @@ const renderData = (offset, limit, data) => {
         src={data.src}
         hashtags={data.hashtags}
         name={data.name}
-        address={data.address}
+        address1={data.address1}
+        address2={data.address2}
         price={data.price}
         review={data.review}
         link={`/detail/1`}
