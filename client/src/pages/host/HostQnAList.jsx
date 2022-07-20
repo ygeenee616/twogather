@@ -61,7 +61,7 @@ export default function HostQnA() {
                 >
                   {item.reply}
                 </Answer>
-                <SubmitBtn onClick={(e) => submitAnswer(e.target.value)}>
+                <SubmitBtn onClick={(e) => submitAnswer(item.id)}>
                   답변 등록
                 </SubmitBtn>
               </QnABox>
