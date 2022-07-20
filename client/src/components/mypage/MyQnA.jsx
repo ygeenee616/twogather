@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import MyQnaComponent from "./MyQnaComponent.jsx";
-import Pagination from "../Pagination";
+import { PaginationInLocal } from "../Pagination.jsx";
 import { useState } from "react";
 
 function MyQnA({ qnas }) {
@@ -53,12 +53,12 @@ function MyQnA({ qnas }) {
                 ))}
             </tbody>
           </QnATable>
-          <Pagination
+          <PaginationInLocal
             total={total_elem}
             limit={page_limit}
             page={page}
             setPage={setPage}
-          ></Pagination>
+          ></PaginationInLocal>
         </>
       )}
     </QnADiv>

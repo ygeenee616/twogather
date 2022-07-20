@@ -69,7 +69,7 @@ async function patchImg(endpoint, data) {
   console.log(`%cPATCH 요청: ${serverUrl + endpoint}`, "color: #059c4b;");
   console.log(`%cPATCH 요청 데이터: ${data}`, "color: #059c4b;");
 
-  return axios.patchImg(serverUrl + endpoint, data, {
+  return axios.patch(serverUrl + endpoint, data, {
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: `${localStorage.getItem("userToken")}`,

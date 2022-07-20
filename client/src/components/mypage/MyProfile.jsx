@@ -9,12 +9,15 @@ import MyProfileInfo from "./MyProfileInfo";
 import MyProfileEdit from "./MyProfileEdit";
 import defaultProfile from "../../assets/images/defaultProfile.png";
 import * as Api from "../../api";
+import axios from "axios";
 
-// form 타입 multitype / formdata // nmae -> images
+// form 타입 multitype / formdata // name -> images
 
 function MyProfile({ userInfo }) {
   const [editUser, setEditUser] = useState(false);
-  const [imageSrc, setImageSrc] = useState(defaultProfile);
+  const [imageSrc, setImageSrc] = useState(
+    userInfo.profileImage ?? defaultProfile
+  );
   const [alertMsg, setAlertMsg] = useState(false);
 
   function handleEditUser() {
@@ -44,9 +47,11 @@ function MyProfile({ userInfo }) {
     try {
       const file = e.target.files[0];
       const formData = new FormData();
-      formData.append("profileImage", file);
-      encodeFileToBase64(file);
-      const res = await Api.patchImg("api/users", formData);
+      if (file) {
+        formData.append("profileImage", file);
+        await Api.patchImg("api/users", formData);
+        encodeFileToBase64(file);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -57,7 +62,7 @@ function MyProfile({ userInfo }) {
       <ProfileImgDiv>
         {imageSrc && <img src={imageSrc} alt="내 프로필 사진" />}
         <EditBtnDiv>
-          <label htmlFor="imgUpload" name="image">
+          <label htmlFor="imgUpload" name="profileImage">
             <div id="img_upload">프로필 사진 변경</div>
           </label>
           <input

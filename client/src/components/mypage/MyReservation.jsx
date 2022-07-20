@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import ReservedRoom from "./MyReservedRoom";
-import Pagination from "../Pagination";
+import { PaginationInLocal } from "../Pagination";
 import { useEffect, useState } from "react";
 import { getCookie, setCookie } from "../../cookie";
 import * as Api from "../../api";
@@ -36,12 +36,12 @@ function MyReservation({ reservations }) {
                 />
               ))}
           </Reservations>
-          <Pagination
+          <PaginationInLocal
             total={total_elem}
             limit={page_limit}
             page={page}
             setPage={setPage}
-          ></Pagination>
+          ></PaginationInLocal>
         </>
       )}
     </ReservationDiv>
