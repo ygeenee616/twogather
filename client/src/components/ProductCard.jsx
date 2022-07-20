@@ -9,7 +9,7 @@ const productTags = (hashtags) => {
   let resultStr = "";
   if (hashtags) {
     for (let i = 0; i < hashtags.length; i++) {
-      resultStr += hashtags[i];
+      resultStr += hashtags[i].tag;
     }
     if (resultStr.length >= 20) {
       for (let i = 0; i <= 18; i++) {
@@ -28,8 +28,8 @@ export default function ProductCard({
   src,
   hashtags,
   name,
-  address1,
   address2,
+  address3,
   price,
   review,
   link,
@@ -57,7 +57,7 @@ export default function ProductCard({
           <Title>{name}</Title>
         </Line>
         <Line>
-          <SubTag>{`${address1} ${address2}`}</SubTag>
+          <SubTag>{`${address2} ${address3}`}</SubTag>
         </Line>
         <Line style={{ justifyContent: "flex-end", marginTop: "0.6vh" }}>
           <Price>{price}</Price>
