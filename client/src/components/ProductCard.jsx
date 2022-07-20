@@ -9,7 +9,7 @@ const productTags = (hashtags) => {
   let resultStr = "";
   if (hashtags) {
     for (let i = 0; i < hashtags.length; i++) {
-      resultStr += hashtags[i];
+      resultStr += hashtags[i].tag;
     }
     if (resultStr.length >= 20) {
       for (let i = 0; i <= 18; i++) {

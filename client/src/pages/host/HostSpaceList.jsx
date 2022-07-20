@@ -35,6 +35,7 @@ export default function HostSpaceList({ host }) {
         const res = await api.get("api/spaces/host");
         const data = res.data.data;
         setDatas(data);
+        console.log(data);
         host.id = data[0].user.id;
         host.name = data[0].user.nickname;
       } catch (err) {
@@ -74,7 +75,7 @@ export default function HostSpaceList({ host }) {
         <ProductCard
           key={i}
           src={[exImg1, exImg2]} //아직없음
-          hashtags={["#강남모임공간", "#블라블라"]}
+          hashtags={data.hashtags}
           name={data.name}
           address1={data.address1}
           address2={data.address2}
