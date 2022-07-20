@@ -7,7 +7,7 @@ import * as Api from "../../api";
 
 function MyReservation({ reservations }) {
   const total_elem = reservations.length;
-  const page_limit = 5;
+  const page_limit = 3;
   const [page, setPage] = useState(1);
   const page_limit_elem =
     page_limit * page < total_elem ? page_limit * page : total_elem;

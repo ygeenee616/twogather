@@ -38,11 +38,7 @@ function LoginForm() {
   const [alertMsg, setAlertMsg] = useState("");
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
 
-
-  const getData = async () => {
-    const datas = await Api.get(`api/users/email/${email}`);
-    return datas.data.data;
-  };
+  const getUserInfo = async () => {};
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -63,20 +59,22 @@ function LoginForm() {
         localStorage.setItem("userToken", jwtToken);
         setAlertMsg("");
 
-        // const userData = await getData();
-        // const userType = userData.isAdmin
-        //   ? "Admin"
-        //   : userData.businessNumber
-        //   ? "Host"
-        //   : "User";
+        try {
+          const user = await Api.get(`api/users/info`);
+          const { nickname, isAdmin, businessNumber } = user.data.data;
 
-        // setUserInfo({
-        //   userId: userData.id,
-        //   userName: userData.name,
-        //   nickName: userData.nickname,
-        //   email: email,
-        //   useType: userType,
-        // });
+          localStorage.setItem("nickname", nickname);
+
+          if (isAdmin) {
+            localStorage.setItem("loginType", "admin");
+          } else if (businessNumber) {
+            localStorage.setItem("loginType", "host");
+          } else {
+            localStorage.setItem("loginType", "user");
+          }
+        } catch (err) {
+          console.error(err);
+        }
 
         navigate("/", { replace: true });
       } catch (err) {
