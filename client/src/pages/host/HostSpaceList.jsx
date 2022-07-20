@@ -4,7 +4,7 @@ import Pagination from "../../components/Pagination";
 import ProductCard from "../../components/ProductCard";
 import exImg1 from "../../assets/images/ex1.png";
 import exImg2 from "../../assets/images/ex2.png";
-import HostUpdateSpace from "../HostUpdateSpace";
+import HostUpdateSpace from "./HostUpdateSpace";
 import * as api from "../../api";
 import { useNavigate } from "react-router-dom";
 import { Container } from "../../components/register/UserForm";
@@ -17,7 +17,7 @@ import HostNav from "../../components/host/HostNav";
 HostSpaceList.defaultProps = {
   host: {
     id: "host123",
-    name: "김민수",
+    name: "호스트",
   },
 };
 
@@ -35,7 +35,8 @@ export default function HostSpaceList({ host }) {
         const res = await api.get("api/spaces/host");
         const data = res.data.data;
         setDatas(data);
-        console.log(data);
+        host.id = data[0].user.id;
+        host.name = data[0].user.nickname;
       } catch (err) {
         console.log(err);
       }
@@ -75,7 +76,8 @@ export default function HostSpaceList({ host }) {
           src={[exImg1, exImg2]} //아직없음
           hashtags={["#강남모임공간", "#블라블라"]}
           name={data.name}
-          address={data.address}
+          address1={data.address1}
+          address2={data.address2}
           price={15000}
           review={13} //아직없음
           link={`/host/updateSpace/${data.id}`}

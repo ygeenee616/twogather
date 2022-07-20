@@ -70,12 +70,12 @@ export default function HostAddSpace({ mode }) {
 
     const response = await Api.post(`api/spaces`, {
       name: spaceInfo.name, //공간명
-      address1: addressState.myZoneCode, //실주소
-      address2: addressState.myFullAddress,
-      address3: addressState.myPersonalAddress,
       type: spaceInfo.type, //공간타입
       notice: spaceInfo.notice, //주의사항
       intro: spaceInfo.intro, //공간소개
+      address1: addressState.myZoneCode, //실주소
+      address2: addressState.myFullAddress,
+      address3: addressState.myPersonalAddress,
       //   images:
       //     "https://z-images.s3.amazonaws.com/5/51/%EC%9D%BC%EC%96%B4%EB%82%98_%EC%BD%94%EB%94%A9%ED%95%B4%EC%95%BC%EC%A7%80.jpg",
     });

@@ -8,7 +8,7 @@ import Modal from "../Modal";
 import HashTag from "./HashTag";
 import * as Api from "../../api";
 
-export default function HostSpaceForm({ mode, data }) {
+export default function HostSpaceForm({ data }) {
   const nav = useNavigate();
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
@@ -17,13 +17,12 @@ export default function HostSpaceForm({ mode, data }) {
   const [tagList, setTagList] = useState([]);
 
   let { params } = useParams();
-  console.log(params);
 
   //address가 object로 바뀌어야할듯
   const [addressState, setAddressState] = useState({
-    myFullAddress: "",
-    myPersonalAddress: data.address,
-    myZoneCode: "",
+    myFullAddress: data.address1,
+    myPersonalAddress: data.address2,
+    myZoneCode: data.address3,
   });
 
   const [spaceInfo, setSpaceInfo] = useState({
@@ -33,9 +32,11 @@ export default function HostSpaceForm({ mode, data }) {
     hashTags: data.hashTags, //태그
     Images: "귀여운탱구사진",
     notice: data.notice, //주의사항
-    address1: addressState.myZoneCode, //실주소
-    address2: addressState.myFullAddress,
-    address3: addressState.myPersonalAddress,
+
+    address1: addressState.myFullAddress,
+    address2: addressState.myPersonalAddress,
+    address3: addressState.myZoneCode,
+
   });
 
   //주소창 handlechange
@@ -49,7 +50,9 @@ export default function HostSpaceForm({ mode, data }) {
   useEffect(() => {
     setSpaceInfo({
       ...spaceInfo,
-      address: addressState,
+      address1: addressState.myFullAddress,
+      address2: addressState.myPersonalAddress,
+      address3: addressState.myZoneCode,
     });
   }, [addressState]);
 
@@ -66,10 +69,6 @@ export default function HostSpaceForm({ mode, data }) {
   //공간수정 버튼 누를 시 patch 요청
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-    console.log(addressState.myFullAddress);
-    const stringAddress =
-      addressState.myFullAddress + addressState.myPersonalAddress;
-
     await Api.patch(`api/spaces/host/${data.id}`, {
       name: spaceInfo.name, //공간명
       type: spaceInfo.type, //공간타입
@@ -128,8 +127,6 @@ export default function HostSpaceForm({ mode, data }) {
   const handleComplete = (data) => {
     let fullAddress = data.address;
     let zoneCode = data.zonecode;
-    console.log(data);
-
     // if (data.addressType === "R") {
     //   if (data.bname !== "") {
     //     extraAddress += data.bname;
@@ -145,9 +142,8 @@ export default function HostSpaceForm({ mode, data }) {
       myFullAddress: fullAddress,
       myZoneCode: zoneCode,
     };
-    console.log(newItem);
     setAddressState(newItem);
-    console.log("addressState:", addressState); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+    //console.log("addressState:", addressState); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
   };
 
   //다음 주소 api
