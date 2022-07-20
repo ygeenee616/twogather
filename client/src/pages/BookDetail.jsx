@@ -5,6 +5,7 @@ import HostInfo from "../components/book/HostInfo";
 import BookInfo from "../components/book/BookInfo";
 import PostBookerInfo from "../components/book/PostBookerInfo";
 import ToTop from "../components/ToTop";
+import Modal from "../components/Modal";
 import * as Api from "../api";
 import userInfoState from "../atom/userInfoState";
 import {
@@ -47,7 +48,9 @@ export default function BookDetail() {
       // 나중에 url 해당 BookId 사용해서 API 연결
       const req = await Api.delete(`api/reservations/${bookId}`);
       console.log(req);
-      navigate("/admin/bookList");
+      const modal = document.querySelector(".modalWrap");
+      modal.style.display = "block";
+      window.scrollTo(0, 0);
     } catch (err) {
       console.log(err);
     }
@@ -80,6 +83,13 @@ export default function BookDetail() {
           삭제하기
         </Button>
         <ToTop />
+        <ModalWrap className="modalWrap">
+          <Modal
+            title={"예약 삭제 성공"}
+            content={"예약이 삭제 되었습니다."}
+            clickEvent={() => window.location.replace("/admin/bookList?page=1")}
+          />
+        </ModalWrap>
       </FullContainer>
     )
   );
@@ -108,4 +118,17 @@ const Button = styled.button`
     box-shadow: 2px 2px 5px -1px #a6a9b6;
     transition: 0.3s;
   }
+`;
+
+const ModalWrap = styled.div`
+  width: 100%;
+  position: fixed;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  vertical-allign: middle;
+  display: none;
+  background-color: rgba(90, 90, 90, 0.2);
 `;
