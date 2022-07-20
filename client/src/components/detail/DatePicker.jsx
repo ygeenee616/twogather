@@ -17,6 +17,7 @@ export function MyDatePicker({
   onChangeDate,
   onClickStartTime,
   onClickEndTime,
+  clearTimePicker,
 }) {
   // timePicker options
   const timeTable = [];
@@ -30,11 +31,15 @@ export function MyDatePicker({
         locale={ko}
         selected={date}
         onChange={(date) => {
+          // clearTimePicker();
           onChangeDate(date);
         }}
         minDate={new Date()} // 이전 날짜는 선택 불가
         inline
       />
+      <Guide style={{ marginBottom: "40px", textAlign: "center" }}>
+        *룸을 먼저 선택해주세요!
+      </Guide>
 
       <div className="timePicker">
         <TimeSelect

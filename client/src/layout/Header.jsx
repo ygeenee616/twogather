@@ -43,13 +43,14 @@ const HeaderTag = ({ name, target }) => {
 
 export default function Header() {
   const [isLogin, setIsLogin] = useState(false);
+  const loginType = localStorage.getItem("loginType");
   const navigate = useNavigate();
   const handleLoginClick = () => {
     if (localStorage.getItem("userToken") === null) {
       setIsLogin(true);
       navigate("/login");
     } else {
-      localStorage.removeItem("userToken");
+      localStorage.clear();
       setIsLogin(false);
       navigate("/");
     }
@@ -68,10 +69,12 @@ export default function Header() {
       <Logo className="headerLogo" />
       <SearchBar />
       <RightWrap>
-        {isLogin ? (
-          <HeaderTag name="호스트등록하기" target="/host/addHost" />
+        {loginType === "admin" ? (
+          <HeaderTag name="관리자 페이지" target="/admin/notice?page=1" />
+        ) : loginType === "host" ? (
+          <HeaderTag name="공간등록 및 관리" target="/host/spaceList" />
         ) : (
-          ``
+          <HeaderTag name="호스트등록하기" target="/host/addHost" />
         )}
         {isLogin ? <HeaderTag name="마이페이지" target="/mypage" /> : ``}
         <HeaderTag name="공지사항" target="/notice?page=1" />

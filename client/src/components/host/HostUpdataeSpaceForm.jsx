@@ -7,35 +7,45 @@ import PostcodePopup from "../admin/PostcodePopup";
 import Modal from "../Modal";
 import HashTag from "./HashTag";
 import * as Api from "../../api";
+import TypeSelector from "../../components/TypeSelector";
 
 export default function HostSpaceForm({ data }) {
   const nav = useNavigate();
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
+  const [select, setSelect] = useState({
+    items: ["파티룸", "스터디룸", "회의실", "연습실", "스튜디오"],
+    selectItem: "",
+  });
+
   // hashTag state
+  const tagIdList = data.hashtags.map((item) => item.id);
   const [tagItem, setTagItem] = useState("");
-  const [tagList, setTagList] = useState([]);
+  const [tagList, setTagList] = useState(
+    data.hashtags.map((item) => {
+      return { tag: item.tag };
+    })
+  );
 
-  let { params } = useParams();
-
-  //address가 object로 바뀌어야할듯
+  //address state
   const [addressState, setAddressState] = useState({
-    myFullAddress: data.address1,
-    myPersonalAddress: data.address2,
-    myZoneCode: data.address3,
+    myFullAddress: data.address2,
+    myPersonalAddress: data.address3,
+    myZoneCode: data.address1,
   });
 
   const [spaceInfo, setSpaceInfo] = useState({
     name: data.name, //공간명
     type: data.type, //공간타입
     intro: data.intro, //공간소개
-    hashTags: data.hashTags, //태그
+    //hashTags: data.hashTags, //태그
     Images: "귀여운탱구사진",
     notice: data.notice, //주의사항
-    address1: addressState.myFullAddress,
-    address2: addressState.myPersonalAddress,
-    address3: addressState.myZoneCode,
+    address1: addressState.myZoneCode,
+    address2: addressState.myFullAddress,
+    address3: addressState.myPersonalAddress,
   });
+  console.log(spaceInfo);
 
   //주소창 handlechange
   const handleChangeAddressState = (e) => {
@@ -46,11 +56,13 @@ export default function HostSpaceForm({ data }) {
   };
 
   useEffect(() => {
+    setSelect({ ...select, selectItem: spaceInfo.type });
     setSpaceInfo({
       ...spaceInfo,
-      address1: addressState.myFullAddress,
-      address2: addressState.myPersonalAddress,
-      address3: addressState.myZoneCode,
+      type: select.selectItem,
+      address1: addressState.myZoneCode,
+      address2: addressState.myFullAddress,
+      address3: addressState.myPersonalAddress,
     });
   }, [addressState]);
 
@@ -69,65 +81,29 @@ export default function HostSpaceForm({ data }) {
     e.preventDefault();
     await Api.patch(`api/spaces/host/${data.id}`, {
       name: spaceInfo.name, //공간명
-      address1: addressState.myFullAddress,
-      address2: addressState.myPersonalAddress,
-      address3: addressState.myZoneCode,
       type: spaceInfo.type, //공간타입
       notice: spaceInfo.notice, //주의사항
       intro: spaceInfo.intro, //공간소개
+      address1: addressState.myZoneCode, //실주소
+      address2: addressState.myFullAddress,
+      address3: addressState.myPersonalAddress,
       //hashTags: spaceInfo.hashTags,
       //Images: "귀여운탱구사진",
     });
+
+    tagIdList.map(async (id, i) => {
+      return await Api.delete(`api/hashtags/${id}`);
+    });
+    tagList.map(async (item, i) => {
+      return await Api.post(`api/hashtags/${data.id}`, item);
+    });
+
     const modal = document.querySelector(".modalWrap");
     modal.style.display = "block";
     window.scrollTo(0, 0);
   };
 
-  const loadDetailImage = (e) => {
-    for (let i = 0; i < detailImgs.length(); i++) {
-      <img src={detailImgs[i]} multiple alt="preview" />;
-    }
-  };
-
-  const encodeFileToBase64 = (fileBlob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setImageSrc(reader.result);
-        console.log(imageSrc);
-        resolve();
-      };
-    });
-  };
-
-  const handleImageUpload = (e) => {
-    const fileArr = e.target.files;
-
-    let fileURLs = [];
-
-    let file;
-    let filesLength = fileArr.length > 5 ? 5 : fileArr.length;
-
-    for (let i = 0; i < filesLength; i++) {
-      file = fileArr[i];
-
-      let reader = new FileReader();
-      reader.onload = () => {
-        console.log(reader.result);
-        fileURLs[i] = reader.result;
-        setDatailImgs([...fileURLs]);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   // hashTag  컴포넌트 함수
-  useEffect(() => {
-    // ['스터디룸', '모임', '강남'] 이런식으로 배열로 들어감
-    console.log(tagList);
-  }, [tagList]);
-
   // 엔터 누르면 추가
   const onKeyPress = (e) => {
     if (e.target.value.length !== 0 && window.event.keyCode === 13) {
@@ -138,23 +114,23 @@ export default function HostSpaceForm({ data }) {
   // hashTag 추가 함수
   const addHashTag = () => {
     let updatedTagList = [...tagList];
-    updatedTagList.push(`#${tagItem}`);
+    updatedTagList.push({ tag: `#${tagItem}` });
     setTagList(updatedTagList);
     setTagItem("");
   };
 
-  useEffect(() => {
-    setSpaceInfo({
-      ...spaceInfo,
-      hashTags: tagList,
-    });
-  }, [tagList]);
+  // useEffect(() => {
+  //   setSpaceInfo({
+  //     ...spaceInfo,
+  //     hashTags: tagList,
+  //   });
+  // }, [tagList]);
 
   // hashTag 삭제
   const removeHashTag = (e) => {
     const deleteTagItem = e.target.parentElement.firstChild.innerText;
     const filteredTagList = tagList.filter(
-      (tagItem) => tagItem !== deleteTagItem
+      (tagItem) => tagItem.tag !== deleteTagItem
     );
     setTagList(filteredTagList);
   };
@@ -190,6 +166,48 @@ export default function HostSpaceForm({ data }) {
     open({ onComplete: handleComplete });
   };
 
+  //**************************이미지 처리 api***********************/
+
+  const loadDetailImage = (e) => {
+    setDatailImgs(e.target.files);
+    const fileArr = Array.from(e.target.files);
+
+    const imgBox = document.querySelector(".imgBox");
+
+    fileArr.forEach((file, index) => {
+      const reader = new FileReader();
+
+      //이미지 박스와 이미지 생성
+      const imgDiv = document.createElement("div");
+      const img = document.createElement("img");
+      img.classList.add("image"); //이미지에 이미지 태그 붙이기
+      imgDiv.classList.add("imgDiv");
+
+      img.onclick = function (e) {
+        imgDiv.remove();
+      };
+
+      imgDiv.appendChild(img);
+
+      reader.onload = () => {
+        img.src = reader.result;
+      }; //end on load
+
+      imgBox.appendChild(imgDiv);
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+  // const formDataSend = async (images, spaceId) => {
+  //   let formdata = new FormData();
+  //   formdata.append("uploadImage", images[0]);
+
+  //   const res = await axios.imgPost(`{api/space-images/${spaceId}}`, formdata);
+  //   console.log(res);
+  //   return res;
+  // };
+
   return (
     <Main>
       <SpaceForm>
@@ -219,6 +237,11 @@ export default function HostSpaceForm({ data }) {
             value={spaceInfo.intro}
             onChange={(e) => handleChangeState(e)}
           ></StyledTextArea>
+        </InputBox>
+
+        <InputBox className="selectBox">
+          <StyledLabel>공간 타입</StyledLabel>
+          <NewSelector state={select} setState={setSelect}></NewSelector>
         </InputBox>
 
         <HashTag
@@ -255,6 +278,7 @@ export default function HostSpaceForm({ data }) {
         <InputBox>
           <StyledLabel>공간 이미지 선택</StyledLabel>
           <SubImageView
+            className="imgBox"
             name="spaceSubImages"
             ref={subViewInput}
             onChange={loadDetailImage}
@@ -264,7 +288,7 @@ export default function HostSpaceForm({ data }) {
             type="file"
             multiple
             accept="image/*"
-            onChange={handleImageUpload}
+            onChange={loadDetailImage}
           ></ImageInput>
         </InputBox>
 
@@ -384,6 +408,13 @@ const SubImageView = styled.div`
   width: 100%;
   overflow: auto;
   border-radius: 4px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+
+  .image {
+    width: 100%;
+    display: block;
+  }
 `;
 
 const StyledButton = styled.button`
@@ -436,4 +467,9 @@ const ModalWrap = styled.div`
   height: 244vh;
   background-color: rgba(90, 90, 90, 0.2);
   display: none;
+`;
+const NewSelector = styled(TypeSelector)`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 `;

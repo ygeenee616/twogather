@@ -8,12 +8,12 @@ function changeTab(props) {
   thisContent.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
-export default function Tab({ contents, title }) {
+export default function Tab({ name, intro, notice, reviews, qnas }) {
   const navigate = useNavigate();
   const { spaceId } = useParams();
 
   return (
-    contents && (
+    intro && (
       <TabContainer>
         <Tabs>
           <TabTitle id="tab1" onClick={(e) => changeTab(e.target.id)}>
@@ -33,43 +33,51 @@ export default function Tab({ contents, title }) {
         <div style={{ width: "100%" }}>
           <TabContent className="tab1">
             <h2>공간소개</h2>
-            <p>{contents.introduce}</p>
+            <p>{intro}</p>
           </TabContent>
           <TabContent className="tab2">
             <h2>유의사항</h2>
-            <p>{contents.notice}</p>
+            <p>{notice}</p>
           </TabContent>
           <TabContent className="tab3">
             <h2>후기</h2>
-            {contents.review.map((item, i) => {
-              return (
-                <div key={i} className="itemBox">
-                  <p className="itemUser">{item.id}</p>
-                  <p className="itemContent">{item.content}</p>
-                </div>
-              );
-            })}
+            {reviews.length === 0 ? (
+              <div>아직 등록된 리뷰가 없습니다.</div>
+            ) : (
+              reviews.map((review, i) => {
+                return (
+                  <div key={i} className="itemBox">
+                    <p className="itemUser">익명</p>
+                    <p className="itemContent">{review.content}</p>
+                  </div>
+                );
+              })
+            )}
           </TabContent>
           <TabContent className="tab4">
             <h2>Q&A</h2>
             <AddQnA
               onClick={() =>
                 navigate("/mypage/addQna", {
-                  state: { spaceId: spaceId, spaceName: title },
+                  state: { spaceId: spaceId, spaceName: name },
                 })
               }
             >
               질문 작성하기
             </AddQnA>
-            {contents.qna.map((item, i) => {
-              return (
-                <div key={i} className="itemBox">
-                  <p className="itemUser">{item.id}</p>
-                  <p className="itemContent">{item.question}</p>
-                  <p className="itemContent">↪ {item.answer}</p>
-                </div>
-              );
-            })}
+            {qnas.length === 0 ? (
+              <div>아직 등록된 Q&A가 없습니다.</div>
+            ) : (
+              qnas.map((qna, i) => {
+                return (
+                  <div key={i} className="itemBox">
+                    <p className="itemUser">익명</p>
+                    <p className="itemContent">{qna.content}</p>
+                    <p className="itemContent">↪ {qna.reply}</p>
+                  </div>
+                );
+              })
+            )}
           </TabContent>
         </div>
       </TabContainer>

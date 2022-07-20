@@ -6,10 +6,18 @@ import PostcodePopup from "../../components/admin/PostcodePopup";
 import Modal from "../../components/Modal";
 import HashTag from "../../components/host/HashTag";
 import * as Api from "../../api";
+import { FiPrinter } from "react-icons/fi";
+import axios from "axios";
+import TypeSelector from "../../components/TypeSelector";
 
 export default function HostAddSpace({ mode }) {
   const nav = useNavigate();
+  const [select, setSelect] = useState({
+    items: ["파티룸", "스터디룸", "회의실", "연습실", "스튜디오"],
+    selectItem: "",
+  });
 
+  //imgState
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
 
@@ -28,9 +36,11 @@ export default function HostAddSpace({ mode }) {
     type: "", //공간타입
     intro: "", //공간소개
     hashTags: [], //태그
-    Images: "귀여운탱구사진",
+    imageUrl: "",
     notice: "", //주의사항
-    address: "", //실주소
+    address1: "",
+    address2: "",
+    address3: "", //실주소
   });
 
   //주소창 handlechange
@@ -44,7 +54,9 @@ export default function HostAddSpace({ mode }) {
   useEffect(() => {
     setSpaceInfo({
       ...spaceInfo,
-      address: addressState,
+      address1: addressState.myFullAddress,
+      address2: addressState.myPersonalAddress,
+      address3: addressState.myZoneCode,
     });
   }, [addressState]);
 
@@ -61,20 +73,18 @@ export default function HostAddSpace({ mode }) {
   //공간수정 버튼 누를 시 patch 요청
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-    console.log(addressState.myFullAddress);
-    const stringAddress =
-      addressState.myFullAddress + addressState.myPersonalAddress;
-
     const response = await Api.post(`api/spaces`, {
       name: spaceInfo.name, //공간명
-      address: stringAddress, //실주소
-      type: spaceInfo.type, //공간타입
+      type: select.selectItem, //공간타입
       notice: spaceInfo.notice, //주의사항
       intro: spaceInfo.intro, //공간소개
-      //hashtags: spaceInfo.tagList,
+      address1: addressState.myZoneCode, //실주소
+      address2: addressState.myFullAddress,
+      address3: addressState.myPersonalAddress,
       //   images:
       //     "https://z-images.s3.amazonaws.com/5/51/%EC%9D%BC%EC%96%B4%EB%82%98_%EC%BD%94%EB%94%A9%ED%95%B4%EC%95%BC%EC%A7%80.jpg",
     });
+
     const data = response.data.data;
     const spaceId = data.id;
     let responseTag = "";
@@ -84,51 +94,14 @@ export default function HostAddSpace({ mode }) {
       console.log(responseTag);
     }
 
+    //const res = formDataSend(detailImgs, spaceId);
+
     const modal = document.querySelector(".modalWrap");
     modal.style.display = "block";
     window.scrollTo(0, 0);
   };
 
-  const loadDetailImage = (e) => {
-    for (let i = 0; i < detailImgs.length(); i++) {
-      <img src={detailImgs[i]} multiple alt="preview" />;
-    }
-  };
-
-  const encodeFileToBase64 = (fileBlob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setImageSrc(reader.result);
-        console.log(imageSrc);
-        resolve();
-      };
-    });
-  };
-
-  const handleImageUpload = (e) => {
-    const fileArr = e.target.files;
-
-    let fileURLs = [];
-
-    let file;
-    let filesLength = fileArr.length > 5 ? 5 : fileArr.length;
-
-    for (let i = 0; i < filesLength; i++) {
-      file = fileArr[i];
-
-      let reader = new FileReader();
-      reader.onload = () => {
-        console.log(reader.result);
-        fileURLs[i] = reader.result;
-        setDatailImgs([...fileURLs]);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // hashTag  컴포넌트 함수
+  /******************* hashTag  컴포넌트 함수*******/
   useEffect(() => {
     // ['스터디룸', '모임', '강남'] 이런식으로 배열로 들어감
     console.log(tagList);
@@ -138,7 +111,6 @@ export default function HostAddSpace({ mode }) {
   const onKeyPress = (e) => {
     if (e.target.value.length !== 0 && window.event.keyCode === 13) {
       addHashTag();
-      console.log("Asdasdasdasdasdsaadsadad");
     }
   };
 
@@ -177,23 +149,13 @@ export default function HostAddSpace({ mode }) {
   const handleComplete = (data) => {
     let fullAddress = data.address;
     let zoneCode = data.zonecode;
-    console.log(data);
-
-    // if (data.addressType === "R") {
-    //   if (data.bname !== "") {
-    //     extraAddress += data.bname;
-    //   }
-    //   if (data.buildingName !== "") {
-    //     extraAddress +=
-    //       extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
-    //   }
-    //   fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
-    // }
+    //let zoneCode = data.myPersonalAddress;
     const newItem = {
       ...addressState,
       myFullAddress: fullAddress,
       myZoneCode: zoneCode,
     };
+
     console.log(newItem);
     setAddressState(newItem);
     console.log("addressState:", addressState); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
@@ -204,6 +166,58 @@ export default function HostAddSpace({ mode }) {
 
   const handleClick = () => {
     open({ onComplete: handleComplete });
+  };
+
+  //**************************이미지 처리 api***********************/
+
+  const imgClickHandler = (e) => {
+    const fileArr = Array.from(e.target.files);
+    console.log(e.target);
+    console.log(e.target.value);
+  };
+
+  const loadDetailImage = (e) => {
+    setDatailImgs(e.target.files);
+
+    const fileArr = Array.from(e.target.files);
+
+    const imgBox = document.querySelector(".imgBox");
+    fileArr.forEach((file, index) => {
+      const reader = new FileReader();
+
+      //이미지 박스와 이미지 생성
+      const imgDiv = document.createElement("div");
+      const img = document.createElement("img");
+
+      img.classList.add("image"); //이미지에 이미지 태그 붙이기
+      imgDiv.classList.add("imgDiv");
+
+      imgDiv.addEventListener("click", (e) => {
+        console.log("미지미지");
+        fileArr.splice(index, 1);
+        setDatailImgs(fileArr);
+        e.target.remove();
+        imgDiv.remove();
+      });
+
+      imgDiv.appendChild(img);
+
+      reader.onload = () => {
+        img.src = reader.result;
+      }; //end on load
+
+      imgBox.appendChild(imgDiv);
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const formDataSend = async (images, spaceId) => {
+    let formdata = new FormData();
+    formdata.append("uploadImage", images[0]);
+
+    const res = await axios.imgPost(`{api/space-images/${spaceId}}`, formdata);
+    console.log(res);
+    return res;
   };
 
   return (
@@ -235,6 +249,11 @@ export default function HostAddSpace({ mode }) {
             value={spaceInfo.intro}
             onChange={(e) => handleChangeState(e)}
           ></StyledTextArea>
+        </InputBox>
+
+        <InputBox className="selectBox">
+          <StyledLabel>공간 타입</StyledLabel>
+          <NewSelector state={select} setState={setSelect}></NewSelector>
         </InputBox>
 
         <HashTag
@@ -271,6 +290,7 @@ export default function HostAddSpace({ mode }) {
         <InputBox>
           <StyledLabel>공간 이미지 선택</StyledLabel>
           <SubImageView
+            className="imgBox"
             name="spaceSubImages"
             ref={subViewInput}
             onChange={loadDetailImage}
@@ -280,8 +300,15 @@ export default function HostAddSpace({ mode }) {
             type="file"
             multiple
             accept="image/*"
-            onChange={handleImageUpload}
+            onChange={loadDetailImage}
+            id="imgs"
+            style={{ display: "none" }}
           ></ImageInput>
+          <label for="imgs" id="imgs" type="file">
+            업로드
+          </label>
+          {/* <input type="file" name="uploadfile" id="img" style="display:none;" />{" "}
+          <label for="img">Click me to upload image</label> */}
         </InputBox>
 
         <ButtonBox>
@@ -290,6 +317,9 @@ export default function HostAddSpace({ mode }) {
             className="cancle"
             backGroundColor="#8daef2"
             color="white"
+            onClick={() => {
+              nav(-1);
+            }}
           >
             취소
           </StyledButton>
@@ -400,6 +430,13 @@ const SubImageView = styled.div`
   width: 100%;
   overflow: auto;
   border-radius: 4px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+
+  .image {
+    width: 100%;
+    display: block;
+  }
 `;
 
 const StyledButton = styled.button`
@@ -452,4 +489,9 @@ const ModalWrap = styled.div`
   height: 244vh;
   background-color: rgba(90, 90, 90, 0.2);
   display: none;
+`;
+const NewSelector = styled(TypeSelector)`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 `;
