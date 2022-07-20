@@ -19,7 +19,7 @@ export class User {
   @ApiPropertyOptional({
     description: '로그인된 계정 유형(구글, 카카오, 로컬 등)',
   })
-  loginType: boolean;
+  loginType: string;
 
   @Column({ type: 'varchar', length: 45, nullable: false, unique: true })
   @ApiProperty({ description: '닉네임' })
