@@ -16,7 +16,7 @@ import UpdateNotice from "./pages/UpdateNotice";
 import AddHost from "./pages/host/AddHost";
 import HostAddSpace from "./pages/host/HostAddSpace";
 import HostSpaceList from "./pages/host/HostSpaceList";
-import HostUpdateSpace from "./pages/HostUpdateSpace";
+import HostUpdateSpace from "./pages/host/HostUpdateSpace";
 import HostAddRoom from "./pages/host/HostAddRoom";
 import HostUpdateRoom from "./pages/host/HostUpdateRoom";
 import HostQnA from "./pages/host/HostQnA";
