@@ -170,24 +170,35 @@ export default function HostAddSpace({ mode }) {
 
   //**************************이미지 처리 api***********************/
 
+  const imgClickHandler = (e) => {
+    const fileArr = Array.from(e.target.files);
+    console.log(e.target);
+    console.log(e.target.value);
+  };
+
   const loadDetailImage = (e) => {
     setDatailImgs(e.target.files);
+
     const fileArr = Array.from(e.target.files);
 
     const imgBox = document.querySelector(".imgBox");
-
     fileArr.forEach((file, index) => {
       const reader = new FileReader();
 
       //이미지 박스와 이미지 생성
       const imgDiv = document.createElement("div");
       const img = document.createElement("img");
+
       img.classList.add("image"); //이미지에 이미지 태그 붙이기
       imgDiv.classList.add("imgDiv");
 
-      img.onclick = function (e) {
+      imgDiv.addEventListener("click", (e) => {
+        console.log("미지미지");
+        fileArr.splice(index, 1);
+        setDatailImgs(fileArr);
+        e.target.remove();
         imgDiv.remove();
-      };
+      });
 
       imgDiv.appendChild(img);
 
@@ -196,7 +207,6 @@ export default function HostAddSpace({ mode }) {
       }; //end on load
 
       imgBox.appendChild(imgDiv);
-
       reader.readAsDataURL(file);
     });
   };
@@ -291,7 +301,14 @@ export default function HostAddSpace({ mode }) {
             multiple
             accept="image/*"
             onChange={loadDetailImage}
+            id="imgs"
+            style={{ display: "none" }}
           ></ImageInput>
+          <label for="imgs" id="imgs" type="file">
+            업로드
+          </label>
+          {/* <input type="file" name="uploadfile" id="img" style="display:none;" />{" "}
+          <label for="img">Click me to upload image</label> */}
         </InputBox>
 
         <ButtonBox>
