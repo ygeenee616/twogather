@@ -171,7 +171,7 @@ export default function AddHost() {
               backGroundColor="#8daef2"
               color="white"
             >
-              등록취소
+              등록 취소
             </StyledButton>
             {/* /*네비게이트 설정하기 */}
             <StyledButton
@@ -182,7 +182,7 @@ export default function AddHost() {
               type="submit"
               value="submit"
             >
-              Host등록
+              Host 등록
             </StyledButton>
             {/* {포스트 요청하기 } */}
           </ButtonBox>
@@ -204,6 +204,7 @@ const SpaceForm = styled.form`
   margin: 0 10%;
   width: 100%;
   height: 100%;
+  font-family: "NEXON Lv2 Gothic Light";
 `;
 
 const StyledLabel = styled.div`
@@ -213,6 +214,7 @@ const StyledLabel = styled.div`
   margin-bottom: 10px;
   font-size: 1rem;
   font-style: bold;
+  font-family: "NEXON Lv2 Gothic Light";
 `;
 
 const StyledInput = styled.input`
@@ -222,6 +224,7 @@ const StyledInput = styled.input`
   border: 1px solid lightgrey;
   outline-color: #8daef2;
   border-radius: 4px;
+  font-family: "NEXON Lv2 Gothic Light";
 
   & + & {
     margin-left: 3%;
@@ -230,6 +233,7 @@ const StyledInput = styled.input`
 
 const InputBox = styled.div`
   display: flex;
+  font-family: "NEXON Lv2 Gothic Light";
 
   align-items: start;
   text-align: start;
@@ -254,6 +258,7 @@ const StyledButton = styled.button`
   width: 48%;
   height: 40px;
   line-height: 40px;
+  font-family: "NEXON Lv2 Gothic Light";
 
   border: none;
   border-radius: 10px;
@@ -280,6 +285,7 @@ const Title = styled.h1`
   color: #8daef2;
   width: 100%;
   text-align: left;
+  font-family: "S-CoreDream-6Bold";
 `;
 
 const ButtonBox = styled.div`

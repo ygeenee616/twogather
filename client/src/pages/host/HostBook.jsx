@@ -82,6 +82,6 @@ const TableTitle = styled.div`
   text-align: center;
   padding: 15px;
   font-size: 1.1rem;
-  background-color: #8daef2;
+  background-color: #6e85b7;
   color: #fff;
 `;

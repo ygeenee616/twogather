@@ -7,12 +7,11 @@ import exImg2 from "../../assets/images/ex2.png";
 import HostUpdateSpace from "./HostUpdateSpace";
 import * as api from "../../api";
 import { useNavigate } from "react-router-dom";
-import { Container } from "../../components/register/UserForm";
-import { AiOutlinePlusSquare } from "react-icons/ai";
 import Modal from "../../components/Modal";
 import * as Api from "../../api";
-
+import { HiPlusSm } from "react-icons/hi";
 import HostNav from "../../components/host/HostNav";
+import { Container } from "../MyPage";
 
 HostSpaceList.defaultProps = {
   host: {
@@ -81,23 +80,31 @@ export default function HostSpaceList({ host }) {
           link={`/host/updateSpace/${data.id}`}
         ></ProductCard>
         <SubMenuBar>
-          <Menu onClick={() => navigate(`/host/updateSpace/${data.id}`)}>
-            1.공간수정
+          <Menu
+            onClick={() => navigate(`/host/updateSpace/${data.id}`)}
+            style={{ backgroundColor: "#B2C8DF" }}
+          >
+            ✏️공간 수정
           </Menu>
-          <Menu onClick={() => openModalDeletePopup(data.id)}>2.공간삭제</Menu>
+          <Menu
+            onClick={() => openModalDeletePopup(data.id)}
+            style={{ backgroundColor: "#6E85B7" }}
+          >
+            ✂️공간 삭제
+          </Menu>
           {/* 공간삭제 */}
-          <Menu onClick={() => navigate(`/host/addRoom/${data.id}`)}>
-            3.룸추가
+          <Menu
+            onClick={() => navigate(`/host/addRoom/${data.id}`)}
+            style={{ backgroundColor: "#6E85B7" }}
+          >
+            ➕룸 추가
           </Menu>
-          {/* 룸리스트로 가서 수정하게 하기 */}
-          <Menu onClick={() => navigate(`/host/roomList/${data.id}`)}>
-            4.룸수정
+          <Menu
+            onClick={() => navigate(`/host/roomList/${data.id}`)}
+            style={{ backgroundColor: "#B2C8DF" }}
+          >
+            ⚒️룸 수정 및 삭제
           </Menu>
-          {/* 룸수정에서 삭제하기? */}
-          <Menu onClick={() => navigate(`/host/roomList/${data.id}`)}>
-            5.룸삭제
-          </Menu>
-          {/* {// 룸삭제 구현?//} */}
         </SubMenuBar>
         <ModalWrap className="modalWrap">
           <Modal
@@ -123,19 +130,21 @@ export default function HostSpaceList({ host }) {
         <>
           <BottomWrap>
             <TitleContanier>
-              <MainTitle>{host.name}님 </MainTitle>
+              <MainTitle>{host.name}님</MainTitle>
               <Title>공간내역</Title>
             </TitleContanier>
+
+            <AddSpaceButton
+              onClick={() => {
+                navigate(`/host/addSpace`);
+              }}
+            >
+              <HiPlusSm size={"2.5rem"} />
+            </AddSpaceButton>
+
             <div onClick={clickToModSpace}>
               <ProductWrap>{renderData(offset, limit, datas)}</ProductWrap>
 
-              <AddSpaceButton
-                onClick={() => {
-                  navigate(`/host/addSpace`);
-                }}
-              >
-                <p className="label">공간추가하기</p>
-              </AddSpaceButton>
               <div>
                 <Pagination
                   total={datas.length}
@@ -153,10 +162,10 @@ export default function HostSpaceList({ host }) {
 }
 
 const SubMenuBar = styled.div`
-  paddin: 3%;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
   flex-direction: column;
   width: 100%;
   height: 100%;
@@ -164,33 +173,44 @@ const SubMenuBar = styled.div`
 
 const Menu = styled.div`
   cursor: pointer;
-  :hover {
-    color: blue;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "S-CoreDream-3Light";
+  color: #fff;
+
+  &:hover {
+    box-shadow: 3px 3px 7px #d9d9d9;
   }
 `;
 const BottomWrap = styled.div`
   width: 80%;
   margin: 0 auto;
-  margin-top: 80px;
-  margin-bottom: 80px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  position: relative;
 `;
 
 const TitleContanier = styled.div`
-  border-bottom: 2px solid #8daef2;
+  font-family: "NEXON Lv2 Gothic Light";
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
 `;
 
 const MainTitle = styled.span`
-  font-size: 25px;
+  text-align: center;
+  font-size: 2.2rem;
   font-weight: 700;
-  color: #8daef2;
+  color: #000;
 `;
 
 const Title = styled.span`
   font-size: 18px;
-  margin: 5px;
+  font-weight: 700;
+  margin-left: 15px;
 `;
 
 const ProductWrap = styled.div`
@@ -203,44 +223,34 @@ const ProductWrap = styled.div`
 `;
 
 const ModalWrap = styled.div`
-  position: absolute;
-  top: 0;
+  width: 100%;
+  position: fixed;
+  margin: 0 auto;
   left: 0;
-  height: 244vh;
-  background-color: rgba(90, 90, 90, 0.2);
+  right: 0;
+  top: 0;
+  bottom: 0;
+  vertical-allign: middle;
   display: none;
+  background-color: rgba(90, 90, 90, 0.2);
 `;
 
 const AddSpaceButton = styled.button`
-  width: 100%;
-  height: 50px;
-  font-size: 1rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
-  text-align: center;
-
-  border-radius: 10px;
+  border-radius: 50%;
   border: none;
-
-  background-color: #8daef2;
-  opacity: 0.8;
+  background-color: #b1bce6;
   cursor: pointer;
-  transition-duration: 0.2s;
-  box-shadow: 5px 5px 5px black;
+  position: absolute;
+  right: 0;
 
-  p {
-    transition-duration: 0.2s;
-  }
-
-  :active {
-    box-shadow: none;
-    transform: scale(0.8);
-  }
-  :hover {
-    transform: scale(1.02);
-
-    & .label {
-      font-size: 1rem;
-      transform: scale(1.1);
-    }
+  & svg:hover {
+    transform: scale(1.1);
+    transition: all 0.3s;
   }
 `;
