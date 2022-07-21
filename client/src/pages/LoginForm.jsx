@@ -6,7 +6,6 @@ import {
   validateEmail,
   validatePassword,
 } from "../assets/utils/UsefulFunction";
-import userSlice, { login } from "../slices/UserSlice";
 import * as Api from "../api";
 
 import styled from "styled-components";

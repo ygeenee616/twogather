@@ -19,6 +19,13 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: "S-CoreDream-7ExtraBold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-7ExtraBold.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
 
 @font-face {
   font-family: "LeferiPoint-WhiteA";
@@ -47,14 +54,6 @@
 @font-face {
   font-family: "SpoqaHanSansNeo-Light";
   src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Light.woff")
-    format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "S-CoreDream-7ExtraBold";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-7ExtraBold.woff")
     format("woff");
   font-weight: normal;
   font-style: normal;
