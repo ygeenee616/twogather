@@ -71,13 +71,13 @@ const Container = styled.div`
 
   & table {
     width: 100%;
-    border: 1px solid #577bc1;
+    border: 1px solid #6e85b7;
     border-collapse: collapse;
     table-layout: fixed;
   }
 
   & caption {
-    background-color: #577bc1;
+    background-color: #6e85b7;
     color: #fff;
     padding: 15px;
   }
@@ -88,7 +88,7 @@ const Container = styled.div`
   }
 
   & tr {
-    border-bottom: 1px solid #577bc1;
+    border-bottom: 1px solid #6e85b7;
   }
 
   & td {
