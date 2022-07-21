@@ -11,65 +11,26 @@ import SelecotrResetBtn from "../components/list/SelectorResetBtn";
 import SortingSelector from "../components/list/SortingSelector";
 import exImg1 from "../assets/images/ex1.png";
 import exImg2 from "../assets/images/ex2.png";
-import * as api from "../api";
-
-const ex1 = [
-  {
-    src: [exImg1, exImg2],
-    tag: [
-      "#강남모임공간",
-      "#강남파티룸",
-      "#강남럭셔리파티룸",
-      "#강남럭셔리모임공간",
-      "#앤틱공간대여",
-    ],
-    title: "강남최대 앤틱모임공간 공유먼트청담",
-    address: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
-    price: "150,000",
-    review: "12",
-  },
-];
-const ex2 = [
-  {
-    src: [exImg2, exImg1],
-    tag: [
-      "#강남모임공간",
-      "#강남파티룸",
-      "#강남럭셔리파티룸",
-      "#강남럭셔리모임공간",
-      "#앤틱공간대여",
-    ],
-    title: "강남최대 앤틱모임공간 공유먼트청담",
-    address: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
-    price: "150,000",
-    review: "12",
-  },
-];
-
-let exData = [];
-for (let i = 0; i < 12; i++) {
-  exData = exData.concat(ex1);
-}
-for (let i = 12; i < 24; i++) {
-  exData = exData.concat(ex2);
-}
+import * as Api from "../api";
 
 export default function ProductList() {
   const [categoryModalDisplay, setcategoryModalDisplay] = useState("none");
   const [DateModalDisplay, setDateModalDisplay] = useState("none");
   const [spaces, setSpaces] = useState([]);
   const [totalPage, setTotalPage] = useState(1);
+  const [imgUrlList, setImgUrlList] = useState([]);
 
   const { search } = window.location;
   const location = useLocation();
 
-  //querystring
+  //query
   const params = new URLSearchParams(search);
   const categoryInput = useRef(params.get("category"));
   const dateInput = useRef(parseInt(params.get("date")));
   const searchInput = useRef(params.get("search"));
   const orderInput = useRef(params.get("order"));
   const currentPage = useRef(params.get("page"));
+  const queryString = useRef("");
 
   //url이 바뀔시 query 받아오는 함수
   useEffect(() => {
@@ -79,12 +40,55 @@ export default function ProductList() {
     orderInput.current = params.get("order");
     currentPage.current = params.get("page");
 
+    //query유무에 맞게 queryString 지정
+    if (!categoryInput.current && !searchInput.current && !orderInput.current) {
+      queryString.current = `?order=date&page=${currentPage.current}&perPage=12`;
+    } else if (
+      categoryInput.current &&
+      !searchInput.current &&
+      !orderInput.current
+    ) {
+      queryString.current = `?type=${categoryInput.current}&order=date&page=${currentPage.current}&perPage=12`;
+    } else if (
+      !categoryInput.current &&
+      searchInput.current &&
+      !orderInput.current
+    ) {
+      queryString.current = `?keyword=${searchInput.current}&order=date&page=${currentPage.current}&perPage=12`;
+    } else if (
+      !categoryInput.current &&
+      !searchInput.current &&
+      orderInput.current
+    ) {
+      queryString.current = `?order=${orderInput.current}&page=${currentPage.current}&perPage=12`;
+    } else if (
+      categoryInput.current &&
+      searchInput.current &&
+      !orderInput.current
+    ) {
+      queryString.current = `?type=${categoryInput.current}&keyword=${searchInput.current}&order=date&page=${currentPage.current}&perPage=12`;
+    } else if (
+      categoryInput.current &&
+      !searchInput.current &&
+      orderInput.current
+    ) {
+      queryString.current = `?type=${categoryInput.current}&order=${orderInput.current}&page=${currentPage.current}&perPage=12`;
+    } else if (
+      !categoryInput.current &&
+      searchInput.current &&
+      orderInput.current
+    ) {
+      queryString.current = `?keyword=${searchInput.current}&order=${orderInput.current}&page=${currentPage.current}&perPage=12`;
+    } else {
+      queryString.current = `?type=${categoryInput.current}&keyword=${searchInput.current}&order=${orderInput.current}&page=${currentPage.current}&perPage=12`;
+    }
     console.log(
       categoryInput.current,
       dateInput.current,
       searchInput.current,
       orderInput.current,
-      currentPage.current
+      currentPage.current,
+      queryString.current
     );
   }, [location.search]);
 
@@ -92,13 +96,25 @@ export default function ProductList() {
   useEffect(() => {
     async function getData() {
       try {
-        const res = await api.get(
-          `api/spaces?type=${categoryInput.current}&order=date&page=${currentPage.current}&perPage=12`
-        );
+        const res = await Api.get(`api/spaces${queryString.current}`);
         const datas = res.data.data.paginatedSpaces.paginatedSpaces;
         setSpaces(datas);
         setTotalPage(res.data.data.paginatedSpaces.totalPage);
         console.log(datas);
+
+        const spacesIdList = datas.map((space) => space.id);
+        //const imgUrlList = [];
+        console.log(spacesIdList);
+
+        spacesIdList.map(async (spaceId) => {
+          const imgData = await Api.get(`api/space-images/space/${spaceId}`);
+          const imgUrlListElement = imgData.data.data.map((i) => i.imageUrl);
+          console.log(imgUrlListElement);
+          setImgUrlList([...imgUrlList, imgUrlListElement]);
+          //return imgUrlListElement;
+        });
+        //setSpaces(datas);
+        //setImgUrlList(imgUrlList2);
       } catch (err) {
         console.log(err);
       }
@@ -109,17 +125,28 @@ export default function ProductList() {
   const renderData = (spaces) => {
     //space의 최소 가격 리스트, room이 없을 시 0을 반환
     const priceList = spaces.map((space) => {
-      let min = Math.min(...space.rooms.map((i) => i.price));
+      const min = Math.min(...space.rooms.map((i) => i.price));
       if (min === Infinity) {
         return 999999;
       } else {
         return min;
       }
     });
+
+    // const spacesIdList = spaces.map((space) => space.id);
+    // const imgUrlList = [];
+    // console.log(spacesIdList);
+
+    // spacesIdList.map(async (spaceId) => {
+    //   const imgData = await Api.get(`api/space-images/space/${spaceId}`);
+    //   const imgUrlListElement = imgData.data.data.map((i) => i.imageUrl);
+    //   imgUrlList.push(imgUrlListElement);
+    // });
+    console.log(imgUrlList);
     return spaces.map((data, i) => (
       <ProductCard
         key={i}
-        src={[exImg1, exImg2]}
+        src={imgUrlList[i]}
         hashtags={data.hashtags}
         name={data.name}
         address2={data.address2}
@@ -163,10 +190,15 @@ export default function ProductList() {
             </div>
             <DateModal display={DateModalDisplay} />
           </DateWrap>
-          <SelecotrResetBtn category={categoryInput.current} />
+          <SelecotrResetBtn
+            category={categoryInput.current}
+            currentPage={currentPage.current}
+          />
         </SelectorWrap>
-        <SortingSelector />
-        <ProductWrap>{renderData(spaces)}</ProductWrap>
+        <SortingSelector selectedOption={orderInput.current} />
+        <ProductWrap>
+          {typeof imgUrlList[0] == Array && renderData(spaces)}
+        </ProductWrap>
 
         <Pagination total={totalPage} currentPage={currentPage} url={"/list"} />
       </BottomWrap>
