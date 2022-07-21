@@ -53,7 +53,7 @@ export class SpaceImagesController {
     @GetUser() host: User,
   ) {
     const space = await this.spacesService.findOne(spaceId);
-    if (space.user !== host) {
+    if (space.user.id !== host.id) {
       throw new UnauthorizedException('권한 없음');
     }
     const newSpaceImage = await this.spaceImagesService.create(
@@ -157,7 +157,7 @@ export class SpaceImagesController {
     @GetUser() host: User,
   ) {
     const spaceImage = await this.spaceImagesService.findOne(id);
-    if (spaceImage.space.user !== host) {
+    if (spaceImage.space.user.id !== host.id) {
       throw new UnauthorizedException('권한 없음');
     }
     const updatedSpaceImage = await this.spaceImagesService.update(
@@ -188,7 +188,7 @@ export class SpaceImagesController {
   })
   async removeSpaceImage(@Param('id') id: number, @GetUser() host: User) {
     const spaceImage = await this.spaceImagesService.findOne(id);
-    if (spaceImage.space.user !== host) {
+    if (spaceImage.space.user.id !== host.id) {
       throw new UnauthorizedException('권한 없음');
     }
     await this.spaceImagesService.remove(+id);
