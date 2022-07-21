@@ -27,11 +27,13 @@ export default function HostSpaceList({ host }) {
   const limit = 4;
   const offset = (page - 1) * limit;
   const [dataTrigger, setDataTrigger] = useState(0);
+  const [images, setImgs] = useState("");
 
   useEffect(() => {
     async function getData() {
       try {
         const res = await api.get("api/spaces/host");
+        setImgs(loadImgs(185));
         const data = res.data.data;
         setDatas(data);
         console.log(data);
@@ -65,12 +67,36 @@ export default function HostSpaceList({ host }) {
     window.scrollTo(0, 0);
   };
 
-  const renderData = (offset, limit, data) => {
-    return data.slice(offset, offset + limit).map((data, i) => (
+  const loadImgs = async (id) => {
+    const getSpaceImgs = async () => {
+      const imgs = await Api.get(`api/space-images/space/${id}`);
+      return imgs.data.data;
+    };
+
+    let result = setImgs(getSpaceImgs());
+    let imagesUrls = [];
+
+    result.map((item) => {
+      imagesUrls.push(item.imageUrl);
+    });
+
+    console.log(imagesUrls);
+    if (result === "") {
+      imagesUrls = [exImg1, exImg2];
+    }
+
+    setImgs(imagesUrls);
+
+    return imagesUrls;
+  };
+
+  const renderData = (datas) => {
+    return datas.map((data, i) => (
       <>
+        images &&
         <ProductCard
           key={i}
-          src={[exImg1, exImg2]} //아직없음
+          src={images} //아직없음
           hashtags={data.hashtags}
           name={data.name}
           address2={data.address2}
@@ -143,7 +169,7 @@ export default function HostSpaceList({ host }) {
             </AddSpaceButton>
 
             <div onClick={clickToModSpace}>
-              <ProductWrap>{renderData(offset, limit, datas)}</ProductWrap>
+              <ProductWrap>{renderData(datas)}</ProductWrap>
 
               <div>
                 <Pagination
