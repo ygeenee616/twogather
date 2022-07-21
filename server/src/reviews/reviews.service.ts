@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Get,
   Injectable,
   NotFoundException,
@@ -35,6 +36,9 @@ export class ReviewsService {
       };
       return await this.reviewsRepository.save(newReview);
     } catch (error) {
+      if (error.code === 'ER_DUP_ENTRY') {
+        throw new ConflictException('이미 리뷰가 작성되었습니다.');
+      }
       throw error;
     }
   }
@@ -70,8 +74,27 @@ export class ReviewsService {
   async findOne(id: number) {
     try {
       const review = await this.reviewsRepository.findOne({
+        select: {
+          reservation: {
+            id: true,
+            user: {
+              id: true,
+              nickname: true,
+              email: true,
+            },
+          },
+          space: {
+            id: true,
+          },
+        },
         where: {
           id,
+        },
+        relations: {
+          reservation: {
+            user: true,
+          },
+          space: true,
         },
       });
       if (review === null) {
@@ -145,21 +168,7 @@ export class ReviewsService {
 
   async removeMyReview(userId: number, id: number) {
     try {
-      const review = await this.reviewsRepository.query(
-        `SELECT A.id as reviewId, A.createdTime as reviewCreatedTime, A.content, A.reservationId, B.id as reservationId, B.date, 
-        B.personnel, B.createdTime as reservationCreatedTime, B.userId, B.startTime, B.endTime, B.roomId,
-        C.id as userId, C.nickname, C.email, C.name, C.phoneNumber
-        from review A, reservation B, user C WHERE A.reservationId = B.id and B.userId = C.id and A.id = ${id};`,
-      );
-      if (userId !== review[0].userId) {
-        throw new UnauthorizedException('권한 없음');
-      }
-      const deletedReview = await this.reviewsRepository.delete(id);
-      if (!deletedReview.affected) {
-        throw new NotFoundException({
-          description: '삭제할 review가 없습니다.',
-        });
-      }
+      const review = await this.reviewsRepository.delete(id);
     } catch (error) {
       throw error;
     }
