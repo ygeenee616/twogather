@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const QnaComponent = ({ room, qna }) => {
+const QnaComponent = ({ room, qna, setDeleteQModal }) => {
   // id 는 qna 아이디
   const { id, content, createdTime, reply } = qna;
 
@@ -13,6 +13,15 @@ const QnaComponent = ({ room, qna }) => {
     backgroundColor: "white",
   };
 
+  const handleDeleteQna = async (e) => {
+    e.preventDefault();
+    const deleteQModal = document.getElementById("deleteMyQModal");
+    deleteQModal.style.display = "block";
+    deleteQModal.setAttribute("target", id);
+    console.log(deleteQModal.geAttribute("target"));
+    // deleteQModal.props.target = id;
+  };
+
   return (
     <>
       <tr>
@@ -21,7 +30,9 @@ const QnaComponent = ({ room, qna }) => {
         <td>{createdTime.split("T")[0]}</td>
         <td>
           {reply ? "    답변 완료 " : "답변 대기중 "}
-          <button style={deleteBtnstyle}>삭제</button>
+          <button style={deleteBtnstyle} onClick={handleDeleteQna}>
+            삭제
+          </button>
         </td>
       </tr>
     </>
@@ -29,7 +40,7 @@ const QnaComponent = ({ room, qna }) => {
 };
 
 const QnaDetailComponent = ({ qna }) => {
-  const { id, content, createdTime, reply } = qna;
+  const { content, createdTime, reply } = qna;
 
   const trStyle = {
     display: "none",

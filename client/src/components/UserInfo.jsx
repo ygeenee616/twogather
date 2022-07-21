@@ -31,7 +31,6 @@ export default function UserInfo({
           예약횟수 : {userInfo.reserbations ? userInfo.reserbations.length : 0}
           회
         </div>
-        <div className="userInfo">신고 횟수 : {reportedNum}</div>
       </UserProfile>
     )
   );

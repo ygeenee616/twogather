@@ -51,22 +51,26 @@ export default function HostQnA() {
       <HostNav />
       {data && (
         <QnAContainer>
-          {data.map((item, i) => {
-            return (
-              <QnABox key={i}>
-                <Question>{item.content}</Question>
-                <Answer
-                  placeholder="아직 등록된 답변이 없습니다. 답변을 등록해보세요!"
-                  onChange={(e) => setAnswer(e.target.value)}
-                >
-                  {item.reply}
-                </Answer>
-                <SubmitBtn onClick={(e) => submitAnswer(item.id)}>
-                  답변 등록 및 수정
-                </SubmitBtn>
-              </QnABox>
-            );
-          })}
+          {data.length === 0 ? (
+            <div>아직 등록된 Q&A가 없습니다. </div>
+          ) : (
+            data.map((item, i) => {
+              return (
+                <QnABox key={i}>
+                  <Question>{item.content}</Question>
+                  <Answer
+                    placeholder="아직 등록된 답변이 없습니다. 답변을 등록해보세요!"
+                    onChange={(e) => setAnswer(e.target.value)}
+                  >
+                    {item.reply}
+                  </Answer>
+                  <SubmitBtn onClick={(e) => submitAnswer(item.id)}>
+                    답변 등록 및 수정
+                  </SubmitBtn>
+                </QnABox>
+              );
+            })
+          )}
           <Pagination
             total={totalPage}
             url={location.pathname}

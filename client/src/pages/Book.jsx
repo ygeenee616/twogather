@@ -146,6 +146,7 @@ export default function Book() {
 }
 
 const FullContainer = styled.div`
+  font-family: "NEXON Lv2 Gothic Light";
   max-width: 100%;
   margin: 5% 15%;
   display: flex;

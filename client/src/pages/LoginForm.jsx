@@ -6,7 +6,6 @@ import {
   validateEmail,
   validatePassword,
 } from "../assets/utils/UsefulFunction";
-import userSlice, { login } from "../slices/UserSlice";
 import * as Api from "../api";
 
 import styled from "styled-components";
@@ -18,27 +17,13 @@ import {
   UserBtn,
 } from "../components/register/UserForm";
 import userInfoState from "../atom/userInfoState";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from "recoil";
 
 function LoginForm() {
-  const user = useSelector((store) => store.user);
-
-  const dispatch = useDispatch();
-  const params = useParams();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alertMsg, setAlertMsg] = useState("");
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-
-  const getUserInfo = async () => {};
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -126,16 +111,18 @@ function LoginForm() {
           </SocialLoginDiv>
 
           <LoginFooterDiv>
-            <tr>
-              <QuestionTD>회원이 아니신가요?</QuestionTD>
-              <LinkTD>
-                <a href="/register">회원가입</a>
-              </LinkTD>
-            </tr>
-            <tr>
-              <QuestionTD>비밀번호를 잊으셨나요?</QuestionTD>
-              <LinkTD>비밀번호 찾기</LinkTD>
-            </tr>
+            <thead>
+              <tr>
+                <QuestionTD>회원이 아니신가요?</QuestionTD>
+                <LinkTD>
+                  <a href="/register">회원가입</a>
+                </LinkTD>
+              </tr>
+              <tr>
+                <QuestionTD>비밀번호를 잊으셨나요?</QuestionTD>
+                <LinkTD>비밀번호 찾기</LinkTD>
+              </tr>
+            </thead>
           </LoginFooterDiv>
         </ContentsDiv>
       </FormDiv>

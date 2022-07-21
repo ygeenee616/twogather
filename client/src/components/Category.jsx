@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import partyIcon from "../assets/images/partyIcon.png";
-import studyIcon from "../assets/images/studyIcon.png"; 
+import studyIcon from "../assets/images/studyIcon.png";
 import meetingIcon from "../assets/images/meetingIcon.png";
 import danceIcon from "../assets/images/danceIcon.png";
 import cameraIcon from "../assets/images/cameraIcon.png";
@@ -47,15 +47,17 @@ const ButtonWrap = styled.button`
   }
   &:hover {
     .imgWrap {
-      box-shadow: 5px 5px 5px #d9d9d9;
+      box-shadow: 3px 3px 7px #d9d9d9;
     }
   }
 `;
 
 const CategoryWrap = styled.div`
+  font-family: "S-CoreDream-3Light";
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  margin-top: 3.6vh;
+  margin-top: 10vh;
 `;
 
 export default function Category() {

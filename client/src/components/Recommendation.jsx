@@ -20,6 +20,7 @@ const exData = {
 };
 
 const RecomTitle = styled.div`
+  font-family: "S-CoreDream-6Bold";
   font-size: 1.5vw;
   font-weight: bold;
   margin-bottom: 5vh;
