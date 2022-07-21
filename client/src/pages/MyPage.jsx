@@ -18,7 +18,7 @@ function MyPage() {
     // 유저 정보 가져오기
     async function getUser() {
       try {
-        const res = await Api.get("api/users/info");
+        const res = await Api.getAuth("api/users/info");
         const data = res.data.data;
 
         setUser({

@@ -4,28 +4,6 @@ import styled from "styled-components";
 import { addCommas } from "../../assets/utils/UsefulFunction";
 import * as Api from "../../api";
 
-function isFutureDate(date, startTime) {
-  // YYYY-MM-DD 형태의 날짜값
-  const today = new Date();
-  const year = parseInt(date.split("-")[0]);
-  const month = parseInt(date.split("-")[1]);
-  const day = parseInt(date.split("-")[2]);
-  const time = parseInt(startTime);
-  console.log(year);
-
-  if (year > parseInt(today.year)) return true;
-  else if (year === parseInt(today.year)) {
-    if (month > parseInt(today.month)) return true;
-    else if (month === parseInt(today.month)) {
-      if (day > parseInt(today.day)) return true;
-      else if (day === parseInt(today.day) && time > parseInt(today.hours))
-        return true;
-    }
-  }
-
-  return false;
-}
-
 function MyReservedRoom({ reservation, setDeleteR }) {
   const navigate = useNavigate();
   // id는 예약번호, name은 공간이름 , 예약자명 ??

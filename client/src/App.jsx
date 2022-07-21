@@ -1,17 +1,17 @@
 import "./App.css";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
-import ScrollToTop from "./components/ScrollToTop";
-import LoginForm from "./pages/LoginForm";
-import RegisterForm from "./pages/RegisterForm";
-import RegisterComplete from "./pages/RegisterComplete";
-import MyPage from "./pages/MyPage";
+import AdminNotice from "./pages/admin/AdminNotice";
+import AdminUser from "./pages/admin/AdminUser";
+import AdminBook from "./pages/admin/AdminBook";
+import AddHost from "./pages/host/AddHost";
 import AddReview from "./pages/AddReview";
 import AddQnA from "./pages/AddQnA";
 import AddQnaComment from "./pages/AddQnaComment";
-import Notice from "./pages/Notice";
 import AddNotice from "./pages/AddNotice";
-import UpdateNotice from "./pages/UpdateNotice";
-import AddHost from "./pages/host/AddHost";
+import Book from "./pages/Book";
+import BookDetail from "../src/pages/BookDetail";
+import Detail from "./pages/Detail";
+import Footer from "./layout/Footer";
 import HostAddSpace from "./pages/host/HostAddSpace";
 import HostSpaceList from "./pages/host/HostSpaceList";
 import HostUpdateSpace from "./pages/host/HostUpdateSpace";
@@ -19,19 +19,23 @@ import HostAddRoom from "./pages/host/HostAddRoom";
 import HostUpdateRoom from "./pages/host/HostUpdateRoom";
 import HostQnA from "./pages/host/HostQnA";
 import HostQnAList from "./pages/host/HostQnAList";
-import ProductList from "./pages/ProductList";
-import Detail from "./pages/Detail";
-import Book from "./pages/Book";
-import Home from "./pages/Home";
-import Header from "./layout/Header";
-import Footer from "./layout/Footer";
-import AdminNotice from "./pages/admin/AdminNotice";
-import AdminUser from "./pages/admin/AdminUser";
-import AdminBook from "./pages/admin/AdminBook";
 import HostBook from "./pages/host/HostBook";
 import HostRoomBook from "./pages/host/HostRoomBook";
-import BookDetail from "../src/pages/BookDetail";
 import HostRoomList from "../src/pages/host/HostRoomList";
+import Home from "./pages/Home";
+import Header from "./layout/Header";
+import LoginForm from "./pages/LoginForm";
+import MyPage from "./pages/MyPage";
+import Notice from "./pages/Notice";
+import NotFound from "./pages/NotFound";
+import ProductList from "./pages/ProductList";
+import RegisterForm from "./pages/RegisterForm";
+import RegisterComplete from "./pages/RegisterComplete";
+import ScrollToTop from "./components/ScrollToTop";
+
+import UpdateNotice from "./pages/UpdateNotice";
+
+import LoginExpired from "./pages/LoginExpired";
 import ImgToS3 from "../src/components/register/ImgToS3";
 
 function App() {
@@ -97,8 +101,9 @@ function App() {
           <Route path="/list" element={<ProductList />} />
           <Route path="/detail/:spaceId" element={<Detail />} />
           <Route path="/book" element={<Book />} />
+          <Route path="/401" element={<LoginExpired />} />
           <Route path="/" element={<Home />} />
-          {/* <Route path="*" element={<NotFound />} /> */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer></Footer>
       </BrowserRouter>
