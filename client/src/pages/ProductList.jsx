@@ -106,15 +106,15 @@ export default function ProductList() {
         //const imgUrlList = [];
         console.log(spacesIdList);
 
-        spacesIdList.map(async (spaceId) => {
-          const imgData = await Api.get(`api/space-images/space/${spaceId}`);
-          const imgUrlListElement = imgData.data.data.map((i) => i.imageUrl);
-          console.log(imgUrlListElement);
-          setImgUrlList([...imgUrlList, imgUrlListElement]);
-          //return imgUrlListElement;
-        });
-        //setSpaces(datas);
-        //setImgUrlList(imgUrlList2);
+        // spacesIdList.map(async (spaceId) => {
+        //   const imgData = await Api.get(`api/space-images/space/${spaceId}`);
+        //   const imgUrlListElement = imgData.data.data.map((i) => i.imageUrl);
+        //   console.log(imgUrlListElement);
+        //   setImgUrlList([...imgUrlList, imgUrlListElement]);
+        //   //return imgUrlListElement;
+        // });
+        // //setSpaces(datas);
+        // //setImgUrlList(imgUrlList2);
       } catch (err) {
         console.log(err);
       }
@@ -146,7 +146,7 @@ export default function ProductList() {
     return spaces.map((data, i) => (
       <ProductCard
         key={i}
-        src={imgUrlList[i]}
+        src={[exImg1, exImg2]}
         hashtags={data.hashtags}
         name={data.name}
         address2={data.address2}
@@ -196,9 +196,7 @@ export default function ProductList() {
           />
         </SelectorWrap>
         <SortingSelector selectedOption={orderInput.current} />
-        <ProductWrap>
-          {typeof imgUrlList[0] == Array && renderData(spaces)}
-        </ProductWrap>
+        <ProductWrap>{renderData(spaces)}</ProductWrap>
 
         <Pagination total={totalPage} currentPage={currentPage} url={"/list"} />
       </BottomWrap>

@@ -1,8 +1,6 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 export default function CategoryModal({ display }) {
-  const nav = useNavigate();
   const { search } = window.location;
   const params = new URLSearchParams(search);
 
@@ -15,10 +13,10 @@ export default function CategoryModal({ display }) {
     const categoryModal = document.querySelector("#categoryModal");
     categoryModal.style.display = "none;";
     if (stringParams) {
-      nav(`/list?category=${category}&${stringParams}`);
+      window.location.replace(`/list?category=${category}&${stringParams}`);
     } else {
       display = "none";
-      nav(`/list?category=${category}`);
+      window.location.replace(`/list?category=${category}`);
     }
   };
 
