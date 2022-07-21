@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   validateEmail,
@@ -10,7 +9,6 @@ import * as Api from "../../api";
 
 function Register() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
