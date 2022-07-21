@@ -34,8 +34,10 @@ export default function HostSpaceList({ host }) {
       try {
         const res = await api.get("api/spaces/host");
 
-        const loadedImgs = await loadImgs(185);
+
+        const loadedImgs = await loadImgs(data.id);
         setImgs(loadedImgs);
+
 
         const data = res.data.data;
         setDatas(data);
@@ -79,6 +81,8 @@ export default function HostSpaceList({ host }) {
     };
     const Imgs = await getSpaceImgs();
 
+
+
     let result = setImgs(Imgs);
 
     let imagesUrls = [];
@@ -91,9 +95,11 @@ export default function HostSpaceList({ host }) {
       imagesUrls = [exImg1, exImg2];
     }
 
+
     setImgs(imagesUrls);
 
     console.log(imagesUrls);
+
 
     return imagesUrls;
   };
