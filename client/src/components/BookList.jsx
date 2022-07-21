@@ -9,7 +9,7 @@ export default function BookList({ data, endpoint }) {
   return (
     data && (
       <Container>
-        <Title>전체 예약 관리</Title>
+        <Title>예약 관리</Title>
         <table>
           <caption>예약 내역</caption>
           <colgroup>
@@ -79,7 +79,7 @@ const Container = styled.div`
   & caption {
     background-color: #577bc1;
     color: #fff;
-    padding: 10px;
+    padding: 15px;
   }
 
   & th {
