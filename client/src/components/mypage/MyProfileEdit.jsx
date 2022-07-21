@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { validatePassword } from "../../assets/utils/UsefulFunction";
 import { Navigate, useNavigate } from "react-router-dom";
 import * as Api from "../../api";
-import { login } from "../../slices/UserSlice";
 
 function MyProfileEdit({ user, handleEditUserDone }) {
   const { nickname, name, sex, phoneNumber, loginType } = user;
