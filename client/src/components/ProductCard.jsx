@@ -31,7 +31,7 @@ export default function ProductCard({
   address2,
   address3,
   price,
-  review,
+  reviewsLength,
   link,
 }) {
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ export default function ProductCard({
             src={reviewImg}
             style={{ width: "13px", height: "13px", marginLeft: "auto" }}
           />
-          <SubTag>{review}</SubTag>
+          <SubTag>{reviewsLength}</SubTag>
         </Line>
         <Line>
           <Title>{name}</Title>

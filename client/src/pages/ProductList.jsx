@@ -12,21 +12,19 @@ import SortingSelector from "../components/list/SortingSelector";
 import exImg1 from "../assets/images/ex1.png";
 import exImg2 from "../assets/images/ex2.png";
 import * as api from "../api";
-import { set } from "date-fns/esm";
 
 const ex1 = [
   {
     src: [exImg1, exImg2],
-    hashtags: [
+    tag: [
       "#강남모임공간",
       "#강남파티룸",
       "#강남럭셔리파티룸",
       "#강남럭셔리모임공간",
       "#앤틱공간대여",
     ],
-    name: "강남최대 앤틱모임공간 공유먼트청담",
-    address1: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
-    address2: "지하1층",
+    title: "강남최대 앤틱모임공간 공유먼트청담",
+    address: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
     price: "150,000",
     review: "12",
   },
@@ -34,16 +32,15 @@ const ex1 = [
 const ex2 = [
   {
     src: [exImg2, exImg1],
-    hashtags: [
+    tag: [
       "#강남모임공간",
       "#강남파티룸",
       "#강남럭셔리파티룸",
       "#강남럭셔리모임공간",
       "#앤틱공간대여",
     ],
-    name: "강남최대 앤틱모임공간 공유먼트청담",
-    address1: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
-    address2: "지하1층",
+    title: "강남최대 앤틱모임공간 공유먼트청담",
+    address: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
     price: "150,000",
     review: "12",
   },
@@ -57,41 +54,22 @@ for (let i = 12; i < 24; i++) {
   exData = exData.concat(ex2);
 }
 
-const renderData = (offset, limit, data) => {
-  return data
-    .slice(offset, offset + limit)
-    .map((data, i) => (
-      <ProductCard
-        key={i}
-        src={data.src}
-        hashtags={data.hashtags}
-        name={data.name}
-        address1={data.address1}
-        address2={data.address2}
-        price={data.price}
-        review={data.review}
-        link={`/detail/1`}
-      />
-    ));
-};
-
 export default function ProductList() {
-  const [page, setPage] = useState(1);
   const [categoryModalDisplay, setcategoryModalDisplay] = useState("none");
   const [DateModalDisplay, setDateModalDisplay] = useState("none");
   const [spaces, setSpaces] = useState([]);
-
-  const limit = 12;
-  const offset = (page - 1) * limit;
+  const [totalPage, setTotalPage] = useState(1);
 
   const { search } = window.location;
   const location = useLocation();
 
+  //querystring
   const params = new URLSearchParams(search);
   const categoryInput = useRef(params.get("category"));
   const dateInput = useRef(parseInt(params.get("date")));
   const searchInput = useRef(params.get("search"));
   const orderInput = useRef(params.get("order"));
+  const currentPage = useRef(params.get("page"));
 
   //url이 바뀔시 query 받아오는 함수
   useEffect(() => {
@@ -99,20 +77,27 @@ export default function ProductList() {
     dateInput.current = parseInt(params.get("date"));
     searchInput.current = params.get("search");
     orderInput.current = params.get("order");
+    currentPage.current = params.get("page");
 
     console.log(
       categoryInput.current,
       dateInput.current,
       searchInput.current,
-      orderInput.current
+      orderInput.current,
+      currentPage.current
     );
   }, [location.search]);
 
+  //api로 데이터 받아옴
   useEffect(() => {
     async function getData() {
       try {
-        const res = await api.get(`api/spaces/type/${categoryInput.current}`);
-        const datas = res.data;
+        const res = await api.get(
+          `api/spaces?type=${categoryInput.current}&order=date&page=${currentPage.current}&perPage=12`
+        );
+        const datas = res.data.data.paginatedSpaces.paginatedSpaces;
+        setSpaces(datas);
+        setTotalPage(res.data.data.paginatedSpaces.totalPage);
         console.log(datas);
       } catch (err) {
         console.log(err);
@@ -120,6 +105,31 @@ export default function ProductList() {
     }
     getData();
   }, []);
+
+  const renderData = (spaces) => {
+    //space의 최소 가격 리스트, room이 없을 시 0을 반환
+    const priceList = spaces.map((space) => {
+      let min = Math.min(...space.rooms.map((i) => i.price));
+      if (min === Infinity) {
+        return 999999;
+      } else {
+        return min;
+      }
+    });
+    return spaces.map((data, i) => (
+      <ProductCard
+        key={i}
+        src={[exImg1, exImg2]}
+        hashtags={data.hashtags}
+        name={data.name}
+        address2={data.address2}
+        address3={data.address3}
+        price={priceList[i]}
+        reviewsLength={data.numberOfReviews}
+        link={`/detail/${data.id}`}
+      />
+    ));
+  };
 
   //selector toggle 하나씩만되도록
   const handelClickSelector = (e) => {
@@ -138,32 +148,29 @@ export default function ProductList() {
   };
 
   return (
-    <BottomWrap>
-      <SelectorWrap>
-        <CategoryWrap>
-          <div onClick={handelClickSelector}>
-            <CategorySelector category={categoryInput.current} />
-          </div>
-          <CategoryModal display={categoryModalDisplay} />
-        </CategoryWrap>
-        <DateWrap>
-          <div onClick={handelClickSelector}>
-            <DateSelector />
-          </div>
-          <DateModal display={DateModalDisplay} />
-        </DateWrap>
-        <SelecotrResetBtn category={categoryInput.current} />
-      </SelectorWrap>
-      <SortingSelector />
-      <ProductWrap>{renderData(offset, limit, exData)}</ProductWrap>
+    spaces && (
+      <BottomWrap>
+        <SelectorWrap>
+          <CategoryWrap style={{ position: "relative" }}>
+            <div onClick={handelClickSelector}>
+              <CategorySelector category={categoryInput.current} />
+            </div>
+            <CategoryModal display={categoryModalDisplay} />
+          </CategoryWrap>
+          <DateWrap style={{ position: "relative" }}>
+            <div onClick={handelClickSelector}>
+              <DateSelector />
+            </div>
+            <DateModal display={DateModalDisplay} />
+          </DateWrap>
+          <SelecotrResetBtn category={categoryInput.current} />
+        </SelectorWrap>
+        <SortingSelector />
+        <ProductWrap>{renderData(spaces)}</ProductWrap>
 
-      <Pagination
-        total={exData.length}
-        limit={limit}
-        page={page}
-        setPage={setPage}
-      />
-    </BottomWrap>
+        <Pagination total={totalPage} currentPage={currentPage} url={"/list"} />
+      </BottomWrap>
+    )
   );
 }
 
@@ -194,9 +201,6 @@ const SelectorWrap = styled.div`
 const CategoryWrap = styled.div`
   display: flex;
   flex-direction: column;
-  position: relative;
 `;
 
-const DateWrap = styled(CategoryWrap)`
-  position: relative;
-`;
+const DateWrap = styled(CategoryWrap)``;

@@ -76,7 +76,7 @@ export default function HostSpaceList({ host }) {
           address2={data.address2}
           address3={data.address3}
           price={data.minPrice}
-          review={data.reviewsLength} //아직없음
+          reviewsLength={data.reviewsLength} //아직없음
           link={`/host/updateSpace/${data.id}`}
         ></ProductCard>
         <SubMenuBar>

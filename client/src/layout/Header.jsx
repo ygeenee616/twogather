@@ -72,7 +72,7 @@ export default function Header() {
         {loginType === "admin" ? (
           <HeaderTag name="관리자 페이지" target="/admin/notice?page=1" />
         ) : loginType === "host" ? (
-          <HeaderTag name="공간등록 및 관리" target="/host/spaceList" />
+          <HeaderTag name="공간등록 및 관리" target="/host/spaceList?page=1" />
         ) : (
           <HeaderTag name="호스트등록하기" target="/host/addHost" />
         )}
