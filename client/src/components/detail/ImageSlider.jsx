@@ -25,7 +25,7 @@ export default function ImageSlider({ images }) {
             {images.map((image) => {
               return (
                 <div key={image.id}>
-                  <img src={image.url} />
+                  <img src={image.imageUrl} />
                 </div>
               );
             })}

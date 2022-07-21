@@ -3,7 +3,6 @@ import ReservedRoom from "./MyReservedRoom";
 import { PaginationInLocal } from "../Pagination";
 import { useEffect, useState } from "react";
 import { getCookie, setCookie } from "../../cookie";
-import * as Api from "../../api";
 
 function MyReservation({ reservations, setDeleteR }) {
   const total_elem = reservations.length;

@@ -18,7 +18,7 @@ export default function HostRoomBook() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const req = await Api.get(
+        const req = await Api.getAuth(
           `api/reservations/room/${roomId}?page=${page}&perPage=5`
         );
         const data = await req.data.data.paginatedReservations;

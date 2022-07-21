@@ -45,7 +45,8 @@ function MyProfileEdit({ user, handleEditUserDone }) {
     if (isFormValid && newUser !== null) {
       try {
         const res = await Api.patchAuth("api/users", userData);
-        // window.location.replace("/mypage");
+        console.log(res);
+        window.location.replace("/mypage");
       } catch (err) {
         console.log(err);
       }

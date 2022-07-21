@@ -11,7 +11,7 @@ import SelecotrResetBtn from "../components/list/SelectorResetBtn";
 import SortingSelector from "../components/list/SortingSelector";
 import exImg1 from "../assets/images/ex1.png";
 import exImg2 from "../assets/images/ex2.png";
-import * as api from "../api";
+import * as Api from "../api";
 import { set } from "date-fns/esm";
 
 const ex1 = [
@@ -111,7 +111,7 @@ export default function ProductList() {
   useEffect(() => {
     async function getData() {
       try {
-        const res = await api.get(`api/spaces/type/${categoryInput.current}`);
+        const res = await Api.get(`api/spaces/type/${categoryInput.current}`);
         const datas = res.data;
         console.log(datas);
       } catch (err) {
