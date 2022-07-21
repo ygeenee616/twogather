@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
-import axios from "axios";
 import { ko } from "date-fns/esm/locale";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -125,6 +124,7 @@ const Guide = styled.div`
   width: 100%;
   font-size: 0.8rem;
   color: red;
+  font-weight: bold;
 
   & .lessTime {
     ${({ lessTime }) => (lessTime ? `display: block;` : `display: none;`)};

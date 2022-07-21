@@ -89,10 +89,12 @@ const TextWrap = styled.div`
 `;
 
 const LogoWrap = styled.div`
+  font-family: "S-CoreDream-8Heavy";
   display: flex;
   cursor: pointer;
+  align-items: center;
   .logoImg {
-    margin: autㅐ;
+    margin-right: 10px;
     width: 2vw;
     height: 2vw;
   }
@@ -116,6 +118,8 @@ const HeaderWrap = styled.div`
 `;
 
 const RightWrap = styled.div`
+  font-family: "S-CoreDream-6Bold";
   display: flex;
+  align-items: center;
   margin-left: auto;
 `;

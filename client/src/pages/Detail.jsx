@@ -313,6 +313,7 @@ export default function Detail() {
 }
 
 const FullContainer = styled.div`
+  font-family: "NEXON Lv2 Gothic Light";
   max-width: 100%;
   margin: 5% 10%;
   display: flex;
@@ -327,6 +328,7 @@ const DetailHeader = styled.div`
 `;
 
 const Title = styled.div`
+  font-family: "S-CoreDream-7ExtraBold";
   font-weight: bold;
   font-size: 2.5rem;
 `;
@@ -362,6 +364,7 @@ const Personnel = styled.div`
   & .overPeople {
     font-size: 0.8rem;
     color: red;
+    font-weight: bold;
     ${({ possible }) => (possible ? `display: none;` : `display: block;`)};
   }
 `;

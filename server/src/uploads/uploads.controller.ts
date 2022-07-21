@@ -107,7 +107,7 @@ export class UploadsController {
         acl: 'public-read',
         contentType: multerS3.AUTO_CONTENT_TYPE,
         key: function (req, file, cb) {
-          cb(null, `spaces/${Date.now()}_${file.originalname}`);
+          cb(null, `origin/spaceImage_${Date.now()}_${file.originalname}`);
         },
       }),
     }),
@@ -150,7 +150,7 @@ export class UploadsController {
         acl: 'public-read',
         contentType: multerS3.AUTO_CONTENT_TYPE,
         key: function (req, file, cb) {
-          cb(null, `rooms/${Date.now()}_${file.originalname}`);
+          cb(null, `origin/roomImage_${Date.now()}_${file.originalname}`);
         },
       }),
     }),
@@ -193,7 +193,7 @@ export class UploadsController {
         acl: 'public-read',
         contentType: multerS3.AUTO_CONTENT_TYPE,
         key: function (req, file, cb) {
-          cb(null, `profiles/${Date.now()}_${file.originalname}`);
+          cb(null, `origin/profileImage_${Date.now()}_${file.originalname}`);
         },
       }),
     }),

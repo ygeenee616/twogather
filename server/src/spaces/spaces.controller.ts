@@ -119,7 +119,7 @@ export class SpacesController {
     const { page, perPage } = query;
     console.log(page);
     if (!page || page === undefined || page === null || page === 0) {
-      spaces = await this.spacesService.findByUser(user.id);
+      spaces = await this.spacesService.findByHost(user.id);
       return {
         status: 200,
         success: true,
@@ -128,7 +128,7 @@ export class SpacesController {
       };
     }
     const startIndex: number = perPage * (page - 1);
-    spaces = await this.spacesService.findByUserPaginated(
+    spaces = await this.spacesService.findByHostPaginated(
       user.id,
       startIndex,
       perPage,
