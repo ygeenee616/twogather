@@ -34,7 +34,7 @@ import HostBook from "./pages/host/HostBook";
 import HostRoomBook from "./pages/host/HostRoomBook";
 import BookDetail from "../src/pages/BookDetail";
 import HostRoomList from "../src/pages/host/HostRoomList";
-import TypeSelector from "../src/components/TypeSelector";
+import ImgToS3 from "../src/components/register/ImgToS3";
 
 function App() {
   return (
@@ -44,7 +44,7 @@ function App() {
           <ScrollToTop />
           <Header></Header>
           <Routes>
-            <Route path="/test" element={<TypeSelector />} />
+            <Route path="/test" element={<ImgToS3 />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
             <Route path="/registerComplete" element={<RegisterComplete />} />
