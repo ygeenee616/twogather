@@ -110,6 +110,13 @@ export class ReservationsService {
               name: true,
             },
           },
+          review: {
+            id: true,
+            content: true,
+            space: {
+              id: true,
+            },
+          },
         },
         where: {
           user,
@@ -119,6 +126,7 @@ export class ReservationsService {
           room: {
             space: true,
           },
+          review: true,
         },
         order: {
           id: 'DESC',
