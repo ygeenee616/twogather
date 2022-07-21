@@ -26,22 +26,21 @@ export default function HostRoomBook() {
     data && (
       <div>
         <HostNav />
-        <div>
-          <SpaceContainer>
-            <Title>공간별 Q&A</Title>
-            {data.length === 0 ? (
-              <SpaceList>아직 등록된 공간이 없습니다.</SpaceList>
-            ) : (
-              data.map((space, id) => {
-                return (
-                  <SpaceLink to={`/host/qna/${space.id}?page=1`} key={id}>
-                    <SpaceList>{space.name}</SpaceList>
-                  </SpaceLink>
-                );
-              })
-            )}
-          </SpaceContainer>
-        </div>
+        <Title>공간별 Q&A 관리</Title>
+        <SpaceContainer>
+          <TableTitle>공간별 Q&A</TableTitle>
+          {data.length === 0 ? (
+            <SpaceList>아직 등록된 공간이 없습니다.</SpaceList>
+          ) : (
+            data.map((space, id) => {
+              return (
+                <SpaceLink to={`/host/qna/${space.id}?page=1`} key={id}>
+                  <SpaceList>🏡{space.name}</SpaceList>
+                </SpaceLink>
+              );
+            })
+          )}
+        </SpaceContainer>
       </div>
     )
   );
@@ -50,8 +49,8 @@ export default function HostRoomBook() {
 const SpaceContainer = styled.div`
   width: 80%;
   margin: 0 auto;
-  margin-top: 80px;
-  margin-bottom: 80px;
+  margin-top: 50px;
+  margin-bottom: 50px;
 `;
 
 const SpaceLink = styled(Link)`
@@ -71,8 +70,17 @@ const SpaceList = styled.div`
 
 const Title = styled.div`
   text-align: center;
+  font-family: "NEXON Lv2 Gothic Light";
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #000;
+  margin: 50px 0;
+`;
+
+const TableTitle = styled.div`
+  text-align: center;
   padding: 15px;
   font-size: 1rem;
-  background-color: #8daef2;
+  background-color: #6e85b7;
   color: #fff;
 `;

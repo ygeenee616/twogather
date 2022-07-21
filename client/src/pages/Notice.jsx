@@ -90,7 +90,9 @@ export default function Notice({ url }) {
                 삭제
               </NoticeDeleteButton>
             </div>
-            <IoIosArrowDown className={cur.id} />
+            <div>
+              <IoIosArrowDown className={cur.id} />
+            </div>
           </Line>
           <Content className={`content${cur.id}`}>{cur.content}</Content>
         </Item>
@@ -145,13 +147,15 @@ const Item = styled.div`
 const Line = styled.div`
   display: flex;
   border-bottom: 1px solid #8daef2;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 400;
   padding: 10px 0;
   cursor: pointer;
   div {
     flex-grow: 1;
     margin-left: 2.5vw;
+    display: flex;
+    align-items: center;
   }
   svg {
     margin-right: 2.5vw;
@@ -178,6 +182,7 @@ const Content = styled.div`
 `;
 
 const NoticeWrap = styled.div`
+  font-family: "NEXON Lv2 Gothic Light";
   margin: 0 auto 10vh auto;
   width: 80%;
   height: 100%;
@@ -210,14 +215,16 @@ const ButtonGoToAddNotice = styled.button`
   border: 2px solid #8daef2;
   font-size: 20px;
   border-radius: 10px;
-  width: 150px;
+  width: 11rem;
   height: 40px;
-  padding-top: 7px;
   font-weight: 600;
   color: #8daef2;
   cursor: pointer;
   margin-left: auto;
   margin: 0 0 1% auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const NoticeUpdateButton = styled.button`

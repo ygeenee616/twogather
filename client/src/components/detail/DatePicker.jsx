@@ -124,6 +124,7 @@ const Guide = styled.div`
   width: 100%;
   font-size: 0.8rem;
   color: red;
+  font-weight: bold;
 
   & .lessTime {
     ${({ lessTime }) => (lessTime ? `display: block;` : `display: none;`)};

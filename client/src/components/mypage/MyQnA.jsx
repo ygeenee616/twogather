@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import MyQnaComponent from "./MyQnaComponent.jsx";
 import { PaginationInLocal } from "../Pagination.jsx";
+import Modal from "../Modal";
 import { useState } from "react";
 
-function MyQnA({ qnas }) {
+function MyQnA({ qnas, setDeleteQModal }) {
   // const {}
   const total_elem = qnas.length;
   const page_limit = 5;
@@ -49,7 +50,11 @@ function MyQnA({ qnas }) {
               {qnas
                 .slice(page_limit * (page - 1), page_limit_elem)
                 .map((qna, idx) => (
-                  <MyQnaComponent qna={qna} key={idx} />
+                  <MyQnaComponent
+                    qna={qna}
+                    key={idx}
+                    setDeleteQModal={setDeleteQModal}
+                  />
                 ))}
             </tbody>
           </QnATable>
@@ -101,6 +106,15 @@ const EmptyQna = styled.div`
   font-size: 1rem;
   text-align: center;
   color: #bbd3f2;
+`;
+
+const ModalWrap = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: rgba(90, 90, 90, 0.2);
+  ${"" /* display: none; */}
 `;
 
 export default MyQnA;

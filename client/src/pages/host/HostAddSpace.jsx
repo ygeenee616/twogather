@@ -17,6 +17,8 @@ export default function HostAddSpace({ mode }) {
     selectItem: "",
   });
 
+  let spaceId = "";
+
   //imgState
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
@@ -86,15 +88,14 @@ export default function HostAddSpace({ mode }) {
     });
 
     const data = response.data.data;
-    const spaceId = data.id;
+    spaceId = data.id;
     let responseTag = "";
 
+    //해쉬테그 등록 api
     for (let i = 0; i < tagList.length; i++) {
       responseTag = await Api.post(`api/hashtags/${spaceId}`, tagList[i]);
       console.log(responseTag);
     }
-
-    //const res = formDataSend(detailImgs, spaceId);
 
     const modal = document.querySelector(".modalWrap");
     modal.style.display = "block";
@@ -103,7 +104,6 @@ export default function HostAddSpace({ mode }) {
 
   /******************* hashTag  컴포넌트 함수*******/
   useEffect(() => {
-    // ['스터디룸', '모임', '강남'] 이런식으로 배열로 들어감
     console.log(tagList);
   }, [tagList]);
 
@@ -211,13 +211,26 @@ export default function HostAddSpace({ mode }) {
     });
   };
 
-  const formDataSend = async (images, spaceId) => {
-    let formdata = new FormData();
-    formdata.append("uploadImage", images[0]);
+  //이미지를 s3에 저장
+  const imgData = new FormData();
+  const [selectedFile, setSelectedFile] = useState(null);
+  const imgName = "";
+  const handleImgFileInput = (e) => {
+    console.log(e.target.files);
+    setSelectedFile(e.target.files);
+    imgData.append("images", selectedFile);
+    console.log(imgData);
+  };
 
-    const res = await axios.imgPost(`{api/space-images/${spaceId}}`, formdata);
-    console.log(res);
-    return res;
+  const handleImgUpload = async (selectedFile, spaceId) => {
+    console.log(selectedFile);
+
+    Array.from(selectedFile).map((item) => {
+      imgData.append("images", item);
+      console.log(item.name);
+    });
+    //이미지 등록 api
+    await Api.postImg(`api/uploads/space/${spaceId}`, imgData);
   };
 
   return (
@@ -296,17 +309,20 @@ export default function HostAddSpace({ mode }) {
             onChange={loadDetailImage}
           ></SubImageView>
           <ImageInput
-            name="spaceImages"
+            name="images"
             type="file"
             multiple
             accept="image/*"
-            onChange={loadDetailImage}
+            onChange={(e) => {
+              loadDetailImage(e);
+              handleImgFileInput(e);
+            }}
             id="imgs"
             style={{ display: "none" }}
           ></ImageInput>
-          <label for="imgs" id="imgs" type="file">
-            업로드
-          </label>
+          <Label for="imgs" id="imgs" type="file">
+            사진선택
+          </Label>
           {/* <input type="file" name="uploadfile" id="img" style="display:none;" />{" "}
           <label for="img">Click me to upload image</label> */}
         </InputBox>
@@ -324,7 +340,10 @@ export default function HostAddSpace({ mode }) {
             취소
           </StyledButton>
           <StyledButton
-            onClick={handleUpdateSubmit}
+            onClick={(e) => {
+              handleUpdateSubmit(e);
+              handleImgUpload(e);
+            }}
             color="white"
             backGroundColor="#8daef2"
             name="register"
@@ -340,7 +359,9 @@ export default function HostAddSpace({ mode }) {
             className="addModal"
             title="공간 등록"
             content="공간 등록이 완료되었습니다."
-            clickEvent={() => nav("/host/spaceList")}
+            clickEvent={() => {
+              nav("/host/spaceList");
+            }}
           />
         </ModalWrap>
       </SpaceForm>
@@ -388,6 +409,32 @@ const StyledInput = styled.input`
 
   & + & {
     margin-left: 3%;
+  }
+`;
+
+const Label = styled.label`
+  width: 48%;
+  height: 40px;
+  line-height: 40px;
+
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+
+  background-color: #8daef2;
+  color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition-duration: 0.3s;
+
+  :hover {
+    background-color: #5155a6;
+  }
+  & + & {
+    margin-left: 20px;
   }
 `;
 const StyledTextArea = styled.textarea`

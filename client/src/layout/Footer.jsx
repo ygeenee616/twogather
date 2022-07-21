@@ -26,6 +26,7 @@ const TextLine = styled.div`
 `;
 
 const Text = styled.div`
+  font-family: "LeferiPoint-WhiteA";
   color: ${({ color }) => color};
 `;
 

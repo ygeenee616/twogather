@@ -1,8 +1,8 @@
-import { Container, FormDiv, Line } from "../components/register/UserForm";
+import { Container, FormDiv, Line } from "./register/UserForm";
 import { useLocation, useNavigate } from "react-router-dom";
 import logoImg from "../assets/images/logo.png";
 import styled from "styled-components";
-function RegisterComplete() {
+function MessagePage({ content }) {
   const location = useLocation();
   const navigate = useNavigate();
   //   const nickname = location.state.nickname ?? '';
@@ -14,8 +14,7 @@ function RegisterComplete() {
           <img className="logoImg" src={logoImg} alt="logo" />
           <div className="logoTitle">TWOGATHER</div>
         </LogoDiv>
-        <h2>회원가입이 완료 되었습니다.</h2>
-        {/* <NicknameSpan>{nickname}</NicknameSpan> */}
+        <h2>{content}</h2>
         <Line />
         <BtnDiv>
           <button className="home-btn" onClick={() => navigate("/")}>
@@ -36,9 +35,7 @@ const LogoDiv = styled.div`
     height: 5rem;
   }
 `;
-const NicknameSpan = styled.span`
-  font-weight: bold;
-`;
+
 const BtnDiv = styled.div`
   button {
     width: 10rem;
@@ -54,4 +51,4 @@ const BtnDiv = styled.div`
     background-color: #bbd3f2;
   }
 `;
-export default RegisterComplete;
+export default MessagePage;

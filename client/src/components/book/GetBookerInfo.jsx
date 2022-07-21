@@ -110,7 +110,7 @@ const Content = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin: 10px 0;
+  margin: 15px 0;
   font-size: 0.9rem;
 `;
 
