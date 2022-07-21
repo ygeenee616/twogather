@@ -14,7 +14,7 @@ export default function UpdateNotice() {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await Api.get(`api/notices/${id}`);
+      const res = await Api.getAuth(`api/notices/${id}`);
       const datas = res.data.data;
       setData(datas);
     };
@@ -31,7 +31,7 @@ export default function UpdateNotice() {
   }, [title, content]);
 
   const handleClickUpdateNoticeButton = async () => {
-    const req = await Api.patch(`api/notices/${id}`, newData);
+    const req = await Api.patchAuth(`api/notices/${id}`, newData);
     const modal = document.querySelector(".modalWrap");
     modal.style.display = "block";
     window.scrollTo(0, 0);

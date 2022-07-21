@@ -10,7 +10,6 @@ import * as Api from "../../api";
 
 function Register() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");

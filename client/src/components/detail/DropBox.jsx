@@ -14,7 +14,7 @@ export default function Dropbox({ rooms, acceptPeople, checkSelectRoom }) {
 
   const getImg = async (id) => {
     try {
-      const roomImageReq = await Api.get(`api/room-images/room/${id}`);
+      const roomImageReq = await Api.getAuth(`api/room-images/room/${id}`);
       imageUrl.current = roomImageReq.data.data[0].imageUrl;
       return imageUrl.current;
     } catch (err) {
