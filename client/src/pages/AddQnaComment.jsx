@@ -5,15 +5,20 @@ import {
   BtnContainer,
 } from "../components/addComment/CommentForm";
 import styled from "styled-components";
+import { useState } from "react";
 import * as api from "../api";
 
 function AddQnaComment() {
-  // const postQnA = (spaceId, data)  => {
-  //     const data = {
-  //         contents: contents
-  //     }
-  //     const res = await api.post(`api/qnas/${spaceId}`, data);
-  // }
+  // 답글달기로 넘어갈 때
+
+  const [reply, setReply] = useState("");
+
+  const postQnA = async (spaceId) => {
+    const data = {
+      reply: reply,
+    };
+    const res = await api.post(`api/qnas/${spaceId}`, data);
+  };
 
   return (
     <ReviewContainer>
@@ -25,6 +30,8 @@ function AddQnaComment() {
         <CommentTextArea
           name="contents"
           placeholder="답변을 작성해주세요. (200자 이내)"
+          value={reply}
+          onChange={(e) => setReply(e.target.value)}
         />
         <BtnContainer>
           <button className="cancel">취소</button>

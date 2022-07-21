@@ -49,6 +49,8 @@ export default function Header() {
   };
 
   useEffect(() => {
+    // jwtToken 요청 다시
+
     if (localStorage.getItem("userToken") === null) {
       setIsLogin(false);
     } else {
@@ -70,8 +72,8 @@ export default function Header() {
         ) : (
           ``
         )}
-        {isLogin ? <HeaderTag name="마이페이지" target="/mypage" /> : ``}
         <HeaderTag name="공지사항" target="/notice?page=1" />
+        {isLogin ? <HeaderTag name="마이페이지" target="/mypage" /> : ``}
         <TextWrap onClick={handleLoginClick}>
           {localStorage.getItem("userToken") === null ? `로그인` : `로그아웃`}
         </TextWrap>

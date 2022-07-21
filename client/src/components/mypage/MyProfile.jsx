@@ -16,9 +16,10 @@ import axios from "axios";
 function MyProfile({ userInfo }) {
   const [editUser, setEditUser] = useState(false);
   const [imageSrc, setImageSrc] = useState(
-    userInfo.profileImage ?? defaultProfile
+    userInfo.profileImage || defaultProfile
   );
   const [alertMsg, setAlertMsg] = useState(false);
+  const userId = userInfo.userId;
 
   function handleEditUser() {
     setEditUser(true);
@@ -49,10 +50,10 @@ function MyProfile({ userInfo }) {
       const file = e.target.files[0];
       const formData = new FormData();
       if (file) {
-        formData.append("profileImage", file);
+        formData.append("images", file);
         encodeFileToBase64(file);
         // 프로필 사진 변경
-        await Api.patchImg("api/uploads/profile/{:userId}", formData);
+        await Api.postImg(`api/uploads/profile/${userId}`, formData);
       }
     } catch (err) {
       console.log(err);
@@ -64,20 +65,23 @@ function MyProfile({ userInfo }) {
       <ProfileImgDiv>
         {imageSrc && <img src={imageSrc} alt="내 프로필 사진" />}
         <EditBtnDiv>
-          <label htmlFor="imgUpload" name="profileImage">
-            <div id="img_upload">프로필 사진 변경</div>
-          </label>
-          <input
-            type="file"
-            accept="image/*"
-            id="imgUpload"
-            onChange={handleImageUpload}
-          />
-          <input
-            type="button"
-            value="유저 정보 수정"
-            onClick={handleEditUser}
-          />
+          <form>
+            <label htmlFor="imgUpload" name="profileImage">
+              <div id="img_upload">프로필 사진 변경</div>
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              id="imgUpload"
+              onChange={handleImageUpload}
+              name="images"
+            />
+            <input
+              type="submit"
+              value="유저 정보 수정"
+              onClick={handleEditUser}
+            />
+          </form>
         </EditBtnDiv>
       </ProfileImgDiv>
       <ProfileContents>
@@ -137,7 +141,7 @@ const EditBtnDiv = styled.div`
   }
 
   label,
-  input[type="button"] {
+  input[type="submit"] {
     display: inline-block;
     background-color: white;
     color: #bbd3f2;

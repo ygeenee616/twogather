@@ -1,12 +1,35 @@
+import { toDate } from "date-fns";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as Api from "../../api";
 
-function MyReservedRoom({ reservation, idx }) {
+function isFutureDate(date, startTime) {
+  // YYYY-MM-DD 형태의 날짜값
+  const today = new Date();
+  const year = parseInt(date.split("-")[0]);
+  const month = parseInt(date.split("-")[1]);
+  const day = parseInt(date.split("-")[2]);
+  const time = parseInt(toString(startTime).split(":")[0]);
+
+  if (year > parseInt(today.year)) return true;
+  else if (year === parseInt(today.year)) {
+    if (month > parseInt(today.month)) return true;
+    else if (month === parseInt(today.month)) {
+      if (day > parseInt(today.day)) return true;
+      else if (day === parseInt(today.day) && time > parseInt(today.hours))
+        return true;
+    }
+  }
+
+  return false;
+}
+
+function MyReservedRoom({ reservation, setDeleteR }) {
+  const navigate = useNavigate();
   // id는 예약번호, name은 공간이름 , 예약자명 ??
   const {
     id,
     image,
-    address,
     personnel,
     requirement,
     createdTime,
@@ -19,14 +42,16 @@ function MyReservedRoom({ reservation, idx }) {
   // ///// reservation room 없을 경우. 추후 api 수정후 삭제 ////
   // if (!reservation.hasOwnProperty(rooms)) room = "무슨무슨방";
 
-  const handleCancelReservation = async () => {
-    try {
-      if (window.confirm("예약을 취소하시겠습니까?")) {
-        Api.delete(`api/reservations/${id}`);
-      }
-    } catch (err) {
-      console.log(err);
-    }
+  console.log(room.name);
+  const handleCancelReservation = (e) => {
+    e.preventDefault();
+    setDeleteR(id);
+  };
+
+  const handleAddReview = (e) => {
+    navigate(`/myPage/addReview?bookId=${id}`, {
+      state: { roomName: room.name, review: review },
+    });
   };
 
   return (
@@ -49,11 +74,13 @@ function MyReservedRoom({ reservation, idx }) {
         </InfoText>
       </InfoDiv>
       <EditDiv>
-        <span onClick={(e) => handleCancelReservation(id)}> 예약취소 </span>
-        <a href={`/myPage/addReview?bookId=${id}&spaceName=${room.name}`}>
-          {" "}
-          리뷰작성
-        </a>
+        {isFutureDate(createdTime, startTime) ? (
+          <span onClick={(e) => handleCancelReservation(id)}> 예약취소 </span>
+        ) : (
+          <>
+            <span onClick={(e) => handleAddReview(id)}>리뷰작성</span>
+          </>
+        )}
       </EditDiv>
     </RoomDiv>
   );
@@ -116,6 +143,7 @@ const EditDiv = styled.div`
     color: black;
     padding: 0;
     margin: 0 0.5rem;
+    cursor: pointer;
   }
 `;
 

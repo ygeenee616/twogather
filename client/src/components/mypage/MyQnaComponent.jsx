@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const QnaComponent = ({ room, qna }) => {
+const QnaComponent = ({ room, qna, setDeleteQModal }) => {
   // id 는 qna 아이디
   const { id, content, createdTime, reply } = qna;
 
@@ -15,6 +15,7 @@ const QnaComponent = ({ room, qna }) => {
 
   const handleDeleteQna = async (e) => {
     e.preventDefault();
+    setDeleteQModal(id);
   };
 
   return (

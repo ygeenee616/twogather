@@ -4,7 +4,7 @@ import { PaginationInLocal } from "../Pagination.jsx";
 import Modal from "../Modal";
 import { useState } from "react";
 
-function MyQnA({ qnas }) {
+function MyQnA({ qnas, setDeleteQModal }) {
   // const {}
   const total_elem = qnas.length;
   const page_limit = 5;
@@ -50,7 +50,11 @@ function MyQnA({ qnas }) {
               {qnas
                 .slice(page_limit * (page - 1), page_limit_elem)
                 .map((qna, idx) => (
-                  <MyQnaComponent qna={qna} key={idx} />
+                  <MyQnaComponent
+                    qna={qna}
+                    key={idx}
+                    setDeleteQModal={setDeleteQModal}
+                  />
                 ))}
             </tbody>
           </QnATable>
@@ -60,16 +64,6 @@ function MyQnA({ qnas }) {
             page={page}
             setPage={setPage}
           ></PaginationInLocal>
-          <ModalWrap>
-            <Modal
-              className="deleteMyQnAModal"
-              title=" 내 QnA 질문 삭제"
-              content="해당 질문을 삭제하시겠습니까?"
-              // clickEvent={() =>
-
-              // }
-            />
-          </ModalWrap>
         </>
       )}
     </QnADiv>
@@ -118,9 +112,9 @@ const ModalWrap = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  height: 244vh;
+  height: 100%;
   background-color: rgba(90, 90, 90, 0.2);
-  display: none;
+  ${"" /* display: none; */}
 `;
 
 export default MyQnA;

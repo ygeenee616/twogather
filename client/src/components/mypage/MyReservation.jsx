@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { getCookie, setCookie } from "../../cookie";
 import * as Api from "../../api";
 
-function MyReservation({ reservations }) {
+function MyReservation({ reservations, setDeleteR }) {
   const total_elem = reservations.length;
   const page_limit = 3;
   const [page, setPage] = useState(1);
@@ -22,7 +22,7 @@ function MyReservation({ reservations }) {
       ) : (
         <>
           <Line />
-          <Reservations>
+          <Reservations setDeleteR={setDeleteR}>
             {reservations
               .slice(
                 page_limit * (page - 1),
