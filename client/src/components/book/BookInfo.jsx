@@ -74,7 +74,8 @@ const Header = styled.div`
 const Info = styled.div`
   width: 100%;
   display: flex;
-  padding: 10px 0;
+  align-items: center;
+  padding: 15px 0;
   font-size: 0.9rem;
 
   & div:first-child {
