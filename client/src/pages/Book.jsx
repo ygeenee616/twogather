@@ -81,7 +81,7 @@ export default function Book() {
   // 예약 등록 함수
   async function submitBook(id) {
     try {
-      const req = await Api.post(`api/reservations/${roomId}`, {
+      const req = await Api.postAuth(`api/reservations/${roomId}`, {
         startTime: startTime,
         endTime: endTime,
         date: dateToBook(date),

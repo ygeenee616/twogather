@@ -15,7 +15,7 @@ export default function HostRoomBook() {
     const getData = async () => {
       try {
         //space에 대한 roomAPI받기
-        const req = await Api.get(`api/rooms/space/${spaceId}`);
+        const req = await Api.getAuth(`api/rooms/space/${spaceId}`);
         const data = await req.data.data;
         console.log(req);
         setData(data);

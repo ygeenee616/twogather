@@ -48,7 +48,7 @@ export default function HostAddRoom({ mode }) {
       setAlert("값을 입력해 주세요");
     }
     try {
-      roomResponse = await Api.patch(`api/rooms/host/${roomId}`, {
+      roomResponse = await Api.patchAuth(`api/rooms/host/${roomId}`, {
         name: roomInfo.roomName, //공간명
         capacity: Number(roomInfo.personal), //수용인원
         price: Number(roomInfo.price), //공간타입
@@ -73,7 +73,7 @@ export default function HostAddRoom({ mode }) {
       setAlert("값을 입력해 주세요");
     }
     try {
-      roomResponse = await Api.delete(`api/rooms/host/${roomId}`);
+      roomResponse = await Api.deleteAuth(`api/rooms/host/${roomId}`);
 
       console.log(roomResponse);
       const modal = document.querySelector(".deleteWrap");

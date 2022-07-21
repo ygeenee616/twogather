@@ -19,7 +19,7 @@ export default function HostQnA() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const req = await Api.get(
+        const req = await Api.getAuth(
           `api/qnas/space/${spaceId}?page=${page}&perPage=5`
         );
         const data = await req.data.data.paginatedQnas;
@@ -37,7 +37,7 @@ export default function HostQnA() {
   // 답변 등록 함수
   async function submitAnswer(id) {
     try {
-      const req = await Api.patch(`api/qnas/${id}`, {
+      const req = await Api.patchAuth(`api/qnas/${id}`, {
         reply: answer,
       });
       console.log(req);
