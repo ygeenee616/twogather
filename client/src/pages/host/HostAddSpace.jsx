@@ -214,7 +214,7 @@ export default function HostAddSpace({ mode }) {
 
   const imgData = new FormData();
 
-  const handleImgUpload = async () => {
+  const handleImgUpload = async (selectedFile) => {
     console.log("Asdasdasdas");
 
     Array.from(selectedFile).map((item) => {
