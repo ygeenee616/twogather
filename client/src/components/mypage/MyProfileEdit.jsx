@@ -31,6 +31,7 @@ function MyProfileEdit({ user, handleEditUserDone }) {
   // 쿼리
   const handleDoneEdit = async () => {
     const userData = newUser;
+
     for (var prop in userData) {
       if (userData[prop] === "") {
         delete userData[prop];
@@ -44,7 +45,6 @@ function MyProfileEdit({ user, handleEditUserDone }) {
     if (isFormValid && newUser !== null) {
       try {
         const res = await Api.patchAuth("api/users", userData);
-        console.log(res);
         // window.location.replace("/mypage");
       } catch (err) {
         console.log(err);
