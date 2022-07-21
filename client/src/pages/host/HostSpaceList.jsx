@@ -28,12 +28,15 @@ export default function HostSpaceList({ host }) {
   const offset = (page - 1) * limit;
   const [dataTrigger, setDataTrigger] = useState(0);
   const [images, setImgs] = useState("");
-
+  const [spaceId, setSpaceId] = useState("");
   useEffect(() => {
     async function getData() {
       try {
         const res = await api.get("api/spaces/host");
-        setImgs(loadImgs(185));
+
+        const loadedImgs = await loadImgs(data.id);
+        setImgs(loadedImgs);
+
         const data = res.data.data;
         setDatas(data);
         console.log(data);
@@ -68,15 +71,22 @@ export default function HostSpaceList({ host }) {
   };
 
   const loadImgs = async (id) => {
+    setSpaceId(id);
+    console.log(spaceId);
+
+    console.log(id);
     const getSpaceImgs = async () => {
+      setSpaceId(id);
       const imgs = await Api.get(`api/space-images/space/${id}`);
       return imgs.data.data;
     };
 
-    let result = setImgs(getSpaceImgs());
+    const Imgs = await getSpaceImgs();
+
+    let result = await getSpaceImgs();
     let imagesUrls = [];
 
-    result.map((item) => {
+    Imgs.map((item) => {
       imagesUrls.push(item.imageUrl);
     });
 
@@ -87,13 +97,14 @@ export default function HostSpaceList({ host }) {
 
     setImgs(imagesUrls);
 
+    console.log(imagesUrls);
+
     return imagesUrls;
   };
-
   const renderData = (datas) => {
     return datas.map((data, i) => (
       <>
-        images &&
+        {console.log(data.id)}
         <ProductCard
           key={i}
           src={images} //아직없음
@@ -172,12 +183,12 @@ export default function HostSpaceList({ host }) {
               <ProductWrap>{renderData(datas)}</ProductWrap>
 
               <div>
-                <Pagination
+                {/* <Pagination
                   total={datas.length}
                   limit={limit}
                   page={page}
                   setPage={setPage}
-                />
+                /> */}
               </div>
             </div>
           </BottomWrap>
