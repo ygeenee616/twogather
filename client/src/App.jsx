@@ -41,7 +41,6 @@ function App() {
         <ScrollToTop />
         <Header></Header>
         <Routes>
-          <Route path="/test" element={<TypeSelector />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/registerComplete" element={<RegisterComplete />} />
