@@ -1,32 +1,39 @@
+import { toDate } from "date-fns";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { addCommas } from "../../assets/utils/UsefulFunction";
 import * as Api from "../../api";
 
-function MyReservedRoom({ reservation, idx }) {
+function MyReservedRoom({ reservation, setDeleteR }) {
+  const navigate = useNavigate();
   // id는 예약번호, name은 공간이름 , 예약자명 ??
   const {
     id,
     image,
-    address,
     personnel,
     requirement,
-    totalPrice,
+    review,
+    room,
     date,
     startTime,
     endTime,
   } = reservation;
+  const nickname = localStorage.getItem("nickname");
+  const roomName = room ? room.name : "무슨무슨방";
+  const roomPrice = room ? parseInt(room.price) : 999999;
 
-  ///// reservation room 없을 경우. 추후 api 수정후 삭제 ////
-  let room;
-  if (!reservation.hasOwnProperty(room)) room = "무슨무슨방";
+  const handleAddReview = (e) => {
+    navigate(`/myPage/addReview?bookId=${id}`, {
+      state: { roomName: roomName ?? "무슨무슨방", review: review },
+    });
+  };
 
-  const handleCancelReservation = async () => {
-    try {
-      if (window.confirm("예약을 취소하시겠습니까?")) {
-        Api.delete(`api/reservations/${id}`);
-      }
-    } catch (err) {
-      console.log(err);
-    }
+  const handleDeleteReservtaion = async (e) => {
+    e.preventDefault();
+    const deleteRModal = document.getElementById("deleteMyRModal");
+    deleteRModal.style.display = "block";
+    deleteRModal.setAttribute("target", id);
+    console.log(deleteRModal.geAttribute("target"));
   };
 
   return (
@@ -35,29 +42,26 @@ function MyReservedRoom({ reservation, idx }) {
         <RoomImg src={image} alt="공간 이미지"></RoomImg>
         <InfoText>
           <InfoTag color="bold">
-            <a href={`http://localhost:5001/detail/${id}`}>
-              {room} {id}
-            </a>
-          </InfoTag>{" "}
-          <br />
-          <InfoTag color="black">예약자: !나! / {personnel}인</InfoTag>
-          <InfoTag color="grey">장소: {address}</InfoTag>
-          <InfoTag color="grey">
-            예약일시:{date} {startTime}시~{endTime}시 (가격: {totalPrice} 원)
+            <a href={`/detail/${id}`}>{roomName ?? "무슨무슨방"}</a>
           </InfoTag>
+          <br />
+          <InfoTag color="black">
+            예약자: {nickname} / {personnel}인
+          </InfoTag>
+          <InfoTag color="grey">
+            예약일시: {date.split("T")[0]} {startTime}시~{endTime}시
+          </InfoTag>
+          <InfoTag color="grey"> 결제금액: {addCommas(roomPrice)} 원</InfoTag>
           <InfoTag color="italic">"{requirement}"</InfoTag>
         </InfoText>
       </InfoDiv>
       <EditDiv>
-        <span onClick={(e) => handleCancelReservation(id)}> 예약취소 </span>
-        <a
-          href={`/myPage/addReview?bookId=${id}&spaceName=${
-            room || "무슨무슨룸"
-          }`}
-        >
-          {" "}
-          리뷰작성
-        </a>
+        <span className="deleteReservation" onClick={handleDeleteReservtaion}>
+          예약취소
+        </span>
+        <span className="addReview" onClick={handleAddReview}>
+          리뷰 작성
+        </span>
       </EditDiv>
     </RoomDiv>
   );
@@ -82,7 +86,6 @@ const InfoDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 60vw;
 
   @media only screen and (max-width: 600px) {
     flex-direction: column;
@@ -94,6 +97,7 @@ const RoomImg = styled.img`
 `;
 const InfoText = styled.span`
   text-align: left;
+  width: 45vw;
 `;
 const InfoTag = styled.p`
   font-size: 1rem;
@@ -104,7 +108,7 @@ const InfoTag = styled.p`
     else return `color: ${props.color};`;
   }}
   margin: 0.5rem 2rem;
-
+  width: 20rem;
   a {
     text-decoration: none;
     color: black;
@@ -113,12 +117,14 @@ const InfoTag = styled.p`
 
 const EditDiv = styled.div`
   text-algin: left;
+
   a,
   span {
     text-decoration: underline;
     color: black;
     padding: 0;
     margin: 0 0.5rem;
+    cursor: pointer;
   }
 `;
 

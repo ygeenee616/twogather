@@ -88,17 +88,17 @@ function MyProfileEdit({ user, handleEditUserDone }) {
             <tr>
               <TagTD>비밀번호</TagTD>
               <InputTD>
-                {loginType === "local" ? (
+                {loginType === "kakao" || loginType === "google" ? (
+                  <p style={{ fontSize: 5, color: "#ccd3f2" }}>
+                    소셜로그인된 회원은 비밀번호를 바꿀 수 없습니다.
+                  </p>
+                ) : (
                   <input
                     type="password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="새 비밀번호를 입력하세요."
                   />
-                ) : (
-                  <p style={{ fontSize: 5, color: "#ccd3f2" }}>
-                    소셜로그인된 회원은 비밀번호를 바꿀 수 없습니다.
-                  </p>
                 )}
               </InputTD>
             </tr>
