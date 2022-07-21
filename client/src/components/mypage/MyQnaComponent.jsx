@@ -13,6 +13,10 @@ const QnaComponent = ({ room, qna }) => {
     backgroundColor: "white",
   };
 
+  const handleDeleteQna = async (e) => {
+    e.preventDefault();
+  };
+
   return (
     <>
       <tr>
@@ -21,7 +25,9 @@ const QnaComponent = ({ room, qna }) => {
         <td>{createdTime.split("T")[0]}</td>
         <td>
           {reply ? "    답변 완료 " : "답변 대기중 "}
-          <button style={deleteBtnstyle}>삭제</button>
+          <button style={deleteBtnstyle} onClick={handleDeleteQna}>
+            삭제
+          </button>
         </td>
       </tr>
     </>

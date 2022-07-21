@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 function MyProfileInfo({ user }) {
-  const { nickname, sex, email, name, phoneNumber} = user;
+  const { nickname, sex, email, loginType, name, phoneNumber } = user;
 
   return (
     <div>
@@ -18,6 +18,10 @@ function MyProfileInfo({ user }) {
           <tr>
             <TagTD>이메일</TagTD>
             <InfoTD> {email} </InfoTD>
+          </tr>
+          <tr>
+            <TagTD> SNS연동 </TagTD>
+            <InfoTD> {loginType} </InfoTD>
           </tr>
           <tr>
             <TagTD>성별</TagTD>

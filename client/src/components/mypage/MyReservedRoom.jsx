@@ -9,15 +9,15 @@ function MyReservedRoom({ reservation, idx }) {
     address,
     personnel,
     requirement,
-    totalPrice,
-    date,
+    createdTime,
+    review,
+    room,
     startTime,
     endTime,
   } = reservation;
-
-  ///// reservation room 없을 경우. 추후 api 수정후 삭제 ////
-  let room;
-  if (!reservation.hasOwnProperty(room)) room = "무슨무슨방";
+  const nickname = localStorage.getItem("nickname");
+  // ///// reservation room 없을 경우. 추후 api 수정후 삭제 ////
+  // if (!reservation.hasOwnProperty(rooms)) room = "무슨무슨방";
 
   const handleCancelReservation = async () => {
     try {
@@ -35,26 +35,22 @@ function MyReservedRoom({ reservation, idx }) {
         <RoomImg src={image} alt="공간 이미지"></RoomImg>
         <InfoText>
           <InfoTag color="bold">
-            <a href={`http://localhost:5001/detail/${id}`}>
-              {room} {id}
-            </a>
-          </InfoTag>{" "}
-          <br />
-          <InfoTag color="black">예약자: !나! / {personnel}인</InfoTag>
-          <InfoTag color="grey">장소: {address}</InfoTag>
-          <InfoTag color="grey">
-            예약일시:{date} {startTime}시~{endTime}시 (가격: {totalPrice} 원)
+            <a href={`http://localhost:5001/detail/${id}`}>{room.name}</a>
           </InfoTag>
+          <br />
+          <InfoTag color="black">
+            예약자: {nickname} / {personnel}인
+          </InfoTag>
+          <InfoTag color="grey">
+            예약일시: {createdTime.split("T")[0]} {startTime}시~{endTime}시
+          </InfoTag>
+          <InfoTag color="grey"> 결제금액: {room.price} 원</InfoTag>
           <InfoTag color="italic">"{requirement}"</InfoTag>
         </InfoText>
       </InfoDiv>
       <EditDiv>
         <span onClick={(e) => handleCancelReservation(id)}> 예약취소 </span>
-        <a
-          href={`/myPage/addReview?bookId=${id}&spaceName=${
-            room || "무슨무슨룸"
-          }`}
-        >
+        <a href={`/myPage/addReview?bookId=${id}&spaceName=${room.name}`}>
           {" "}
           리뷰작성
         </a>
@@ -82,7 +78,6 @@ const InfoDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 60vw;
 
   @media only screen and (max-width: 600px) {
     flex-direction: column;
@@ -94,6 +89,7 @@ const RoomImg = styled.img`
 `;
 const InfoText = styled.span`
   text-align: left;
+  width: 45vw;
 `;
 const InfoTag = styled.p`
   font-size: 1rem;
@@ -104,7 +100,7 @@ const InfoTag = styled.p`
     else return `color: ${props.color};`;
   }}
   margin: 0.5rem 2rem;
-
+  width: 20rem;
   a {
     text-decoration: none;
     color: black;
@@ -113,6 +109,7 @@ const InfoTag = styled.p`
 
 const EditDiv = styled.div`
   text-algin: left;
+
   a,
   span {
     text-decoration: underline;

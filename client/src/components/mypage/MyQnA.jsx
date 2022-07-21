@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import MyQnaComponent from "./MyQnaComponent.jsx";
 import { PaginationInLocal } from "../Pagination.jsx";
+import Modal from "../Modal";
 import { useState } from "react";
 
 function MyQnA({ qnas }) {
@@ -59,6 +60,16 @@ function MyQnA({ qnas }) {
             page={page}
             setPage={setPage}
           ></PaginationInLocal>
+          <ModalWrap>
+            <Modal
+              className="deleteMyQnAModal"
+              title=" 내 QnA 질문 삭제"
+              content="해당 질문을 삭제하시겠습니까?"
+              // clickEvent={() =>
+
+              // }
+            />
+          </ModalWrap>
         </>
       )}
     </QnADiv>
@@ -101,6 +112,15 @@ const EmptyQna = styled.div`
   font-size: 1rem;
   text-align: center;
   color: #bbd3f2;
+`;
+
+const ModalWrap = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 244vh;
+  background-color: rgba(90, 90, 90, 0.2);
+  display: none;
 `;
 
 export default MyQnA;

@@ -33,6 +33,7 @@ function MyProfile({ userInfo }) {
   }, []);
 
   const encodeFileToBase64 = (fileBlob) => {
+    // 로컬에 변경된 이미지 띄우기
     const reader = new FileReader();
     reader.readAsDataURL(fileBlob);
     return new Promise((resolve) => {
@@ -51,7 +52,7 @@ function MyProfile({ userInfo }) {
         formData.append("profileImage", file);
         encodeFileToBase64(file);
         // 프로필 사진 변경
-        await Api.patchImg("api/users", formData);
+        await Api.patchImg("api/uploads/profile/{:userId}", formData);
       }
     } catch (err) {
       console.log(err);

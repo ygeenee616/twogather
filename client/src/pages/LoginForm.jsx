@@ -38,8 +38,6 @@ function LoginForm() {
   const [alertMsg, setAlertMsg] = useState("");
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
 
-  const getUserInfo = async () => {};
-
   const handleLogin = async (e) => {
     e.preventDefault();
 
