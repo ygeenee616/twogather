@@ -22,7 +22,6 @@ export default function HostAddSpace({ mode }) {
 
   //imgState
   const [detailImgs, setDatailImgs] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null);
 
   // hashTag state
   const [tagItem, setTagItem] = useState("");
@@ -206,25 +205,28 @@ export default function HostAddSpace({ mode }) {
   };
 
   //이미지를 s3에 저장
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleImgFileInput = (e) => {
-    setSelectedFile(e.target.files);
+    console.log(e.target.files);
+    const data = e.target.files;
+    console.log(data);
+    setSelectedFile(data);
+
     console.log(selectedFile);
   };
 
-  const imgData = new FormData();
-
-  const handleImgUpload = async (selectedFile) => {
-    console.log("Asdasdasdas");
+  const handleImgUpload = async () => {
+    let imgData = new FormData();
 
     Array.from(selectedFile).map((item) => {
       imgData.append("images", item);
       console.log(item.name);
     });
 
-    console.log(spaceId);
-    await Api.postImg(`api/uploads/space/${spaceId}`, imgData);
+    const data = await Api.postImg(`api/uploads/space/${spaceId}`, imgData);
 
+    console.log(data);
     console.log(imgData);
   };
 

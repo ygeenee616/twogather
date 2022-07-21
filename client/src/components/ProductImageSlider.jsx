@@ -16,7 +16,9 @@ export default function ImageSlider({ images, link }) {
     centerMode: true,
     centerPadding: "0px",
   };
+
   const navigate = useNavigate();
+  console.log(images);
   return (
     <Container>
       <div>
