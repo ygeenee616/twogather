@@ -24,6 +24,7 @@ function AddReview() {
       const data = {
         content: contentTextarea.current.value,
       };
+
       if (review.content === null)
         await Api.post(`api/reviews/${bookId}`, data);
       else await Api.patch(`api/reviews/mypage/${review.id}`, data);
@@ -33,7 +34,6 @@ function AddReview() {
     }
   };
 
-  console.log(review.content);
   return (
     <ReviewContainer>
       <CommentTitle> 이용후기 등록 </CommentTitle>

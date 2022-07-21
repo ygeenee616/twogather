@@ -15,7 +15,11 @@ const QnaComponent = ({ room, qna, setDeleteQModal }) => {
 
   const handleDeleteQna = async (e) => {
     e.preventDefault();
-    setDeleteQModal(id);
+    const deleteQModal = document.getElementById("deleteMyQModal");
+    deleteQModal.style.display = "block";
+    deleteQModal.setAttribute("target", id);
+    console.log(deleteQModal.geAttribute("target"));
+    // deleteQModal.props.target = id;
   };
 
   return (
@@ -36,7 +40,7 @@ const QnaComponent = ({ room, qna, setDeleteQModal }) => {
 };
 
 const QnaDetailComponent = ({ qna }) => {
-  const { id, content, createdTime, reply } = qna;
+  const { content, createdTime, reply } = qna;
 
   const trStyle = {
     display: "none",

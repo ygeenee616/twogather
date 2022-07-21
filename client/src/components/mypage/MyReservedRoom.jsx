@@ -10,7 +10,8 @@ function isFutureDate(date, startTime) {
   const year = parseInt(date.split("-")[0]);
   const month = parseInt(date.split("-")[1]);
   const day = parseInt(date.split("-")[2]);
-  const time = parseInt(toString(startTime).split(":")[0]);
+  const time = parseInt(startTime);
+  console.log(year);
 
   if (year > parseInt(today.year)) return true;
   else if (year === parseInt(today.year)) {
@@ -33,20 +34,15 @@ function MyReservedRoom({ reservation, setDeleteR }) {
     image,
     personnel,
     requirement,
-    createdTime,
     review,
     room,
+    date,
     startTime,
     endTime,
   } = reservation;
   const nickname = localStorage.getItem("nickname");
   const roomName = room ? room.name : "무슨무슨방";
   const roomPrice = room ? parseInt(room.price) : 999999;
-
-  const handleCancelReservation = (e) => {
-    e.preventDefault();
-    setDeleteR(id);
-  };
 
   const handleAddReview = (e) => {
     navigate(`/myPage/addReview?bookId=${id}`, {
@@ -60,29 +56,29 @@ function MyReservedRoom({ reservation, setDeleteR }) {
         <RoomImg src={image} alt="공간 이미지"></RoomImg>
         <InfoText>
           <InfoTag color="bold">
-            <a href={`http://localhost:5001/detail/${id}`}>
-              {roomName ?? "무슨무슨방"}
-            </a>
+            <a href={`/detail/${id}`}>{roomName ?? "무슨무슨방"}</a>
           </InfoTag>
           <br />
           <InfoTag color="black">
             예약자: {nickname} / {personnel}인
           </InfoTag>
           <InfoTag color="grey">
-            예약일시: {createdTime.split("T")[0]} {startTime}시~{endTime}시
+            예약일시: {date.split("T")[0]} {startTime}시~{endTime}시
           </InfoTag>
           <InfoTag color="grey"> 결제금액: {addCommas(roomPrice)} 원</InfoTag>
           <InfoTag color="italic">"{requirement}"</InfoTag>
         </InfoText>
       </InfoDiv>
       <EditDiv>
-        {isFutureDate(createdTime, startTime) ? (
-          <span onClick={(e) => handleCancelReservation(id)}> 예약취소 </span>
+        {/* {isFutureDate(date, startTime) ? (
+          <span onClick={handleCancelReservation}> 예약취소 </span>
         ) : (
-          <>
-            <span onClick={(e) => handleAddReview(id)}>리뷰작성</span>
-          </>
-        )}
+          <span onClick={handleAddReview}>리뷰 작성</span>
+        )} */}
+        <span className="deleteReservation">예약취소</span>
+        <span className="addReview" onClick={handleAddReview}>
+          리뷰 작성
+        </span>
       </EditDiv>
     </RoomDiv>
   );

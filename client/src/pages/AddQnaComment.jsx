@@ -6,19 +6,24 @@ import {
 } from "../components/addComment/CommentForm";
 import styled from "styled-components";
 import { useState } from "react";
+import { useLocation, useNavigate, useNavigationType } from "react-router-dom";
 import * as api from "../api";
 
 function AddQnaComment() {
   // 답글달기로 넘어갈 때
 
   const [reply, setReply] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const postQnA = async (spaceId) => {
+  const postQnA = async (reviewId) => {
     const data = {
       reply: reply,
     };
-    const res = await api.post(`api/qnas/${spaceId}`, data);
+    const res = await api.post(`api/qnas/${reviewId}`, data);
   };
+
+  const reviewId = location.state.reviewId;
 
   return (
     <ReviewContainer>
@@ -34,7 +39,12 @@ function AddQnaComment() {
           onChange={(e) => setReply(e.target.value)}
         />
         <BtnContainer>
-          <button className="cancel">취소</button>
+          <button
+            className="cancel"
+            onClick={(e) => navigate(`qnas/${reviewId}`)}
+          >
+            취소
+          </button>
           <button type="submit" className="submit">
             작성 완료
           </button>

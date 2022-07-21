@@ -6,16 +6,12 @@ import Modal from "../components/Modal";
 import { PageTitle } from "../components/register/UserForm";
 import { useState, useEffect } from "react";
 import partypeople from "../assets/images/partypeople.png";
-
 import * as Api from "../api";
-import { id } from "date-fns/locale";
 
 function MyPage() {
   const [user, setUser] = useState({});
   const [reservations, setReservations] = useState([]);
   const [qnas, setQnas] = useState([]);
-  const [deleteR, setDeleteR] = useState(-1); // 취소하려는 예약 아이디
-  const [deleteQ, setDeleteQ] = useState(-1); // 삭제하려는 질문 아이디
   const QmodalElem = document.getElementById("deleteMyQModal");
 
   useEffect(() => {
@@ -45,29 +41,29 @@ function MyPage() {
     getUser();
   }, []);
 
-  useEffect(() => {
-    if (deleteQ !== -1) {
-      QmodalElem.style.display = "block";
-    }
-  }, [deleteQ]);
-
   const handleReservationDelete = async (e) => {
     // 모달에서 예약삭제 클릭시
     e.preventDefault();
     try {
-      const res = Api.delete(`api/reservations/my/${deleteR}`);
+      const bookId = document
+        .getElementById("deleteMyRModal")
+        .getAttribute("target");
+      const res = Api.delete(`api/reservations/my/${bookId}`);
       window.location.replace("/mypage");
     } catch (err) {
       console.error(err);
     }
   };
+
   const handleQnaDelete = async (e) => {
     // 모달에서 질문삭제 클릭시
     e.preventDefault();
     try {
-      const res = await Api.delete(`api/qnas/mypage/${deleteQ}`);
+      const qnaId = document
+        .getElementById("deleteMyQModal")
+        .getAttribute("target");
+      const res = await Api.delete(`api/qnas/mypage/${qnaId}`);
       window.location.replace("/mypage");
-      setDeleteQ(-1);
       QmodalElem.style.display = "none";
     } catch (err) {
       console.error(err);
@@ -82,14 +78,14 @@ function MyPage() {
         <MyReservation reservations={reservations}></MyReservation>
       )}
       {qnas && <MyQnA qnas={qnas}></MyQnA>}
-      <ModalWrap id="deleteMyRModal">
+      <ModalWrap id="deleteMyRModal" target={0}>
         <Modal
           title=" 내 예약내역 삭제"
           content="예약을 취소하시겠습니까?"
           clickEvent={handleReservationDelete}
         />
       </ModalWrap>
-      <ModalWrap id="deleteMyQModal">
+      <ModalWrap id="deleteMyQModal" target={0}>
         <Modal
           title=" 내 질문 삭제"
           content="질문을 삭제하시겠습니까?"
