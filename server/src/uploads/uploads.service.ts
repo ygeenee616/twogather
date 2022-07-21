@@ -64,7 +64,7 @@ export class UploadsService {
         const awsAddress = process.env.AWS_S3_URL;
         const spaceImage = await this.spaceImageService.create(
           {
-            imageUrl: files[i].location,
+            imageUrl: files[i].location.replace('origin', 'w_900_h_600'),
           },
           spaceId,
         );
@@ -91,7 +91,7 @@ export class UploadsService {
         const awsAddress = process.env.AWS_S3_URL;
         const spaceImage = await this.roomImageService.create(
           {
-            imageUrl: files[i].location,
+            imageUrl: files[i].location.replace('origin', 'w_900_h_600'),
           },
           roomId,
         );
@@ -117,7 +117,7 @@ export class UploadsService {
         // await s3.putObject(params).promise().then();
         const awsAddress = process.env.AWS_S3_URL;
         const updatedUser = await this.userService.update(userId, {
-          profileImage: files[i].location,
+          profileImage: files[i].location.replace('origin', 'wh_200'),
         });
       }
       return `${files.length}개의 profileImage 파일이 업로드되었습니다.`;
