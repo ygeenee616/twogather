@@ -1,6 +1,7 @@
 import { toDate } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { addCommas } from "../../assets/utils/UsefulFunction";
 import * as Api from "../../api";
 
 function isFutureDate(date, startTime) {
@@ -39,10 +40,9 @@ function MyReservedRoom({ reservation, setDeleteR }) {
     endTime,
   } = reservation;
   const nickname = localStorage.getItem("nickname");
-  // ///// reservation room 없을 경우. 추후 api 수정후 삭제 ////
-  // if (!reservation.hasOwnProperty(rooms)) room = "무슨무슨방";
+  const roomName = room ? room.name : "무슨무슨방";
+  const roomPrice = room ? parseInt(room.price) : 999999;
 
-  console.log(room.name);
   const handleCancelReservation = (e) => {
     e.preventDefault();
     setDeleteR(id);
@@ -50,7 +50,7 @@ function MyReservedRoom({ reservation, setDeleteR }) {
 
   const handleAddReview = (e) => {
     navigate(`/myPage/addReview?bookId=${id}`, {
-      state: { roomName: room.name, review: review },
+      state: { roomName: roomName ?? "무슨무슨방", review: review },
     });
   };
 
@@ -60,7 +60,9 @@ function MyReservedRoom({ reservation, setDeleteR }) {
         <RoomImg src={image} alt="공간 이미지"></RoomImg>
         <InfoText>
           <InfoTag color="bold">
-            <a href={`http://localhost:5001/detail/${id}`}>{room.name}</a>
+            <a href={`http://localhost:5001/detail/${id}`}>
+              {roomName ?? "무슨무슨방"}
+            </a>
           </InfoTag>
           <br />
           <InfoTag color="black">
@@ -69,7 +71,7 @@ function MyReservedRoom({ reservation, setDeleteR }) {
           <InfoTag color="grey">
             예약일시: {createdTime.split("T")[0]} {startTime}시~{endTime}시
           </InfoTag>
-          <InfoTag color="grey"> 결제금액: {room.price} 원</InfoTag>
+          <InfoTag color="grey"> 결제금액: {addCommas(roomPrice)} 원</InfoTag>
           <InfoTag color="italic">"{requirement}"</InfoTag>
         </InfoText>
       </InfoDiv>

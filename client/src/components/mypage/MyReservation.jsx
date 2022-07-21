@@ -24,10 +24,7 @@ function MyReservation({ reservations, setDeleteR }) {
           <Line />
           <Reservations setDeleteR={setDeleteR}>
             {reservations
-              .slice(
-                page_limit * (page - 1),
-                page_limit * (page - 1) + page_limit_elem
-              )
+              .slice(page_limit * (page - 1), page_limit_elem)
               .map((reservation, idx) => (
                 <ReservedRoom
                   reservation={reservation}
