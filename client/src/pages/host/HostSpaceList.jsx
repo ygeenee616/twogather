@@ -34,12 +34,13 @@ export default function HostSpaceList({ host }) {
       try {
         const res = await api.get("api/spaces/host");
 
+
         const loadedImgs = await loadImgs(data.id);
         setImgs(loadedImgs);
 
+
         const data = res.data.data;
         setDatas(data);
-        console.log(data);
       } catch (err) {
         console.log(err);
       }
@@ -55,11 +56,9 @@ export default function HostSpaceList({ host }) {
 
   const closeDeleteSpacePopup = async (props) => {
     const spaceId = props;
-    console.log(spaceId);
     //확인 누르면 삭제하고 딜리트함
     try {
       const response = await Api.delete(`api/spaces/host/${spaceId}`);
-      console.log(response);
       setDataTrigger(dataTrigger + 1);
     } catch (err) {
       console.log(err);
@@ -80,24 +79,27 @@ export default function HostSpaceList({ host }) {
       const imgs = await Api.get(`api/space-images/space/${id}`);
       return imgs.data.data;
     };
-
     const Imgs = await getSpaceImgs();
 
-    let result = await getSpaceImgs();
+
+
+    let result = setImgs(Imgs);
+
     let imagesUrls = [];
 
     Imgs.map((item) => {
       imagesUrls.push(item.imageUrl);
     });
 
-    console.log(imagesUrls);
     if (result === "") {
       imagesUrls = [exImg1, exImg2];
     }
 
+
     setImgs(imagesUrls);
 
     console.log(imagesUrls);
+
 
     return imagesUrls;
   };
