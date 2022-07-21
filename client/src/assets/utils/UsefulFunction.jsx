@@ -34,3 +34,26 @@ export const useScript = (url) => {
     };
   }, [url]);
 };
+
+export const isFutureDate = (date, startTime) => {
+  // 해당 날짜, 시작시간이 현재기준으로 미래인지
+  // YYYY-MM-DD 형태의 날짜값
+  const today = new Date();
+  const year = parseInt(date.split("-")[0]);
+  const month = parseInt(date.split("-")[1]);
+  const day = parseInt(date.split("-")[2]);
+  const time = parseInt(startTime);
+  console.log(year);
+
+  if (year > parseInt(today.year)) return true;
+  else if (year === parseInt(today.year)) {
+    if (month > parseInt(today.month)) return true;
+    else if (month === parseInt(today.month)) {
+      if (day > parseInt(today.day)) return true;
+      else if (day === parseInt(today.day) && time > parseInt(today.hours))
+        return true;
+    }
+  }
+
+  return false;
+};
