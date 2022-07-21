@@ -16,7 +16,7 @@ function AddReview() {
   const contentTextarea = useRef(null); // 작성란
   const bookId = params.get("bookId");
   const { roomName, review } = location.state;
-  const [reviewTextarea, setReviewTextarea] = useState(review.content);
+  const [reviewTextarea, setReviewTextarea] = useState(review.content ?? "");
 
   const registerReview = async (e) => {
     e.preventDefault();

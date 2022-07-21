@@ -50,6 +50,14 @@ function MyReservedRoom({ reservation, setDeleteR }) {
     });
   };
 
+  const handleDeleteReservtaion = async (e) => {
+    e.preventDefault();
+    const deleteRModal = document.getElementById("deleteMyRModal");
+    deleteRModal.style.display = "block";
+    deleteRModal.setAttribute("target", id);
+    console.log(deleteRModal.geAttribute("target"));
+  };
+
   return (
     <RoomDiv>
       <InfoDiv>
@@ -70,12 +78,9 @@ function MyReservedRoom({ reservation, setDeleteR }) {
         </InfoText>
       </InfoDiv>
       <EditDiv>
-        {/* {isFutureDate(date, startTime) ? (
-          <span onClick={handleCancelReservation}> 예약취소 </span>
-        ) : (
-          <span onClick={handleAddReview}>리뷰 작성</span>
-        )} */}
-        <span className="deleteReservation">예약취소</span>
+        <span className="deleteReservation" onClick={handleDeleteReservtaion}>
+          예약취소
+        </span>
         <span className="addReview" onClick={handleAddReview}>
           리뷰 작성
         </span>
