@@ -34,36 +34,115 @@ export class SpacesService {
   }
 
   // 전체 공간 목록 조회
-  async findAll(
+  async findAll() {
+    try {
+      return this.spacesRepository.find({
+        select: {
+          rooms: true,
+          hashtags: true,
+          reviews: true,
+        },
+        relations: {
+          rooms: true,
+          user: true,
+          hashtags: true,
+          reviews: true,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // 전체 공간 목록 조회(Paginated)
+  async findAllPaginated(
     startIndex: number,
     perPage: number,
     keyword: string,
-    dateOrder: string,
+    order: string,
     type: string,
   ) {
     try {
-      const totalSpaces = await this.spacesRepository.find();
-      const totalPage = parseInt((totalSpaces.length / perPage).toString()) + 1;
       let paginatedSpaces: Array<Space>;
+      let totalSpaces: Array<Space>;
+      let totalPage: number;
+      if (!keyword || keyword === undefined || keyword == null) {
+        totalSpaces = await this.spacesRepository.find({
+          select: {
+            rooms: true,
+            hashtags: true,
+            reviews: true,
+          },
+          where: {
+            type,
+          },
+          relations: {
+            rooms: true,
+            user: true,
+            hashtags: true,
+            reviews: true,
+          },
+        });
+        totalPage = Math.ceil(totalSpaces.length / perPage);
+        switch (order) {
+          case 'price':
+            paginatedSpaces = await this.spacesRepository.find({
+              select: {
+                rooms: true,
+                hashtags: true,
+                reviews: true,
+              },
+              where: {
+                type,
+              },
+              relations: {
+                rooms: true,
+                hashtags: true,
+                reviews: true,
+              },
+              order: {
+                rooms: {
+                  price: 'ASC',
+                },
+              },
+              skip: startIndex,
+              take: perPage,
+            });
 
-      // no type?
-      if (type === undefined || type === null) {
-        if (
-          dateOrder === undefined ||
-          dateOrder === null ||
-          dateOrder === 'DESC'
-        ) {
-          // keyword?
-          if (keyword === undefined || keyword === null) {
+          case 'reviews':
             paginatedSpaces = await this.spacesRepository.find({
               select: {
                 rooms: true,
                 hashtags: true,
                 reviews: true,
               },
+              where: {
+                type,
+              },
               relations: {
                 rooms: true,
-                user: true,
+                hashtags: true,
+                reviews: true,
+              },
+              order: {
+                numberOfReviews: 'DESC',
+              },
+              skip: startIndex,
+              take: perPage,
+            });
+            break;
+          case 'date':
+            paginatedSpaces = await this.spacesRepository.find({
+              select: {
+                rooms: true,
+                hashtags: true,
+                reviews: true,
+              },
+              where: {
+                type,
+              },
+              relations: {
+                rooms: true,
                 hashtags: true,
                 reviews: true,
               },
@@ -73,83 +152,28 @@ export class SpacesService {
               skip: startIndex,
               take: perPage,
             });
-            // not keyword?
-          } else {
-            paginatedSpaces = await this.spacesRepository.find({
-              select: {
-                rooms: true,
-                hashtags: true,
-                reviews: true,
-              },
-              where: {
-                name: Like(`%${keyword}%`),
-              },
-              relations: {
-                rooms: true,
-                user: true,
-                hashtags: true,
-                reviews: true,
-              },
-              order: {
-                id: 'DESC',
-              },
-              skip: startIndex,
-              take: perPage,
-            });
-          }
-        } else {
-          if (keyword === undefined || keyword === null) {
-            paginatedSpaces = await this.spacesRepository.find({
-              select: {
-                rooms: true,
-                hashtags: true,
-                reviews: true,
-              },
-              relations: {
-                rooms: true,
-                user: true,
-                hashtags: true,
-              },
-              order: {
-                id: 'ASC',
-              },
-              skip: startIndex,
-              take: perPage,
-            });
-            // not keyword?
-          } else {
-            paginatedSpaces = await this.spacesRepository.find({
-              select: {
-                rooms: true,
-                hashtags: true,
-                reviews: true,
-              },
-              where: {
-                name: Like(`%${keyword}%`),
-              },
-              relations: {
-                rooms: true,
-                user: true,
-                hashtags: true,
-                reviews: true,
-              },
-              order: {
-                id: 'ASC',
-              },
-              skip: startIndex,
-              take: perPage,
-            });
-          }
-        }
+        } // keyword
       } else {
-        // type?
-        if (
-          dateOrder === undefined ||
-          dateOrder === null ||
-          dateOrder === 'DESC'
-        ) {
-          // keyword?
-          if (keyword === undefined || keyword === null) {
+        console.log(keyword, order, type);
+        totalSpaces = await this.spacesRepository.find({
+          select: {
+            rooms: true,
+            hashtags: true,
+            reviews: true,
+          },
+          where: {
+            type,
+            name: Like(`%${keyword}%`),
+          },
+          relations: {
+            rooms: true,
+            hashtags: true,
+            reviews: true,
+          },
+        });
+        totalPage = Math.ceil(totalSpaces.length / perPage);
+        switch (order) {
+          case 'price':
             paginatedSpaces = await this.spacesRepository.find({
               select: {
                 rooms: true,
@@ -158,10 +182,58 @@ export class SpacesService {
               },
               where: {
                 type,
+                name: Like(`%${keyword}%`),
               },
               relations: {
                 rooms: true,
-                user: true,
+                hashtags: true,
+                reviews: true,
+              },
+              order: {
+                rooms: {
+                  price: 'ASC',
+                },
+              },
+              skip: startIndex,
+              take: perPage,
+            });
+
+          case 'reviews':
+            paginatedSpaces = await this.spacesRepository.find({
+              select: {
+                rooms: true,
+                hashtags: true,
+                reviews: true,
+              },
+              where: {
+                type,
+                name: Like(`%${keyword}%`),
+              },
+              relations: {
+                rooms: true,
+                hashtags: true,
+                reviews: true,
+              },
+              order: {
+                numberOfReviews: 'DESC',
+              },
+              skip: startIndex,
+              take: perPage,
+            });
+            break;
+          case 'date':
+            paginatedSpaces = await this.spacesRepository.find({
+              select: {
+                rooms: true,
+                hashtags: true,
+                reviews: true,
+              },
+              where: {
+                type,
+                name: Like(`%${keyword}%`),
+              },
+              relations: {
+                rooms: true,
                 hashtags: true,
                 reviews: true,
               },
@@ -171,109 +243,13 @@ export class SpacesService {
               skip: startIndex,
               take: perPage,
             });
-            // not keyword?
-          } else {
-            paginatedSpaces = await this.spacesRepository.find({
-              select: {
-                rooms: true,
-                hashtags: true,
-                reviews: true,
-              },
-              where: {
-                name: Like(`%${keyword}%`),
-                type,
-              },
-              relations: {
-                rooms: true,
-                user: true,
-                hashtags: true,
-                reviews: true,
-              },
-              order: {
-                id: 'DESC',
-              },
-              skip: startIndex,
-              take: perPage,
-            });
-          }
-        } else {
-          if (keyword === undefined || keyword === null) {
-            paginatedSpaces = await this.spacesRepository.find({
-              select: {
-                rooms: true,
-                hashtags: true,
-                reviews: true,
-              },
-              where: {
-                type,
-              },
-              relations: {
-                rooms: true,
-                user: true,
-                hashtags: true,
-                reviews: true,
-              },
-              order: {
-                id: 'ASC',
-              },
-              skip: startIndex,
-              take: perPage,
-            });
-            // not keyword?
-          } else {
-            paginatedSpaces = await this.spacesRepository.find({
-              select: {
-                rooms: true,
-                hashtags: true,
-                reviews: true,
-              },
-              where: {
-                name: Like(`%${keyword}%`),
-                type,
-              },
-              relations: {
-                rooms: true,
-                user: true,
-                hashtags: true,
-                reviews: true,
-              },
-              order: {
-                id: 'ASC',
-              },
-              skip: startIndex,
-              take: perPage,
-            });
-          }
-        }
+        } // keyword
       }
-      const resPaginatedSpaces = [];
-      paginatedSpaces.forEach((space) => {
-        let minVal = 999999;
-        space.rooms.forEach((room) => {
-          if (room.price && room.price < minVal) {
-            minVal = room.price;
-          }
-        });
-        let reviewsLength;
-        if (space.reviews === null || space.reviews === undefined) {
-          reviewsLength = 0;
-        } else {
-          reviewsLength = space.reviews.length;
-        }
-        resPaginatedSpaces.push({
-          id: space.id,
-          name: space.name,
-          type: space.type,
-          reviewsLength: reviewsLength,
-          minPrice: minVal,
-          rooms: space.rooms,
-          hashtags: space.hashtags,
-        });
-      });
 
       return {
+        totalSpaces: totalSpaces.length,
         totalPage,
-        resPaginatedSpaces,
+        paginatedSpaces,
       };
     } catch (error) {
       throw error;
@@ -343,13 +319,27 @@ export class SpacesService {
             phoneNumber: true,
             name: true,
           },
+          rooms: {
+            id: true,
+            name: true,
+            price: true,
+            capacity: true,
+            description: true,
+            reservations: {
+              id: true,
+            },
+          },
+          qnas: true,
+          hashtags: true,
         },
         where: {
           id,
         },
         relations: {
           user: true,
-          rooms: true,
+          rooms: {
+            reservations: true,
+          },
           qnas: true,
           hashtags: true,
           reviews: true,
@@ -485,6 +475,30 @@ export class SpacesService {
       throw error;
     }
   }
+  //space count
+  async updateCountUp(id: number) {
+    try {
+      const addCount = await this.spacesRepository.query(`
+      update space
+      set numberOfReviews = numberOfReviews + 1
+      where id = ${id};
+      `);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateCountDown(id: number) {
+    try {
+      const addCount = await this.spacesRepository.query(`
+      update space
+      set numberOfReviews = numberOfReviews - 1
+      where id = ${id};
+      `);
+    } catch (error) {
+      throw error;
+    }
+  }
 
   // space 수정
   async update(id: number, UpdateSpaceDto: UpdateSpaceDto) {
@@ -545,17 +559,26 @@ export class SpacesService {
   // 내 공간 삭제
   async removeMySpace(id: number, userId: number): Promise<void> {
     try {
-      const deletedSpace = await this.spacesRepository.delete({
+      const deleteSpace = await this.spacesRepository.delete({
         id,
         user: {
           id: userId,
         },
       });
-      if (!deletedSpace.affected) {
+      if (!deleteSpace.affected) {
         throw new NotFoundException({
           description: '삭제할 공간이 없습니다.',
         });
       }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // 특정 공간 삭제
+  async remove(id: number) {
+    try {
+      return await this.spacesRepository.delete(id);
     } catch (error) {
       throw error;
     }
