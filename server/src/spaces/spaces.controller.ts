@@ -151,6 +151,27 @@ export class SpacesController {
   }
 
   // 공간 ID로 조회(공간 상세보기)
+  @Get('/random')
+  @ApiOperation({
+    summary: '공간 랜덤 4개 조회 API',
+    description: '랜덤 공간 조회하기',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '랜덤 공간 조회 성공',
+  })
+  async findByRandom() {
+    const randomSpaces: Array<any> = await this.spacesService.findByRandom();
+
+    return {
+      status: 200,
+      description: '랜덤 공간 조회 성공',
+      success: true,
+      data: randomSpaces,
+    };
+  }
+
+  // 공간 ID로 조회(공간 상세보기)
   @Get(':id')
   @ApiOperation({
     summary: '공간 ID로 조회 API',

@@ -475,7 +475,37 @@ export class SpacesService {
       throw error;
     }
   }
-  //space count
+
+  async findByRandom() {
+    try {
+      const spaces = await this.spacesRepository.find({
+        select: {
+          rooms: true,
+          hashtags: true,
+          reviews: true,
+        },
+        relations: {
+          rooms: true,
+          hashtags: true,
+          reviews: true,
+        },
+      });
+      //랜덤 4개
+      const randomSpaces = [];
+      for (let i = 0; i < 4; i++) {
+        const randomNum = Math.floor(Math.random() * 10);
+        if (!randomSpaces.includes(randomNum)) {
+          randomSpaces.push(spaces[randomNum]);
+        } else {
+          i--;
+        }
+      }
+      return randomSpaces;
+    } catch (error) {
+      throw error;
+    }
+  }
+  //space count up
   async updateCountUp(id: number) {
     try {
       const addCount = await this.spacesRepository.query(`
@@ -487,7 +517,7 @@ export class SpacesService {
       throw error;
     }
   }
-
+  //space count down
   async updateCountDown(id: number) {
     try {
       const addCount = await this.spacesRepository.query(`
