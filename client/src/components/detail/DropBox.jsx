@@ -28,51 +28,50 @@ export default function Dropbox({ rooms, acceptPeople, checkSelectRoom }) {
         <p>세부 공간 선택</p>
 
         {rooms.map((room, i) => {
-            // api 데이터 받아오는 함수
+          // api 데이터 받아오는 함수
 
-            getImg(room.id);
-            setImage(imageUrl.current);
-            return (
-              image !== "" && (
-                <Container key={i}>
-                  <RoomItem>
-                    <input
-                      type="radio"
-                      id="select"
-                      name="room"
-                      className={room.name}
-                      value={room.id}
-                      onClick={(e) => {
-                        checkSelectRoom(room.id, room.name, room.price);
-                        acceptPeople.current = room.capacity;
-                        console.log(acceptPeople.current);
-                      }}
+          getImg(room.id);
+          setImage(imageUrl.current);
+          return (
+            image !== "" && (
+              <Container key={i}>
+                <RoomItem>
+                  <input
+                    type="radio"
+                    id="select"
+                    name="room"
+                    className={room.name}
+                    value={room.id}
+                    onClick={(e) => {
+                      checkSelectRoom(room.id, room.name, room.price);
+                      acceptPeople.current = room.capacity;
+                      console.log(acceptPeople.current);
+                    }}
+                  />
+                  <RoomLabel>
+                    <span>{room.name}</span>
+                    <span>시간당 {room.price} ₩</span>
+                  </RoomLabel>
+                  <img src={image} />
+                  <HiChevronDown />
+                </RoomItem>
+                <Dropdown>
+                  <div>
+                    <FcHome style={{ marginRight: "5px" }} size={16} />
+                    공간 유형 : {room.description}
+                  </div>
+                  <div>
+                    <FcConferenceCall
+                      style={{ marginRight: "5px" }}
+                      size={16}
                     />
-                    <RoomLabel>
-                      <span>{room.name}</span>
-                      <span>시간당 {room.price} ₩</span>
-                    </RoomLabel>
-                    <img src={image} />
-                    <HiChevronDown />
-                  </RoomItem>
-                  <Dropdown>
-                    <div>
-                      <FcHome style={{ marginRight: "5px" }} size={16} />
-                      공간 유형 : {room.description}
-                    </div>
-                    <div>
-                      <FcConferenceCall
-                        style={{ marginRight: "5px" }}
-                        size={16}
-                      />
-                      수용 인원 : {room.capacity}
-                    </div>
-                  </Dropdown>
-                </Container>
-              )
-            );
-          };
-        )}
+                    수용 인원 : {room.capacity}
+                  </div>
+                </Dropdown>
+              </Container>
+            )
+          );
+        })}
       </RoomList>
     )
   );
