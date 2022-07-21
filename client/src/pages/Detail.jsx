@@ -12,6 +12,7 @@ import * as Api from "../api";
 export default function Detail() {
   // api 데이터 state
   const [data, setData] = useState("");
+  const [imgData, setImgData] = useState([]);
   // 선택한 룸
   const room = useRef({ id: "", name: "", pay: "" });
   // 사용자 예약 인원 state
@@ -41,11 +42,18 @@ export default function Detail() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const req = await Api.get(`api/spaces/${spaceId}`);
-        const data = await req.data.data;
+        const spaceDataReq = await Api.get(`api/spaces/${spaceId}`);
+        const spaceImgDataReq = await Api.get(
+          `api/space-images/space/${spaceId}`
+        );
+        const data = await spaceDataReq.data.data;
         setData(data);
-        console.log(req);
+        const image = await spaceImgDataReq.data.data;
+        setImgData(image);
+        console.log(spaceDataReq);
+        console.log(spaceImgDataReq);
         console.log(data);
+        console.log(image);
       } catch (err) {
         console.log(err);
       }
@@ -62,24 +70,6 @@ export default function Detail() {
   const reviews = data.reviews;
   const address = data.address2;
   const rooms = data.rooms;
-  const images = [
-    {
-      id: 1,
-      url: "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165666149_3349f35a71f72e769413ec0259916966.jpeg?type=m&w=900&h=900&autorotate=true&quality=90",
-    },
-    {
-      id: 2,
-      url: "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165666165_088b1880c43ad29ed310de168672f70e.jpeg?type=m&w=900&h=900&autorotate=true&quality=90",
-    },
-    {
-      id: 3,
-      url: "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165666171_c34d7eaae985cab51c5fa9a2f0d541a6.jpeg?type=m&w=900&h=900&autorotate=true&quality=90",
-    },
-    {
-      id: 4,
-      url: "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165224700_ec07e9f8d997b50ce92b096f3fe0911e.jpg?type=m&w=900&h=900&autorotate=true&quality=90",
-    },
-  ];
   const host = data.user;
 
   // 룸 선택시 적용하는 DropBox 함수
@@ -237,7 +227,7 @@ export default function Detail() {
 
         <DetailContainer>
           <LeftContainer>
-            <ImageSlider images={images} />
+            <ImageSlider images={imgData} />
             <Tab
               name={name}
               intro={intro}
@@ -263,7 +253,6 @@ export default function Detail() {
               onChangeDate={onChangeDate}
               onClickStartTime={onClickStartTime}
               onClickEndTime={onClickEndTime}
-              // clearTimePicker={clearTimePicker}
             />
             <Personnel possible={possible.current}>
               <InputPeople>
