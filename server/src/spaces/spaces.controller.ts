@@ -69,28 +69,36 @@ export class SpacesController {
   })
   @ApiResponse({
     status: 200,
-    description: '전체 공간 목록 조회',
-    schema: {
-      example: spaceResExample.findAll,
-    },
+    description: '(페이지네이션 된) 전체 공간 목록 조회',
   })
   async findAll(@Query() query) {
-    const { page, perPage, keyword, dateOrder, priceOrder, type } = query;
+    const { page, perPage, keyword, order, type } = query;
+    if (!page || page === undefined || page === null || page === 0) {
+      const spaces = await this.spacesService.findAll();
+      return {
+        status: 200,
+        description: '전체 공간 목록 조회 성공',
+        success: true,
+        data: {
+          spaces,
+        },
+      };
+    }
 
     const startIndex: number = perPage * (page - 1);
-    const spaces = await this.spacesService.findAll(
+    const paginatedSpaces = await this.spacesService.findAllPaginated(
       startIndex,
       perPage,
       keyword,
-      dateOrder,
+      order,
       type,
     );
     return {
       status: 200,
-      description: '전체 공간 목록 조회 성공',
+      description: '페이지네이션 된 전체 공간 목록 조회 성공',
       success: true,
       data: {
-        spaces,
+        paginatedSpaces,
       },
     };
   }
@@ -139,6 +147,27 @@ export class SpacesController {
       success: true,
       description: '내가 생성한 공간 목록 조회 성공(paginated)',
       data: { spaces },
+    };
+  }
+
+  // 공간 ID로 조회(공간 상세보기)
+  @Get('/random')
+  @ApiOperation({
+    summary: '공간 랜덤 4개 조회 API',
+    description: '랜덤 공간 조회하기',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '랜덤 공간 조회 성공',
+  })
+  async findByRandom() {
+    const randomSpaces: Array<any> = await this.spacesService.findByRandom();
+
+    return {
+      status: 200,
+      description: '랜덤 공간 조회 성공',
+      success: true,
+      data: randomSpaces,
     };
   }
 
@@ -230,27 +259,27 @@ export class SpacesController {
   }
 
   // 특정 공간 삭제
-  // @Delete(':id')
-  // @UseGuards(AuthGuard())
-  // @ApiOperation({
-  //   summary: '특정 공간 삭제 API',
-  //   description: 'ID로 특정 공간을 삭제한다.',
-  // })
-  // @ApiResponse({
-  //   status: 201,
-  //   description: 'ID로 특정 공간 삭제 성공',
-  //   schema: {
-  //     example: spaceResExample.removeSpace,
-  //   },
-  // })
-  // async removeSpace(@Param('id') id: number, @GetAdminUser() admin: User) {
-  //   await this.spacesService.remove(id);
-  //   return {
-  //     status: 201,
-  //     description: 'ID로 특정 공간 삭제 성공',
-  //     success: true,
-  //   };
-  // }
+  @Delete(':id')
+  @UseGuards(AuthGuard())
+  @ApiOperation({
+    summary: '특정 공간 삭제 API',
+    description: 'ID로 특정 공간을 삭제한다.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'ID로 특정 공간 삭제 성공',
+    schema: {
+      example: spaceResExample.removeSpace,
+    },
+  })
+  async removeSpace(@Param('id') id: number, @GetAdminUser() admin: User) {
+    await this.spacesService.remove(id);
+    return {
+      status: 201,
+      description: 'ID로 특정 공간 삭제 성공',
+      success: true,
+    };
+  }
 
   // 내 공간 삭제
   @Delete('host/:id')
