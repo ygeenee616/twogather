@@ -106,4 +106,29 @@ export class RoomImagesService {
       throw error;
     }
   }
+
+  async removeByRoom(roomId: number) {
+    try {
+      const roomImagesForRemove = await this.roomImagesRepository.find({
+        where: {
+          room: {
+            id: roomId,
+          },
+        },
+        relations: {
+          room: true,
+        },
+      });
+      let roomImageUrlsForRemove = [];
+      for (let i = 0; i < roomImagesForRemove.length; i++) {
+        roomImageUrlsForRemove.push(roomImagesForRemove[i].imageUrl);
+        const deletedRoomImages = await this.roomImagesRepository.delete(
+          roomImagesForRemove[i].id,
+        );
+      }
+      return roomImageUrlsForRemove;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
