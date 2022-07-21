@@ -9,6 +9,7 @@ export default function BookList({ data, endpoint }) {
   return (
     data && (
       <Container>
+        <Title>예약 관리</Title>
         <table>
           <caption>예약 내역</caption>
           <colgroup>
@@ -60,11 +61,13 @@ export default function BookList({ data, endpoint }) {
 const Container = styled.div`
   width: 80%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  margin-top: 80px;
-  margin-bottom: 80px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  font-family: "NEXON Lv2 Gothic Light";
 
   & table {
     width: 100%;
@@ -76,7 +79,7 @@ const Container = styled.div`
   & caption {
     background-color: #577bc1;
     color: #fff;
-    padding: 10px;
+    padding: 15px;
   }
 
   & th {
@@ -101,4 +104,12 @@ const Container = styled.div`
     transform: scale(1.1);
     transition: 0.3s;
   }
+`;
+
+const Title = styled.div`
+  font-family: "NEXON Lv2 Gothic Light";
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 50px;
 `;

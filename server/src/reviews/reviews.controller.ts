@@ -28,7 +28,8 @@ import { User } from 'src/users/entities/users.entity';
 import { ReservationsService } from 'src/reservations/reservations.service';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { identity } from 'rxjs';
-import { object } from 'joi';
+import { number, object } from 'joi';
+import { SpacesService } from 'src/spaces/spaces.service';
 const reviewResExample = new ReviewResExample();
 
 @Controller('api/reviews')
@@ -36,7 +37,8 @@ const reviewResExample = new ReviewResExample();
 export class ReviewsController {
   constructor(
     private readonly reviewsService: ReviewsService,
-    private reservationsService: ReservationsService,
+    private readonly reservationsService: ReservationsService,
+    private readonly spacesService: SpacesService,
   ) {}
 
   // review 등록(api data 수정 완료)
@@ -71,12 +73,12 @@ export class ReviewsController {
     if (reqReservation.user.id !== user.id) {
       throw new ForbiddenException('자신의 리뷰만 쓸 수 있습니다. ');
     }
-    const newReview = await this.reviewsService.create(
-      createReviewDto,
-      reservationId,
-      spaceId,
-    );
-    const { id, content, reservation, space } = newReview;
+    const result = await Promise.all([
+      this.reviewsService.create(createReviewDto, reservationId, spaceId),
+      this.spacesService.updateCountUp(spaceId),
+    ]);
+    const { id, content, reservation, space } = result[0];
+
     const resReview = {
       id,
       content,
@@ -325,8 +327,8 @@ export class ReviewsController {
     if (reservation.user.id !== user.id) {
       throw new ForbiddenException('자신의 리뷰만 삭제할 수 있습니다. ');
     }
-
     await this.reviewsService.removeMyReview(user.id, id);
+    await this.spacesService.updateCountDown(review.space.id);
     return {
       status: 201,
       description: '내가 쓴 특정 review 삭제 성공',

@@ -48,6 +48,10 @@ export class Space {
   @ApiProperty({ description: 'space 소개' })
   intro: string;
 
+  @Column({ type: 'int', nullable: true, default: 0 })
+  @ApiProperty({ description: '리뷰 갯수' })
+  numberOfReviews: number;
+
   @ManyToOne(() => User, (user) => user.spaces, {
     onDelete: 'CASCADE',
     eager: false,

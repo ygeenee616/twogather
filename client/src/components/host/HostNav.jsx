@@ -20,6 +20,7 @@ export default function HostNav() {
 }
 
 const Nav = styled.nav`
+  font-family: "NEXON Lv2 Gothic Light";
   margin: 0 auto;
   padding: 30px 0;
   width: 80%;
