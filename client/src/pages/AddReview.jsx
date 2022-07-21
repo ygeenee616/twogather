@@ -26,8 +26,8 @@ function AddReview() {
         content: contentTextarea.current.value,
       };
 
-      if (review === null) await Api.post(`api/reviews/${bookId}`, data);
-      else await Api.patch(`api/reviews/mypage/${review.id}`, data);
+      if (review === null) await Api.postAuth(`api/reviews/${bookId}`, data);
+      else await Api.patchAuth(`api/reviews/mypage/${review.id}`, data);
       navigate("/mypage", { replace: true });
     } catch (err) {
       console.error(err);
