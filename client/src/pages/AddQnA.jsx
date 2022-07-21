@@ -15,13 +15,13 @@ function AddQnA() {
   const spaceId = location.state.spaceId;
   const spaceName = location.state.spaceName;
 
-  const registerReview = async (e) => {
+  const addQna = async (e) => {
     e.preventDefault();
     try {
       const data = {
         content: contentTextarea.current,
       };
-      const res = await Api.post(`api/qnas/63`, data);
+      const res = await Api.post(`api/qnas/${spaceId}`, data);
 
       console.log(data);
     } catch (err) {

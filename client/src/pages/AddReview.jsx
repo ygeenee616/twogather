@@ -16,7 +16,8 @@ function AddReview() {
   const contentTextarea = useRef(null); // 작성란
   const bookId = params.get("bookId");
   const { roomName, review } = location.state;
-  const [reviewTextarea, setReviewTextarea] = useState(review.content ?? "");
+  const content = review ? review.content : "";
+  const [reviewTextarea, setReviewTextarea] = useState(content);
 
   const registerReview = async (e) => {
     e.preventDefault();
@@ -25,14 +26,14 @@ function AddReview() {
         content: contentTextarea.current.value,
       };
 
-      if (review.content === null)
-        await Api.post(`api/reviews/${bookId}`, data);
+      if (review === null) await Api.post(`api/reviews/${bookId}`, data);
       else await Api.patch(`api/reviews/mypage/${review.id}`, data);
       navigate("/mypage", { replace: true });
     } catch (err) {
       console.error(err);
     }
   };
+  // 401
 
   return (
     <ReviewContainer>
@@ -48,7 +49,9 @@ function AddReview() {
           onChange={(e) => setReviewTextarea(e.target.value)}
         />
         <BtnContainer>
-          <button className="cancel">취소</button>
+          <button className="cancel" onClick={() => navigate("/mypage")}>
+            취소
+          </button>
           <button type="submit" className="submit" onClick={registerReview}>
             작성 완료
           </button>
