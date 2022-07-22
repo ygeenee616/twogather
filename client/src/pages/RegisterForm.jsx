@@ -9,11 +9,30 @@ import {
   UserBtn,
   Line,
 } from "../components/register/UserForm";
+import { gapi } from "gapi-script";
+import LoginWithGoogle from "../components/socialLogin/LoginWithGoogle";
 import Register from "../components/register/Register";
+
+const CLIENT_ID =
+  "356728374824-e4eaoap3tv0cr35gtq8i46qhlpts75nq.apps.googleusercontent.com";
+
+function handleKakaoRegister() {}
+
+function handleGoogleRegister() {}
 
 function RegisterForm() {
   const navigate = useNavigate();
   const params = useParams();
+
+  useEffect(() => {
+    function start() {
+      gapi.client.init({
+        clientId: CLIENT_ID,
+        scope: "",
+      });
+    }
+    gapi.load("client:auth2", start);
+  });
 
   return (
     <Container>
@@ -22,14 +41,11 @@ function RegisterForm() {
           <PageTitle>회원가입</PageTitle>
 
           <SocialRegisterDiv>
-            <SocialRegisterBtn className="kakao">
+            <SocialRegisterBtn className="kakao" onclick={handleKakaoRegister}>
               <img src="/images/kakaoLogo.png" alt="KAKAO" />
               <p>카카오로 시작하기</p>
             </SocialRegisterBtn>
-            <SocialRegisterBtn className="google">
-              <img src="/images/googleLogo.png" alt="GOOGLE"></img>
-              <p>구글로 시작하기</p>
-            </SocialRegisterBtn>
+            <LoginWithGoogle />
           </SocialRegisterDiv>
 
           <Line />

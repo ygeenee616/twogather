@@ -33,6 +33,17 @@ function AddReview() {
       console.error(err);
     }
   };
+
+  const deleteReview = async (e) => {
+    e.preventDefault();
+
+    try {
+      await Api.deleteAuth(`api/reviews/mypage/${review.id}`);
+      navigate("/mypage");
+    } catch (err) {
+      console.error(err);
+    }
+  };
   // 401
 
   return (
@@ -52,8 +63,13 @@ function AddReview() {
           <button className="cancel" onClick={() => navigate("/mypage")}>
             취소
           </button>
+          {review && (
+            <button className="delete" onClick={deleteReview}>
+              삭제
+            </button>
+          )}
           <button type="submit" className="submit" onClick={registerReview}>
-            작성 완료
+            {review ? "수정 완료" : "작성 완료"}
           </button>
         </BtnContainer>
       </form>
