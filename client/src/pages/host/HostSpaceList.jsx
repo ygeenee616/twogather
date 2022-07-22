@@ -28,16 +28,13 @@ export default function HostSpaceList({ host }) {
   const offset = (page - 1) * limit;
   const [dataTrigger, setDataTrigger] = useState(0);
   const [images, setImgs] = useState("");
-  const [spaceId, setSpaceId] = useState("");
+
   useEffect(() => {
     async function getData() {
       try {
         const res = await api.get("api/spaces/host");
-
-
-        const loadedImgs = await loadImgs(data.id);
+        const loadedImgs = await loadImgs(185);
         setImgs(loadedImgs);
-
 
         const data = res.data.data;
         setDatas(data);
@@ -70,43 +67,34 @@ export default function HostSpaceList({ host }) {
   };
 
   const loadImgs = async (id) => {
-    setSpaceId(id);
-    console.log(spaceId);
-
-    console.log(id);
     const getSpaceImgs = async () => {
-      setSpaceId(id);
       const imgs = await Api.get(`api/space-images/space/${id}`);
       return imgs.data.data;
     };
+
     const Imgs = await getSpaceImgs();
-
-
-
-    let result = setImgs(Imgs);
-
-    let imagesUrls = [];
+    const imagesUrls = [];
+    setImgs(Imgs);
 
     Imgs.map((item) => {
       imagesUrls.push(item.imageUrl);
     });
 
-    if (result === "") {
+    if (Imgs === "") {
       imagesUrls = [exImg1, exImg2];
+      console.log(imagesUrls);
+      console.log("널널");
+    } else {
+      setImgs(imagesUrls);
     }
 
-
-    setImgs(imagesUrls);
-
     console.log(imagesUrls);
-
-
     return imagesUrls;
   };
+
   const renderData = (datas) => {
     return datas.map((data, i) => (
       <>
-        {console.log(data.id)}
         <ProductCard
           key={i}
           src={images} //아직없음
@@ -146,7 +134,7 @@ export default function HostSpaceList({ host }) {
           </Menu>
         </SubMenuBar>
         <ModalWrap className="modalWrap">
-          <Modal
+          <ModalWrap
             className="deleteModal"
             title="공간 삭제"
             content="정말 삭제하시겠습니까?
@@ -185,12 +173,12 @@ export default function HostSpaceList({ host }) {
               <ProductWrap>{renderData(datas)}</ProductWrap>
 
               <div>
-                {/* <Pagination
+                <Pagination
                   total={datas.length}
                   limit={limit}
                   page={page}
                   setPage={setPage}
-                /> */}
+                />
               </div>
             </div>
           </BottomWrap>
