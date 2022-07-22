@@ -4,20 +4,20 @@ import * as Api from "../../api";
 const CLIENT_ID =
   "356728374824-e4eaoap3tv0cr35gtq8i46qhlpts75nq.apps.googleusercontent.com";
 
-const onSuccess = async (res) => {
+const onSuccess = (res) => {
   console.log("LOGIN SUCESS! Current user: ", res.profileObj);
   const { email, name, imageUrl } = res.profileObj;
-  const data = {
-    email: email,
-    nickname: name,
-    password: 
-  };
+  // const data = {
+  //   email: email,
+  //   nickname: name,
+  //   password:
+  // };
   // "/apiusers/sign-in" 엔드포인트로 post요청함.
-  const res = await Api.post("api/users/sign-up", data);
-  // register 처리
-  try {
-    const result = await Api.postAuth("");
-  } catch (err) {}
+  // const res = await Api.post("api/users/sign-up", data);
+  // // register 처리
+  // try {
+  //   const result = await Api.postAuth("");
+  // } catch (err) {}
   //
 };
 const onFailure = (res) => {
