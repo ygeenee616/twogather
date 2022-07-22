@@ -34,8 +34,15 @@ export default function HostSpaceList({ host }) {
       try {
         const res = await api.getAuth("api/spaces/host");
         const data = res.data.data;
+        console.log(data);
 
         const spacesIdList = data.map((space) => space.id);
+        const userInfo = await api.getAuth("api/users/info");
+        const userData = userInfo.data.data;
+        console.log(userData);
+        const userId = userData;
+        console.log(userId);
+        host.name = userData.name;
 
         await Promise.all(
           spacesIdList.map(async (spaceId) => {
