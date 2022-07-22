@@ -6,17 +6,8 @@ import { addCommas } from "../../assets/utils/UsefulFunction";
 function MyReservedRoom({ reservation, setDeleteR }) {
   const navigate = useNavigate();
   // id는 예약번호, name은 공간이름 , 예약자명 ??
-  const {
-    id,
-    image,
-    personnel,
-    requirement,
-    review,
-    room,
-    date,
-    startTime,
-    endTime,
-  } = reservation;
+  const { id, personnel, requirement, review, room, date, startTime, endTime } =
+    reservation;
   const nickname = localStorage.getItem("nickname");
   const roomName = room ? room.name : "무슨무슨방";
   const roomPrice = room ? parseInt(room.price) : 999999;
@@ -38,7 +29,6 @@ function MyReservedRoom({ reservation, setDeleteR }) {
   return (
     <RoomDiv>
       <InfoDiv>
-        <RoomImg src={image} alt="공간 이미지"></RoomImg>
         <InfoText>
           <InfoTag color="bold">
             <a href={`/detail/${id}`}>{roomName ?? "무슨무슨방"}</a>

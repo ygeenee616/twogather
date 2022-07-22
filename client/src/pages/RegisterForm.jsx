@@ -1,21 +1,26 @@
 import { useState, useEffect } from "react";
-import {  useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { Container, ContentsDiv, FormDiv, PageTitle, UserBtn, Line } from "../components/register/UserForm";
+import {
+  Container,
+  ContentsDiv,
+  FormDiv,
+  PageTitle,
+  UserBtn,
+  Line,
+} from "../components/register/UserForm";
 import Register from "../components/register/Register";
 
 function RegisterForm() {
-
   const navigate = useNavigate();
   const params = useParams();
-
 
   return (
     <Container>
       <FormDiv>
         <ContentsDiv>
           <PageTitle>회원가입</PageTitle>
-
+          {/* 
           <SocialRegisterDiv>
             <SocialRegisterBtn className="kakao">
               <img src="/images/kakaoLogo.png" alt="KAKAO" />
@@ -27,10 +32,10 @@ function RegisterForm() {
             </SocialRegisterBtn>
           </SocialRegisterDiv>
 
-          <Line />
+          <Line /> */}
 
           <form className="register-form">
-            <Register/>
+            <Register />
           </form>
         </ContentsDiv>
       </FormDiv>
@@ -73,7 +78,5 @@ const SocialRegisterBtn = styled.button`
     margin: 0.4rem;
   }
 `;
-
-
 
 export default RegisterForm;
