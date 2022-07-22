@@ -11,6 +11,10 @@ export class User {
   @ApiProperty({ description: 'id' })
   id: number;
 
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  @ApiPropertyOptional({ description: 'refresh token' })
+  user_refresh_token: string;
+
   @Column({ type: 'boolean', default: false })
   @ApiPropertyOptional({ description: '관리자 여부' })
   isAdmin: boolean;

@@ -88,6 +88,30 @@ async function postImg(endpoint, data) {
   });
 }
 
+async function postImgAuth(endpoint, data) {
+  // JSON.stringify 함수: Javascript 객체를 JSON 형태로 변환함.
+  // 예시: {name: "Kim"} => {"name": "Kim"}
+
+  console.log(`%cPOST Img 요청: ${serverUrl + endpoint}`, "color: #059c4b;");
+  console.log(`%cPOST Img 요청 데이터: ${data}`, "color: #059c4b;");
+
+  let response;
+  try {
+    response = axios.post(serverUrl + endpoint, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `${localStorage.getItem("userToken")}`,
+      },
+    });
+  } catch (error) {
+    if (error.response.status === 401) {
+      localStorage.clear();
+      window.location.href = "/401";
+    }
+  }
+  return response;
+}
+
 async function putAuth(endpoint, data) {
   // JSON.stringify 함수: Javascript 객체를 JSON 형태로 변환함.
   // 예시: {name: "Kim"} => {"name": "Kim"}
@@ -201,6 +225,7 @@ export {
   getAuth,
   post,
   postAuth,
+  postImgAuth,
   put,
   patchAuth,
   patch,

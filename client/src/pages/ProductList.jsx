@@ -104,12 +104,11 @@ export default function ProductList() {
         await Promise.all(
           spacesIdList.map(async (spaceId) => {
             const imgData = await Api.get(`api/space-images/space/${spaceId}`);
-            const imgUrlListElement = await imgData.data.data.map(
-              (i) => i.imageUrl
-            );
+            const imgUrlListElement = await imgData.data.data.map((i) => i.imageUrl);
             imgUrlList.current = [...imgUrlList.current, imgUrlListElement];
           })
         );
+        
         setSpaces(datas);
         totalPage.current = res.data.data.paginatedSpaces.totalPage;
       } catch (err) {
