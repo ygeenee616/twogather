@@ -15,7 +15,7 @@ export default function AddNotice() {
   }, [title, content]);
 
   const handleClickAddNoticeButton = async () => {
-    const req = await Api.post("api/notices", data);
+    const req = await Api.postAuth("api/notices", data);
     const modal = document.querySelector(".modalWrap");
     modal.style.display = "block";
     window.scrollTo(0, 0);

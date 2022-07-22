@@ -21,7 +21,7 @@ function AddQnA() {
       const data = {
         content: contentTextarea.current,
       };
-      const res = await Api.post(`api/qnas/${spaceId}`, data);
+      const res = await Api.postAuth(`api/qnas/${spaceId}`, data);
 
       console.log(data);
     } catch (err) {

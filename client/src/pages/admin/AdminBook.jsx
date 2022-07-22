@@ -16,7 +16,9 @@ export default function AdminBook() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const req = await Api.get(`api/reservations?page=${page}&perPage=5`);
+        const req = await Api.getAuth(
+          `api/reservations?page=${page}&perPage=5`
+        );
         const data = await req.data.data.spaces.paginatedReservations;
         setTotalPage(req.data.data.spaces.totalPage);
         setData(data);
