@@ -288,6 +288,9 @@ export class ReservationsService {
             name: true,
             email: true,
             nickname: true,
+            businessName: true,
+            businessNumber: true,
+            phoneNumber: true,
           },
           room: {
             id: true,
