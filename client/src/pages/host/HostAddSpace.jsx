@@ -350,7 +350,7 @@ export default function HostAddSpace({ mode }) {
             title="공간 등록"
             content="공간 등록이 완료되었습니다."
             clickEvent={() => {
-              nav("/host/spaceList");
+              window.location.replace("/host/spaceList");
             }}
           />
         </ModalWrap>

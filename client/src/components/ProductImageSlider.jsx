@@ -18,7 +18,6 @@ export default function ImageSlider({ images, link }) {
   };
 
   const navigate = useNavigate();
-  console.log(images);
   return (
     <Container>
       <div>

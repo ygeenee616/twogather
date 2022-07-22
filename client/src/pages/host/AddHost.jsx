@@ -13,9 +13,9 @@ export default function AddHost() {
   const [detailImgs, setDatailImgs] = useState([]);
   const [datas, setData] = useState({ accountNumber: "" });
   const [hostInfo, setHostInfo] = useState({});
+
   const [bankInfo, setBankInfo] = useState({});
   const navigate = useNavigate();
-
   const handleChangeState = (e) => {
     setHostInfo({
       ...hostInfo,
@@ -43,6 +43,7 @@ export default function AddHost() {
     setHostInfo({ ...hostInfo, accountNumber: account });
     const response = await Api.patchAuth("api/users", hostInfo);
 
+    console.log(response);
     openConfirmModal();
   };
 

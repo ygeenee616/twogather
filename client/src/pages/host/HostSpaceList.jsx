@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Pagination from "../../components/Pagination";
 import ProductCard from "../../components/ProductCard";
@@ -27,18 +27,28 @@ export default function HostSpaceList({ host }) {
   const limit = 4;
   const offset = (page - 1) * limit;
   const [dataTrigger, setDataTrigger] = useState(0);
-  const images = [exImg1, exImg2];
+  const imgUrlList = useRef([]);
 
   useEffect(() => {
     async function getData() {
       try {
         const res = await api.getAuth("api/spaces/host");
-        console.log(res);
-        // const loadedImgs = await loadImgs(189);
-        // setImgs(loadedImgs);
-
         const data = res.data.data;
+
+        const spacesIdList = data.map((space) => space.id);
+
+        await Promise.all(
+          spacesIdList.map(async (spaceId) => {
+            const imgData = await Api.get(`api/space-images/space/${spaceId}`);
+            const imgUrlListElement = await imgData.data.data.map(
+              (i) => i.imageUrl
+            );
+            imgUrlList.current = [...imgUrlList.current, imgUrlListElement];
+          })
+        );
+
         setDatas(data);
+        console.log(data);
       } catch (err) {
         console.log(err);
       }
@@ -46,48 +56,23 @@ export default function HostSpaceList({ host }) {
     getData();
   }, [dataTrigger]);
 
-  const openModalDeletePopup = () => {
-    const modal = document.querySelector(".modalWrap");
+  const openModalDeletePopup = (e) => {
+    console.log(e.target);
+    const name = e.target.name;
+
+    const modal = document.getElementById(name);
+    console.log(modal);
     modal.style.display = "block";
     window.scrollTo(0, 0);
   };
 
-  // const loadImgs = async (id) => {
-  //   setSpaceId(id);
-  //   console.log(spaceId);
-
-  //   console.log(id);
-  //   const getSpaceImgs = async () => {
-  //     setSpaceId(id);
-  //     const imgs = await Api.getAuth(`api/space-images/space/${id}`);
-  //     return imgs.data.data;
-  //   };
-  //   const Imgs = await getSpaceImgs();
-
-  //   let result = setImgs(Imgs);
-
-  //   let imagesUrls = [];
-
-  //   Imgs.map((item) => {
-  //     imagesUrls.push(item.imageUrl);
-  //   });
-
-  //   if (result === "") {
-  //     imagesUrls = [exImg1, exImg2];
-  //   }
-
-  //   setImgs(imagesUrls);
-
-  //   console.log(imagesUrls);
-
-  //   return imagesUrls;
-  // };
-
   const closeDeleteSpacePopup = async (props) => {
     const spaceId = props;
+    console.log(spaceId);
     //확인 누르면 삭제하고 딜리트함
     try {
       const response = await Api.deleteAuth(`api/spaces/host/${spaceId}`);
+      console.log(response);
       setDataTrigger(dataTrigger + 1);
     } catch (err) {
       console.log(err);
@@ -98,18 +83,19 @@ export default function HostSpaceList({ host }) {
     window.scrollTo(0, 0);
   };
 
-  const renderData = (datas) => {
-    return datas.map((data, i) => {
+  const renderData = (data) => {
+    return data.map((data, i) => (
       <>
+        {console.log(data.id)}
         <ProductCard
           key={i}
-          src={images} //아직없음
+          src={imgUrlList.current[i]} //아직없음
           hashtags={data.hashtags}
           name={data.name}
           address2={data.address2}
           address3={data.address3}
           price={data.minPrice}
-          review={data.reviewsLength} //아직없음
+          reviewsLength={data.reviewsLength} //아직없음
           link={`/host/updateSpace/${data.id}`}
         ></ProductCard>
         <SubMenuBar>
@@ -120,7 +106,8 @@ export default function HostSpaceList({ host }) {
             ✏️공간 수정
           </Menu>
           <Menu
-            onClick={() => openModalDeletePopup(data.id)}
+            name={data.id}
+            onClick={(e) => openModalDeletePopup(e)}
             style={{ backgroundColor: "#6E85B7" }}
           >
             ✂️공간 삭제
@@ -139,7 +126,7 @@ export default function HostSpaceList({ host }) {
             ⚒️룸 수정 및 삭제
           </Menu>
         </SubMenuBar>
-        <ModalWrap className="modalWrap">
+        <ModalWrap className="modalWrap" id={data.id}>
           <Modal
             className="deleteModal"
             title="공간 삭제"
@@ -148,8 +135,8 @@ export default function HostSpaceList({ host }) {
             clickEvent={() => closeDeleteSpacePopup(data.id)}
           />
         </ModalWrap>
-      </>;
-    });
+      </>
+    ));
   };
 
   function clickToModSpace() {
@@ -177,15 +164,6 @@ export default function HostSpaceList({ host }) {
 
             <div onClick={clickToModSpace}>
               <ProductWrap>{renderData(datas)}</ProductWrap>
-
-              <div>
-                {/* <Pagination
-                  total={datas.length}
-                  limit={limit}
-                  page={page}
-                  setPage={setPage}
-                /> */}
-              </div>
             </div>
           </BottomWrap>
         </>

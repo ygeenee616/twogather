@@ -75,7 +75,9 @@ export class UsersService {
             review: true,
             room: true,
           },
-          qnas: true,
+          qnas: {
+            space: true,
+          },
         },
       });
     } catch (error) {
