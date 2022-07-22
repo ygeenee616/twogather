@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 export default function HostRoomBook() {
   const [data, setData] = useState("");
   const params = useParams();
-  console.log(params);
+
   const spaceId = params.spaceId;
   useEffect(() => {
     const getData = async () => {

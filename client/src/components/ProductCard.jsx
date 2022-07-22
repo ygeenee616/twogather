@@ -39,8 +39,6 @@ export default function ProductCard({
     navigate(link);
   };
 
-  console.log(src);
-
   return (
     <CardWrap>
       <ImageSliderWrap>

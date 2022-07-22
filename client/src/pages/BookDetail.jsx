@@ -21,12 +21,10 @@ export default function BookDetail() {
 
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   setUserInfo("HOST");
-  console.log(userInfo);
 
   const navigate = useNavigate();
   const { bookId } = useParams();
   const link = window.location.pathname;
-  console.log(link.includes("host"));
 
   useEffect(() => {
     const getData = async (bookId) => {
@@ -34,9 +32,7 @@ export default function BookDetail() {
         // 나중에 url 해당 BookId 사용해서 API 연결
         const req = await Api.getAuth(`api/reservations/${bookId}`);
         const data = await req.data.data;
-        console.log(req);
         setData(data);
-        console.log(data);
       } catch (err) {
         console.log(err);
       }
@@ -49,7 +45,6 @@ export default function BookDetail() {
     try {
       // 나중에 url 해당 BookId 사용해서 API 연결
       const req = await Api.deleteAuth(`api/reservations/${bookId}`);
-      console.log(req);
       const modal = document.querySelector(".modalWrap");
       modal.style.display = "block";
       window.scrollTo(0, 0);

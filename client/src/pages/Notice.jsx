@@ -179,6 +179,7 @@ const Content = styled.div`
   border: 1px solid #8daef2;
   border-top: none;
   display: none;
+  white-space: pre-wrap;
 `;
 
 const NoticeWrap = styled.div`
