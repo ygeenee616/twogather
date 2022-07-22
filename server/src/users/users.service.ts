@@ -113,6 +113,33 @@ export class UsersService {
       throw error;
     }
   }
+
+  // 유저 비밀번호 갱신
+  async updatePassword(id: number, newPassword: string): Promise<User> {
+    try {
+      const user = await this.usersRepository.update(id, {
+        password: newPassword,
+      });
+
+      return await this.usersRepository.findOneBy({ id });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // 유저 프로필 이미지 갱신
+  async updateProfileImage(id: number, profileImage: string): Promise<User> {
+    try {
+      const user = await this.usersRepository.update(id, {
+        profileImage,
+      });
+
+      return await this.usersRepository.findOneBy({ id });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // 유저 삭제
   async remove(id: number): Promise<void> {
     try {
