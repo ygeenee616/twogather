@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const QnaComponent = ({ room, qna }) => {
   // id 는 qna 아이디
-  const { id, content, createdTime, reply } = qna;
+  const { id, space, content, createdTime, reply } = qna;
 
   const deleteBtnstyle = {
     display: "inline-block",
@@ -25,7 +25,7 @@ const QnaComponent = ({ room, qna }) => {
   return (
     <>
       <tr>
-        <td>{room}</td>
+        <td>{space ? space.name : `무슨무슨방`}</td>
         <td>{content.length > 30 ? content.slice(0, 30) + `...` : content}</td>
         <td>{createdTime.split("T")[0]}</td>
         <td>
