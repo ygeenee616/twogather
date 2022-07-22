@@ -13,9 +13,7 @@ import {
 import userInfoState from "../atom/userInfoState";
 
 export default function Home() {
-  const a = useRecoilValue(userInfoState);
-
-  console.log(a);
+  // const a = useRecoilValue(userInfoState);
 
   return (
     <div>

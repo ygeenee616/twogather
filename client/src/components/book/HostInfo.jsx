@@ -71,8 +71,9 @@ const Header = styled.div`
 const Content = styled.div`
   width: 100%;
   display: flex;
+  align-items: center;
   text-align: left;
-  padding: 10px 0;
+  padding: 15px 0;
   font-size: 0.9rem;
 
   & + & {

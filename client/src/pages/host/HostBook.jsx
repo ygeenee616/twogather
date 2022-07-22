@@ -10,7 +10,7 @@ export default function HostRoomBook() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const req = await Api.get(`api/rooms/host`);
+        const req = await Api.getAuth(`api/rooms/host`);
         const data = await req.data.data;
         console.log(req);
         setData(data);
@@ -26,15 +26,16 @@ export default function HostRoomBook() {
     data && (
       <div>
         <HostNav />
+        <Title>룸별 예약 관리</Title>
         <RoomContainer>
-          <Title>룸별 예약 내역</Title>
+          <TableTitle>룸별 예약 내역</TableTitle>
           {data.length === 0 ? (
             <RoomList>아직 등록된 룸이 없습니다.</RoomList>
           ) : (
             data.map((room, id) => {
               return (
                 <RoomLink to={`/host/bookList/${room.id}?page=1`} key={id}>
-                  <RoomList>{room.name}</RoomList>
+                  <RoomList>📬{room.name}</RoomList>
                 </RoomLink>
               );
             })
@@ -48,8 +49,9 @@ export default function HostRoomBook() {
 const RoomContainer = styled.div`
   width: 80%;
   margin: 0 auto;
-  margin-top: 80px;
-  margin-bottom: 80px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  font-family: "SpoqaHanSansNeo-Light";
 `;
 
 const RoomLink = styled(Link)`
@@ -69,8 +71,17 @@ const RoomList = styled.div`
 
 const Title = styled.div`
   text-align: center;
+  font-family: "NEXON Lv2 Gothic Light";
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #000;
+  margin: 50px 0;
+`;
+
+const TableTitle = styled.div`
+  text-align: center;
   padding: 15px;
-  font-size: 1rem;
-  background-color: #8daef2;
+  font-size: 1.1rem;
+  background-color: #6e85b7;
   color: #fff;
 `;

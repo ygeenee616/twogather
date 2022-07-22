@@ -20,6 +20,7 @@ export default function AdminNav() {
 }
 
 const Nav = styled.nav`
+  font-family: "S-CoreDream-7ExtraBold";
   margin: 0 auto;
   padding: 30px 0;
   width: 80%;

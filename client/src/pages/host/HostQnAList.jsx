@@ -19,7 +19,7 @@ export default function HostQnA() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const req = await Api.get(
+        const req = await Api.getAuth(
           `api/qnas/space/${spaceId}?page=${page}&perPage=5`
         );
         const data = await req.data.data.paginatedQnas;
@@ -37,9 +37,19 @@ export default function HostQnA() {
   // 답변 등록 함수
   async function submitAnswer(id) {
     try {
-      const req = await Api.patch(`api/qnas/${id}`, {
+      const req = await Api.patchAuth(`api/qnas/${id}`, {
         reply: answer,
       });
+      console.log(req);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // Q&A 삭제 함수
+  async function DeleteQnA(id) {
+    try {
+      const req = await Api.deleteAuth(`api/qnas/${id}`);
       console.log(req);
     } catch (err) {
       console.log(err);
@@ -51,22 +61,31 @@ export default function HostQnA() {
       <HostNav />
       {data && (
         <QnAContainer>
-          {data.map((item, i) => {
-            return (
-              <QnABox key={i}>
-                <Question>{item.content}</Question>
-                <Answer
-                  placeholder="아직 등록된 답변이 없습니다. 답변을 등록해보세요!"
-                  onChange={(e) => setAnswer(e.target.value)}
-                >
-                  {item.reply}
-                </Answer>
-                <SubmitBtn onClick={(e) => submitAnswer(item.id)}>
-                  답변 등록 및 수정
-                </SubmitBtn>
-              </QnABox>
-            );
-          })}
+          {data.length === 0 ? (
+            <div>아직 등록된 Q&A가 없습니다. </div>
+          ) : (
+            data.map((item, i) => {
+              return (
+                <QnABox key={i}>
+                  <Question>{item.content}</Question>
+                  <Answer
+                    placeholder="아직 등록된 답변이 없습니다. 답변을 등록해보세요!"
+                    onChange={(e) => setAnswer(e.target.value)}
+                  >
+                    {item.reply}
+                  </Answer>
+                  <BtnBox>
+                    <SubmitBtn onClick={(e) => submitAnswer(item.id)}>
+                      답변 등록 및 수정
+                    </SubmitBtn>
+                    <DeleteBtn onClick={(e) => DeleteQnA(item.id)}>
+                      삭제
+                    </DeleteBtn>
+                  </BtnBox>
+                </QnABox>
+              );
+            })
+          )}
           <Pagination
             total={totalPage}
             url={location.pathname}
@@ -112,20 +131,40 @@ const Answer = styled.textarea`
   border: none;
 `;
 
+const BtnBox = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
 const SubmitBtn = styled.button`
-  position: absolute;
-  right: 0;
-  bottom: -30px;
   width: 150px;
   padding: 5px;
   border-radius: 10px;
   border: none;
-  background-color: #646fd4;
+  background-color: #b2a4ff;
   color: #fff;
   transition: all 0.2s;
 
   &:hover {
-    background-color: #ffe69a;
+    background-color: #ffdeb4;
+    color: #000;
+  }
+`;
+
+const DeleteBtn = styled.button`
+  width: 150px;
+  padding: 5px;
+  border-radius: 10px;
+  border: none;
+  background-color: #ffb4b4;
+  color: #fff;
+  transition: all 0.2s;
+  margin-left: 10px;
+
+  &:hover {
+    background-color: #ffdeb4;
     color: #000;
   }
 `;

@@ -5,7 +5,7 @@ import {
   BtnContainer,
 } from "../components/addComment/CommentForm";
 import styled from "styled-components";
-import { useRef } from "react";
+import { useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as Api from "../api";
 
@@ -15,7 +15,9 @@ function AddReview() {
   const params = new URLSearchParams(location.search);
   const contentTextarea = useRef(null); // 작성란
   const bookId = params.get("bookId");
-  const spaceName = params.get("spaceName");
+  const { roomName, review } = location.state;
+  const content = review ? review.content : "";
+  const [reviewTextarea, setReviewTextarea] = useState(content);
 
   const registerReview = async (e) => {
     e.preventDefault();
@@ -23,27 +25,33 @@ function AddReview() {
       const data = {
         content: contentTextarea.current.value,
       };
-      const res = await Api.post(`api/reviews/${bookId}`, data);
+
+      if (review === null) await Api.postAuth(`api/reviews/${bookId}`, data);
+      else await Api.patchAuth(`api/reviews/mypage/${review.id}`, data);
       navigate("/mypage", { replace: true });
-      console.log(res);
     } catch (err) {
       console.error(err);
     }
   };
+  // 401
 
   return (
     <ReviewContainer>
       <CommentTitle> 이용후기 등록 </CommentTitle>
-      <CommentInfo spaceName={spaceName} />
+      <CommentInfo spaceName={roomName} />
       <form>
         <h4 style={{ color: "#BBD3F2" }}>이용후기 등록</h4>
         <CommentTextArea
           CommentTextAreaname="contents"
           placeholder="이용후기를 작성해주세요. (200자 이내)"
+          value={reviewTextarea}
           ref={contentTextarea}
+          onChange={(e) => setReviewTextarea(e.target.value)}
         />
         <BtnContainer>
-          <button className="cancel">취소</button>
+          <button className="cancel" onClick={() => navigate("/mypage")}>
+            취소
+          </button>
           <button type="submit" className="submit" onClick={registerReview}>
             작성 완료
           </button>

@@ -2,17 +2,41 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { HiChevronDown } from "react-icons/hi";
 import { FcHome, FcConferenceCall } from "react-icons/fc";
+import * as Api from "../../api";
 
 export default function Dropbox({ rooms, acceptPeople, checkSelectRoom }) {
-  const image =
-    "https://moplqfgeemqv2103108.cdn.ntruss.com/service/165666149_3349f35a71f72e769413ec0259916966.jpeg?type=m&w=900&h=900&autorotate=true&quality=90";
+  const [roomUrl, setRoomUrl] = useState([]);
+
+  useEffect(() => {
+    const take = async () => {
+      for (let i = 0; i < rooms.length; i++) {
+        const imageUrl = await Api.getAuth(
+          `api/room-images/room/${rooms[i].id}`
+        );
+        const i2 = imageUrl.data.data[0].imageUrl;
+        setRoomUrl((prev) => [...prev, i2]);
+      }
+    };
+    take();
+  }, []);
+
+  const getImg = async (id) => {
+    try {
+      const roomImageReq = await Api.getAuth(`api/room-images/room/${id}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     rooms && (
       <RoomList>
         <p>세부 공간 선택</p>
-
         {rooms.map((room, i) => {
+          // api 데이터 받아오는 함수
+
+          // getImg(room.id);
+          // setImage(imageUrl.current);
           return (
             <Container key={i}>
               <RoomItem>
@@ -32,7 +56,7 @@ export default function Dropbox({ rooms, acceptPeople, checkSelectRoom }) {
                   <span>{room.name}</span>
                   <span>시간당 {room.price} ₩</span>
                 </RoomLabel>
-                <img src={image} />
+                <img src={roomUrl[i]} />
                 <HiChevronDown />
               </RoomItem>
               <Dropdown>

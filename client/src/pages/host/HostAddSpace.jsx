@@ -9,6 +9,7 @@ import * as Api from "../../api";
 import { FiPrinter } from "react-icons/fi";
 import axios from "axios";
 import TypeSelector from "../../components/TypeSelector";
+import ImgToS3 from "../../components/register/ImgToS3";
 
 export default function HostAddSpace({ mode }) {
   const nav = useNavigate();
@@ -17,9 +18,10 @@ export default function HostAddSpace({ mode }) {
     selectItem: "",
   });
 
+  let spaceId = "";
+
   //imgState
-  const [imageSrc, setImageSrc] = useState("");
-  const [detailImgs, setDatailImgs] = useState([]);
+  const [detailImgs, setDatailImgs] = useState(null);
 
   // hashTag state
   const [tagItem, setTagItem] = useState("");
@@ -60,8 +62,6 @@ export default function HostAddSpace({ mode }) {
     });
   }, [addressState]);
 
-  const subViewInput = useRef();
-
   //input값이 바뀔시 해당 value 바뀜
   const handleChangeState = (e) => {
     setSpaceInfo({
@@ -73,7 +73,7 @@ export default function HostAddSpace({ mode }) {
   //공간수정 버튼 누를 시 patch 요청
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-    const response = await Api.post(`api/spaces`, {
+    const response = await Api.postAuth(`api/spaces`, {
       name: spaceInfo.name, //공간명
       type: select.selectItem, //공간타입
       notice: spaceInfo.notice, //주의사항
@@ -81,20 +81,20 @@ export default function HostAddSpace({ mode }) {
       address1: addressState.myZoneCode, //실주소
       address2: addressState.myFullAddress,
       address3: addressState.myPersonalAddress,
-      //   images:
-      //     "https://z-images.s3.amazonaws.com/5/51/%EC%9D%BC%EC%96%B4%EB%82%98_%EC%BD%94%EB%94%A9%ED%95%B4%EC%95%BC%EC%A7%80.jpg",
+      images: detailImgs,
     });
 
     const data = response.data.data;
-    const spaceId = data.id;
+    spaceId = data.id;
     let responseTag = "";
 
+    //해쉬테그 등록 api
     for (let i = 0; i < tagList.length; i++) {
-      responseTag = await Api.post(`api/hashtags/${spaceId}`, tagList[i]);
+      responseTag = await Api.postAuth(`api/hashtags/${spaceId}`, tagList[i]);
       console.log(responseTag);
     }
 
-    //const res = formDataSend(detailImgs, spaceId);
+    handleImgUpload(e);
 
     const modal = document.querySelector(".modalWrap");
     modal.style.display = "block";
@@ -103,7 +103,6 @@ export default function HostAddSpace({ mode }) {
 
   /******************* hashTag  컴포넌트 함수*******/
   useEffect(() => {
-    // ['스터디룸', '모임', '강남'] 이런식으로 배열로 들어감
     console.log(tagList);
   }, [tagList]);
 
@@ -170,12 +169,6 @@ export default function HostAddSpace({ mode }) {
 
   //**************************이미지 처리 api***********************/
 
-  const imgClickHandler = (e) => {
-    const fileArr = Array.from(e.target.files);
-    console.log(e.target);
-    console.log(e.target.value);
-  };
-
   const loadDetailImage = (e) => {
     setDatailImgs(e.target.files);
 
@@ -211,13 +204,30 @@ export default function HostAddSpace({ mode }) {
     });
   };
 
-  const formDataSend = async (images, spaceId) => {
-    let formdata = new FormData();
-    formdata.append("uploadImage", images[0]);
+  //이미지를 s3에 저장
+  const [selectedFile, setSelectedFile] = useState(null);
 
-    const res = await axios.imgPost(`{api/space-images/${spaceId}}`, formdata);
-    console.log(res);
-    return res;
+  const handleImgFileInput = (e) => {
+    console.log(e.target.files);
+    const data = e.target.files;
+    console.log(data);
+    setSelectedFile(data);
+
+    console.log(selectedFile);
+  };
+
+  const handleImgUpload = async () => {
+    let imgData = new FormData();
+
+    Array.from(selectedFile).map((item) => {
+      imgData.append("images", item);
+      console.log(item.name);
+    });
+
+    const data = await Api.postImgAuth(`api/uploads/space/${spaceId}`, imgData);
+
+    console.log(data);
+    console.log(imgData);
   };
 
   return (
@@ -239,7 +249,6 @@ export default function HostAddSpace({ mode }) {
             onChange={(e) => handleChangeState(e)}
           ></StyledInput>
         </InputBox>
-
         <InputBox>
           <StyledLabel>공간 소개</StyledLabel>
           <StyledTextArea
@@ -250,12 +259,10 @@ export default function HostAddSpace({ mode }) {
             onChange={(e) => handleChangeState(e)}
           ></StyledTextArea>
         </InputBox>
-
         <InputBox className="selectBox">
           <StyledLabel>공간 타입</StyledLabel>
           <NewSelector state={select} setState={setSelect}></NewSelector>
         </InputBox>
-
         <HashTag
           tagItem={tagItem}
           setTagItem={setTagItem}
@@ -265,7 +272,6 @@ export default function HostAddSpace({ mode }) {
           addHashTag={addHashTag}
           removeHashTag={removeHashTag}
         />
-
         <InputBox>
           <StyledLabel>예약 시 주의사항</StyledLabel>
           <StyledTextArea
@@ -275,7 +281,6 @@ export default function HostAddSpace({ mode }) {
             onChange={(e) => handleChangeState(e)}
           ></StyledTextArea>
         </InputBox>
-
         <InputBox>
           <StyledLabel>주소지 입력</StyledLabel>
           <PostcodePopup
@@ -286,29 +291,30 @@ export default function HostAddSpace({ mode }) {
             handleClick={handleClick}
           ></PostcodePopup>
         </InputBox>
-
         <InputBox>
           <StyledLabel>공간 이미지 선택</StyledLabel>
           <SubImageView
             className="imgBox"
             name="spaceSubImages"
-            ref={subViewInput}
             onChange={loadDetailImage}
           ></SubImageView>
           <ImageInput
-            name="spaceImages"
+            name="images"
             type="file"
             multiple
             accept="image/*"
-            onChange={loadDetailImage}
+            onChange={(e) => {
+              loadDetailImage(e);
+              handleImgFileInput(e);
+            }}
             id="imgs"
             style={{ display: "none" }}
           ></ImageInput>
-          <label for="imgs" id="imgs" type="file">
-            업로드
-          </label>
+          <Label for="imgs" id="imgs" type="file">
+            사진선택
+          </Label>
           {/* <input type="file" name="uploadfile" id="img" style="display:none;" />{" "}
-          <label for="img">Click me to upload image</label> */}
+    <label for="img">Click me to upload image</label> */}
         </InputBox>
 
         <ButtonBox>
@@ -324,7 +330,10 @@ export default function HostAddSpace({ mode }) {
             취소
           </StyledButton>
           <StyledButton
-            onClick={handleUpdateSubmit}
+            onClick={(e) => {
+              handleUpdateSubmit(e);
+              handleImgUpload(e);
+            }}
             color="white"
             backGroundColor="#8daef2"
             name="register"
@@ -340,7 +349,9 @@ export default function HostAddSpace({ mode }) {
             className="addModal"
             title="공간 등록"
             content="공간 등록이 완료되었습니다."
-            clickEvent={() => nav("/host/spaceList")}
+            clickEvent={() => {
+              window.location.replace("/host/spaceList");
+            }}
           />
         </ModalWrap>
       </SpaceForm>
@@ -388,6 +399,32 @@ const StyledInput = styled.input`
 
   & + & {
     margin-left: 3%;
+  }
+`;
+
+const Label = styled.label`
+  width: 48%;
+  height: 40px;
+  line-height: 40px;
+
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+
+  background-color: #8daef2;
+  color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition-duration: 0.3s;
+
+  :hover {
+    background-color: #5155a6;
+  }
+  & + & {
+    margin-left: 20px;
   }
 `;
 const StyledTextArea = styled.textarea`

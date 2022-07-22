@@ -9,6 +9,7 @@ export default function BookList({ data, endpoint }) {
   return (
     data && (
       <Container>
+        <Title>예약 관리</Title>
         <table>
           <caption>예약 내역</caption>
           <colgroup>
@@ -32,24 +33,30 @@ export default function BookList({ data, endpoint }) {
             </tr>
           </thead>
           <tbody>
-            {data.map((item, i) => {
-              return (
-                <tr align="center" key={i}>
-                  <td>{item.user.name}</td>
-                  {/* <td>{item.room.id}</td> */}
-                  <td>파티룸</td>
-                  <td>{item.date}</td>
-                  <td>{item.personnel}</td>
-                  <td>{item.totalPrice}</td>
-                  <td>{item.user.phoneNumber}</td>
-                  <td>
-                    <Link to={`${endpoint}${item.id}`}>
-                      <FcSettings className="icon" size={"1.5rem"} />
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
+            {data.length === 0 ? (
+              <tr align="center">
+                <td colSpan="7">아직 등록된 예약 내역이 없습니다.</td>
+              </tr>
+            ) : (
+              data.map((item, i) => {
+                return (
+                  <tr align="center" key={i}>
+                    <td>{item.user.name}</td>
+                    {/* <td>{item.room.id}</td> */}
+                    <td>파티룸</td>
+                    <td>{item.date}</td>
+                    <td>{item.personnel}</td>
+                    <td>{item.totalPrice}</td>
+                    <td>{item.user.phoneNumber}</td>
+                    <td>
+                      <Link to={`${endpoint}${item.id}`}>
+                        <FcSettings className="icon" size={"1.5rem"} />
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
           </tbody>
         </table>
       </Container>
@@ -60,23 +67,25 @@ export default function BookList({ data, endpoint }) {
 const Container = styled.div`
   width: 80%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  margin-top: 80px;
-  margin-bottom: 80px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  font-family: "NEXON Lv2 Gothic Light";
 
   & table {
     width: 100%;
-    border: 1px solid #577bc1;
+    border: 1px solid #6e85b7;
     border-collapse: collapse;
     table-layout: fixed;
   }
 
   & caption {
-    background-color: #577bc1;
+    background-color: #6e85b7;
     color: #fff;
-    padding: 10px;
+    padding: 15px;
   }
 
   & th {
@@ -85,7 +94,7 @@ const Container = styled.div`
   }
 
   & tr {
-    border-bottom: 1px solid #577bc1;
+    border-bottom: 1px solid #6e85b7;
   }
 
   & td {
@@ -101,4 +110,12 @@ const Container = styled.div`
     transform: scale(1.1);
     transition: 0.3s;
   }
+`;
+
+const Title = styled.div`
+  font-family: "NEXON Lv2 Gothic Light";
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 50px;
 `;

@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import { GrPowerReset } from "react-icons/gr";
 
 export default function SelecotrResetBtn({ category }) {
-  const nav = useNavigate();
   return (
-    <Button onClick={() => nav(`/list?category=${category}`)}>
+    <Button
+      onClick={() => window.location.replace(`/list?category=${category}`)}
+    >
       <div style={{ display: "flex", margin: "auto" }}>
         <GrPowerReset />
         <About>필터 초기화</About>

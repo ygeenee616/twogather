@@ -5,6 +5,7 @@ import * as Api from "../../api";
 import HostNav from "../../components/host/HostNav";
 import BookList from "../../components/BookList";
 import { useParams } from "react-router-dom";
+
 export default function HostRoomBook() {
   const [data, setData] = useState("");
   const params = useParams();
@@ -14,7 +15,7 @@ export default function HostRoomBook() {
     const getData = async () => {
       try {
         //space에 대한 roomAPI받기
-        const req = await Api.get(`api/rooms/space/${spaceId}`);
+        const req = await Api.getAuth(`api/rooms/space/${spaceId}`);
         const data = await req.data.data;
         console.log(req);
         setData(data);

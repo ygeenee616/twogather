@@ -1,9 +1,6 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import { IoIosArrowDown } from "react-icons/io";
 
 export default function CategorySelector() {
-  const nav = useNavigate();
   const { search } = window.location;
   const params = new URLSearchParams(search);
 
@@ -11,7 +8,7 @@ export default function CategorySelector() {
   const handelClickSortSelect = (order) => {
     params.set("order", order);
     const stringParam = params.toString();
-    nav(`/list?${stringParam}`);
+    window.location.replace(`/list?${stringParam}`);
   };
 
   return (
@@ -20,10 +17,9 @@ export default function CategorySelector() {
         className="sortSelector"
         onChange={(e) => handelClickSortSelect(e.target.value)}
       >
-        <option value="recent">최근순</option>
-        <option value="past">오래된순</option>
-        <option value="hightPrice">가격 높은순</option>
-        <option value="lowPrice">가격 낮은순</option>
+        <option value="date">최근순</option>
+        <option value="price">가격 낮은순</option>
+        <option value="reviews">리뷰 많은순</option>
       </SortSelector>
     </SortWrap>
   );

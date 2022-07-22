@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Pagination from "../../components/Pagination";
 import ProductCard from "../../components/ProductCard";
@@ -7,12 +7,11 @@ import exImg2 from "../../assets/images/ex2.png";
 import HostUpdateSpace from "./HostUpdateSpace";
 import * as api from "../../api";
 import { useNavigate } from "react-router-dom";
-import { Container } from "../../components/register/UserForm";
-import { AiOutlinePlusSquare } from "react-icons/ai";
 import Modal from "../../components/Modal";
 import * as Api from "../../api";
-
+import { HiPlusSm } from "react-icons/hi";
 import HostNav from "../../components/host/HostNav";
+import { Container } from "../MyPage";
 
 HostSpaceList.defaultProps = {
   host: {
@@ -28,12 +27,26 @@ export default function HostSpaceList({ host }) {
   const limit = 4;
   const offset = (page - 1) * limit;
   const [dataTrigger, setDataTrigger] = useState(0);
+  const imgUrlList = useRef([]);
 
   useEffect(() => {
     async function getData() {
       try {
-        const res = await api.get("api/spaces/host");
+        const res = await api.getAuth("api/spaces/host");
         const data = res.data.data;
+
+        const spacesIdList = data.map((space) => space.id);
+
+        await Promise.all(
+          spacesIdList.map(async (spaceId) => {
+            const imgData = await Api.get(`api/space-images/space/${spaceId}`);
+            const imgUrlListElement = await imgData.data.data.map(
+              (i) => i.imageUrl
+            );
+            imgUrlList.current = [...imgUrlList.current, imgUrlListElement];
+          })
+        );
+
         setDatas(data);
         console.log(data);
       } catch (err) {
@@ -43,8 +56,12 @@ export default function HostSpaceList({ host }) {
     getData();
   }, [dataTrigger]);
 
-  const openModalDeletePopup = () => {
-    const modal = document.querySelector(".modalWrap");
+  const openModalDeletePopup = (e) => {
+    console.log(e.target);
+    const name = e.target.name;
+
+    const modal = document.getElementById(name);
+    console.log(modal);
     modal.style.display = "block";
     window.scrollTo(0, 0);
   };
@@ -54,7 +71,7 @@ export default function HostSpaceList({ host }) {
     console.log(spaceId);
     //확인 누르면 삭제하고 딜리트함
     try {
-      const response = await Api.delete(`api/spaces/host/${spaceId}`);
+      const response = await Api.deleteAuth(`api/spaces/host/${spaceId}`);
       console.log(response);
       setDataTrigger(dataTrigger + 1);
     } catch (err) {
@@ -66,40 +83,50 @@ export default function HostSpaceList({ host }) {
     window.scrollTo(0, 0);
   };
 
-  const renderData = (offset, limit, data) => {
-    return data.slice(offset, offset + limit).map((data, i) => (
+  const renderData = (data) => {
+    return data.map((data, i) => (
       <>
+        {console.log(data.id)}
         <ProductCard
           key={i}
-          src={[exImg1, exImg2]} //아직없음
+          src={imgUrlList.current[i]} //아직없음
           hashtags={data.hashtags}
           name={data.name}
           address2={data.address2}
           address3={data.address3}
           price={data.minPrice}
-          review={data.reviewsLength} //아직없음
+          reviewsLength={data.reviewsLength} //아직없음
           link={`/host/updateSpace/${data.id}`}
         ></ProductCard>
         <SubMenuBar>
-          <Menu onClick={() => navigate(`/host/updateSpace/${data.id}`)}>
-            1.공간수정
+          <Menu
+            onClick={() => navigate(`/host/updateSpace/${data.id}`)}
+            style={{ backgroundColor: "#B2C8DF" }}
+          >
+            ✏️공간 수정
           </Menu>
-          <Menu onClick={() => openModalDeletePopup(data.id)}>2.공간삭제</Menu>
+          <Menu
+            name={data.id}
+            onClick={(e) => openModalDeletePopup(e)}
+            style={{ backgroundColor: "#6E85B7" }}
+          >
+            ✂️공간 삭제
+          </Menu>
           {/* 공간삭제 */}
-          <Menu onClick={() => navigate(`/host/addRoom/${data.id}`)}>
-            3.룸추가
+          <Menu
+            onClick={() => navigate(`/host/addRoom/${data.id}`)}
+            style={{ backgroundColor: "#6E85B7" }}
+          >
+            ➕룸 추가
           </Menu>
-          {/* 룸리스트로 가서 수정하게 하기 */}
-          <Menu onClick={() => navigate(`/host/roomList/${data.id}`)}>
-            4.룸수정
+          <Menu
+            onClick={() => navigate(`/host/roomList/${data.id}`)}
+            style={{ backgroundColor: "#B2C8DF" }}
+          >
+            ⚒️룸 수정 및 삭제
           </Menu>
-          {/* 룸수정에서 삭제하기? */}
-          <Menu onClick={() => navigate(`/host/roomList/${data.id}`)}>
-            5.룸삭제
-          </Menu>
-          {/* {// 룸삭제 구현?//} */}
         </SubMenuBar>
-        <ModalWrap className="modalWrap">
+        <ModalWrap className="modalWrap" id={data.id}>
           <Modal
             className="deleteModal"
             title="공간 삭제"
@@ -123,27 +150,20 @@ export default function HostSpaceList({ host }) {
         <>
           <BottomWrap>
             <TitleContanier>
-              <MainTitle>{host.name}님 </MainTitle>
+              <MainTitle>{host.name}님</MainTitle>
               <Title>공간내역</Title>
             </TitleContanier>
-            <div onClick={clickToModSpace}>
-              <ProductWrap>{renderData(offset, limit, datas)}</ProductWrap>
 
-              <AddSpaceButton
-                onClick={() => {
-                  navigate(`/host/addSpace`);
-                }}
-              >
-                <p className="label">공간추가하기</p>
-              </AddSpaceButton>
-              <div>
-                <Pagination
-                  total={datas.length}
-                  limit={limit}
-                  page={page}
-                  setPage={setPage}
-                />
-              </div>
+            <AddSpaceButton
+              onClick={() => {
+                navigate(`/host/addSpace`);
+              }}
+            >
+              <HiPlusSm size={"2.5rem"} />
+            </AddSpaceButton>
+
+            <div onClick={clickToModSpace}>
+              <ProductWrap>{renderData(datas)}</ProductWrap>
             </div>
           </BottomWrap>
         </>
@@ -153,10 +173,10 @@ export default function HostSpaceList({ host }) {
 }
 
 const SubMenuBar = styled.div`
-  paddin: 3%;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
   flex-direction: column;
   width: 100%;
   height: 100%;
@@ -164,33 +184,44 @@ const SubMenuBar = styled.div`
 
 const Menu = styled.div`
   cursor: pointer;
-  :hover {
-    color: blue;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "S-CoreDream-3Light";
+  color: #fff;
+
+  &:hover {
+    box-shadow: 3px 3px 7px #d9d9d9;
   }
 `;
 const BottomWrap = styled.div`
   width: 80%;
   margin: 0 auto;
-  margin-top: 80px;
-  margin-bottom: 80px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  position: relative;
 `;
 
 const TitleContanier = styled.div`
-  border-bottom: 2px solid #8daef2;
+  font-family: "NEXON Lv2 Gothic Light";
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
 `;
 
 const MainTitle = styled.span`
-  font-size: 25px;
+  text-align: center;
+  font-size: 2.2rem;
   font-weight: 700;
-  color: #8daef2;
+  color: #000;
 `;
 
 const Title = styled.span`
   font-size: 18px;
-  margin: 5px;
+  font-weight: 700;
+  margin-left: 15px;
 `;
 
 const ProductWrap = styled.div`
@@ -203,44 +234,34 @@ const ProductWrap = styled.div`
 `;
 
 const ModalWrap = styled.div`
-  position: absolute;
-  top: 0;
+  width: 100%;
+  position: fixed;
+  margin: 0 auto;
   left: 0;
-  height: 244vh;
-  background-color: rgba(90, 90, 90, 0.2);
+  right: 0;
+  top: 0;
+  bottom: 0;
+  vertical-allign: middle;
   display: none;
+  background-color: rgba(90, 90, 90, 0.2);
 `;
 
 const AddSpaceButton = styled.button`
-  width: 100%;
-  height: 50px;
-  font-size: 1rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
-  text-align: center;
-
-  border-radius: 10px;
+  border-radius: 50%;
   border: none;
-
-  background-color: #8daef2;
-  opacity: 0.8;
+  background-color: #b1bce6;
   cursor: pointer;
-  transition-duration: 0.2s;
-  box-shadow: 5px 5px 5px black;
+  position: absolute;
+  right: 0;
 
-  p {
-    transition-duration: 0.2s;
-  }
-
-  :active {
-    box-shadow: none;
-    transform: scale(0.8);
-  }
-  :hover {
-    transform: scale(1.02);
-
-    & .label {
-      font-size: 1rem;
-      transform: scale(1.1);
-    }
+  & svg:hover {
+    transform: scale(1.1);
+    transition: all 0.3s;
   }
 `;

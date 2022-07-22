@@ -5,26 +5,17 @@ import PostcodePopup from "../../components/admin/PostcodePopup";
 import * as Api from "../../api";
 import HostNav from "../../components/host/HostNav";
 import { Container } from "../MyPage";
+import { useNavigate } from "react-router-dom";
+import Modal from "../../components/Modal";
 
 export default function AddHost() {
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
   const [datas, setData] = useState({ accountNumber: "" });
-  const [hostInfo, setHostInfo] = useState({
-    businessName: "", //상호명
-    name: "", //대표자명
-    businessNumber: "",
-    phoneNumber: "", //연락처
-    email: "", //이메일
-    accountNumber: "",
-  });
+  const [hostInfo, setHostInfo] = useState({});
 
-  const [bankInfo, setBankInfo] = useState({
-    bankName: "",
-    bankAccount: "",
-    name: "",
-  });
-
+  const [bankInfo, setBankInfo] = useState({});
+  const navigate = useNavigate();
   const handleChangeState = (e) => {
     setHostInfo({
       ...hostInfo,
@@ -39,22 +30,46 @@ export default function AddHost() {
     });
   };
 
+  const openConfirmModal = () => {
+    const modal = document.querySelector(".modalWrap");
+    modal.style.display = "block";
+    window.scrollTo(0, 0);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     //포스트 요청시 데이터 새로 넘겨주기 합성해서
     const account = `${bankInfo.bankName} ${bankInfo.bankAccount} ${bankInfo.name}`;
     setHostInfo({ ...hostInfo, accountNumber: account });
-    const response = await Api.patch("api/users", hostInfo);
+    const response = await Api.patchAuth("api/users", hostInfo);
+
     console.log(response);
-    console.log("asds");
+    openConfirmModal();
   };
 
+  useEffect(() => {
+    const getData = async () => {
+      const userDatas = await Api.getAuth("api/users/info");
+      const userData = userDatas.data.data;
+      setHostInfo({
+        accountNumber: userData.accountNumber, //계좌번호 ㅇㅇ ㅇㅇ ㅇㅇ 이렇게 들어옴
+        businessAddress: userData.businessAddress, //주th
+        businessName: userData.businessName, // 상호명
+        name: userData.name, //이름
+        businessNumber: userData.businessNumber, //사업자번호
+        phoneNumber: userData.phoneNumber, //전화번호
+      });
+    };
+    getData();
+  }, []);
+
+  //1. 로그인안했으면 -> 로그인하도록 리다이렉트
+
+  //2. host등록 되어있으면 -> 호스트 정보가 미리 보이도록
+
+  //3. 없으면 빈칸으로
+
   //TODO
-  //데이터들 STATE객체화 시켜서 받기
-  //onClick 이벤트 만들기
-  //주소 api 따와서 주소불러오기
-  //이미지 그리드로 보여주기
-  // - 동적으로 생성해야됨
 
   return (
     <div>
@@ -70,6 +85,7 @@ export default function AddHost() {
           <InputBox>
             <StyledLabel>상호명</StyledLabel>
             <StyledInput
+              required
               type="text"
               width={"40%"}
               name="businessName"
@@ -82,6 +98,7 @@ export default function AddHost() {
           <InputBox>
             <StyledLabel>대표자 명</StyledLabel>
             <StyledInput
+              required
               type="text"
               name="name"
               width={"40%"}
@@ -115,19 +132,6 @@ export default function AddHost() {
               required
             ></StyledInput>
           </InputBox>
-
-          <InputBox>
-            <StyledLabel>이메일</StyledLabel>
-            <StyledInput
-              width={"40%"}
-              type="email"
-              name="email"
-              value={hostInfo.email}
-              onChange={handleChangeState}
-              required
-            ></StyledInput>
-          </InputBox>
-
           <InputBox>
             <StyledLabel>계좌번호</StyledLabel>
             <div className="hostAccount">
@@ -171,7 +175,7 @@ export default function AddHost() {
               backGroundColor="#8daef2"
               color="white"
             >
-              등록취소
+              등록 취소
             </StyledButton>
             {/* /*네비게이트 설정하기 */}
             <StyledButton
@@ -182,10 +186,18 @@ export default function AddHost() {
               type="submit"
               value="submit"
             >
-              Host등록
+              Host 등록
             </StyledButton>
             {/* {포스트 요청하기 } */}
           </ButtonBox>
+          <ModalWrap className="modalWrap">
+            <Modal
+              className="updateModal"
+              title="Host"
+              content="정보가 갱신되었습니다."
+              clickEvent={() => navigate("/host/spaceList")}
+            />
+          </ModalWrap>
         </SpaceForm>
       </Main>
     </div>
@@ -204,6 +216,7 @@ const SpaceForm = styled.form`
   margin: 0 10%;
   width: 100%;
   height: 100%;
+  font-family: "NEXON Lv2 Gothic Light";
 `;
 
 const StyledLabel = styled.div`
@@ -213,6 +226,7 @@ const StyledLabel = styled.div`
   margin-bottom: 10px;
   font-size: 1rem;
   font-style: bold;
+  font-family: "NEXON Lv2 Gothic Light";
 `;
 
 const StyledInput = styled.input`
@@ -222,6 +236,7 @@ const StyledInput = styled.input`
   border: 1px solid lightgrey;
   outline-color: #8daef2;
   border-radius: 4px;
+  font-family: "NEXON Lv2 Gothic Light";
 
   & + & {
     margin-left: 3%;
@@ -230,6 +245,7 @@ const StyledInput = styled.input`
 
 const InputBox = styled.div`
   display: flex;
+  font-family: "NEXON Lv2 Gothic Light";
 
   align-items: start;
   text-align: start;
@@ -254,6 +270,7 @@ const StyledButton = styled.button`
   width: 48%;
   height: 40px;
   line-height: 40px;
+  font-family: "NEXON Lv2 Gothic Light";
 
   border: none;
   border-radius: 10px;
@@ -280,6 +297,7 @@ const Title = styled.h1`
   color: #8daef2;
   width: 100%;
   text-align: left;
+  font-family: "S-CoreDream-6Bold";
 `;
 
 const ButtonBox = styled.div`
@@ -293,4 +311,13 @@ const ButtonBox = styled.div`
 
 const Hr = styled.hr`
   border: 2px #8daef2 solid;
+`;
+
+const ModalWrap = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 244vh;
+  background-color: rgba(90, 90, 90, 0.2);
+  display: none;
 `;

@@ -16,9 +16,10 @@ import axios from "axios";
 function MyProfile({ userInfo }) {
   const [editUser, setEditUser] = useState(false);
   const [imageSrc, setImageSrc] = useState(
-    userInfo.profileImage ?? defaultProfile
+    userInfo.profileImage || defaultProfile
   );
   const [alertMsg, setAlertMsg] = useState(false);
+  const userId = userInfo.userId;
 
   function handleEditUser() {
     setEditUser(true);
@@ -33,6 +34,7 @@ function MyProfile({ userInfo }) {
   }, []);
 
   const encodeFileToBase64 = (fileBlob) => {
+    // 로컬에 변경된 이미지 띄우기
     const reader = new FileReader();
     reader.readAsDataURL(fileBlob);
     return new Promise((resolve) => {
@@ -48,9 +50,14 @@ function MyProfile({ userInfo }) {
       const file = e.target.files[0];
       const formData = new FormData();
       if (file) {
-        formData.append("profileImage", file);
-        await Api.patchImg("api/users", formData);
+        formData.append("images", file);
         encodeFileToBase64(file);
+        // 프로필 사진 변경
+        const res = await Api.postImg(
+          `api/uploads/profile/${userId}`,
+          formData
+        );
+        console.log(res);
       }
     } catch (err) {
       console.log(err);
@@ -60,7 +67,11 @@ function MyProfile({ userInfo }) {
   return (
     <ProfileDiv>
       <ProfileImgDiv>
-        {imageSrc && <img src={imageSrc} alt="내 프로필 사진" />}
+        {userInfo.profileImage ? (
+          <img src={userInfo.profileImage} alt="내 프로필 사진" />
+        ) : (
+          <img src={imageSrc} alt="내 프로필 사진"></img>
+        )}
         <EditBtnDiv>
           <label htmlFor="imgUpload" name="profileImage">
             <div id="img_upload">프로필 사진 변경</div>
@@ -70,6 +81,7 @@ function MyProfile({ userInfo }) {
             accept="image/*"
             id="imgUpload"
             onChange={handleImageUpload}
+            name="images"
           />
           <input
             type="button"

@@ -10,7 +10,7 @@ export default function AdminUser() {
 
   useEffect(() => {
     async function getData() {
-      const response = await Api.get("api/users");
+      const response = await Api.getAuth("api/users");
       const data = response.data.data;
       setData(data);
     }
@@ -19,7 +19,7 @@ export default function AdminUser() {
 
   const headers = ["닉네임", "E-Mail", "전화번호", "성별", "Role", "가입날짜"];
   const keys = ["nickname", "email", "phoneNumber", "sexs", "role", "date"];
-  const mainTitle = "유저정보";
+  const mainTitle = "유저 정보";
   const columnTemplete = "1fr 2fr 1.5fr 1fr 1fr 1.5fr";
   const title = "";
   return (
@@ -52,8 +52,7 @@ const ReservationHeader = styled.div`
   justify-content: center;
 `;
 const TitleName = styled.div`
-  border-bottom: 2px solid #8daef2;
-  margin-top: 30px;
+  margin: 50px 0;
 `;
 const Title = styled.span`
   font-size: 1.2rem;
@@ -62,7 +61,8 @@ const Title = styled.span`
 `;
 
 const MainTitle = styled.span`
-  font-size: 1.8rem;
+  font-family: "NEXON Lv2 Gothic Light";
+  font-size: 2.2rem;
   font-weight: 700;
-  color: #8daef2;
+  color: #000;
 `;
