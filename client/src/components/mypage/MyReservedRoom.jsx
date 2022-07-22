@@ -1,14 +1,12 @@
-import { toDate } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { addCommas } from "../../assets/utils/UsefulFunction";
+import { addCommas, isFutureDate } from "../../assets/utils/UsefulFunction";
 
-function MyReservedRoom({ reservation, setDeleteR }) {
+function MyReservedRoom({ reservation }) {
   const navigate = useNavigate();
   // id는 예약번호, name은 공간이름 , 예약자명 ??
   const {
     id,
-    image,
     personnel,
     requirement,
     review,
@@ -20,7 +18,6 @@ function MyReservedRoom({ reservation, setDeleteR }) {
   } = reservation;
   const nickname = localStorage.getItem("nickname");
   const roomName = room ? room.name : "무슨무슨방";
-  const roomPrice = room ? parseInt(room.price) : 999999;
 
   const handleAddReview = (e) => {
     navigate(`/myPage/addReview?bookId=${id}`, {
@@ -42,7 +39,9 @@ function MyReservedRoom({ reservation, setDeleteR }) {
         {/* <RoomImg src={image} alt="공간 이미지"></RoomImg> */}
         <InfoText>
           <InfoTag color="bold">
-            <a href={`/detail/${id}`}>{roomName ?? "무슨무슨방"}</a>
+            <a href={`/detail/${room.space.id}`}>
+              {room.space.name} {roomName}
+            </a>
           </InfoTag>
           <br />
           <InfoTag color="black">
@@ -56,12 +55,20 @@ function MyReservedRoom({ reservation, setDeleteR }) {
         </InfoText>
       </InfoDiv>
       <EditDiv>
-        <span className="deleteReservation" onClick={handleDeleteReservtaion}>
-          예약취소
-        </span>
-        <span className="addReview" onClick={handleAddReview}>
-          {review ? "리뷰 작성" : "리뷰 수정/삭제"}
-        </span>
+        {isFutureDate(date, startTime) ? (
+          <span className="deleteReservation" onClick={handleDeleteReservtaion}>
+            예약취소
+          </span>
+        ) : (
+          <b className="">이용완료</b>
+        )}
+        {isFutureDate(date, startTime) ? (
+          ""
+        ) : (
+          <span className="addReview" onClick={handleAddReview}>
+            {review ? "리뷰 수정/삭제" : "리뷰 작성"}
+          </span>
+        )}
       </EditDiv>
     </RoomDiv>
   );
@@ -118,13 +125,17 @@ const InfoTag = styled.p`
 const EditDiv = styled.div`
   text-algin: left;
 
-  a,
+  b {
+    margin-right: 1rem;
+  }
+
   span {
     text-decoration: underline;
     color: black;
     padding: 0;
     margin: 0 0.5rem;
     cursor: pointer;
+    margin-right: 1rem;
   }
 `;
 
