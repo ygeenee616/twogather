@@ -22,8 +22,6 @@ export default function AdminBook() {
         const data = await req.data.data.spaces.paginatedReservations;
         setTotalPage(req.data.data.spaces.totalPage);
         setData(data);
-        console.log(req);
-        console.log(data);
       } catch (err) {
         console.log(err);
       }

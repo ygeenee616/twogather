@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 export default function HostRoomBook() {
   const [data, setData] = useState("");
   const params = useParams();
-  console.log(params);
+
   const spaceId = params.spaceId;
   useEffect(() => {
     const getData = async () => {
@@ -18,9 +18,7 @@ export default function HostRoomBook() {
         const req = await Api.getAuth(`api/rooms/space/${spaceId}`);
         const data = await req.data.data;
         setData(data);
-      } catch (err) {
-   
-      }
+      } catch (err) {}
     };
     getData();
   }, []);

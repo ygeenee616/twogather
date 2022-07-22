@@ -26,8 +26,6 @@ export default function HostQnA() {
         const data = await req.data.data.paginatedQnas;
         setTotalPage(req.data.data.totalPage);
         setData(data);
-        console.log(req);
-        console.log(data);
       } catch (err) {
         console.log(err);
       }
@@ -44,7 +42,6 @@ export default function HostQnA() {
       const modal = document.querySelector(".successModalWrap");
       modal.style.display = "block";
       window.scrollTo(0, 0);
-      console.log(req);
     } catch (err) {
       console.log(err);
     }
@@ -57,7 +54,6 @@ export default function HostQnA() {
       const modal = document.querySelector(".deleteModalWrap");
       modal.style.display = "block";
       window.scrollTo(0, 0);
-      console.log(req);
     } catch (err) {
       console.log(err);
     }

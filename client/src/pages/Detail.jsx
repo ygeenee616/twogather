@@ -50,10 +50,6 @@ export default function Detail() {
         setData(data);
         const image = await spaceImgDataReq.data.data;
         setImgData(image);
-        console.log(spaceDataReq);
-        console.log(spaceImgDataReq);
-        console.log(data);
-        console.log(image);
       } catch (err) {
         console.log(err);
       }
@@ -79,7 +75,6 @@ export default function Detail() {
       name: name,
       pay: pay,
     };
-    console.log(room.current);
   }
 
   // 예약 정보를 제대로 입력했을 때만 예약 버튼을 활성화하는 함수
@@ -118,7 +113,6 @@ export default function Detail() {
   // date 선택시 적용하는 DatePicker 함수
   function onChangeDate(date) {
     setDate(dateToNumber(date));
-    console.log(dateToString(date));
     handleDateChange(dateToString(date));
   }
 
@@ -145,8 +139,6 @@ export default function Detail() {
     const req = await Api.get(
       `api/reservations/room/${room.current.id}?date=${date}`
     );
-    console.log(date);
-    console.log(req);
     const data = await req.data.data.reservations;
 
     // 예약 내역이 있는 시간 배열
@@ -158,9 +150,7 @@ export default function Detail() {
 
     // undefined 제거
     const bookedArr = booked.filter(Boolean);
-    console.log(bookedArr);
 
-    console.log(bookedTime);
     setBookedTime(bookedArr);
 
     let startTimeList = document.querySelectorAll(".startTime");
@@ -180,7 +170,6 @@ export default function Detail() {
   // 타임피커 초기화
   function clearTimePicker() {
     let bookedList = document.querySelectorAll(".disable");
-    console.log(bookedList);
 
     if (bookedList.length !== 0 || bookedList !== undefined) {
       bookedList.forEach((i) => {
