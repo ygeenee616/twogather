@@ -192,7 +192,7 @@ export class UsersService {
   // 로그인 토큰 발급
   async createLoginToken(user: User) {
     const payload = {
-      userId: user.id,
+      email: user.email,
       user_token: 'loginToken',
     };
 
