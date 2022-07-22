@@ -5,26 +5,17 @@ import PostcodePopup from "../../components/admin/PostcodePopup";
 import * as Api from "../../api";
 import HostNav from "../../components/host/HostNav";
 import { Container } from "../MyPage";
+import { useNavigate } from "react-router-dom";
+import Modal from "../../components/Modal";
 
 export default function AddHost() {
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
   const [datas, setData] = useState({ accountNumber: "" });
-  const [hostInfo, setHostInfo] = useState({
-    businessName: "", //상호명
-    name: "", //대표자명
-    businessNumber: "",
-    phoneNumber: "", //연락처
-    email: "", //이메일
-    accountNumber: "",
-  });
+  const [hostInfo, setHostInfo] = useState({});
 
-  const [bankInfo, setBankInfo] = useState({
-    bankName: "",
-    bankAccount: "",
-    name: "",
-  });
-
+  const [bankInfo, setBankInfo] = useState({});
+  const navigate = useNavigate();
   const handleChangeState = (e) => {
     setHostInfo({
       ...hostInfo,
@@ -39,12 +30,20 @@ export default function AddHost() {
     });
   };
 
+  const openConfirmModal = () => {
+    const modal = document.querySelector(".modalWrap");
+    modal.style.display = "block";
+    window.scrollTo(0, 0);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     //포스트 요청시 데이터 새로 넘겨주기 합성해서
     const account = `${bankInfo.bankName} ${bankInfo.bankAccount} ${bankInfo.name}`;
     setHostInfo({ ...hostInfo, accountNumber: account });
     const response = await Api.patchAuth("api/users", hostInfo);
+    console.log(response);
+    openConfirmModal();
   };
 
   //TODO
@@ -68,6 +67,7 @@ export default function AddHost() {
           <InputBox>
             <StyledLabel>상호명</StyledLabel>
             <StyledInput
+              required
               type="text"
               width={"40%"}
               name="businessName"
@@ -80,6 +80,7 @@ export default function AddHost() {
           <InputBox>
             <StyledLabel>대표자 명</StyledLabel>
             <StyledInput
+              required
               type="text"
               name="name"
               width={"40%"}
@@ -113,19 +114,6 @@ export default function AddHost() {
               required
             ></StyledInput>
           </InputBox>
-
-          <InputBox>
-            <StyledLabel>이메일</StyledLabel>
-            <StyledInput
-              width={"40%"}
-              type="email"
-              name="email"
-              value={hostInfo.email}
-              onChange={handleChangeState}
-              required
-            ></StyledInput>
-          </InputBox>
-
           <InputBox>
             <StyledLabel>계좌번호</StyledLabel>
             <div className="hostAccount">
@@ -184,6 +172,14 @@ export default function AddHost() {
             </StyledButton>
             {/* {포스트 요청하기 } */}
           </ButtonBox>
+          <ModalWrap className="modalWrap">
+            <Modal
+              className="updateModal"
+              title="Host"
+              content="정보가 갱신되었습니다."
+              clickEvent={() => navigate("/host/spaceList")}
+            />
+          </ModalWrap>
         </SpaceForm>
       </Main>
     </div>
@@ -297,4 +293,13 @@ const ButtonBox = styled.div`
 
 const Hr = styled.hr`
   border: 2px #8daef2 solid;
+`;
+
+const ModalWrap = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 244vh;
+  background-color: rgba(90, 90, 90, 0.2);
+  display: none;
 `;

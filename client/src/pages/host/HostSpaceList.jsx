@@ -28,16 +28,17 @@ export default function HostSpaceList({ host }) {
   const offset = (page - 1) * limit;
   const [dataTrigger, setDataTrigger] = useState(0);
   const images = [exImg1, exImg2];
+
   useEffect(() => {
     async function getData() {
       try {
         const res = await api.getAuth("api/spaces/host");
         console.log(res);
-        //const loadedImgs = await loadImgs(data.id);
-        //setImgs(loadedImgs);
+        const loadedImgs = await loadImgs(189);
+        setImgs(loadedImgs);
 
         const data = res.data.data;
-         setDatas(data);
+        setDatas(data);
       } catch (err) {
         console.log(err);
       }
@@ -49,6 +50,37 @@ export default function HostSpaceList({ host }) {
     const modal = document.querySelector(".modalWrap");
     modal.style.display = "block";
     window.scrollTo(0, 0);
+  };
+
+  const loadImgs = async (id) => {
+    setSpaceId(id);
+    console.log(spaceId);
+
+    console.log(id);
+    const getSpaceImgs = async () => {
+      setSpaceId(id);
+      const imgs = await Api.getAuth(`api/space-images/space/${id}`);
+      return imgs.data.data;
+    };
+    const Imgs = await getSpaceImgs();
+
+    let result = setImgs(Imgs);
+
+    let imagesUrls = [];
+
+    Imgs.map((item) => {
+      imagesUrls.push(item.imageUrl);
+    });
+
+    if (result === "") {
+      imagesUrls = [exImg1, exImg2];
+    }
+
+    setImgs(imagesUrls);
+
+    console.log(imagesUrls);
+
+    return imagesUrls;
   };
 
   const closeDeleteSpacePopup = async (props) => {
@@ -66,36 +98,6 @@ export default function HostSpaceList({ host }) {
     window.scrollTo(0, 0);
   };
 
-  // const loadImgs = async (id) => {
-  //   setSpaceId(id);
-  //   console.log(spaceId);
-
-  //   console.log(id);
-  //   const getSpaceImgs = async () => {
-  //     setSpaceId(id);
-  //     const imgs = await Api.getAuth(`api/space-images/space/${id}`);
-  //     return imgs.data.data;
-  //   };
-  //   const Imgs = await getSpaceImgs();
-
-  //   let result = setImgs(Imgs);
-
-  //   let imagesUrls = [];
-
-  //   Imgs.map((item) => {
-  //     imagesUrls.push(item.imageUrl);
-  //   });
-
-  //   if (result === "") {
-  //     imagesUrls = [exImg1, exImg2];
-  //   }
-
-  //   setImgs(imagesUrls);
-
-  //   console.log(imagesUrls);
-
-  //   return imagesUrls;
-  // };
   const renderData = (datas) => {
     return datas.map((data, i) => {
       <>
