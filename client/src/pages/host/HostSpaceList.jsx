@@ -31,7 +31,7 @@ export default function HostSpaceList({ host }) {
   useEffect(() => {
     async function getData() {
       try {
-        const res = await api.get("api/spaces/host");
+        const res = await api.getAuth("api/spaces/host");
         const data = res.data.data;
         setDatas(data);
         console.log(data);
