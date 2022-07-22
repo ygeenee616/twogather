@@ -18,7 +18,8 @@ export default function ProductList() {
   const [DateModalDisplay, setDateModalDisplay] = useState("none");
   const [spaces, setSpaces] = useState([]);
   const [totalPage, setTotalPage] = useState(1);
-  const [imgUrlList, setImgUrlList] = useState([]);
+  const imgUrlList = useRef([]);
+  const [imgUrlListState, setImgUrlListState] = useState(false);
 
   const { search } = window.location;
   const location = useLocation();
@@ -92,6 +93,10 @@ export default function ProductList() {
     );
   }, [location.search]);
 
+  useEffect(() => {
+    setImgUrlListState(imgUrlList.current);
+  }, [imgUrlList.current]);
+
   //api로 데이터 받아옴
   useEffect(() => {
     async function getData() {
@@ -106,15 +111,17 @@ export default function ProductList() {
         //const imgUrlList = [];
         console.log(spacesIdList);
 
-        // spacesIdList.map(async (spaceId) => {
-        //   const imgData = await Api.get(`api/space-images/space/${spaceId}`);
-        //   const imgUrlListElement = imgData.data.data.map((i) => i.imageUrl);
-        //   console.log(imgUrlListElement);
-        //   setImgUrlList([...imgUrlList, imgUrlListElement]);
-        //   //return imgUrlListElement;
-        // });
-        // //setSpaces(datas);
-        // //setImgUrlList(imgUrlList2);
+        spacesIdList.map(async (spaceId) => {
+          const imgData = await Api.get(`api/space-images/space/${spaceId}`);
+          const imgUrlListElement = await imgData.data.data.map(
+            (i) => i.imageUrl
+          );
+          console.log(imgUrlListElement);
+          imgUrlList.current = [...imgUrlList.current, imgUrlListElement];
+          console.log(imgUrlList.current);
+        });
+        //setSpaces(datas);
+        //setImgUrlList(imgUrlList2);
       } catch (err) {
         console.log(err);
       }
@@ -142,11 +149,11 @@ export default function ProductList() {
     //   const imgUrlListElement = imgData.data.data.map((i) => i.imageUrl);
     //   imgUrlList.push(imgUrlListElement);
     // });
-    console.log(imgUrlList);
+    console.log(imgUrlList.current, imgUrlListState);
     return spaces.map((data, i) => (
       <ProductCard
         key={i}
-        src={[exImg1, exImg2]}
+        src={imgUrlListState[i]}
         hashtags={data.hashtags}
         name={data.name}
         address2={data.address2}
@@ -196,7 +203,9 @@ export default function ProductList() {
           />
         </SelectorWrap>
         <SortingSelector selectedOption={orderInput.current} />
-        <ProductWrap>{renderData(spaces)}</ProductWrap>
+        <ProductWrap>
+          {imgUrlListState !== [] && renderData(spaces)}
+        </ProductWrap>
 
         <Pagination total={totalPage} currentPage={currentPage} url={"/list"} />
       </BottomWrap>
