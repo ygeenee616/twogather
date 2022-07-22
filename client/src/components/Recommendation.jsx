@@ -15,12 +15,12 @@ export default function Recommendation() {
         const spacesIdList = datas.map((space) => space.id);
 
         await Promise.all(
-          spacesIdList.map(async (spaceId) => {
+          spacesIdList.map(async (spaceId, i) => {
             const imgData = await Api.get(`api/space-images/space/${spaceId}`);
             const imgUrlListElement = await imgData.data.data.map(
               (i) => i.imageUrl
             );
-            imgUrlList.current = [...imgUrlList.current, imgUrlListElement];
+            imgUrlList.current[i] = imgUrlListElement;
           })
         );
         setSpaces(datas);
