@@ -275,17 +275,12 @@ export class UsersController {
   async kakaocallback(@Req() req, @Res() res) {
     console.log(req.user);
     if (req.user.type === 'login') {
-      // res.cookie('access_token', req.user.access_token);
+      res.cookie('access_token', req.user.access_token);
       // res.cookie('refresh_token', req.user.refresh_token);
-      return {
-        statusCode: 200,
-        message: '로그인 성공',
-        success: true,
-        accessToken: req.user.access_token,
-      };
+      res.redirect('http://localhost:5001/');
     } else {
       const ramdomNumber = Math.ceil(Math.random() * Math.random() * 100000);
-      // res.cookie('once_token', req.user.once_token);
+
       const kakaoUserInfo = {
         email: req.user.user_email,
         password: process.env.KAKAO_KEY,
@@ -293,7 +288,9 @@ export class UsersController {
         loginType: req.user.user_provider,
       };
       console.log(kakaoUserInfo);
-      // await this.usersService.createKakaoUser(kakaoUserInfo);
+      await this.usersService.createKakaoUser(kakaoUserInfo);
+      res.cookie('once_token', req.user.once_token);
+      res.redirect('http://localhost:5001/');
       // return {
       //   statusCode: 200,
       //   message: '로그인 성공',
