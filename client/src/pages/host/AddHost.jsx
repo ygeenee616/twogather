@@ -51,6 +51,9 @@ export default function AddHost() {
     const getData = async () => {
       const userDatas = await Api.getAuth("api/users/info");
       const userData = userDatas.data.data;
+      console.log(userData.accountNumber);
+      const accountNumber = userData.accountNumber.split(" ");
+
       setHostInfo({
         accountNumber: userData.accountNumber, //계좌번호 ㅇㅇ ㅇㅇ ㅇㅇ 이렇게 들어옴
         businessAddress: userData.businessAddress, //주th
@@ -58,6 +61,12 @@ export default function AddHost() {
         name: userData.name, //이름
         businessNumber: userData.businessNumber, //사업자번호
         phoneNumber: userData.phoneNumber, //전화번호
+      });
+
+      setBankInfo({
+        bankName: accountNumber[0],
+        accountNum: accountNumber[1],
+        name: accountNumber[2],
       });
     };
     getData();
