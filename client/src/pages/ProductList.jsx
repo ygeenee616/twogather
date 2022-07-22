@@ -12,86 +12,25 @@ import SortingSelector from "../components/list/SortingSelector";
 import exImg1 from "../assets/images/ex1.png";
 import exImg2 from "../assets/images/ex2.png";
 import * as Api from "../api";
-import { set } from "date-fns/esm";
-
-const ex1 = [
-  {
-    src: [exImg1, exImg2],
-    hashtags: [
-      "#강남모임공간",
-      "#강남파티룸",
-      "#강남럭셔리파티룸",
-      "#강남럭셔리모임공간",
-      "#앤틱공간대여",
-    ],
-    name: "강남최대 앤틱모임공간 공유먼트청담",
-    address1: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
-    address2: "지하1층",
-    price: "150,000",
-    review: "12",
-  },
-];
-const ex2 = [
-  {
-    src: [exImg2, exImg1],
-    hashtags: [
-      "#강남모임공간",
-      "#강남파티룸",
-      "#강남럭셔리파티룸",
-      "#강남럭셔리모임공간",
-      "#앤틱공간대여",
-    ],
-    name: "강남최대 앤틱모임공간 공유먼트청담",
-    address1: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
-    address2: "지하1층",
-    price: "150,000",
-    review: "12",
-  },
-];
-
-let exData = [];
-for (let i = 0; i < 12; i++) {
-  exData = exData.concat(ex1);
-}
-for (let i = 12; i < 24; i++) {
-  exData = exData.concat(ex2);
-}
-
-const renderData = (offset, limit, data) => {
-  return data
-    .slice(offset, offset + limit)
-    .map((data, i) => (
-      <ProductCard
-        key={i}
-        src={data.src}
-        hashtags={data.hashtags}
-        name={data.name}
-        address1={data.address1}
-        address2={data.address2}
-        price={data.price}
-        review={data.review}
-        link={`/detail/1`}
-      />
-    ));
-};
 
 export default function ProductList() {
-  const [page, setPage] = useState(1);
   const [categoryModalDisplay, setcategoryModalDisplay] = useState("none");
   const [DateModalDisplay, setDateModalDisplay] = useState("none");
   const [spaces, setSpaces] = useState([]);
-
-  const limit = 12;
-  const offset = (page - 1) * limit;
+  const totalPage = useRef(1);
+  const imgUrlList = useRef([]);
 
   const { search } = window.location;
   const location = useLocation();
 
+  //query
   const params = new URLSearchParams(search);
   const categoryInput = useRef(params.get("category"));
   const dateInput = useRef(parseInt(params.get("date")));
   const searchInput = useRef(params.get("search"));
   const orderInput = useRef(params.get("order"));
+  const currentPage = useRef(params.get("page"));
+  const queryString = useRef("");
 
   //url이 바뀔시 query 받아오는 함수
   useEffect(() => {
@@ -99,27 +38,112 @@ export default function ProductList() {
     dateInput.current = parseInt(params.get("date"));
     searchInput.current = params.get("search");
     orderInput.current = params.get("order");
+    currentPage.current = params.get("page");
 
+    //query유무에 맞게 queryString 지정
+    if (!categoryInput.current && !searchInput.current && !orderInput.current) {
+      queryString.current = `?order=date&page=${currentPage.current}&perPage=12`;
+    } else if (
+      categoryInput.current &&
+      !searchInput.current &&
+      !orderInput.current
+    ) {
+      queryString.current = `?type=${categoryInput.current}&order=date&page=${currentPage.current}&perPage=12`;
+    } else if (
+      !categoryInput.current &&
+      searchInput.current &&
+      !orderInput.current
+    ) {
+      queryString.current = `?keyword=${searchInput.current}&order=date&page=${currentPage.current}&perPage=12`;
+    } else if (
+      !categoryInput.current &&
+      !searchInput.current &&
+      orderInput.current
+    ) {
+      queryString.current = `?order=${orderInput.current}&page=${currentPage.current}&perPage=12`;
+    } else if (
+      categoryInput.current &&
+      searchInput.current &&
+      !orderInput.current
+    ) {
+      queryString.current = `?type=${categoryInput.current}&keyword=${searchInput.current}&order=date&page=${currentPage.current}&perPage=12`;
+    } else if (
+      categoryInput.current &&
+      !searchInput.current &&
+      orderInput.current
+    ) {
+      queryString.current = `?type=${categoryInput.current}&order=${orderInput.current}&page=${currentPage.current}&perPage=12`;
+    } else if (
+      !categoryInput.current &&
+      searchInput.current &&
+      orderInput.current
+    ) {
+      queryString.current = `?keyword=${searchInput.current}&order=${orderInput.current}&page=${currentPage.current}&perPage=12`;
+    } else {
+      queryString.current = `?type=${categoryInput.current}&keyword=${searchInput.current}&order=${orderInput.current}&page=${currentPage.current}&perPage=12`;
+    }
     console.log(
       categoryInput.current,
       dateInput.current,
       searchInput.current,
-      orderInput.current
+      orderInput.current,
+      currentPage.current,
+      queryString.current
     );
   }, [location.search]);
 
+  //api로 데이터 받아옴
   useEffect(() => {
     async function getData() {
       try {
-        const res = await Api.get(`api/spaces/type/${categoryInput.current}`);
-        const datas = res.data;
-        console.log(datas);
+        const res = await Api.get(`api/spaces${queryString.current}`);
+        const datas = res.data.data.paginatedSpaces.paginatedSpaces;
+
+        const spacesIdList = datas.map((space) => space.id);
+
+        await Promise.all(
+          spacesIdList.map(async (spaceId) => {
+            const imgData = await Api.get(`api/space-images/space/${spaceId}`);
+            const imgUrlListElement = await imgData.data.data.map(
+              (i) => i.imageUrl
+            );
+            imgUrlList.current = [...imgUrlList.current, imgUrlListElement];
+          })
+        );
+        setSpaces(datas);
+        totalPage.current = res.data.data.paginatedSpaces.totalPage;
       } catch (err) {
         console.log(err);
       }
     }
     getData();
   }, []);
+
+  const renderData = (spaces) => {
+    //space의 최소 가격 리스트, room이 없을 시 0을 반환
+    const priceList = spaces.map((space) => {
+      const min = Math.min(...space.rooms.map((i) => i.price));
+      if (min === Infinity) {
+        return 999999;
+      } else {
+        return min;
+      }
+    });
+
+    return spaces.map((data, i) => (
+      <ProductCard
+        key={i}
+        src={imgUrlList.current[i]}
+        hashtags={data.hashtags}
+        name={data.name}
+        address2={data.address2}
+        address3={data.address3}
+        price={priceList[i]}
+        reviewsLength={data.numberOfReviews}
+        link={`/detail/${data.id}`}
+      />
+    ));
+  };
 
   //selector toggle 하나씩만되도록
   const handelClickSelector = (e) => {
@@ -138,32 +162,36 @@ export default function ProductList() {
   };
 
   return (
-    <BottomWrap>
-      <SelectorWrap>
-        <CategoryWrap>
-          <div onClick={handelClickSelector}>
-            <CategorySelector category={categoryInput.current} />
-          </div>
-          <CategoryModal display={categoryModalDisplay} />
-        </CategoryWrap>
-        <DateWrap>
-          <div onClick={handelClickSelector}>
-            <DateSelector />
-          </div>
-          <DateModal display={DateModalDisplay} />
-        </DateWrap>
-        <SelecotrResetBtn category={categoryInput.current} />
-      </SelectorWrap>
-      <SortingSelector />
-      <ProductWrap>{renderData(offset, limit, exData)}</ProductWrap>
+    spaces && (
+      <BottomWrap>
+        <SelectorWrap>
+          <CategoryWrap style={{ position: "relative" }}>
+            <div onClick={handelClickSelector}>
+              <CategorySelector category={categoryInput.current} />
+            </div>
+            <CategoryModal display={categoryModalDisplay} />
+          </CategoryWrap>
+          <DateWrap style={{ position: "relative" }}>
+            <div onClick={handelClickSelector}>
+              <DateSelector />
+            </div>
+            <DateModal display={DateModalDisplay} />
+          </DateWrap>
+          <SelecotrResetBtn
+            category={categoryInput.current}
+            currentPage={currentPage.current}
+          />
+        </SelectorWrap>
+        <SortingSelector selectedOption={orderInput.current} />
+        <ProductWrap>{renderData(spaces)}</ProductWrap>
 
-      <Pagination
-        total={exData.length}
-        limit={limit}
-        page={page}
-        setPage={setPage}
-      />
-    </BottomWrap>
+        <Pagination
+          total={totalPage.current}
+          currentPage={currentPage}
+          url={"/list"}
+        />
+      </BottomWrap>
+    )
   );
 }
 
@@ -194,9 +222,6 @@ const SelectorWrap = styled.div`
 const CategoryWrap = styled.div`
   display: flex;
   flex-direction: column;
-  position: relative;
 `;
 
-const DateWrap = styled(CategoryWrap)`
-  position: relative;
-`;
+const DateWrap = styled(CategoryWrap)``;
