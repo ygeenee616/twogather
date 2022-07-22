@@ -62,7 +62,7 @@
     - 프레임 워크: Nest
     - DB: MySQL, typeORM
     - DevOps: Jenkins, AWS EC2, S3(lambda)
-    - 기타 협업도구 : Swagger, Postman, Slack
+    - 기타 협업도구 : Swagger, Postman, Slack  
     
 - 와이어프레임 (Figma 등 링크 삽입)
   Figma - https://www.figma.com/file/11R0lkBAQmi4Pv2Js7fkUX/elice-project2?node-id=0%3A1
