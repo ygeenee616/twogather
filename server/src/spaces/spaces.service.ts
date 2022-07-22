@@ -42,6 +42,9 @@ export class SpacesService {
           hashtags: true,
           reviews: true,
         },
+        order: {
+          id: 'DESC',
+        },
         relations: {
           rooms: true,
           user: true,
