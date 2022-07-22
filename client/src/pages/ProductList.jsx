@@ -82,14 +82,6 @@ export default function ProductList() {
     } else {
       queryString.current = `?type=${categoryInput.current}&keyword=${searchInput.current}&order=${orderInput.current}&page=${currentPage.current}&perPage=12`;
     }
-    console.log(
-      categoryInput.current,
-      dateInput.current,
-      searchInput.current,
-      orderInput.current,
-      currentPage.current,
-      queryString.current
-    );
   }, [location.search]);
 
   //api로 데이터 받아옴
@@ -102,13 +94,15 @@ export default function ProductList() {
         const spacesIdList = datas.map((space) => space.id);
 
         await Promise.all(
-          spacesIdList.map(async (spaceId) => {
+          spacesIdList.map(async (spaceId, i) => {
             const imgData = await Api.get(`api/space-images/space/${spaceId}`);
-            const imgUrlListElement = await imgData.data.data.map((i) => i.imageUrl);
-            imgUrlList.current = [...imgUrlList.current, imgUrlListElement];
+            const imgUrlListElement = await imgData.data.data.map(
+              (i) => i.imageUrl
+            );
+            imgUrlList.current[i] = imgUrlListElement;
           })
         );
-        
+
         setSpaces(datas);
         totalPage.current = res.data.data.paginatedSpaces.totalPage;
       } catch (err) {
