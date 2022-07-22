@@ -59,6 +59,18 @@ export default function Book() {
     request.current = e;
   }
 
+  useEffect(() => {
+    async function getData() {
+      try {
+        const req = await Api.getAuth(`api/users/info`);
+        console.log(req);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getData();
+  }, []);
+
   // API 호출용 날짜 포맷팅
   function dateToBook(date) {
     const fullDate = String(date);
