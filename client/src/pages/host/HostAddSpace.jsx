@@ -67,7 +67,6 @@ export default function HostAddSpace({ mode }) {
       address1: addressState.myZoneCode, //실주소
       address2: addressState.myFullAddress,
       address3: addressState.myPersonalAddress,
-      images: detailImgs,
     });
 
     const data = response.data.data;

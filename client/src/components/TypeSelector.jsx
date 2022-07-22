@@ -13,7 +13,7 @@ export default function TypeSelector({ state, setState }) {
       <Container>
         {lists.map((item, i) => {
           return (
-            <RadioBox cl>
+            <RadioBox key={i}>
               <label>
                 <input
                   value={item}
