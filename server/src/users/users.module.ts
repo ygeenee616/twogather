@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 import { User } from './entities/users.entity';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { KakaoStrategy } from './strategies/kakao.strategy';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
@@ -29,7 +30,7 @@ import { UsersService } from './users.service';
   ],
   exports: [TypeOrmModule, UsersService, JwtStrategy, PassportModule],
   controllers: [UsersController],
-  providers: [UsersService, JwtStrategy],
+  providers: [UsersService, JwtStrategy, KakaoStrategy],
 })
 export class UsersModule {
   constructor(private usersService: UsersService) {}
