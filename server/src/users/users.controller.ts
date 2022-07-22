@@ -280,20 +280,22 @@ export class UsersController {
         accessToken: req.user.access_token,
       };
     } else {
+      const ramdomNumber = Math.ceil(Math.random() * Math.random() * 100000);
       // res.cookie('once_token', req.user.once_token);
-      const kakaoUserInfo: CreateUserDto = {
-        email: req.user_email,
+      const kakaoUserInfo = {
+        email: req.user.user_email,
         password: process.env.KAKAO_KEY,
-        nickname: req.user_nick,
-        loginType: req.user_provider,
+        nickname: `${req.user.user_provider}${ramdomNumber}`,
+        loginType: req.user.user_provider,
       };
-      await this.usersService.createKakaoUser(kakaoUserInfo);
-      return {
-        statusCode: 200,
-        message: '로그인 성공',
-        success: true,
-        accessToken: req.user.access_token,
-      };
+      console.log(kakaoUserInfo);
+      // await this.usersService.createKakaoUser(kakaoUserInfo);
+      // return {
+      //   statusCode: 200,
+      //   message: '로그인 성공',
+      //   success: true,
+      //   accessToken: req.user.access_token,
+      // };
     }
     // res.redirect('http://localhost:5001/register');
     // res.end();

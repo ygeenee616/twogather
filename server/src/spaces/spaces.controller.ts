@@ -151,7 +151,7 @@ export class SpacesController {
   }
 
   // 공간 ID로 조회(공간 상세보기)
-  @Get('/random')
+  @Get('/best')
   @ApiOperation({
     summary: '공간 랜덤 4개 조회 API',
     description: '랜덤 공간 조회하기',
@@ -161,7 +161,7 @@ export class SpacesController {
     description: '랜덤 공간 조회 성공',
   })
   async findByRandom() {
-    const randomSpaces: Array<any> = await this.spacesService.findByRandom();
+    const randomSpaces: Array<any> = await this.spacesService.findBest4();
 
     return {
       status: 200,
