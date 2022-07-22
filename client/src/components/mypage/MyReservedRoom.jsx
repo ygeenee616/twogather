@@ -38,7 +38,6 @@ function MyReservedRoom({ reservation, setDeleteR }) {
   return (
     <RoomDiv>
       <InfoDiv>
-        <RoomImg src={image} alt="공간 이미지"></RoomImg>
         <InfoText>
           <InfoTag color="bold">
             <a href={`/detail/${id}`}>{roomName ?? "무슨무슨방"}</a>
