@@ -41,11 +41,15 @@ function RegisterForm() {
           <PageTitle>회원가입</PageTitle>
 
           <SocialRegisterDiv>
-            <SocialRegisterBtn className="kakao" onclick={handleKakaoRegister}>
-              <img src="/images/kakaoLogo.png" alt="KAKAO" />
-              <p>카카오로 시작하기</p>
-            </SocialRegisterBtn>
-            <LoginWithGoogle />
+            <a href={`http://localhost:3000/api/users/auth/kakao`}>
+              <SocialRegisterBtn
+                className="kakao"
+                onclick={handleKakaoRegister}
+              >
+                <img src="/images/kakaoLogo.png" alt="KAKAO" />
+                <p>카카오로 시작하기</p>
+              </SocialRegisterBtn>
+            </a>
           </SocialRegisterDiv>
 
           <Line />
@@ -64,6 +68,11 @@ const SocialRegisterDiv = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 1.5rem 0 0.5rem;
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
 `;
 
 const SocialRegisterBtn = styled.button`

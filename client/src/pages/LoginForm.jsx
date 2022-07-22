@@ -126,7 +126,7 @@ function LoginForm() {
       } catch (err) {
         console.log("로그인에 실패하였습니다.", err);
         setAlertMsg(
-          "아이디 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해주세요.",
+          "아이디 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해주세요."
         );
       }
     }
@@ -161,16 +161,12 @@ function LoginForm() {
           </AlertMsg>
 
           <SocialLoginDiv>
-            <SocialLoginBtn className="kakao-login">
-              <img src="/images/kakaoLogo.png" alt="KAKAO" />
-              <a href={`http://localhost:3000/api/users/auth/kakao`}>
+            <a href={`http://localhost:3000/api/users/auth/kakao`}>
+              <SocialLoginBtn className="kakao-login">
+                <img src="/images/kakaoLogo.png" alt="KAKAO" />
                 <p>카카오 로그인</p>
-              </a>
-            </SocialLoginBtn>
-            <SocialLoginBtn className="kakao-login">
-              <img src="/images/googleLogo.png" alt="GOOGLE"></img>
-              <p>구글 로그인</p>
-            </SocialLoginBtn>
+              </SocialLoginBtn>
+            </a>
           </SocialLoginDiv>
 
           <LoginFooterDiv>
@@ -191,6 +187,7 @@ function LoginForm() {
           </LoginFooterDiv>
         </ContentsDiv>
       </FormDiv>
+      ㅈ
       <ModalWrap id="FindPWModal">
         <ModalWithInput
           id="ModalWithInput"
@@ -253,13 +250,17 @@ const SocialLoginDiv = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  a {
+    text-decoration: none;
+    color: black;
+  }
 `;
 
 const SocialLoginBtn = styled.button`
   display: flex;
   flex-direction: row;
   height: 3rem;
-  width: 10rem;
+  width: 18rem;
   background-color: white;
   border: solid #d9d9d9;
   border-radius: 10px;
@@ -274,7 +275,7 @@ const SocialLoginBtn = styled.button`
     width: 2rem;
     height: 2rem;
     border-radius: 5rem;
-    margin: 0.3rem 1rem 0 0;
+    margin: 0.3rem 4.5rem 0 0;
   }
 `;
 const LoginFooterDiv = styled.table`

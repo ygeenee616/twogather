@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 function MyProfileInfo({ user }) {
   const { nickname, sex, email, loginType, name, phoneNumber } = user;
-
   return (
     <div>
       <ProfileInfo>
