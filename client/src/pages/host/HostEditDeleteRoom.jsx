@@ -31,6 +31,11 @@ export default function HostAddRoom({ mode }) {
   };
 
   const images = [];
+  console.log(params);
+  useEffect(() => {
+    const response = await Api.getAuth(`api/rooms/${params.roomId}`);
+    console(response);  
+  }, []);
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
@@ -60,22 +65,26 @@ export default function HostAddRoom({ mode }) {
 
   const loadDetailImage = (e) => {
     setDatailImgs(e.target.files);
+
     const fileArr = Array.from(e.target.files);
 
     const imgBox = document.querySelector(".imgBox");
-
     fileArr.forEach((file, index) => {
       const reader = new FileReader();
 
       //이미지 박스와 이미지 생성
       const imgDiv = document.createElement("div");
       const img = document.createElement("img");
+
       img.classList.add("image"); //이미지에 이미지 태그 붙이기
       imgDiv.classList.add("imgDiv");
 
-      img.onclick = function (e) {
+      imgDiv.addEventListener("click", (e) => {
+        fileArr.splice(index, 1);
+        setDatailImgs(fileArr);
+        e.target.remove();
         imgDiv.remove();
-      };
+      });
 
       imgDiv.appendChild(img);
 
@@ -84,9 +93,34 @@ export default function HostAddRoom({ mode }) {
       }; //end on load
 
       imgBox.appendChild(imgDiv);
-
       reader.readAsDataURL(file);
     });
+  };
+
+  //이미지를 s3에 저장
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleImgFileInput = (e) => {
+    console.log(e.target.files);
+    const data = e.target.files;
+    console.log(data);
+    setSelectedFile(data);
+
+    console.log(selectedFile);
+  };
+
+  const handleImgUpload = async () => {
+    let imgData = new FormData();
+
+    Array.from(selectedFile).map((item) => {
+      imgData.append("images", item);
+      console.log(item.name);
+    });
+
+    const data = await Api.postImgAuth(`api/uploads/space/${spaceId}`, imgData);
+
+    console.log(data);
+    console.log(imgData);
   };
 
   return (
