@@ -1,10 +1,14 @@
 import styled from "styled-components";
 import { GrPowerReset } from "react-icons/gr";
 
-export default function SelecotrResetBtn({ category }) {
+export default function SelecotrResetBtn({ category, currentPage }) {
   return (
     <Button
-      onClick={() => window.location.replace(`/list?category=${category}`)}
+      onClick={() =>
+        window.location.replace(
+          `/list?category=${category}&page=${currentPage}`
+        )
+      }
     >
       <div style={{ display: "flex", margin: "auto" }}>
         <GrPowerReset />

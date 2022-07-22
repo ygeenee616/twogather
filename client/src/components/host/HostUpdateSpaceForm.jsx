@@ -7,16 +7,21 @@ import PostcodePopup from "../admin/PostcodePopup";
 import Modal from "../Modal";
 import HashTag from "./HashTag";
 import * as Api from "../../api";
-import TypeSelector from "../../components/TypeSelector";
+import TypeSelector from "../TypeSelector";
 
 export default function HostSpaceForm({ data }) {
   const nav = useNavigate();
   const [imageSrc, setImageSrc] = useState("");
-  const [detailImgs, setDatailImgs] = useState([]);
+  const [detailImgs, setDatailImgs] = useState(null);
   const [select, setSelect] = useState({
     items: ["파티룸", "스터디룸", "회의실", "연습실", "스튜디오"],
     selectItem: "",
   });
+  useEffect(() => {
+    setSelect({ ...select, selectItem: data.type });
+  }, []);
+
+  const { spaceId } = useParams();
 
   // hashTag state
   const tagIdList = data.hashtags.map((item) => item.id);
@@ -38,8 +43,6 @@ export default function HostSpaceForm({ data }) {
     name: data.name, //공간명
     type: data.type, //공간타입
     intro: data.intro, //공간소개
-    //hashTags: data.hashTags, //태그
-    Images: "귀여운탱구사진",
     notice: data.notice, //주의사항
     address1: addressState.myZoneCode,
     address2: addressState.myFullAddress,
@@ -56,7 +59,6 @@ export default function HostSpaceForm({ data }) {
   };
 
   useEffect(() => {
-    setSelect({ ...select, selectItem: spaceInfo.type });
     setSpaceInfo({
       ...spaceInfo,
       type: select.selectItem,
@@ -64,7 +66,7 @@ export default function HostSpaceForm({ data }) {
       address2: addressState.myFullAddress,
       address3: addressState.myPersonalAddress,
     });
-  }, [addressState]);
+  }, [addressState, select.selectItem]);
 
   const subViewInput = useRef();
 
@@ -79,24 +81,16 @@ export default function HostSpaceForm({ data }) {
   //공간수정 버튼 누를 시 patch 요청
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-    await Api.patchAuth(`api/spaces/host/${data.id}`, {
-      name: spaceInfo.name, //공간명
-      type: spaceInfo.type, //공간타입
-      notice: spaceInfo.notice, //주의사항
-      intro: spaceInfo.intro, //공간소개
-      address1: addressState.myZoneCode, //실주소
-      address2: addressState.myFullAddress,
-      address3: addressState.myPersonalAddress,
-      //hashTags: spaceInfo.hashTags,
-      //Images: "귀여운탱구사진",
-    });
+    await Api.patchAuth(`api/spaces/host/${spaceId}`, spaceInfo);
 
     tagIdList.map(async (id, i) => {
       return await Api.deleteAuth(`api/hashtags/${id}`);
     });
     tagList.map(async (item, i) => {
-      return await Api.postAuth(`api/hashtags/${data.id}`, item);
+      return await Api.postAuth(`api/hashtags/${spaceId}`, item);
     });
+
+    handleImgUpload(e);
 
     const modal = document.querySelector(".modalWrap");
     modal.style.display = "block";
@@ -118,7 +112,6 @@ export default function HostSpaceForm({ data }) {
     setTagList(updatedTagList);
     setTagItem("");
   };
-
 
   // hashTag 삭제
   const removeHashTag = (e) => {
@@ -164,22 +157,26 @@ export default function HostSpaceForm({ data }) {
 
   const loadDetailImage = (e) => {
     setDatailImgs(e.target.files);
+
     const fileArr = Array.from(e.target.files);
 
     const imgBox = document.querySelector(".imgBox");
-
     fileArr.forEach((file, index) => {
       const reader = new FileReader();
 
       //이미지 박스와 이미지 생성
       const imgDiv = document.createElement("div");
       const img = document.createElement("img");
+
       img.classList.add("image"); //이미지에 이미지 태그 붙이기
       imgDiv.classList.add("imgDiv");
 
-      img.onclick = function (e) {
+      imgDiv.addEventListener("click", (e) => {
+        fileArr.splice(index, 1);
+        setDatailImgs(fileArr);
+        e.target.remove();
         imgDiv.remove();
-      };
+      });
 
       imgDiv.appendChild(img);
 
@@ -188,12 +185,38 @@ export default function HostSpaceForm({ data }) {
       }; //end on load
 
       imgBox.appendChild(imgDiv);
-
       reader.readAsDataURL(file);
     });
   };
 
+  //이미지를 s3에 저장
+  const selectedFile = useRef(null);
 
+  const handleImgFileInput = (e) => {
+    console.log(e.target.files);
+    const data = e.target.files;
+    console.log(data);
+    selectedFile.current = data;
+
+    console.log(selectedFile.current);
+  };
+
+  const handleImgUpload = async () => {
+    let imgData = new FormData();
+
+    Array.from(selectedFile.current).map((item) => {
+      imgData.append("images", item);
+      console.log(imgData);
+    });
+
+    console.log(imgData);
+
+    const data = await Api.patchImgAuth(
+      `api/uploads/space/${spaceId}`,
+      imgData
+    );
+    console.log(data);
+  };
 
   return (
     <Main>
@@ -275,8 +298,16 @@ export default function HostSpaceForm({ data }) {
             type="file"
             multiple
             accept="image/*"
-            onChange={loadDetailImage}
+            onChange={(e) => {
+              loadDetailImage(e);
+              handleImgFileInput(e);
+            }}
+            id="imgs"
+            style={{ display: "none" }}
           ></ImageInput>
+          <Label htmlFor="imgs" id="imgs" type="file">
+            사진선택
+          </Label>
         </InputBox>
 
         <ButtonBox>
@@ -305,7 +336,7 @@ export default function HostSpaceForm({ data }) {
             className="updateModal"
             title=""
             content="수정이 완료되었습니다."
-          onClick = {() =>nav("host/spaceList")}
+            clickEvent={() => nav("/host/spaceList")}
           />
         </ModalWrap>
       </SpaceForm>
@@ -459,4 +490,30 @@ const NewSelector = styled(TypeSelector)`
   display: flex;
   justify-content: space-around;
   align-items: center;
+`;
+
+const Label = styled.label`
+  width: 48%;
+  height: 40px;
+  line-height: 40px;
+
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+
+  background-color: #8daef2;
+  color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition-duration: 0.3s;
+
+  :hover {
+    background-color: #5155a6;
+  }
+  & + & {
+    margin-left: 20px;
+  }
 `;

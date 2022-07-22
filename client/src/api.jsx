@@ -180,14 +180,14 @@ async function patchAuth(endpoint, data) {
 async function patchImgAuth(endpoint, data) {
   // JSON.stringify 함수: Javascript 객체를 JSON 형태로 변환함.
   // 예시: {name: "Kim"} => {"name": "Kim"}
-  const bodyData = JSON.stringify(data);
+  //const bodyData = JSON.stringify(data);
 
   console.log(`%cPATCH 요청: ${serverUrl + endpoint}`, "color: #059c4b;");
-  console.log(`%cPATCH 요청 데이터: ${bodyData}`, "color: #059c4b;");
+  console.log(`%cPATCH 요청 데이터: ${data}`, "color: #059c4b;");
 
   let response;
   try {
-    response = await axios.patch(serverUrl + endpoint, bodyData, {
+    response = await axios.patch(serverUrl + endpoint, data, {
       // JWT 토큰을 헤더에 담아 백엔드 서버에 보냄.
       headers: {
         "Content-Type": "multipart/form-data",
