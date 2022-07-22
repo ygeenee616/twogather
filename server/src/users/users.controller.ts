@@ -207,6 +207,14 @@ export class UsersController {
     return { status: 201, description: '내 정보 수정 성공', data: updatedUser };
   }
 
+  @Patch(':id')
+  async update(
+    @Param() id: number,
+    @Body(ValidationPipe) userData: UpdateUserDto,
+  ) {
+    await this.usersService.update(id, userData);
+  }
+
   // admin 기능
   @Delete('/:id')
   @UseGuards(AuthGuard())
