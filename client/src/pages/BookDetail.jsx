@@ -25,6 +25,8 @@ export default function BookDetail() {
 
   const navigate = useNavigate();
   const { bookId } = useParams();
+  const link = window.location.pathname;
+  console.log(link.includes("host"));
 
   useEffect(() => {
     const getData = async (bookId) => {
@@ -65,12 +67,12 @@ export default function BookDetail() {
           startTime={data.startTime}
           endTime={data.endTime}
           people={data.personnel}
-          pay={data.totalPrice}
+          totalPrice={data.totalPrice}
         />
         <PostBookerInfo
-          name={data.user.name}
-          phone={data.user.phoneNumber}
-          email={data.user.email}
+          name={data.reserveUsername}
+          phone={data.reservePhoneNumber}
+          email={data.reserveEmail}
           purpose={data.purpose}
           request={data.requirement}
         />
@@ -87,7 +89,11 @@ export default function BookDetail() {
           <Modal
             title={"예약 삭제 성공"}
             content={"예약이 삭제 되었습니다."}
-            clickEvent={() => window.location.replace("/admin/bookList?page=1")}
+            clickEvent={() => {
+              link.includes("host")
+                ? window.location.replace("/host/bookList")
+                : window.location.replace("/admin/bookList?page=1");
+            }}
           />
         </ModalWrap>
       </FullContainer>
