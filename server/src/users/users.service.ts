@@ -200,31 +200,31 @@ export class UsersService {
     });
   }
 
-  // 리프레쉬 토큰 발급
-  async createRefreshToken(user: User) {
-    const payload = {
-      userId: user.id,
-      user_token: 'refreshToken',
-    };
+  // // 리프레쉬 토큰 발급
+  // async createRefreshToken(user: User) {
+  //   const payload = {
+  //     userId: user.id,
+  //     user_token: 'refreshToken',
+  //   };
 
-    const token = this.jwtService.sign(payload, {
-      secret: process.env.JWT_SECRET,
-      expiresIn: '50m',
-    });
+  //   const token = this.jwtService.sign(payload, {
+  //     secret: process.env.JWT_SECRET,
+  //     expiresIn: '50m',
+  //   });
 
-    const refresh_token = CryptoJS.AES.encrypt(
-      JSON.stringify(token),
-      process.env.AES_KEY,
-    ).toString();
+  //   const refresh_token = CryptoJS.AES.encrypt(
+  //     JSON.stringify(token),
+  //     process.env.AES_KEY,
+  //   ).toString();
 
-    await this.usersRepository
-      .createQueryBuilder()
-      .update(User)
-      .set({ user_refresh_token: token })
-      .where(`userId = ${user.id}`)
-      .execute();
-    return refresh_token;
-  }
+  //   await this.usersRepository
+  //     .createQueryBuilder()
+  //     .update(User)
+  //     .set({ user_refresh_token: token })
+  //     .where(`userId = ${user.id}`)
+  //     .execute();
+  //   return refresh_token;
+  // }
 
   // 1회용 토큰 발급
   onceToken(user_profile: any) {
