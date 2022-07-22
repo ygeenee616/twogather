@@ -19,6 +19,7 @@ export default function TypeSelector({ state, setState }) {
                   value={item}
                   type="radio"
                   name="spaceType"
+            
                   onChange={(e) => {
                     handleSelectItem(e);
                   }}

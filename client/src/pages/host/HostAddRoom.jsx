@@ -19,7 +19,10 @@ export default function HostAddRoom({ mode }) {
   const [tagList, setTagList] = useState([]);
   const [alert, setAlert] = useState("");
   const [roomInfo, setRoomInfo] = useState({});
-
+  const [select, setSelect] = useState({
+    items: ["파티룸", "스터디룸", "회의실", "연습실", "스튜디오"],
+    selectItem: "파티룸",
+  });
   const navigate = useNavigate();
   const params = useParams();
 
@@ -44,7 +47,7 @@ export default function HostAddRoom({ mode }) {
         name: roomInfo.name, //공간명
         capacity: Number(roomInfo.personal), //수용인원
         price: Number(roomInfo.price), //공간타입
-        description: roomInfo.description,
+        description: select.selectItem,
       });
 
       const roomId = roomResponse.data.data.id;
@@ -136,15 +139,9 @@ export default function HostAddRoom({ mode }) {
           ></StyledInput>
         </InputBox>
 
-        <InputBox>
-          <StyledLabel>룸 한줄 소개</StyledLabel>
-          <StyledInput
-            type="text"
-            width="50%"
-            name="description"
-            value={roomInfo.description}
-            onChange={handleChangeRoomState}
-          ></StyledInput>
+        <InputBox className="selectBox">
+          <StyledLabel>공간 타입</StyledLabel>
+          <NewSelector state={select} setState={setSelect}></NewSelector>
         </InputBox>
 
         <InputBox>
@@ -421,4 +418,9 @@ const Label = styled.label`
   & + & {
     margin-left: 20px;
   }
+`;
+const NewSelector = styled(TypeSelector)`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 `;

@@ -244,11 +244,13 @@ export default function HostAddSpace({ mode }) {
             onChange={(e) => handleChangeState(e)}
           ></StyledTextArea>
         </InputBox>
+        
         <InputBox className="selectBox">
           <StyledLabel>공간 타입</StyledLabel>
           <NewSelector state={select} setState={setSelect}></NewSelector>
         </InputBox>
         <HashTag
+
           tagItem={tagItem}
           setTagItem={setTagItem}
           tagList={tagList}
