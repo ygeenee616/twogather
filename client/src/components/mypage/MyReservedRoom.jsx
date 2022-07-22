@@ -16,6 +16,7 @@ function MyReservedRoom({ reservation, setDeleteR }) {
     date,
     startTime,
     endTime,
+    totalPrice,
   } = reservation;
   const nickname = localStorage.getItem("nickname");
   const roomName = room ? room.name : "무슨무슨방";
@@ -38,7 +39,7 @@ function MyReservedRoom({ reservation, setDeleteR }) {
   return (
     <RoomDiv>
       <InfoDiv>
-        <RoomImg src={image} alt="공간 이미지"></RoomImg>
+        {/* <RoomImg src={image} alt="공간 이미지"></RoomImg> */}
         <InfoText>
           <InfoTag color="bold">
             <a href={`/detail/${id}`}>{roomName ?? "무슨무슨방"}</a>
@@ -50,7 +51,7 @@ function MyReservedRoom({ reservation, setDeleteR }) {
           <InfoTag color="grey">
             예약일시: {date.split("T")[0]} {startTime}시~{endTime}시
           </InfoTag>
-          <InfoTag color="grey"> 결제금액: {addCommas(roomPrice)} 원</InfoTag>
+          <InfoTag color="grey"> 결제금액: {addCommas(totalPrice)} 원</InfoTag>
           <InfoTag color="italic">"{requirement}"</InfoTag>
         </InfoText>
       </InfoDiv>
@@ -59,7 +60,7 @@ function MyReservedRoom({ reservation, setDeleteR }) {
           예약취소
         </span>
         <span className="addReview" onClick={handleAddReview}>
-          리뷰 작성
+          {review ? "리뷰 작성" : "리뷰 수정/삭제"}
         </span>
       </EditDiv>
     </RoomDiv>
