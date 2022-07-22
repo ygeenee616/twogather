@@ -73,7 +73,9 @@ export class UsersService {
         relations: {
           reservations: {
             review: true,
-            room: true,
+            room: {
+              space: true,
+            },
           },
           qnas: {
             space: true,
