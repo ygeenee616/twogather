@@ -198,7 +198,7 @@ export class UsersService {
 
     return this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET,
-      expiresIn: '6m',
+      expiresIn: '2h',
     });
   }
 
@@ -239,7 +239,7 @@ export class UsersService {
 
     return this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET,
-      expiresIn: '10m',
+      expiresIn: '2h',
     });
   }
 
