@@ -118,10 +118,10 @@ function LoginForm() {
                   <a href="/register">회원가입</a>
                 </LinkTD>
               </tr>
-              <tr>
+              {/* <tr>
                 <QuestionTD>비밀번호를 잊으셨나요?</QuestionTD>
                 <LinkTD>비밀번호 찾기</LinkTD>
-              </tr>
+              </tr> */}
             </thead>
           </LoginFooterDiv>
         </ContentsDiv>
