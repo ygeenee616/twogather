@@ -99,7 +99,7 @@ function LoginForm() {
             <span>{alertMsg}</span>
           </AlertMsg>
 
-          <SocialLoginDiv>
+          {/* <SocialLoginDiv>
             <SocialLoginBtn className="kakao-login">
               <img src="/images/kakaoLogo.png" alt="KAKAO" />
               <p>카카오 로그인</p>
@@ -108,7 +108,7 @@ function LoginForm() {
               <img src="/images/googleLogo.png" alt="GOOGLE"></img>
               <p>구글 로그인</p>
             </SocialLoginBtn>
-          </SocialLoginDiv>
+          </SocialLoginDiv> */}
 
           <LoginFooterDiv>
             <thead>
