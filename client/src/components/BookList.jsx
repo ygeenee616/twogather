@@ -33,24 +33,30 @@ export default function BookList({ data, endpoint }) {
             </tr>
           </thead>
           <tbody>
-            {data.map((item, i) => {
-              return (
-                <tr align="center" key={i}>
-                  <td>{item.user.name}</td>
-                  {/* <td>{item.room.id}</td> */}
-                  <td>파티룸</td>
-                  <td>{item.date}</td>
-                  <td>{item.personnel}</td>
-                  <td>{item.totalPrice}</td>
-                  <td>{item.user.phoneNumber}</td>
-                  <td>
-                    <Link to={`${endpoint}${item.id}`}>
-                      <FcSettings className="icon" size={"1.5rem"} />
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
+            {data.length === 0 ? (
+              <tr align="center">
+                <td colSpan="7">아직 등록된 예약 내역이 없습니다.</td>
+              </tr>
+            ) : (
+              data.map((item, i) => {
+                return (
+                  <tr align="center" key={i}>
+                    <td>{item.user.name}</td>
+                    {/* <td>{item.room.id}</td> */}
+                    <td>파티룸</td>
+                    <td>{item.date}</td>
+                    <td>{item.personnel}</td>
+                    <td>{item.totalPrice}</td>
+                    <td>{item.user.phoneNumber}</td>
+                    <td>
+                      <Link to={`${endpoint}${item.id}`}>
+                        <FcSettings className="icon" size={"1.5rem"} />
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
           </tbody>
         </table>
       </Container>

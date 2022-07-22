@@ -45,7 +45,7 @@ export default function HomeImageSlider({ images }) {
           {images.map((image) => {
             return (
               <div
-                onClick={() => nav(`/list?category=${image.title}`)}
+                onClick={() => nav(`/list?category=${image.title}&page=1`)}
                 key={image.id}
               >
                 <img src={image.url} />
