@@ -36,7 +36,6 @@ export default function Dropbox({ rooms, acceptPeople, checkSelectRoom }) {
           // api 데이터 받아오는 함수
 
           // getImg(room.id);
-          // setImage(imageUrl.current);
           return (
             <Container key={i}>
               <RoomItem>

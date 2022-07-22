@@ -28,6 +28,8 @@ import { PassportModule } from '@nestjs/passport';
 import { NoticesModule } from './notices/notices.module';
 import { Notice } from './notices/entities/notice.entity';
 import { UploadsModule } from './uploads/uploads.module';
+import { EmailService } from './email/email.service';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -79,9 +81,10 @@ import { UploadsModule } from './uploads/uploads.module';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     NoticesModule,
     UploadsModule,
+    EmailModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, EmailService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
