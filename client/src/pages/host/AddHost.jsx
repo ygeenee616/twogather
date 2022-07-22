@@ -13,9 +13,9 @@ export default function AddHost() {
   const [detailImgs, setDatailImgs] = useState([]);
   const [datas, setData] = useState({ accountNumber: "" });
   const [hostInfo, setHostInfo] = useState({});
-
   const [bankInfo, setBankInfo] = useState({});
   const navigate = useNavigate();
+
   const handleChangeState = (e) => {
     setHostInfo({
       ...hostInfo,
@@ -42,16 +42,33 @@ export default function AddHost() {
     const account = `${bankInfo.bankName} ${bankInfo.bankAccount} ${bankInfo.name}`;
     setHostInfo({ ...hostInfo, accountNumber: account });
     const response = await Api.patchAuth("api/users", hostInfo);
-    console.log(response);
+
     openConfirmModal();
   };
 
+  useEffect(() => {
+    const getData = async () => {
+      const userDatas = await Api.getAuth("api/users/info");
+      const userData = userDatas.data.data;
+      setHostInfo({
+        accountNumber: userData.accountNumber, //계좌번호 ㅇㅇ ㅇㅇ ㅇㅇ 이렇게 들어옴
+        businessAddress: userData.businessAddress, //주th
+        businessName: userData.businessName, // 상호명
+        name: userData.name, //이름
+        businessNumber: userData.businessNumber, //사업자번호
+        phoneNumber: userData.phoneNumber, //전화번호
+      });
+    };
+    getData();
+  }, []);
+
+  //1. 로그인안했으면 -> 로그인하도록 리다이렉트
+
+  //2. host등록 되어있으면 -> 호스트 정보가 미리 보이도록
+
+  //3. 없으면 빈칸으로
+
   //TODO
-  //데이터들 STATE객체화 시켜서 받기
-  //onClick 이벤트 만들기
-  //주소 api 따와서 주소불러오기
-  //이미지 그리드로 보여주기
-  // - 동적으로 생성해야됨
 
   return (
     <div>

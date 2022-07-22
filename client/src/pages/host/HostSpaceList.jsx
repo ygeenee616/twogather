@@ -34,8 +34,8 @@ export default function HostSpaceList({ host }) {
       try {
         const res = await api.getAuth("api/spaces/host");
         console.log(res);
-        const loadedImgs = await loadImgs(189);
-        setImgs(loadedImgs);
+        // const loadedImgs = await loadImgs(189);
+        // setImgs(loadedImgs);
 
         const data = res.data.data;
         setDatas(data);
@@ -52,36 +52,36 @@ export default function HostSpaceList({ host }) {
     window.scrollTo(0, 0);
   };
 
-  const loadImgs = async (id) => {
-    setSpaceId(id);
-    console.log(spaceId);
+  // const loadImgs = async (id) => {
+  //   setSpaceId(id);
+  //   console.log(spaceId);
 
-    console.log(id);
-    const getSpaceImgs = async () => {
-      setSpaceId(id);
-      const imgs = await Api.getAuth(`api/space-images/space/${id}`);
-      return imgs.data.data;
-    };
-    const Imgs = await getSpaceImgs();
+  //   console.log(id);
+  //   const getSpaceImgs = async () => {
+  //     setSpaceId(id);
+  //     const imgs = await Api.getAuth(`api/space-images/space/${id}`);
+  //     return imgs.data.data;
+  //   };
+  //   const Imgs = await getSpaceImgs();
 
-    let result = setImgs(Imgs);
+  //   let result = setImgs(Imgs);
 
-    let imagesUrls = [];
+  //   let imagesUrls = [];
 
-    Imgs.map((item) => {
-      imagesUrls.push(item.imageUrl);
-    });
+  //   Imgs.map((item) => {
+  //     imagesUrls.push(item.imageUrl);
+  //   });
 
-    if (result === "") {
-      imagesUrls = [exImg1, exImg2];
-    }
+  //   if (result === "") {
+  //     imagesUrls = [exImg1, exImg2];
+  //   }
 
-    setImgs(imagesUrls);
+  //   setImgs(imagesUrls);
 
-    console.log(imagesUrls);
+  //   console.log(imagesUrls);
 
-    return imagesUrls;
-  };
+  //   return imagesUrls;
+  // };
 
   const closeDeleteSpacePopup = async (props) => {
     const spaceId = props;
