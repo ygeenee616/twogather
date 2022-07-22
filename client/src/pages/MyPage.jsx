@@ -35,6 +35,10 @@ function MyPage() {
         // data.reservation 과 data.rooms 합치기
         setReservations(data.reservations);
         setQnas(data.qnas);
+
+        // try{
+        //   const space = await Api.getAuth('')
+        // }
       } catch (err) {
         console.log(err);
       }

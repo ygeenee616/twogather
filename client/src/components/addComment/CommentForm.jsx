@@ -65,6 +65,9 @@ export const BtnContainer = styled.div`
   .submit {
     background-color: #8daef2;
   }
+  .delete {
+    background-color: #ff4500;
+  }
 
   button {
     border: none;
