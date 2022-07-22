@@ -58,6 +58,7 @@ export default function AddHost() {
       try {
         const userDatas = await Api.getAuth("api/users/info");
         const userData = userDatas.data.data;
+
         const accountData = userData.accountNumber;
         let accountNumbers = "";
         if (accountData != null) {
