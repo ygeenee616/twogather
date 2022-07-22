@@ -28,22 +28,8 @@ export default function HostAddSpace({ mode }) {
   const [tagList, setTagList] = useState([]);
 
   //address가 object로 바뀌어야할듯
-  const [addressState, setAddressState] = useState({
-    myFullAddress: "",
-    myPersonalAddress: "",
-    myZoneCode: "",
-  });
-  const [spaceInfo, setSpaceInfo] = useState({
-    name: "", //공간명
-    type: "", //공간타입
-    intro: "", //공간소개
-    hashTags: [], //태그
-    imageUrl: "",
-    notice: "", //주의사항
-    address1: "",
-    address2: "",
-    address3: "", //실주소
-  });
+  const [addressState, setAddressState] = useState({});
+  const [spaceInfo, setSpaceInfo] = useState({});
 
   //주소창 handlechange
   const handleChangeAddressState = (e) => {

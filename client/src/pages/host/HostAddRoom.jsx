@@ -21,9 +21,7 @@ export default function HostAddRoom({ mode }) {
   const [roomInfo, setRoomInfo] = useState({});
 
   const navigate = useNavigate();
-
   const params = useParams();
-  console.log(params);
 
   const handleChangeRoomState = (e) => {
     setRoomInfo({
@@ -41,7 +39,6 @@ export default function HostAddRoom({ mode }) {
       setAlert("값을 입력해 주세요");
     }
 
-    console.log(roomInfo);
     try {
       const roomResponse = await Api.postAuth(`api/rooms/${params.spaceId}`, {
         name: roomInfo.name, //공간명
@@ -50,9 +47,7 @@ export default function HostAddRoom({ mode }) {
         description: roomInfo.description,
       });
 
-      console.log("sdsdsd");
       const roomId = roomResponse.data.data.id;
-      console.log(roomId);
 
       handleImgUpload(roomId);
 
@@ -104,12 +99,8 @@ export default function HostAddRoom({ mode }) {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleImgFileInput = (e) => {
-    console.log(e.target.files);
     const data = e.target.files;
-    console.log(data);
     setSelectedFile(data);
-
-    console.log(selectedFile);
   };
 
   const handleImgUpload = async (roomId) => {

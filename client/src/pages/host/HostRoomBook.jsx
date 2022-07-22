@@ -24,8 +24,7 @@ export default function HostRoomBook() {
         const data = await req.data.data.paginatedReservations;
         setTotalPage(req.data.data.totalPage);
         setData(data);
-        console.log(req);
-        console.log(data);
+      
       } catch (err) {
         console.log(err);
       }

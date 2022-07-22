@@ -17,11 +17,6 @@ export default function HostAddRoom({ mode }) {
   const [tagList, setTagList] = useState([]);
   const [alert, setAlert] = useState("");
   const [roomInfo, setRoomInfo] = useState({
-    roomName: "",
-    roomType: "",
-    personal: "",
-    price: "",
-    images: { image: [] },
     // spaceId: null,
   });
 
