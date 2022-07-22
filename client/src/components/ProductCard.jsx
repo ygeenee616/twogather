@@ -38,7 +38,6 @@ export default function ProductCard({
   const handleClick = () => {
     navigate(link);
   };
-  //후에 아이디 넣기 지금은 임의로  1로 고정
   return (
     <CardWrap>
       <ImageSliderWrap>

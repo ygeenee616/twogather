@@ -17,9 +17,8 @@ export default function ProductList() {
   const [categoryModalDisplay, setcategoryModalDisplay] = useState("none");
   const [DateModalDisplay, setDateModalDisplay] = useState("none");
   const [spaces, setSpaces] = useState([]);
-  const [totalPage, setTotalPage] = useState(1);
+  const totalPage = useRef(1);
   const imgUrlList = useRef([]);
-  const [imgUrlListState, setImgUrlListState] = useState(false);
 
   const { search } = window.location;
   const location = useLocation();
@@ -93,35 +92,26 @@ export default function ProductList() {
     );
   }, [location.search]);
 
-  useEffect(() => {
-    setImgUrlListState(imgUrlList.current);
-  }, [imgUrlList.current]);
-
   //api로 데이터 받아옴
   useEffect(() => {
     async function getData() {
       try {
         const res = await Api.get(`api/spaces${queryString.current}`);
         const datas = res.data.data.paginatedSpaces.paginatedSpaces;
-        setSpaces(datas);
-        setTotalPage(res.data.data.paginatedSpaces.totalPage);
-        console.log(datas);
 
         const spacesIdList = datas.map((space) => space.id);
-        //const imgUrlList = [];
-        console.log(spacesIdList);
 
-        spacesIdList.map(async (spaceId) => {
-          const imgData = await Api.get(`api/space-images/space/${spaceId}`);
-          const imgUrlListElement = await imgData.data.data.map(
-            (i) => i.imageUrl
-          );
-          console.log(imgUrlListElement);
-          imgUrlList.current = [...imgUrlList.current, imgUrlListElement];
-          console.log(imgUrlList.current);
-        });
-        //setSpaces(datas);
-        //setImgUrlList(imgUrlList2);
+        await Promise.all(
+          spacesIdList.map(async (spaceId) => {
+            const imgData = await Api.get(`api/space-images/space/${spaceId}`);
+            const imgUrlListElement = await imgData.data.data.map(
+              (i) => i.imageUrl
+            );
+            imgUrlList.current = [...imgUrlList.current, imgUrlListElement];
+          })
+        );
+        setSpaces(datas);
+        totalPage.current = res.data.data.paginatedSpaces.totalPage;
       } catch (err) {
         console.log(err);
       }
@@ -140,20 +130,10 @@ export default function ProductList() {
       }
     });
 
-    // const spacesIdList = spaces.map((space) => space.id);
-    // const imgUrlList = [];
-    // console.log(spacesIdList);
-
-    // spacesIdList.map(async (spaceId) => {
-    //   const imgData = await Api.get(`api/space-images/space/${spaceId}`);
-    //   const imgUrlListElement = imgData.data.data.map((i) => i.imageUrl);
-    //   imgUrlList.push(imgUrlListElement);
-    // });
-    console.log(imgUrlList.current, imgUrlListState);
     return spaces.map((data, i) => (
       <ProductCard
         key={i}
-        src={imgUrlListState[i]}
+        src={imgUrlList.current[i]}
         hashtags={data.hashtags}
         name={data.name}
         address2={data.address2}
@@ -203,11 +183,13 @@ export default function ProductList() {
           />
         </SelectorWrap>
         <SortingSelector selectedOption={orderInput.current} />
-        <ProductWrap>
-          {imgUrlListState !== [] && renderData(spaces)}
-        </ProductWrap>
+        <ProductWrap>{renderData(spaces)}</ProductWrap>
 
-        <Pagination total={totalPage} currentPage={currentPage} url={"/list"} />
+        <Pagination
+          total={totalPage.current}
+          currentPage={currentPage}
+          url={"/list"}
+        />
       </BottomWrap>
     )
   );
