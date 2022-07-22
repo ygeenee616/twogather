@@ -46,7 +46,7 @@ export default function HostAddRoom({ mode }) {
       setAlert("값을 입력해 주세요");
     }
     try {
-      roomResponse = await Api.post(`api/rooms/${params.spaceId}`, {
+      roomResponse = await Api.postAuth(`api/rooms/${params.spaceId}`, {
         name: roomInfo.roomName, //공간명
         capacity: Number(roomInfo.personal), //수용인원
         price: Number(roomInfo.price), //공간타입

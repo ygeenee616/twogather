@@ -73,7 +73,7 @@ export default function HostAddSpace({ mode }) {
   //공간수정 버튼 누를 시 patch 요청
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-    const response = await Api.post(`api/spaces`, {
+    const response = await Api.postAuth(`api/spaces`, {
       name: spaceInfo.name, //공간명
       type: select.selectItem, //공간타입
       notice: spaceInfo.notice, //주의사항
@@ -90,7 +90,7 @@ export default function HostAddSpace({ mode }) {
 
     //해쉬테그 등록 api
     for (let i = 0; i < tagList.length; i++) {
-      responseTag = await Api.post(`api/hashtags/${spaceId}`, tagList[i]);
+      responseTag = await Api.postAuth(`api/hashtags/${spaceId}`, tagList[i]);
       console.log(responseTag);
     }
 
@@ -224,7 +224,7 @@ export default function HostAddSpace({ mode }) {
       console.log(item.name);
     });
 
-    const data = await Api.postImg(`api/uploads/space/${spaceId}`, imgData);
+    const data = await Api.postImgAuth(`api/uploads/space/${spaceId}`, imgData);
 
     console.log(data);
     console.log(imgData);

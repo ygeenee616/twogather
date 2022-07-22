@@ -45,7 +45,7 @@ function LoginForm() {
         setAlertMsg("");
 
         try {
-          const user = await Api.get(`api/users/info`);
+          const user = await Api.getAuth(`api/users/info`);
           const { nickname, isAdmin, businessNumber } = user.data.data;
 
           localStorage.setItem("nickname", nickname);

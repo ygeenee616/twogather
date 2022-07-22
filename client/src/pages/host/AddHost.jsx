@@ -44,7 +44,7 @@ export default function AddHost() {
     //포스트 요청시 데이터 새로 넘겨주기 합성해서
     const account = `${bankInfo.bankName} ${bankInfo.bankAccount} ${bankInfo.name}`;
     setHostInfo({ ...hostInfo, accountNumber: account });
-    const response = await Api.patch("api/users", hostInfo);
+    const response = await Api.patchAuth("api/users", hostInfo);
     console.log(response);
     console.log("asds");
   };

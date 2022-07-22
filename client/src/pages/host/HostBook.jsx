@@ -10,7 +10,7 @@ export default function HostRoomBook() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const req = await Api.get(`api/rooms/host`);
+        const req = await Api.getAuth(`api/rooms/host`);
         const data = await req.data.data;
         console.log(req);
         setData(data);

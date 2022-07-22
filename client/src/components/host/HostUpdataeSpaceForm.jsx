@@ -79,7 +79,7 @@ export default function HostSpaceForm({ data }) {
   //공간수정 버튼 누를 시 patch 요청
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-    await Api.patch(`api/spaces/host/${data.id}`, {
+    await Api.patchAuth(`api/spaces/host/${data.id}`, {
       name: spaceInfo.name, //공간명
       type: spaceInfo.type, //공간타입
       notice: spaceInfo.notice, //주의사항
@@ -92,10 +92,10 @@ export default function HostSpaceForm({ data }) {
     });
 
     tagIdList.map(async (id, i) => {
-      return await Api.delete(`api/hashtags/${id}`);
+      return await Api.deleteAuth(`api/hashtags/${id}`);
     });
     tagList.map(async (item, i) => {
-      return await Api.post(`api/hashtags/${data.id}`, item);
+      return await Api.postAuth(`api/hashtags/${data.id}`, item);
     });
 
     const modal = document.querySelector(".modalWrap");

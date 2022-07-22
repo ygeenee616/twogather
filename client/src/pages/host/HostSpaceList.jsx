@@ -27,17 +27,17 @@ export default function HostSpaceList({ host }) {
   const limit = 4;
   const offset = (page - 1) * limit;
   const [dataTrigger, setDataTrigger] = useState(0);
-  const [images, setImgs] = useState("");
-
+  const images = [exImg1, exImg2];
   useEffect(() => {
     async function getData() {
       try {
-        const res = await api.get("api/spaces/host");
-        const loadedImgs = await loadImgs(185);
-        setImgs(loadedImgs);
+        const res = await api.getAuth("api/spaces/host");
+        console.log(res);
+        //const loadedImgs = await loadImgs(data.id);
+        //setImgs(loadedImgs);
 
         const data = res.data.data;
-        setDatas(data);
+         setDatas(data);
       } catch (err) {
         console.log(err);
       }
@@ -55,7 +55,7 @@ export default function HostSpaceList({ host }) {
     const spaceId = props;
     //확인 누르면 삭제하고 딜리트함
     try {
-      const response = await Api.delete(`api/spaces/host/${spaceId}`);
+      const response = await Api.deleteAuth(`api/spaces/host/${spaceId}`);
       setDataTrigger(dataTrigger + 1);
     } catch (err) {
       console.log(err);
@@ -66,34 +66,38 @@ export default function HostSpaceList({ host }) {
     window.scrollTo(0, 0);
   };
 
-  const loadImgs = async (id) => {
-    const getSpaceImgs = async () => {
-      const imgs = await Api.get(`api/space-images/space/${id}`);
-      return imgs.data.data;
-    };
+  // const loadImgs = async (id) => {
+  //   setSpaceId(id);
+  //   console.log(spaceId);
 
-    const Imgs = await getSpaceImgs();
-    const imagesUrls = [];
-    setImgs(Imgs);
+  //   console.log(id);
+  //   const getSpaceImgs = async () => {
+  //     setSpaceId(id);
+  //     const imgs = await Api.getAuth(`api/space-images/space/${id}`);
+  //     return imgs.data.data;
+  //   };
+  //   const Imgs = await getSpaceImgs();
 
-    Imgs.map((item) => {
-      imagesUrls.push(item.imageUrl);
-    });
+  //   let result = setImgs(Imgs);
 
-    if (Imgs === "") {
-      imagesUrls = [exImg1, exImg2];
-      console.log(imagesUrls);
-      console.log("널널");
-    } else {
-      setImgs(imagesUrls);
-    }
+  //   let imagesUrls = [];
 
-    console.log(imagesUrls);
-    return imagesUrls;
-  };
+  //   Imgs.map((item) => {
+  //     imagesUrls.push(item.imageUrl);
+  //   });
 
+  //   if (result === "") {
+  //     imagesUrls = [exImg1, exImg2];
+  //   }
+
+  //   setImgs(imagesUrls);
+
+  //   console.log(imagesUrls);
+
+  //   return imagesUrls;
+  // };
   const renderData = (datas) => {
-    return datas.map((data, i) => (
+    return datas.map((data, i) => {
       <>
         <ProductCard
           key={i}
@@ -134,7 +138,7 @@ export default function HostSpaceList({ host }) {
           </Menu>
         </SubMenuBar>
         <ModalWrap className="modalWrap">
-          <ModalWrap
+          <Modal
             className="deleteModal"
             title="공간 삭제"
             content="정말 삭제하시겠습니까?
@@ -142,8 +146,8 @@ export default function HostSpaceList({ host }) {
             clickEvent={() => closeDeleteSpacePopup(data.id)}
           />
         </ModalWrap>
-      </>
-    ));
+      </>;
+    });
   };
 
   function clickToModSpace() {
@@ -173,12 +177,12 @@ export default function HostSpaceList({ host }) {
               <ProductWrap>{renderData(datas)}</ProductWrap>
 
               <div>
-                <Pagination
+                {/* <Pagination
                   total={datas.length}
                   limit={limit}
                   page={page}
                   setPage={setPage}
-                />
+                /> */}
               </div>
             </div>
           </BottomWrap>
