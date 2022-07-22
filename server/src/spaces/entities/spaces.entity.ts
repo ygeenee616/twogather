@@ -40,11 +40,11 @@ export class Space {
   @ApiProperty({ description: 'space 이름' })
   name: string;
 
-  @Column({ type: 'varchar', length: 200, nullable: true })
+  @Column({ type: 'varchar', length: 500, nullable: true })
   @ApiProperty({ description: '공지사항' })
   notice: string;
 
-  @Column({ type: 'varchar', length: 200, nullable: true })
+  @Column({ type: 'varchar', length: 500, nullable: true })
   @ApiProperty({ description: 'space 소개' })
   intro: string;
 
