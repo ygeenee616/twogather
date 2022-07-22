@@ -30,6 +30,7 @@ function MyPage() {
           sex: data.sex,
           phoneNumber: data.phoneNumber,
           profileImage: data.profileImage,
+          loginType: data.loginType,
         });
 
         // data.reservation 과 data.rooms 합치기

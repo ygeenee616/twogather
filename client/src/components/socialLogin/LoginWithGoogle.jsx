@@ -33,14 +33,17 @@ const onFailure = (res) => {
 
 const btnStyle = {
   height: "2rem",
-  // width: "20rem",
-  // borderRadius: 10,
-  // fontWeight: "bold",
-  // margin: "0.5rem",
-  // border: "solid 0.1em #d9d9d9",
+  width: "20rem",
+  borderRadius: 10,
+  fontWeight: "bold",
+  margin: "0.5rem",
+  border: "solid 0.1em #d9d9d9",
 };
 
 export default function LoginWithGoogle({ buttonText, isStart }) {
+  const elem = <GoogleLogin />;
+  console.log(elem.props.disabledStyle);
+
   return (
     <div id="singInButton">
       <GoogleLogin
@@ -49,6 +52,7 @@ export default function LoginWithGoogle({ buttonText, isStart }) {
         onFailure={onFailure}
         cookiePolicy={"single_host_origin"}
         isSignedIn={true}
+        disabledStyle={btnStyle}
       >
         구글로 시작하기
       </GoogleLogin>

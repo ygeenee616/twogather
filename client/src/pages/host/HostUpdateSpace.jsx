@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import HostSpaceForm from "../../components/host/HostUpdataeSpaceForm";
+import HostSpaceForm from "../../components/host/HostUpdateSpaceForm";
 import * as Api from "../../api";
 
 export default function HostUpdateSpace() {
@@ -16,5 +16,5 @@ export default function HostUpdateSpace() {
     getData();
   }, []);
 
-  return data && <HostSpaceForm mode="UPDATE" data={data}></HostSpaceForm>;
+  return data && <HostSpaceForm data={data}></HostSpaceForm>;
 }
