@@ -38,6 +38,9 @@ export default function ProductCard({
   const handleClick = () => {
     navigate(link);
   };
+
+  console.log(src);
+
   return (
     <CardWrap>
       <ImageSliderWrap>
