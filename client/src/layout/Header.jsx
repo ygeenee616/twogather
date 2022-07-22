@@ -120,7 +120,7 @@ const HeaderWrap = styled.div`
 `;
 
 const RightWrap = styled.div`
-  font-family: "S-CoreDream-6Bold";
+  font-family: "S-CoreDream-3Light";
   display: flex;
   align-items: center;
   margin-left: auto;
