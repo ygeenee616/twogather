@@ -17,11 +17,9 @@ export default function HostRoomBook() {
         //space에 대한 roomAPI받기
         const req = await Api.getAuth(`api/rooms/space/${spaceId}`);
         const data = await req.data.data;
-        console.log(req);
         setData(data);
-        console.log(data);
       } catch (err) {
-        console.log(err);
+   
       }
     };
     getData();

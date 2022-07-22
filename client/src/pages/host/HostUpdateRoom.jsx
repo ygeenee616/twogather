@@ -17,19 +17,12 @@ export default function HostAddRoom({ mode }) {
   const [tagList, setTagList] = useState([]);
   const [alert, setAlert] = useState("");
   const [roomInfo, setRoomInfo] = useState({
-    roomName: "",
-    roomType: "",
-    personal: "",
-    price: "",
-    images: { image: [] },
     // spaceId: null,
   });
 
   const navigate = useNavigate();
 
   const params = useParams();
-  const roomId = params.roomId;
-  console.log(roomId);
   const subViewInput = useRef();
 
   const handleChangeRoomState = (e) => {
@@ -53,10 +46,10 @@ export default function HostAddRoom({ mode }) {
         capacity: Number(roomInfo.personal), //수용인원
         price: Number(roomInfo.price), //공간타입
         description: roomInfo.roomType,
-        // spaceId: Number(params.spaceId),
-        //imgaes: [roomInfo.images],
       });
 
+      //룸 이미지 업데이트
+      handleImgUpload();
       const modal = document.querySelector(".modalWrap");
       modal.style.display = "block";
       window.scrollTo(0, 0);
@@ -64,6 +57,26 @@ export default function HostAddRoom({ mode }) {
       console.log("err발생");
     }
   };
+  const roomId = params.roomId;
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await Api.getAuth(`api/rooms/${roomId}`);
+        console.log(response);
+        const res = response.data.data;
+        console.log(res);
+        setRoomInfo({
+          capacity: Number(res.capacity),
+          description: res.description,
+          name: res.name,
+          price: Number(res.price),
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getData();
+  }, []);
 
   const handleDeleteSubmit = async (e) => {
     console.log("Adasdasd");
@@ -89,22 +102,26 @@ export default function HostAddRoom({ mode }) {
 
   const loadDetailImage = (e) => {
     setDatailImgs(e.target.files);
+
     const fileArr = Array.from(e.target.files);
 
     const imgBox = document.querySelector(".imgBox");
-
     fileArr.forEach((file, index) => {
       const reader = new FileReader();
 
       //이미지 박스와 이미지 생성
       const imgDiv = document.createElement("div");
       const img = document.createElement("img");
+
       img.classList.add("image"); //이미지에 이미지 태그 붙이기
       imgDiv.classList.add("imgDiv");
 
-      img.onclick = function (e) {
+      imgDiv.addEventListener("click", (e) => {
+        fileArr.splice(index, 1);
+        setDatailImgs(fileArr);
+        e.target.remove();
         imgDiv.remove();
-      };
+      });
 
       imgDiv.appendChild(img);
 
@@ -113,9 +130,34 @@ export default function HostAddRoom({ mode }) {
       }; //end on load
 
       imgBox.appendChild(imgDiv);
-
       reader.readAsDataURL(file);
     });
+  };
+
+  //이미지를 s3에 저장
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleImgFileInput = (e) => {
+    console.log(e.target.files);
+    const data = e.target.files;
+    console.log(data);
+    setSelectedFile(data);
+
+    console.log(selectedFile);
+  };
+
+  const handleImgUpload = async () => {
+    let imgData = new FormData();
+
+    Array.from(selectedFile).map((item) => {
+      imgData.append("images", item);
+      console.log(item.name);
+    });
+
+    const data = await Api.patchImgAuth(`api/uploads/room/${roomId}`, imgData);
+
+    console.log(data);
+    console.log(imgData);
   };
 
   return (
@@ -133,7 +175,7 @@ export default function HostAddRoom({ mode }) {
             type="text"
             width="50%"
             name="roomName"
-            value={roomInfo.roomName}
+            value={roomInfo.name}
             onChange={handleChangeRoomState}
           ></StyledInput>
         </InputBox>
@@ -144,7 +186,7 @@ export default function HostAddRoom({ mode }) {
             type="text"
             width="50%"
             name="roomType"
-            value={roomInfo.roomType}
+            value={roomInfo.description}
             onChange={handleChangeRoomState}
           ></StyledInput>
         </InputBox>
@@ -161,7 +203,7 @@ export default function HostAddRoom({ mode }) {
             width="50%"
             name="personal"
             min="1"
-            value={roomInfo.personal}
+            value={roomInfo.capacity}
             onChange={handleChangeRoomState}
           ></StyledInput>
           <AlertMsg>{alert}</AlertMsg>
@@ -184,22 +226,30 @@ export default function HostAddRoom({ mode }) {
           ></StyledInput>
           <AlertMsg>{alert}</AlertMsg>
         </InputBox>
-
         <InputBox>
           <StyledLabel>룸 이미지 선택</StyledLabel>
           <SubImageView
             className="imgBox"
             name="spaceSubImages"
-            ref={subViewInput}
             onChange={loadDetailImage}
           ></SubImageView>
           <ImageInput
-            name="roomInfo.images.image"
+            name="images"
             type="file"
             multiple
             accept="image/*"
-            onChange={loadDetailImage}
+            onChange={(e) => {
+              loadDetailImage(e);
+              handleImgFileInput(e);
+            }}
+            id="imgs"
+            style={{ display: "none" }}
           ></ImageInput>
+          <Label for="imgs" id="imgs" type="file">
+            사진선택
+          </Label>
+          {/* <input type="file" name="uploadfile" id="img" style="display:none;" />{" "}
+    <label for="img">Click me to upload image</label> */}
         </InputBox>
 
         <ButtonBox>
@@ -208,7 +258,7 @@ export default function HostAddRoom({ mode }) {
             className="cancle"
             backGroundColor="#8daef2"
             color="white"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/host/spaceList")}
           >
             취소
           </StyledButton>
@@ -409,4 +459,30 @@ const ModalWrap = styled.div`
   height: 244vh;
   background-color: rgba(90, 90, 90, 0.2);
   display: none;
+`;
+
+const Label = styled.label`
+  width: 48%;
+  height: 40px;
+  line-height: 40px;
+
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+
+  background-color: #8daef2;
+  color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition-duration: 0.3s;
+
+  :hover {
+    background-color: #5155a6;
+  }
+  & + & {
+    margin-left: 20px;
+  }
 `;

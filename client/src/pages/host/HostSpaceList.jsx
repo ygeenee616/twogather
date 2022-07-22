@@ -48,7 +48,6 @@ export default function HostSpaceList({ host }) {
         );
 
         setDatas(data);
-        console.log(data);
       } catch (err) {
         console.log(err);
       }
