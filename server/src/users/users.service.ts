@@ -13,6 +13,7 @@ import * as bcrypt from 'bcryptjs';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class UsersService {
@@ -20,6 +21,7 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private jwtService: JwtService,
+    private emailService: EmailService,
   ) {}
 
   // 유저 생성
@@ -190,41 +192,41 @@ export class UsersService {
   // 로그인 토큰 발급
   async createLoginToken(user: User) {
     const payload = {
-      userId: user.id,
+      email: user.email,
       user_token: 'loginToken',
     };
 
     return this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET,
-      expiresIn: '6m',
+      expiresIn: '2h',
     });
   }
 
-  // 리프레쉬 토큰 발급
-  async createRefreshToken(user: User) {
-    const payload = {
-      userId: user.id,
-      user_token: 'refreshToken',
-    };
+  // // 리프레쉬 토큰 발급
+  // async createRefreshToken(user: User) {
+  //   const payload = {
+  //     userId: user.id,
+  //     user_token: 'refreshToken',
+  //   };
 
-    const token = this.jwtService.sign(payload, {
-      secret: process.env.JWT_SECRET,
-      expiresIn: '50m',
-    });
+  //   const token = this.jwtService.sign(payload, {
+  //     secret: process.env.JWT_SECRET,
+  //     expiresIn: '50m',
+  //   });
 
-    const refresh_token = CryptoJS.AES.encrypt(
-      JSON.stringify(token),
-      process.env.AES_KEY,
-    ).toString();
+  //   const refresh_token = CryptoJS.AES.encrypt(
+  //     JSON.stringify(token),
+  //     process.env.AES_KEY,
+  //   ).toString();
 
-    await this.usersRepository
-      .createQueryBuilder()
-      .update(User)
-      .set({ user_refresh_token: token })
-      .where(`userId = ${user.id}`)
-      .execute();
-    return refresh_token;
-  }
+  //   await this.usersRepository
+  //     .createQueryBuilder()
+  //     .update(User)
+  //     .set({ user_refresh_token: token })
+  //     .where(`userId = ${user.id}`)
+  //     .execute();
+  //   return refresh_token;
+  // }
 
   // 1회용 토큰 발급
   onceToken(user_profile: any) {
@@ -237,7 +239,7 @@ export class UsersService {
 
     return this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET,
-      expiresIn: '10m',
+      expiresIn: '2h',
     });
   }
 
@@ -246,5 +248,14 @@ export class UsersService {
     return await this.jwtService.verify(token, {
       secret: process.env.JWT_SECRET,
     });
+  }
+
+  async sendMemberResetPassword(email: string, newPassword: string) {
+    // 변경된 패스워드 발송
+    try {
+      await this.emailService.sendMemberResetPassword(email, newPassword);
+    } catch (error) {
+      throw error;
+    }
   }
 }

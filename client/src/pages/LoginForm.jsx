@@ -46,6 +46,17 @@ const handleModalClick = async (e) => {
   }
 };
 
+const handleLoginKakao = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await Api.get("api/users/auth/kakao");
+    localStorage.setItem("userToken", res.data.accessToken);
+    window.location.href = "/";
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 function LoginForm() {
   const navigate = useNavigate();
 
@@ -54,6 +65,26 @@ function LoginForm() {
   const [alertMsg, setAlertMsg] = useState("");
 
   const findEmailInput = useRef();
+  // 모달창에서 '확인' 클릭시
+  const handleModalClick = async (e) => {
+    const registeredEmail = findEmailInput.current.value;
+    e.preventDefault();
+    try {
+      const FindPWModal = document.getElementById("FindPWModal");
+      // 로그인 성공시
+      const response = await Api.post("api/users/reset-password", {
+        email: registeredEmail,
+      });
+
+      console.log(response);
+      FindPWModal.style.display = "none";
+      window.location.href = "/login/findPasswordMail";
+
+      // 로그인 실패시
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -95,7 +126,7 @@ function LoginForm() {
       } catch (err) {
         console.log("로그인에 실패하였습니다.", err);
         setAlertMsg(
-          "아이디 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해주세요."
+          "아이디 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해주세요.",
         );
       }
     }
@@ -132,7 +163,9 @@ function LoginForm() {
           <SocialLoginDiv>
             <SocialLoginBtn className="kakao-login">
               <img src="/images/kakaoLogo.png" alt="KAKAO" />
-              <p>카카오 로그인</p>
+              <a href={`http://localhost:3000/api/users/auth/kakao`}>
+                <p>카카오 로그인</p>
+              </a>
             </SocialLoginBtn>
             <SocialLoginBtn className="kakao-login">
               <img src="/images/googleLogo.png" alt="GOOGLE"></img>

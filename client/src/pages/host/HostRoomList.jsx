@@ -9,18 +9,17 @@ import { useParams } from "react-router-dom";
 export default function HostRoomBook() {
   const [data, setData] = useState("");
   const params = useParams();
-  console.log(params);
+
   const spaceId = params.spaceId;
   useEffect(() => {
     const getData = async () => {
       try {
         //space에 대한 roomAPI받기
         const req = await Api.getAuth(`api/rooms/space/${spaceId}`);
+        console.log(req);
         const data = await req.data.data;
         setData(data);
-      } catch (err) {
-   
-      }
+      } catch (err) {}
     };
     getData();
   }, []);

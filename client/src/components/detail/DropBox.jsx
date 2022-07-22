@@ -20,22 +20,11 @@ export default function Dropbox({ rooms, acceptPeople, checkSelectRoom }) {
     take();
   }, []);
 
-  const getImg = async (id) => {
-    try {
-      const roomImageReq = await Api.getAuth(`api/room-images/room/${id}`);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     rooms && (
       <RoomList>
         <p>세부 공간 선택</p>
         {rooms.map((room, i) => {
-          // api 데이터 받아오는 함수
-
-          // getImg(room.id);
           return (
             <Container key={i}>
               <RoomItem>
@@ -48,7 +37,6 @@ export default function Dropbox({ rooms, acceptPeople, checkSelectRoom }) {
                   onClick={(e) => {
                     checkSelectRoom(room.id, room.name, room.price);
                     acceptPeople.current = room.capacity;
-                    console.log(acceptPeople.current);
                   }}
                 />
                 <RoomLabel>

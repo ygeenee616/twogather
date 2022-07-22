@@ -12,7 +12,6 @@ export default function BookInfo({
 }) {
   // 출력용 날짜 포맷팅
   function dateToString(date) {
-    console.log(date);
     const fullDate = String(date);
     const year = fullDate.substring(0, 4);
     const month = fullDate.substring(4, 6);

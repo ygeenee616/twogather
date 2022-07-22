@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Patch,
   Post,
@@ -27,6 +28,9 @@ import { UserResExample } from './user.swagger.example';
 import { GetAdminUser, GetUser } from 'src/custom.decorator';
 import { User } from './entities/users.entity';
 import { KakaoAuthGuard } from './guards/kakao-auth.guard';
+import { generateRandomPassword } from '../utils/generate-random-password';
+import * as bcrypt from 'bcryptjs';
+import { CreateEmailDto } from 'src/email/dto/create-email.dto';
 const userResExample = new UserResExample();
 
 @Controller('api/users')
@@ -203,6 +207,14 @@ export class UsersController {
     return { status: 201, description: '내 정보 수정 성공', data: updatedUser };
   }
 
+  @Patch(':id')
+  async update(
+    @Param() id: number,
+    @Body(ValidationPipe) userData: UpdateUserDto,
+  ) {
+    await this.usersService.update(id, userData);
+  }
+
   // admin 기능
   @Delete('/:id')
   @UseGuards(AuthGuard())
@@ -271,17 +283,12 @@ export class UsersController {
   async kakaocallback(@Req() req, @Res() res) {
     console.log(req.user);
     if (req.user.type === 'login') {
-      // res.cookie('access_token', req.user.access_token);
+      res.cookie('access_token', req.user.access_token);
       // res.cookie('refresh_token', req.user.refresh_token);
-      return {
-        statusCode: 200,
-        message: '로그인 성공',
-        success: true,
-        accessToken: req.user.access_token,
-      };
+      res.redirect('http://localhost:5001/');
     } else {
       const ramdomNumber = Math.ceil(Math.random() * Math.random() * 100000);
-      // res.cookie('once_token', req.user.once_token);
+
       const kakaoUserInfo = {
         email: req.user.user_email,
         password: process.env.KAKAO_KEY,
@@ -289,7 +296,9 @@ export class UsersController {
         loginType: req.user.user_provider,
       };
       console.log(kakaoUserInfo);
-      // await this.usersService.createKakaoUser(kakaoUserInfo);
+      await this.usersService.createKakaoUser(kakaoUserInfo);
+      res.cookie('once_token', req.user.once_token);
+      res.redirect('http://localhost:5001/');
       // return {
       //   statusCode: 200,
       //   message: '로그인 성공',
@@ -299,5 +308,46 @@ export class UsersController {
     }
     // res.redirect('http://localhost:5001/register');
     // res.end();
+  }
+
+  @Post('reset-password')
+  @ApiOperation({
+    summary: '비밀번호 찾기(비밀번호 초기화) API',
+    description: '비밀번호 초기화를 진행한다.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: '비밀번호 초기화 후 이메일 전송 성공',
+  })
+  async resetPasswordUser(@Body() createEmailDto: CreateEmailDto) {
+    const { email } = createEmailDto;
+    // const { email } = dto;
+    // email로 가입된 유저인 지 확인
+    // console.log(email);
+    const user = await this.usersService.findOneByEmail(email);
+    if (!user) {
+      throw new NotFoundException('존재하지 않는 유저입니다.');
+    }
+
+    // 랜덤 패스워드 생성
+    const newPassword = generateRandomPassword();
+    console.log(newPassword);
+
+    // 암호화
+    const salt: string = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // user password 업데이트
+    const updatedUser = await this.usersService.updatePassword(
+      user.id,
+      hashedPassword,
+    );
+    // 변경된 패스워드 이메일 발송
+    await this.usersService.sendMemberResetPassword(email, newPassword);
+    return {
+      status: 201,
+      description: '특정 유저 비밀번호 초기화 성공',
+      success: true,
+    };
   }
 }
