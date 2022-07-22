@@ -6,7 +6,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateUserDto {
   @IsEmail()
@@ -25,4 +25,9 @@ export class CreateUserDto {
     description: '닉네임(4~20자, 영문 대소문자, 한글, 숫자만 가능)',
   })
   readonly nickname: string;
+
+  @ApiPropertyOptional({
+    description: '로그인 유형(로컬, 카카오 등)',
+  })
+  readonly loginType: string;
 }

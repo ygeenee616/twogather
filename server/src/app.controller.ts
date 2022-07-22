@@ -23,10 +23,4 @@ export class AppController {
     
     `;
   }
-
-  // @Get('/cookies')
-  // getCookies(@Req() req: Request, @Res() res: Response): any {
-  //   const jwt = req.cookies['jwt'];
-  //   return res.send(jwt);
-  // }
 }

@@ -252,30 +252,50 @@ export class UsersController {
   }
 
   // 카카오 로그인
-  // @ApiOperation({
-  //   summary: '카카오 로그인',
-  //   description: '카카오 로그인을 하는 API입니다.',
-  // })
-  // @UseGuards(KakaoAuthGuard)
-  // @Get('auth/kakao')
-  // async kakaoLogin() {
-  //   return;
-  // }
+  @ApiOperation({
+    summary: '카카오 로그인',
+    description: '카카오 로그인을 하는 API입니다.',
+  })
+  @UseGuards(KakaoAuthGuard)
+  @Get('auth/kakao')
+  async kakaoLogin() {
+    return;
+  }
 
-  // @ApiOperation({
-  //   summary: '카카오 로그인 콜백',
-  //   description: '카카오 로그인시 콜백 라우터입니다.',
-  // })
-  // @UseGuards(KakaoAuthGuard)
-  // @Get('auth/kakao/callback')
-  // async kakaocallback(@Req() req, @Res() res: Response) {
-  //   if (req.user.type === 'login') {
-  //     res.cookie('access_token', req.user.access_token);
-  //     res.cookie('refresh_token', req.user.refresh_token);
-  //   } else {
-  //     res.cookie('once_token', req.user.once_token);
-  //   }
-  //   res.redirect('http://localhost:3000/auth/singup');
-  //   res.end();
-  // }
+  @ApiOperation({
+    summary: '카카오 로그인 콜백',
+    description: '카카오 로그인시 콜백 라우터입니다.',
+  })
+  @UseGuards(KakaoAuthGuard)
+  @Get('auth/kakao/callback')
+  async kakaocallback(@Req() req, @Res() res) {
+    console.log(req.user);
+    if (req.user.type === 'login') {
+      // res.cookie('access_token', req.user.access_token);
+      // res.cookie('refresh_token', req.user.refresh_token);
+      return {
+        statusCode: 200,
+        message: '로그인 성공',
+        success: true,
+        accessToken: req.user.access_token,
+      };
+    } else {
+      // res.cookie('once_token', req.user.once_token);
+      const kakaoUserInfo: CreateUserDto = {
+        email: req.user_email,
+        password: process.env.KAKAO_KEY,
+        nickname: req.user_nick,
+        loginType: req.user_provider,
+      };
+      await this.usersService.createKakaoUser(kakaoUserInfo);
+      return {
+        statusCode: 200,
+        message: '로그인 성공',
+        success: true,
+        accessToken: req.user.access_token,
+      };
+    }
+    // res.redirect('http://localhost:5001/register');
+    // res.end();
+  }
 }

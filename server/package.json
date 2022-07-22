@@ -34,6 +34,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
     "@types/crypto-js": "^4.1.1",
+    "@types/passport-kakao": "^1.0.0",
     "aws-sdk": "^2.1177.0",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",

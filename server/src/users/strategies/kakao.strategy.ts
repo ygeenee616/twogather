@@ -30,7 +30,7 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
       // 유저가 없을때
       console.log('일회용 토큰 발급');
       const once_token = this.usersService.onceToken(user_profile);
-      return { once_token, type: 'once' };
+      return { once_token, user_email, user_provider, type: 'once' };
     }
 
     // 유저가 있을때

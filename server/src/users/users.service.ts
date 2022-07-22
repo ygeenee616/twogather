@@ -125,6 +125,15 @@ export class UsersService {
     }
   }
 
+  // 소셜 로그인(카카오)
+  async createKakaoUser(kakaoUserInfo: CreateUserDto) {
+    try {
+      await this.usersRepository.save(kakaoUserInfo);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async findUserById(id: number): Promise<User | undefined> {
     const user = await this.usersRepository
       .createQueryBuilder()
