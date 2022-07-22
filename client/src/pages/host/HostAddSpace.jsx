@@ -9,6 +9,7 @@ import * as Api from "../../api";
 import { FiPrinter } from "react-icons/fi";
 import axios from "axios";
 import TypeSelector from "../../components/TypeSelector";
+import ImgToS3 from "../../components/register/ImgToS3";
 
 export default function HostAddSpace({ mode }) {
   const nav = useNavigate();
@@ -20,30 +21,15 @@ export default function HostAddSpace({ mode }) {
   let spaceId = "";
 
   //imgState
-  const [imageSrc, setImageSrc] = useState("");
-  const [detailImgs, setDatailImgs] = useState([]);
+  const [detailImgs, setDatailImgs] = useState(null);
 
   // hashTag state
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState([]);
 
   //address가 object로 바뀌어야할듯
-  const [addressState, setAddressState] = useState({
-    myFullAddress: "",
-    myPersonalAddress: "",
-    myZoneCode: "",
-  });
-  const [spaceInfo, setSpaceInfo] = useState({
-    name: "", //공간명
-    type: "", //공간타입
-    intro: "", //공간소개
-    hashTags: [], //태그
-    imageUrl: "",
-    notice: "", //주의사항
-    address1: "",
-    address2: "",
-    address3: "", //실주소
-  });
+  const [addressState, setAddressState] = useState({});
+  const [spaceInfo, setSpaceInfo] = useState({});
 
   //주소창 handlechange
   const handleChangeAddressState = (e) => {
@@ -61,8 +47,6 @@ export default function HostAddSpace({ mode }) {
       address3: addressState.myZoneCode,
     });
   }, [addressState]);
-
-  const subViewInput = useRef();
 
   //input값이 바뀔시 해당 value 바뀜
   const handleChangeState = (e) => {
@@ -83,8 +67,7 @@ export default function HostAddSpace({ mode }) {
       address1: addressState.myZoneCode, //실주소
       address2: addressState.myFullAddress,
       address3: addressState.myPersonalAddress,
-      //   images:
-      //     "https://z-images.s3.amazonaws.com/5/51/%EC%9D%BC%EC%96%B4%EB%82%98_%EC%BD%94%EB%94%A9%ED%95%B4%EC%95%BC%EC%A7%80.jpg",
+      images: detailImgs,
     });
 
     const data = response.data.data;
@@ -96,6 +79,8 @@ export default function HostAddSpace({ mode }) {
       responseTag = await Api.postAuth(`api/hashtags/${spaceId}`, tagList[i]);
       console.log(responseTag);
     }
+
+    handleImgUpload(e);
 
     const modal = document.querySelector(".modalWrap");
     modal.style.display = "block";
@@ -170,12 +155,6 @@ export default function HostAddSpace({ mode }) {
 
   //**************************이미지 처리 api***********************/
 
-  const imgClickHandler = (e) => {
-    const fileArr = Array.from(e.target.files);
-    console.log(e.target);
-    console.log(e.target.value);
-  };
-
   const loadDetailImage = (e) => {
     setDatailImgs(e.target.files);
 
@@ -193,7 +172,6 @@ export default function HostAddSpace({ mode }) {
       imgDiv.classList.add("imgDiv");
 
       imgDiv.addEventListener("click", (e) => {
-        console.log("미지미지");
         fileArr.splice(index, 1);
         setDatailImgs(fileArr);
         e.target.remove();
@@ -212,25 +190,29 @@ export default function HostAddSpace({ mode }) {
   };
 
   //이미지를 s3에 저장
-  const imgData = new FormData();
   const [selectedFile, setSelectedFile] = useState(null);
-  const imgName = "";
+
   const handleImgFileInput = (e) => {
     console.log(e.target.files);
-    setSelectedFile(e.target.files);
-    imgData.append("images", selectedFile);
-    console.log(imgData);
+    const data = e.target.files;
+    console.log(data);
+    setSelectedFile(data);
+
+    console.log(selectedFile);
   };
 
-  const handleImgUpload = async (selectedFile, spaceId) => {
-    console.log(selectedFile);
+  const handleImgUpload = async () => {
+    let imgData = new FormData();
 
     Array.from(selectedFile).map((item) => {
       imgData.append("images", item);
       console.log(item.name);
     });
-    //이미지 등록 api
-    await Api.postImg(`api/uploads/space/${spaceId}`, imgData);
+
+    const data = await Api.postImgAuth(`api/uploads/space/${spaceId}`, imgData);
+
+    console.log(data);
+    console.log(imgData);
   };
 
   return (
@@ -252,7 +234,6 @@ export default function HostAddSpace({ mode }) {
             onChange={(e) => handleChangeState(e)}
           ></StyledInput>
         </InputBox>
-
         <InputBox>
           <StyledLabel>공간 소개</StyledLabel>
           <StyledTextArea
@@ -263,12 +244,10 @@ export default function HostAddSpace({ mode }) {
             onChange={(e) => handleChangeState(e)}
           ></StyledTextArea>
         </InputBox>
-
         <InputBox className="selectBox">
           <StyledLabel>공간 타입</StyledLabel>
           <NewSelector state={select} setState={setSelect}></NewSelector>
         </InputBox>
-
         <HashTag
           tagItem={tagItem}
           setTagItem={setTagItem}
@@ -278,7 +257,6 @@ export default function HostAddSpace({ mode }) {
           addHashTag={addHashTag}
           removeHashTag={removeHashTag}
         />
-
         <InputBox>
           <StyledLabel>예약 시 주의사항</StyledLabel>
           <StyledTextArea
@@ -288,7 +266,6 @@ export default function HostAddSpace({ mode }) {
             onChange={(e) => handleChangeState(e)}
           ></StyledTextArea>
         </InputBox>
-
         <InputBox>
           <StyledLabel>주소지 입력</StyledLabel>
           <PostcodePopup
@@ -299,13 +276,11 @@ export default function HostAddSpace({ mode }) {
             handleClick={handleClick}
           ></PostcodePopup>
         </InputBox>
-
         <InputBox>
           <StyledLabel>공간 이미지 선택</StyledLabel>
           <SubImageView
             className="imgBox"
             name="spaceSubImages"
-            ref={subViewInput}
             onChange={loadDetailImage}
           ></SubImageView>
           <ImageInput
@@ -324,7 +299,7 @@ export default function HostAddSpace({ mode }) {
             사진선택
           </Label>
           {/* <input type="file" name="uploadfile" id="img" style="display:none;" />{" "}
-          <label for="img">Click me to upload image</label> */}
+    <label for="img">Click me to upload image</label> */}
         </InputBox>
 
         <ButtonBox>
@@ -360,7 +335,7 @@ export default function HostAddSpace({ mode }) {
             title="공간 등록"
             content="공간 등록이 완료되었습니다."
             clickEvent={() => {
-              nav("/host/spaceList");
+              window.location.replace("/host/spaceList");
             }}
           />
         </ModalWrap>

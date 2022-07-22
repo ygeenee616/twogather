@@ -4,8 +4,6 @@ import styled from "styled-components";
 import { FcSettings } from "react-icons/fc";
 
 export default function BookList({ data, endpoint }) {
-  console.log(data);
-
   return (
     data && (
       <Container>
@@ -13,18 +11,16 @@ export default function BookList({ data, endpoint }) {
         <table>
           <caption>예약 내역</caption>
           <colgroup>
-            <col width={"10%"} />
-            <col width={"15%"} />
+            <col width={"20%"} />
             <col width={"20%"} />
             <col width={"10%"} />
             <col width={"10%"} />
-            <col width={"25%"} />
+            <col width={"30%"} />
             <col width={"10%"} />
           </colgroup>
           <thead>
             <tr align="center">
               <th>예약자</th>
-              <th>룸</th>
               <th>날짜</th>
               <th>인원</th>
               <th>금액</th>
@@ -33,24 +29,28 @@ export default function BookList({ data, endpoint }) {
             </tr>
           </thead>
           <tbody>
-            {data.map((item, i) => {
-              return (
-                <tr align="center" key={i}>
-                  <td>{item.user.name}</td>
-                  {/* <td>{item.room.id}</td> */}
-                  <td>파티룸</td>
-                  <td>{item.date}</td>
-                  <td>{item.personnel}</td>
-                  <td>{item.totalPrice}</td>
-                  <td>{item.user.phoneNumber}</td>
-                  <td>
-                    <Link to={`${endpoint}${item.id}`}>
-                      <FcSettings className="icon" size={"1.5rem"} />
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
+            {data.length === 0 ? (
+              <tr align="center">
+                <td colSpan="7">아직 등록된 예약 내역이 없습니다.</td>
+              </tr>
+            ) : (
+              data.map((item, i) => {
+                return (
+                  <tr align="center" key={i}>
+                    <td>{item.reserveUsername}</td>
+                    <td>{item.date}</td>
+                    <td>{item.personnel}</td>
+                    <td>{item.totalPrice}</td>
+                    <td>{item.reservePhoneNumber}</td>
+                    <td>
+                      <Link to={`${endpoint}${item.id}`}>
+                        <FcSettings className="icon" size={"1.5rem"} />
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
           </tbody>
         </table>
       </Container>

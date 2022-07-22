@@ -40,7 +40,7 @@ export class ReservationsService {
   async findAll(startIndex: number, perPage: number) {
     try {
       const totalSpace = await this.reservationRepository.find();
-      const totalPage = parseInt((totalSpace.length / perPage).toString()) + 1;
+      const totalPage = Math.ceil(totalSpace.length / perPage);
       const paginatedReservations = await this.reservationRepository.find({
         select: {
           user: {
@@ -288,6 +288,9 @@ export class ReservationsService {
             name: true,
             email: true,
             nickname: true,
+            businessName: true,
+            businessNumber: true,
+            phoneNumber: true,
           },
           room: {
             id: true,
@@ -303,6 +306,10 @@ export class ReservationsService {
                 email: true,
                 name: true,
                 nickname: true,
+                businessAddress: true,
+                businessName: true,
+                businessNumber: true,
+                phoneNumber: true,
               },
             },
           },

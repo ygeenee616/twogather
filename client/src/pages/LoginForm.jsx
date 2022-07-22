@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -14,9 +14,48 @@ import {
   ContentsDiv,
   FormDiv,
   PageTitle,
-  UserBtn,
 } from "../components/register/UserForm";
-import userInfoState from "../atom/userInfoState";
+import ModalWithInput from "../components/ModalWithInput";
+
+// 비밀번호 찾기 클릭시
+const handleFindPw = (e) => {
+  e.preventDefault();
+  const FindPWModal = document.getElementById("FindPWModal");
+  FindPWModal.style.display = "block";
+};
+
+// 모달창에서 '닫기' 클릭시
+const handleModalCancel = (e) => {
+  const FindPWModal = document.getElementById("FindPWModal");
+  e.preventDefault();
+  FindPWModal.style.display = "none";
+};
+
+// 모달창에서 '확인' 클릭시
+const handleModalClick = async (e) => {
+  e.preventDefault();
+  try {
+    const FindPWModal = document.getElementById("FindPWModal");
+    FindPWModal.style.display = "none";
+    // 로그인 성공시
+    window.location.href = "/login/findPasswordMail";
+
+    // 로그인 실패시
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const handleLoginKakao = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await Api.get("api/users/auth/kakao");
+    localStorage.setItem("userToken", res.data.accessToken);
+    window.location.href = "/";
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -24,6 +63,28 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alertMsg, setAlertMsg] = useState("");
+
+  const findEmailInput = useRef();
+  // 모달창에서 '확인' 클릭시
+  const handleModalClick = async (e) => {
+    const registeredEmail = findEmailInput.current.value;
+    e.preventDefault();
+    try {
+      const FindPWModal = document.getElementById("FindPWModal");
+      // 로그인 성공시
+      const response = await Api.post("api/users/reset-password", {
+        email: registeredEmail,
+      });
+
+      console.log(response);
+      FindPWModal.style.display = "none";
+      window.location.href = "/login/findPasswordMail";
+
+      // 로그인 실패시
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -65,7 +126,7 @@ function LoginForm() {
       } catch (err) {
         console.log("로그인에 실패하였습니다.", err);
         setAlertMsg(
-          "아이디 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해주세요."
+          "아이디 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해주세요.",
         );
       }
     }
@@ -102,7 +163,9 @@ function LoginForm() {
           <SocialLoginDiv>
             <SocialLoginBtn className="kakao-login">
               <img src="/images/kakaoLogo.png" alt="KAKAO" />
-              <p>카카오 로그인</p>
+              <a href={`http://localhost:3000/api/users/auth/kakao`}>
+                <p>카카오 로그인</p>
+              </a>
             </SocialLoginBtn>
             <SocialLoginBtn className="kakao-login">
               <img src="/images/googleLogo.png" alt="GOOGLE"></img>
@@ -120,12 +183,25 @@ function LoginForm() {
               </tr>
               <tr>
                 <QuestionTD>비밀번호를 잊으셨나요?</QuestionTD>
-                <LinkTD>비밀번호 찾기</LinkTD>
+                <LinkTD>
+                  <span onClick={handleFindPw}>비밀번호 찾기</span>
+                </LinkTD>
               </tr>
             </thead>
           </LoginFooterDiv>
         </ContentsDiv>
       </FormDiv>
+      <ModalWrap id="FindPWModal">
+        <ModalWithInput
+          id="ModalWithInput"
+          title="비밀번호 찾기"
+          content="가입한 이메일로 임시 비밀번호를 발급해드립니다."
+          clickEvent={handleModalClick}
+          cancelEvent={handleModalCancel}
+          placeholder="test@twogather.com"
+          inputRef={findEmailInput}
+        />
+      </ModalWrap>
     </Container>
   );
 }
@@ -206,6 +282,14 @@ const LoginFooterDiv = styled.table`
   margin: 1.5rem;
   font-size: 0.8rem;
   border-spacing: 0 10px;
+
+  a,
+  span {
+    text-decoration: none;
+  }
+  span {
+    cursor: pointer;
+  }
 `;
 
 const QuestionTD = styled.td`
@@ -215,6 +299,15 @@ const QuestionTD = styled.td`
 const LinkTD = styled.td`
   text-align: right;
   text-decoration: underline;
+`;
+
+const ModalWrap = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 130vh;
+  background-color: rgba(90, 90, 90, 0.2);
+  display: none;
 `;
 
 export default LoginForm;

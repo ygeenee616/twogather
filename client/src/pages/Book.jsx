@@ -18,7 +18,7 @@ export default function Book() {
   const startTime = location.state.startTime;
   const endTime = location.state.endTime;
   const roomId = location.state.room.id;
-  const roomName = location.state.room.name;
+  const roomTitle = location.state.room.name;
   const roomPay = location.state.room.pay;
   const host = location.state.host;
 
@@ -32,7 +32,7 @@ export default function Book() {
   const possible = useRef(false);
 
   // 총액 계산
-  const totalPay = roomPay * people * (endTime - startTime);
+  const totalPrice = roomPay * people * (endTime - startTime);
 
   // 이름 입력 함수
   function onChangeName(e) {
@@ -63,7 +63,6 @@ export default function Book() {
     async function getData() {
       try {
         const req = await Api.getAuth(`api/users/info`);
-        console.log(req);
       } catch (err) {
         console.log(err);
       }
@@ -78,7 +77,6 @@ export default function Book() {
     const month = fullDate.substring(4, 6);
     const day = fullDate.substring(6, 8);
 
-    console.log(`${year}-${month}-${day}`);
     return `${year}-${month}-${day}`;
   }
 
@@ -98,7 +96,7 @@ export default function Book() {
         endTime: endTime,
         date: dateToBook(date),
         personnel: Number(people),
-        totalPrice: totalPay,
+        totalPrice: totalPrice,
         reserveUsername: name,
         reservePhoneNumber: phone,
         reserveEmail: email,
@@ -108,7 +106,6 @@ export default function Book() {
       const modal = document.querySelector(".modalWrap");
       modal.style.display = "block";
       window.scrollTo(0, 0);
-      console.log(req);
     } catch (err) {
       console.log(err);
     }
@@ -132,12 +129,12 @@ export default function Book() {
       <HostInfo host={host} />
       <BookInfo
         roomId={roomId}
-        roomName={roomName}
+        roomTitle={roomTitle}
         people={people}
         date={date}
         startTime={startTime}
         endTime={endTime}
-        totalPay={totalPay}
+        totalPrice={totalPrice}
       />
       <BookBox possible={possible.current}>
         <p className="required">*예약 필수 정보를 입력해주세요</p>

@@ -119,12 +119,6 @@ export default function HostSpaceForm({ data }) {
     setTagItem("");
   };
 
-  // useEffect(() => {
-  //   setSpaceInfo({
-  //     ...spaceInfo,
-  //     hashTags: tagList,
-  //   });
-  // }, [tagList]);
 
   // hashTag 삭제
   const removeHashTag = (e) => {
@@ -199,14 +193,7 @@ export default function HostSpaceForm({ data }) {
     });
   };
 
-  // const formDataSend = async (images, spaceId) => {
-  //   let formdata = new FormData();
-  //   formdata.append("uploadImage", images[0]);
 
-  //   const res = await axios.imgPost(`{api/space-images/${spaceId}}`, formdata);
-  //   console.log(res);
-  //   return res;
-  // };
 
   return (
     <Main>
@@ -318,7 +305,7 @@ export default function HostSpaceForm({ data }) {
             className="updateModal"
             title=""
             content="수정이 완료되었습니다."
-            clickEvent={() => nav("/host/spaceList")}
+          onClick = {() =>nav("host/spaceList")}
           />
         </ModalWrap>
       </SpaceForm>

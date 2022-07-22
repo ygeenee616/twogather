@@ -42,6 +42,9 @@ export class SpacesService {
           hashtags: true,
           reviews: true,
         },
+        order: {
+          id: 'DESC',
+        },
         relations: {
           rooms: true,
           user: true,
@@ -84,6 +87,7 @@ export class SpacesService {
           },
         });
         totalPage = Math.ceil(totalSpaces.length / perPage);
+        // 정렬
         switch (order) {
           case 'price':
             paginatedSpaces = await this.spacesRepository.find({
@@ -154,96 +158,185 @@ export class SpacesService {
             });
         } // keyword
       } else {
-        console.log(keyword, order, type);
-        totalSpaces = await this.spacesRepository.find({
-          select: {
-            rooms: true,
-            hashtags: true,
-            reviews: true,
-          },
-          where: {
-            type,
-            name: Like(`%${keyword}%`),
-          },
-          relations: {
-            rooms: true,
-            hashtags: true,
-            reviews: true,
-          },
-        });
-        totalPage = Math.ceil(totalSpaces.length / perPage);
-        switch (order) {
-          case 'price':
-            paginatedSpaces = await this.spacesRepository.find({
-              select: {
-                rooms: true,
-                hashtags: true,
-                reviews: true,
-              },
-              where: {
-                type,
-                name: Like(`%${keyword}%`),
-              },
-              relations: {
-                rooms: true,
-                hashtags: true,
-                reviews: true,
-              },
-              order: {
-                rooms: {
-                  price: 'ASC',
+        if (!type || type === undefined || type == null) {
+          totalSpaces = await this.spacesRepository.find({
+            select: {
+              rooms: true,
+              hashtags: true,
+              reviews: true,
+            },
+            where: {
+              name: Like(`%${keyword}%`),
+            },
+            relations: {
+              rooms: true,
+              hashtags: true,
+              reviews: true,
+            },
+          });
+          totalPage = Math.ceil(totalSpaces.length / perPage);
+          // 정렬
+          switch (order) {
+            case 'price':
+              paginatedSpaces = await this.spacesRepository.find({
+                select: {
+                  rooms: true,
+                  hashtags: true,
+                  reviews: true,
                 },
-              },
-              skip: startIndex,
-              take: perPage,
-            });
+                where: {
+                  name: Like(`%${keyword}%`),
+                },
+                relations: {
+                  rooms: true,
+                  hashtags: true,
+                  reviews: true,
+                },
+                order: {
+                  rooms: {
+                    price: 'ASC',
+                  },
+                },
+                skip: startIndex,
+                take: perPage,
+              });
 
-          case 'reviews':
-            paginatedSpaces = await this.spacesRepository.find({
-              select: {
-                rooms: true,
-                hashtags: true,
-                reviews: true,
-              },
-              where: {
-                type,
-                name: Like(`%${keyword}%`),
-              },
-              relations: {
-                rooms: true,
-                hashtags: true,
-                reviews: true,
-              },
-              order: {
-                numberOfReviews: 'DESC',
-              },
-              skip: startIndex,
-              take: perPage,
-            });
-            break;
-          case 'date':
-            paginatedSpaces = await this.spacesRepository.find({
-              select: {
-                rooms: true,
-                hashtags: true,
-                reviews: true,
-              },
-              where: {
-                type,
-                name: Like(`%${keyword}%`),
-              },
-              relations: {
-                rooms: true,
-                hashtags: true,
-                reviews: true,
-              },
-              order: {
-                id: 'DESC',
-              },
-              skip: startIndex,
-              take: perPage,
-            });
-        } // keyword
+            case 'reviews':
+              paginatedSpaces = await this.spacesRepository.find({
+                select: {
+                  rooms: true,
+                  hashtags: true,
+                  reviews: true,
+                },
+                where: {
+                  name: Like(`%${keyword}%`),
+                },
+                relations: {
+                  rooms: true,
+                  hashtags: true,
+                  reviews: true,
+                },
+                order: {
+                  numberOfReviews: 'DESC',
+                },
+                skip: startIndex,
+                take: perPage,
+              });
+              break;
+            case 'date':
+              paginatedSpaces = await this.spacesRepository.find({
+                select: {
+                  rooms: true,
+                  hashtags: true,
+                  reviews: true,
+                },
+                where: {
+                  name: Like(`%${keyword}%`),
+                },
+                relations: {
+                  rooms: true,
+                  hashtags: true,
+                  reviews: true,
+                },
+                order: {
+                  id: 'DESC',
+                },
+                skip: startIndex,
+                take: perPage,
+              });
+          }
+        } // type
+        else {
+          totalSpaces = await this.spacesRepository.find({
+            select: {
+              rooms: true,
+              hashtags: true,
+              reviews: true,
+            },
+            where: {
+              type,
+              name: Like(`%${keyword}%`),
+            },
+            relations: {
+              rooms: true,
+              hashtags: true,
+              reviews: true,
+            },
+          });
+          totalPage = Math.ceil(totalSpaces.length / perPage);
+          switch (order) {
+            case 'price':
+              paginatedSpaces = await this.spacesRepository.find({
+                select: {
+                  rooms: true,
+                  hashtags: true,
+                  reviews: true,
+                },
+                where: {
+                  type,
+                  name: Like(`%${keyword}%`),
+                },
+                relations: {
+                  rooms: true,
+                  hashtags: true,
+                  reviews: true,
+                },
+                order: {
+                  rooms: {
+                    price: 'ASC',
+                  },
+                },
+                skip: startIndex,
+                take: perPage,
+              });
+
+            case 'reviews':
+              paginatedSpaces = await this.spacesRepository.find({
+                select: {
+                  rooms: true,
+                  hashtags: true,
+                  reviews: true,
+                },
+                where: {
+                  type,
+                  name: Like(`%${keyword}%`),
+                },
+                relations: {
+                  rooms: true,
+                  hashtags: true,
+                  reviews: true,
+                },
+                order: {
+                  numberOfReviews: 'DESC',
+                },
+                skip: startIndex,
+                take: perPage,
+              });
+              break;
+            case 'date':
+              paginatedSpaces = await this.spacesRepository.find({
+                select: {
+                  rooms: true,
+                  hashtags: true,
+                  reviews: true,
+                },
+                where: {
+                  type,
+                  name: Like(`%${keyword}%`),
+                },
+                relations: {
+                  rooms: true,
+                  hashtags: true,
+                  reviews: true,
+                },
+                order: {
+                  id: 'DESC',
+                },
+                skip: startIndex,
+                take: perPage,
+              });
+          }
+        }
       }
 
       return {
@@ -382,8 +475,7 @@ export class SpacesService {
         skip: startIndex,
         take: perPage,
       });
-      const totalPage: number =
-        parseInt((totalSpaces.length / perPage).toString()) + 1;
+      const totalPage: number = Math.ceil(totalSpaces.length / perPage);
 
       const resPaginatedSpaces = [];
       totalSpaces.forEach((space) => {
@@ -476,7 +568,8 @@ export class SpacesService {
     }
   }
 
-  async findByRandom() {
+  //
+  async findBest4() {
     try {
       const spaces = await this.spacesRepository.find({
         select: {
@@ -484,23 +577,22 @@ export class SpacesService {
           hashtags: true,
           reviews: true,
         },
+        order: {
+          numberOfReviews: 'DESC',
+        },
         relations: {
           rooms: true,
           hashtags: true,
           reviews: true,
         },
       });
-      //랜덤 4개
-      const randomSpaces = [];
+      // //랜덤 4개
+      const bestSpaces = [];
       for (let i = 0; i < 4; i++) {
-        const randomNum = Math.floor(Math.random() * 10);
-        if (!randomSpaces.includes(randomNum)) {
-          randomSpaces.push(spaces[randomNum]);
-        } else {
-          i--;
-        }
+        bestSpaces.push(spaces[i]);
       }
-      return randomSpaces;
+      console.log(bestSpaces.length);
+      return bestSpaces;
     } catch (error) {
       throw error;
     }

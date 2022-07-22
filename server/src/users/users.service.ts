@@ -13,6 +13,7 @@ import * as bcrypt from 'bcryptjs';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class UsersService {
@@ -20,6 +21,7 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private jwtService: JwtService,
+    private emailService: EmailService,
   ) {}
 
   // 유저 생성
@@ -73,9 +75,13 @@ export class UsersService {
         relations: {
           reservations: {
             review: true,
-            room: true,
+            room: {
+              space: true,
+            },
           },
-          qnas: true,
+          qnas: {
+            space: true,
+          },
         },
       });
     } catch (error) {
@@ -111,6 +117,33 @@ export class UsersService {
       throw error;
     }
   }
+
+  // 유저 비밀번호 갱신
+  async updatePassword(id: number, newPassword: string): Promise<User> {
+    try {
+      const user = await this.usersRepository.update(id, {
+        password: newPassword,
+      });
+
+      return await this.usersRepository.findOneBy({ id });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // 유저 프로필 이미지 갱신
+  async updateProfileImage(id: number, profileImage: string): Promise<User> {
+    try {
+      const user = await this.usersRepository.update(id, {
+        profileImage,
+      });
+
+      return await this.usersRepository.findOneBy({ id });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // 유저 삭제
   async remove(id: number): Promise<void> {
     try {
@@ -118,6 +151,109 @@ export class UsersService {
       if (!deleteUser.affected) {
         throw new NotFoundException({ description: '삭제할 유저가 없습니다.' });
       }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // 소셜 로그인(카카오)
+  async createKakaoUser(kakaoUserInfo: CreateUserDto) {
+    try {
+      await this.usersRepository.save(kakaoUserInfo);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findUserById(id: number): Promise<User | undefined> {
+    const user = await this.usersRepository
+      .createQueryBuilder()
+      .select('user')
+      .from(User, 'user')
+      .where('user.id = :id', { id })
+      .getOne();
+    return user;
+  }
+
+  async validateUser(email: string): Promise<any> {
+    const user = await this.usersRepository
+      .createQueryBuilder()
+      .select('user')
+      .from(User, 'user')
+      .where('user.email = :email', { email })
+      .getOne();
+    return user;
+    if (!user) {
+      return null;
+    }
+    return user;
+  }
+
+  // 로그인 토큰 발급
+  async createLoginToken(user: User) {
+    const payload = {
+      email: user.email,
+      user_token: 'loginToken',
+    };
+
+    return this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: '6m',
+    });
+  }
+
+  // // 리프레쉬 토큰 발급
+  // async createRefreshToken(user: User) {
+  //   const payload = {
+  //     userId: user.id,
+  //     user_token: 'refreshToken',
+  //   };
+
+  //   const token = this.jwtService.sign(payload, {
+  //     secret: process.env.JWT_SECRET,
+  //     expiresIn: '50m',
+  //   });
+
+  //   const refresh_token = CryptoJS.AES.encrypt(
+  //     JSON.stringify(token),
+  //     process.env.AES_KEY,
+  //   ).toString();
+
+  //   await this.usersRepository
+  //     .createQueryBuilder()
+  //     .update(User)
+  //     .set({ user_refresh_token: token })
+  //     .where(`userId = ${user.id}`)
+  //     .execute();
+  //   return refresh_token;
+  // }
+
+  // 1회용 토큰 발급
+  onceToken(user_profile: any) {
+    const payload = {
+      user_email: user_profile.user_email,
+      user_nick: user_profile.user_nick,
+      user_provider: user_profile.user_provider,
+      user_token: 'onceToken',
+    };
+
+    return this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: '10m',
+    });
+  }
+
+  // 토큰 검증
+  async tokenValidate(token: string) {
+    return await this.jwtService.verify(token, {
+      secret: process.env.JWT_SECRET,
+    });
+  }
+
+  async sendMemberResetPassword(email: string, newPassword: string) {
+    // 변경된 패스워드 발송
+    try {
+      await this.emailService.sendMemberResetPassword(email, newPassword);
     } catch (error) {
       throw error;
     }

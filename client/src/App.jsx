@@ -29,12 +29,11 @@ import MyPage from "./pages/MyPage";
 import Notice from "./pages/Notice";
 import NotFound from "./pages/NotFound";
 import ProductList from "./pages/ProductList";
+import PWMailSent from "./pages/PWMailSent";
 import RegisterForm from "./pages/RegisterForm";
 import RegisterComplete from "./pages/RegisterComplete";
 import ScrollToTop from "./components/ScrollToTop";
-
 import UpdateNotice from "./pages/UpdateNotice";
-
 import LoginExpired from "./pages/LoginExpired";
 import ImgToS3 from "../src/components/register/ImgToS3";
 
@@ -46,6 +45,7 @@ function App() {
         <Header></Header>
         <Routes>
           <Route path="/login" element={<LoginForm />} />
+          <Route path="/login/findPasswordMail" element={<PWMailSent />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/registerComplete" element={<RegisterComplete />} />
           <Route path="/myPage" element={<MyPage />} />

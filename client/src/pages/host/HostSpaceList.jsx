@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Pagination from "../../components/Pagination";
 import ProductCard from "../../components/ProductCard";
@@ -27,14 +27,27 @@ export default function HostSpaceList({ host }) {
   const limit = 4;
   const offset = (page - 1) * limit;
   const [dataTrigger, setDataTrigger] = useState(0);
+  const imgUrlList = useRef([]);
 
   useEffect(() => {
     async function getData() {
       try {
-        const res = await api.get("api/spaces/host");
+        const res = await api.getAuth("api/spaces/host");
         const data = res.data.data;
+
+        const spacesIdList = data.map((space) => space.id);
+
+        await Promise.all(
+          spacesIdList.map(async (spaceId) => {
+            const imgData = await Api.get(`api/space-images/space/${spaceId}`);
+            const imgUrlListElement = await imgData.data.data.map(
+              (i) => i.imageUrl
+            );
+            imgUrlList.current = [...imgUrlList.current, imgUrlListElement];
+          })
+        );
+
         setDatas(data);
-        console.log(data);
       } catch (err) {
         console.log(err);
       }
@@ -42,8 +55,10 @@ export default function HostSpaceList({ host }) {
     getData();
   }, [dataTrigger]);
 
-  const openModalDeletePopup = () => {
-    const modal = document.querySelector(".modalWrap");
+  const openModalDeletePopup = (e) => {
+    const modal = document.getElementById(e);
+
+    modal.style.zIndex = "1000000";
     modal.style.display = "block";
     window.scrollTo(0, 0);
   };
@@ -65,20 +80,22 @@ export default function HostSpaceList({ host }) {
     window.scrollTo(0, 0);
   };
 
-  const renderData = (offset, limit, data) => {
-    return data.slice(offset, offset + limit).map((data, i) => (
+  const renderData = (data) => {
+    return data.map((data, i) => (
       <>
+        {console.log(data.id)}
         <ProductCard
           key={i}
-          src={[exImg1, exImg2]} //아직없음
+          src={imgUrlList.current[i]} //아직없음
           hashtags={data.hashtags}
           name={data.name}
           address2={data.address2}
           address3={data.address3}
           price={data.minPrice}
-          review={data.reviewsLength} //아직없음
+          reviewsLength={data.reviewsLength} //아직없음
           link={`/host/updateSpace/${data.id}`}
         ></ProductCard>
+
         <SubMenuBar>
           <Menu
             onClick={() => navigate(`/host/updateSpace/${data.id}`)}
@@ -87,7 +104,10 @@ export default function HostSpaceList({ host }) {
             ✏️공간 수정
           </Menu>
           <Menu
-            onClick={() => openModalDeletePopup(data.id)}
+            value={data.id}
+            onClick={() => {
+              openModalDeletePopup(data.id);
+            }}
             style={{ backgroundColor: "#6E85B7" }}
           >
             ✂️공간 삭제
@@ -106,7 +126,7 @@ export default function HostSpaceList({ host }) {
             ⚒️룸 수정 및 삭제
           </Menu>
         </SubMenuBar>
-        <ModalWrap className="modalWrap">
+        <ModalWrap className="modalWrap" id={data.id}>
           <Modal
             className="deleteModal"
             title="공간 삭제"
@@ -143,16 +163,7 @@ export default function HostSpaceList({ host }) {
             </AddSpaceButton>
 
             <div onClick={clickToModSpace}>
-              <ProductWrap>{renderData(offset, limit, datas)}</ProductWrap>
-
-              <div>
-                <Pagination
-                  total={datas.length}
-                  limit={limit}
-                  page={page}
-                  setPage={setPage}
-                />
-              </div>
+              <ProductWrap>{renderData(datas)}</ProductWrap>
             </div>
           </BottomWrap>
         </>

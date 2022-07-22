@@ -8,27 +8,20 @@ import { set } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../components/Modal";
 import { RiNotificationBadgeFill } from "react-icons/ri";
-
+import TypeSelector from "../../components/TypeSelector";
 export default function HostAddRoom({ mode }) {
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
+  const [roomId, setRoomId] = useState("");
+  let spaceId = "";
   // hashTag state
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState([]);
   const [alert, setAlert] = useState("");
-  const [roomInfo, setRoomInfo] = useState({
-    roomName: "",
-    roomType: "",
-    personal: "",
-    price: "",
-    images: { image: [] },
-    // spaceId: null,
-  });
+  const [roomInfo, setRoomInfo] = useState({});
 
   const navigate = useNavigate();
-
   const params = useParams();
-  const subViewInput = useRef();
 
   const handleChangeRoomState = (e) => {
     setRoomInfo({
@@ -41,19 +34,22 @@ export default function HostAddRoom({ mode }) {
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-    let roomResponse;
+
     if (!roomInfo.capacity || !roomInfo.price) {
       setAlert("값을 입력해 주세요");
     }
+
     try {
-      roomResponse = await Api.postAuth(`api/rooms/${params.spaceId}`, {
-        name: roomInfo.roomName, //공간명
+      const roomResponse = await Api.postAuth(`api/rooms/${params.spaceId}`, {
+        name: roomInfo.name, //공간명
         capacity: Number(roomInfo.personal), //수용인원
         price: Number(roomInfo.price), //공간타입
-        description: roomInfo.roomType,
-        spaceId: Number(params.spaceId),
-        //imgaes: [roomInfo.images],
+        description: roomInfo.description,
       });
+
+      const roomId = roomResponse.data.data.id;
+
+      handleImgUpload(roomId);
 
       const modal = document.querySelector(".modalWrap");
       modal.style.display = "block";
@@ -63,57 +59,62 @@ export default function HostAddRoom({ mode }) {
     }
   };
 
-  const loadDetailImage = (e) => {
-    for (let i = 0; i < detailImgs.length(); i++) {
-      <img src={detailImgs[i]} multiple alt="preview" />;
-    }
-  };
-  //TODO
-  //데이터들 STATE객체화 시켜서 받기
-  //onClick 이벤트 만들기
-  //주소 api 따와서 주소불러오기
-  //이미지 그리드로 보여주기
-  // - 동적으로 생성해야됨
+  //**************************이미지 처리 api***********************/
 
-  const encodeFileToBase64 = (fileBlob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-    return new Promise((resolve) => {
+  const loadDetailImage = (e) => {
+    setDatailImgs(e.target.files);
+
+    const fileArr = Array.from(e.target.files);
+
+    const imgBox = document.querySelector(".imgBox");
+    fileArr.forEach((file, index) => {
+      const reader = new FileReader();
+
+      //이미지 박스와 이미지 생성
+      const imgDiv = document.createElement("div");
+      const img = document.createElement("img");
+
+      img.classList.add("image"); //이미지에 이미지 태그 붙이기
+      imgDiv.classList.add("imgDiv");
+
+      imgDiv.addEventListener("click", (e) => {
+        fileArr.splice(index, 1);
+        setDatailImgs(fileArr);
+        e.target.remove();
+        imgDiv.remove();
+      });
+
+      imgDiv.appendChild(img);
+
       reader.onload = () => {
-        setImageSrc(reader.result);
-        console.log(imageSrc);
-        resolve();
-      };
+        img.src = reader.result;
+      }; //end on load
+
+      imgBox.appendChild(imgDiv);
+      reader.readAsDataURL(file);
     });
   };
 
-  // const getPreviewImg = () => {
-  //   if (images === null || images.length === 0) {
-  //     return (
-  //       <ImgAreaContainer>
-  //         <ImgArea>
-  //           <Img
-  //             src="https://k-startup.go.kr/images/homepage/prototype/noimage.gif"
-  //             alt="dd"
-  //           />
-  //         </ImgArea>
-  //         <ImgName>등록된 이미지가 없습니다.</ImgName>
-  //       </ImgAreaContainer>
-  //     );
-  //   } else {
-  //     return images.map((el, index) => {
-  //       return (
-  //         <ImgAreaContainer key={index}>
-  //           <ImgArea>
-  //             <Img src={images[index]} />
-  //           </ImgArea>
+  //이미지를 s3에 저장
+  const [selectedFile, setSelectedFile] = useState(null);
 
-  //           {/* <DeleteButton onClick={deleteImg}>❌</DeleteButton> */}
-  //         </ImgAreaContainer>
-  //       );
-  //     });
-  //   }
-  // };
+  const handleImgFileInput = (e) => {
+    const data = e.target.files;
+    setSelectedFile(data);
+  };
+
+  const handleImgUpload = async (roomId) => {
+    let imgData = new FormData();
+
+    Array.from(selectedFile).map((item) => {
+      imgData.append("images", item);
+      console.log(item.name);
+    });
+    //d이미지업로드
+    const data = await Api.postImgAuth(`api/uploads/room/${roomId}`, imgData);
+
+    console.log(data);
+  };
 
   return (
     <Main>
@@ -129,19 +130,19 @@ export default function HostAddRoom({ mode }) {
           <StyledInput
             type="text"
             width="50%"
-            name="roomName"
+            name="name"
             value={roomInfo.roomName}
             onChange={handleChangeRoomState}
           ></StyledInput>
         </InputBox>
 
         <InputBox>
-          <StyledLabel>룸 타입</StyledLabel>
+          <StyledLabel>룸 한줄 소개</StyledLabel>
           <StyledInput
             type="text"
             width="50%"
-            name="roomType"
-            value={roomInfo.roomType}
+            name="description"
+            value={roomInfo.description}
             onChange={handleChangeRoomState}
           ></StyledInput>
         </InputBox>
@@ -179,24 +180,34 @@ export default function HostAddRoom({ mode }) {
             value={roomInfo.price}
             onChange={handleChangeRoomState}
           ></StyledInput>
+
           <AlertMsg>{alert}</AlertMsg>
         </InputBox>
 
         <InputBox>
           <StyledLabel>룸 이미지 선택</StyledLabel>
-          <ImageView name="images" readonly>
-            {imageSrc && <img src={imageSrc} alt="preview" readonly />}
-          </ImageView>
-
+          <SubImageView
+            className="imgBox"
+            name="spaceSubImages"
+            onChange={loadDetailImage}
+          ></SubImageView>
           <ImageInput
-            name="roomInfo.images.image"
+            name="images"
             type="file"
             multiple
             accept="image/*"
             onChange={(e) => {
-              encodeFileToBase64(e.target.files[0]);
+              loadDetailImage(e);
+              handleImgFileInput(e);
             }}
-          />
+            id="imgs"
+            style={{ display: "none" }}
+          ></ImageInput>
+          <Label for="imgs" id="imgs" type="file">
+            사진선택
+          </Label>
+          {/* <input type="file" name="uploadfile" id="img" style="display:none;" />{" "}
+    <label for="img">Click me to upload image</label> */}
         </InputBox>
 
         <ButtonBox>
@@ -316,6 +327,13 @@ const SubImageView = styled.div`
   width: 100%;
   overflow: auto;
   border-radius: 4px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+
+  .image {
+    width: 100%;
+    display: block;
+  }
 `;
 
 const StyledButton = styled.button`
@@ -378,4 +396,29 @@ const ModalWrap = styled.div`
   height: 244vh;
   background-color: rgba(90, 90, 90, 0.2);
   display: none;
+`;
+const Label = styled.label`
+  width: 48%;
+  height: 40px;
+  line-height: 40px;
+
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+
+  background-color: #8daef2;
+  color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition-duration: 0.3s;
+
+  :hover {
+    background-color: #5155a6;
+  }
+  & + & {
+    margin-left: 20px;
+  }
 `;

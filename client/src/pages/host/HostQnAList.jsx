@@ -4,6 +4,7 @@ import styled from "styled-components";
 import * as Api from "../../api";
 import HostNav from "../../components/host/HostNav";
 import Pagination from "../../components/Pagination";
+import Modal from "../../components/Modal";
 
 export default function HostQnA() {
   const [data, setData] = useState("");
@@ -25,8 +26,6 @@ export default function HostQnA() {
         const data = await req.data.data.paginatedQnas;
         setTotalPage(req.data.data.totalPage);
         setData(data);
-        console.log(req);
-        console.log(data);
       } catch (err) {
         console.log(err);
       }
@@ -40,7 +39,21 @@ export default function HostQnA() {
       const req = await Api.patchAuth(`api/qnas/${id}`, {
         reply: answer,
       });
-      console.log(req);
+      const modal = document.querySelector(".successModalWrap");
+      modal.style.display = "block";
+      window.scrollTo(0, 0);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // Q&A 삭제 함수
+  async function DeleteQnA(id) {
+    try {
+      const req = await Api.deleteAuth(`api/qnas/${id}`);
+      const modal = document.querySelector(".deleteModalWrap");
+      modal.style.display = "block";
+      window.scrollTo(0, 0);
     } catch (err) {
       console.log(err);
     }
@@ -64,9 +77,14 @@ export default function HostQnA() {
                   >
                     {item.reply}
                   </Answer>
-                  <SubmitBtn onClick={(e) => submitAnswer(item.id)}>
-                    답변 등록 및 수정
-                  </SubmitBtn>
+                  <BtnBox>
+                    <SubmitBtn onClick={(e) => submitAnswer(item.id)}>
+                      답변 등록 및 수정
+                    </SubmitBtn>
+                    <DeleteBtn onClick={(e) => DeleteQnA(item.id)}>
+                      삭제
+                    </DeleteBtn>
+                  </BtnBox>
                 </QnABox>
               );
             })
@@ -78,6 +96,20 @@ export default function HostQnA() {
           />
         </QnAContainer>
       )}
+      <ModalWrap className="successModalWrap">
+        <Modal
+          title={"답변 등록 성공"}
+          content={"Q&A 답변 등록이 성공되었습니다."}
+          clickEvent={() => window.location.replace("/host/qna")}
+        />
+      </ModalWrap>
+      <ModalWrap className="deleteModalWrap">
+        <Modal
+          title={"Q&A 삭제 성공"}
+          content={"Q&A 삭제가 성공되었습니다."}
+          clickEvent={() => window.location.replace("/host/qna")}
+        />
+      </ModalWrap>
     </div>
   );
 }
@@ -116,20 +148,53 @@ const Answer = styled.textarea`
   border: none;
 `;
 
+const BtnBox = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
 const SubmitBtn = styled.button`
-  position: absolute;
-  right: 0;
-  bottom: -30px;
   width: 150px;
   padding: 5px;
   border-radius: 10px;
   border: none;
-  background-color: #646fd4;
+  background-color: #b2a4ff;
   color: #fff;
   transition: all 0.2s;
 
   &:hover {
-    background-color: #ffe69a;
+    background-color: #ffdeb4;
     color: #000;
   }
+`;
+
+const DeleteBtn = styled.button`
+  width: 150px;
+  padding: 5px;
+  border-radius: 10px;
+  border: none;
+  background-color: #ffb4b4;
+  color: #fff;
+  transition: all 0.2s;
+  margin-left: 10px;
+
+  &:hover {
+    background-color: #ffdeb4;
+    color: #000;
+  }
+`;
+
+const ModalWrap = styled.div`
+  width: 100%;
+  position: fixed;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  vertical-allign: middle;
+  display: none;
+  background-color: rgba(90, 90, 90, 0.2);
 `;

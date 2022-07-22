@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logoImg from "../assets/images/logo.png";
 import SearchBar from "../components/list/SearchBar";
+import { deleteCookie, getCookie } from "../useful-function";
 
 export const Logo = () => {
   const navigate = useNavigate();
@@ -43,6 +44,7 @@ export default function Header() {
       navigate("/login");
     } else {
       localStorage.clear();
+      deleteCookie("access_token");
       setIsLogin(false);
       navigate("/");
     }
@@ -50,14 +52,20 @@ export default function Header() {
 
   useEffect(() => {
     // jwtToken 요청 다시
-
     if (localStorage.getItem("userToken") === null) {
-      setIsLogin(false);
+      if (getCookie("access_token")) {
+        localStorage.setItem(
+          "userToken",
+          `Bearer ${getCookie("access_token")}`,
+        );
+        setIsLogin(true);
+      } else {
+        setIsLogin(false);
+      }
     } else {
       setIsLogin(true);
     }
   });
-
   return (
     <HeaderWrap>
       <Logo className="headerLogo" />
@@ -120,7 +128,7 @@ const HeaderWrap = styled.div`
 `;
 
 const RightWrap = styled.div`
-  font-family: "S-CoreDream-6Bold";
+  font-family: "S-CoreDream-3Light";
   display: flex;
   align-items: center;
   margin-left: auto;

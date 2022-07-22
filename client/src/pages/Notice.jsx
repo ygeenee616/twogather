@@ -173,12 +173,13 @@ const Line = styled.div`
 `;
 
 const Content = styled.div`
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 400;
   padding: 3vh 12.6vw;
   border: 1px solid #8daef2;
   border-top: none;
   display: none;
+  white-space: pre-wrap;
 `;
 
 const NoticeWrap = styled.div`

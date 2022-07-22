@@ -71,3 +71,5 @@ const Button = styled.button`
     box-shadow: 2px 2px 5px -1px #a6a9b6;
   }
 `;
+
+export { Container, ModalContainer, ModalContent, ModalTitle, Button };

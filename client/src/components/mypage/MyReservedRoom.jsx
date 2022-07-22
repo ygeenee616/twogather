@@ -1,14 +1,12 @@
-import { toDate } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { addCommas } from "../../assets/utils/UsefulFunction";
+import { addCommas, isFutureDate } from "../../assets/utils/UsefulFunction";
 
-function MyReservedRoom({ reservation, setDeleteR }) {
+function MyReservedRoom({ reservation }) {
   const navigate = useNavigate();
   // id는 예약번호, name은 공간이름 , 예약자명 ??
   const {
     id,
-    image,
     personnel,
     requirement,
     review,
@@ -16,10 +14,10 @@ function MyReservedRoom({ reservation, setDeleteR }) {
     date,
     startTime,
     endTime,
+    totalPrice,
   } = reservation;
   const nickname = localStorage.getItem("nickname");
   const roomName = room ? room.name : "무슨무슨방";
-  const roomPrice = room ? parseInt(room.price) : 999999;
 
   const handleAddReview = (e) => {
     navigate(`/myPage/addReview?bookId=${id}`, {
@@ -38,10 +36,12 @@ function MyReservedRoom({ reservation, setDeleteR }) {
   return (
     <RoomDiv>
       <InfoDiv>
-        <RoomImg src={image} alt="공간 이미지"></RoomImg>
+        {/* <RoomImg src={image} alt="공간 이미지"></RoomImg> */}
         <InfoText>
           <InfoTag color="bold">
-            <a href={`/detail/${id}`}>{roomName ?? "무슨무슨방"}</a>
+            <a href={`/detail/${room.space.id}`}>
+              {room.space.name} {roomName}
+            </a>
           </InfoTag>
           <br />
           <InfoTag color="black">
@@ -50,17 +50,25 @@ function MyReservedRoom({ reservation, setDeleteR }) {
           <InfoTag color="grey">
             예약일시: {date.split("T")[0]} {startTime}시~{endTime}시
           </InfoTag>
-          <InfoTag color="grey"> 결제금액: {addCommas(roomPrice)} 원</InfoTag>
+          <InfoTag color="grey"> 결제금액: {addCommas(totalPrice)} 원</InfoTag>
           <InfoTag color="italic">"{requirement}"</InfoTag>
         </InfoText>
       </InfoDiv>
       <EditDiv>
-        <span className="deleteReservation" onClick={handleDeleteReservtaion}>
-          예약취소
-        </span>
-        <span className="addReview" onClick={handleAddReview}>
-          리뷰 작성
-        </span>
+        {isFutureDate(date, startTime) ? (
+          <span className="deleteReservation" onClick={handleDeleteReservtaion}>
+            예약취소
+          </span>
+        ) : (
+          <b className="">이용완료</b>
+        )}
+        {isFutureDate(date, startTime) ? (
+          ""
+        ) : (
+          <span className="addReview" onClick={handleAddReview}>
+            {review ? "리뷰 수정/삭제" : "리뷰 작성"}
+          </span>
+        )}
       </EditDiv>
     </RoomDiv>
   );
@@ -117,13 +125,17 @@ const InfoTag = styled.p`
 const EditDiv = styled.div`
   text-algin: left;
 
-  a,
+  b {
+    margin-right: 1rem;
+  }
+
   span {
     text-decoration: underline;
     color: black;
     padding: 0;
     margin: 0 0.5rem;
     cursor: pointer;
+    margin-right: 1rem;
   }
 `;
 

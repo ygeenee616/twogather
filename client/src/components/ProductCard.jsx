@@ -31,14 +31,14 @@ export default function ProductCard({
   address2,
   address3,
   price,
-  review,
+  reviewsLength,
   link,
 }) {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate(link);
   };
-  //후에 아이디 넣기 지금은 임의로  1로 고정
+
   return (
     <CardWrap>
       <ImageSliderWrap>
@@ -51,7 +51,7 @@ export default function ProductCard({
             src={reviewImg}
             style={{ width: "13px", height: "13px", marginLeft: "auto" }}
           />
-          <SubTag>{review}</SubTag>
+          <SubTag>{reviewsLength}</SubTag>
         </Line>
         <Line>
           <Title>{name}</Title>

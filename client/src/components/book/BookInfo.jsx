@@ -3,16 +3,15 @@ import styled from "styled-components";
 
 export default function BookInfo({
   roomId,
-  roomName,
+  roomTitle,
   date,
   startTime,
   endTime,
   people,
-  totalPay,
+  totalPrice,
 }) {
   // 출력용 날짜 포맷팅
   function dateToString(date) {
-    console.log(date);
     const fullDate = String(date);
     const year = fullDate.substring(0, 4);
     const month = fullDate.substring(4, 6);
@@ -27,11 +26,11 @@ export default function BookInfo({
       <div>
         <Info>
           <div>예약 룸</div>
-          <div>{roomName}</div>
+          <div>{roomTitle}</div>
         </Info>
         <Info>
           <div>예약 날짜</div>
-          <div>{dateToString(date)}</div>
+          <div>{date}</div>
         </Info>
         <Info>
           <div>예약 시간</div>
@@ -45,7 +44,7 @@ export default function BookInfo({
         </Info>
         <Info>
           <div>결제 금액</div>
-          <div className="pay">{totalPay} ₩</div>
+          <div className="pay">{totalPrice} ₩</div>
         </Info>
       </div>
     </Container>
