@@ -28,7 +28,7 @@ export default function SearchBar() {
     searchInput.current.length === 0
       ? setCaution(true)
       : stringParams.length === 0
-      ? window.location.replace(`/list?search=${searchInput.current}`)
+      ? window.location.replace(`/list?search=${searchInput.current}&page=1`)
       : window.location.replace(
           `/list?${stringParams}&search=${searchInput.current}`
         );
