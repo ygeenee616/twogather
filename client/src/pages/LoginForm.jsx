@@ -17,17 +17,16 @@ import {
 } from "../components/register/UserForm";
 import ModalWithInput from "../components/ModalWithInput";
 
-const FindPWModal = document.getElementById("FindPWModal");
-const Modal = document.getElementById("ModalWithInput");
-
 // 비밀번호 찾기 클릭시
 const handleFindPw = (e) => {
   e.preventDefault();
+  const FindPWModal = document.getElementById("FindPWModal");
   FindPWModal.style.display = "block";
 };
 
 // 모달창에서 '닫기' 클릭시
 const handleModalCancel = (e) => {
+  const FindPWModal = document.getElementById("FindPWModal");
   e.preventDefault();
   FindPWModal.style.display = "none";
 };
@@ -36,9 +35,12 @@ const handleModalCancel = (e) => {
 const handleModalClick = async (e) => {
   e.preventDefault();
   try {
-    // Modal.props.title = "메일 전송 완료!";
+    const FindPWModal = document.getElementById("FindPWModal");
     FindPWModal.style.display = "none";
-    window.location.href = "/";
+    // 로그인 성공시
+    window.location.href = "/login/findPasswordMail";
+
+    // 로그인 실패시
   } catch (error) {
     console.error(error);
   }

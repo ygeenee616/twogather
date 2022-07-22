@@ -4,6 +4,7 @@ import styled from "styled-components";
 import * as Api from "../../api";
 import HostNav from "../../components/host/HostNav";
 import Pagination from "../../components/Pagination";
+import Modal from "../../components/Modal";
 
 export default function HostQnA() {
   const [data, setData] = useState("");
@@ -40,6 +41,9 @@ export default function HostQnA() {
       const req = await Api.patchAuth(`api/qnas/${id}`, {
         reply: answer,
       });
+      const modal = document.querySelector(".successModalWrap");
+      modal.style.display = "block";
+      window.scrollTo(0, 0);
       console.log(req);
     } catch (err) {
       console.log(err);
@@ -50,6 +54,9 @@ export default function HostQnA() {
   async function DeleteQnA(id) {
     try {
       const req = await Api.deleteAuth(`api/qnas/${id}`);
+      const modal = document.querySelector(".deleteModalWrap");
+      modal.style.display = "block";
+      window.scrollTo(0, 0);
       console.log(req);
     } catch (err) {
       console.log(err);
@@ -93,6 +100,20 @@ export default function HostQnA() {
           />
         </QnAContainer>
       )}
+      <ModalWrap className="successModalWrap">
+        <Modal
+          title={"답변 등록 성공"}
+          content={"Q&A 답변 등록이 성공되었습니다."}
+          clickEvent={() => window.location.replace("/host/qna")}
+        />
+      </ModalWrap>
+      <ModalWrap className="deleteModalWrap">
+        <Modal
+          title={"Q&A 삭제 성공"}
+          content={"Q&A 삭제가 성공되었습니다."}
+          clickEvent={() => window.location.replace("/host/qna")}
+        />
+      </ModalWrap>
     </div>
   );
 }
@@ -167,4 +188,17 @@ const DeleteBtn = styled.button`
     background-color: #ffdeb4;
     color: #000;
   }
+`;
+
+const ModalWrap = styled.div`
+  width: 100%;
+  position: fixed;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  vertical-allign: middle;
+  display: none;
+  background-color: rgba(90, 90, 90, 0.2);
 `;

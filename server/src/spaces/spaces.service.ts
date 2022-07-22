@@ -591,7 +591,8 @@ export class SpacesService {
       for (let i = 0; i < 4; i++) {
         bestSpaces.push(spaces[i]);
       }
-      return spaces;
+      console.log(bestSpaces.length);
+      return bestSpaces;
     } catch (error) {
       throw error;
     }
