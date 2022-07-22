@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import styled from "styled-components";
 import UserBlockButtonBox from "./UserBlockButtonBox";
-import * as api from "../api";
+import * as Api from "../api";
 export default function UserInfo({
   userName,
   commentNum,
@@ -14,7 +14,7 @@ export default function UserInfo({
 
   useEffect(() => {
     async function getData() {
-      const response = await api.get(`api/users/${userId}`);
+      const response = await Api.getAuth(`api/users/${userId}`);
       setUserInfo(response.data.data);
     }
     getData();

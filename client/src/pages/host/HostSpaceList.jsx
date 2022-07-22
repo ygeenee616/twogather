@@ -53,7 +53,7 @@ export default function HostSpaceList({ host }) {
     console.log(spaceId);
     //확인 누르면 삭제하고 딜리트함
     try {
-      const response = await Api.delete(`api/spaces/host/${spaceId}`);
+      const response = await Api.deleteAuth(`api/spaces/host/${spaceId}`);
       console.log(response);
       setDataTrigger(dataTrigger + 1);
     } catch (err) {

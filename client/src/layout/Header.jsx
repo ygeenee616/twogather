@@ -18,14 +18,6 @@ export const Logo = () => {
   );
 };
 
-const HostPage = () => {
-  return (
-    <TextWrap>
-      <div>공간등록 및 관리</div>
-    </TextWrap>
-  );
-};
-
 const HeaderTag = ({ name, target }) => {
   const navigate = useNavigate();
   const handleClick = () => {
@@ -57,6 +49,8 @@ export default function Header() {
   };
 
   useEffect(() => {
+    // jwtToken 요청 다시
+
     if (localStorage.getItem("userToken") === null) {
       setIsLogin(false);
     } else {
@@ -72,12 +66,14 @@ export default function Header() {
         {loginType === "admin" ? (
           <HeaderTag name="관리자 페이지" target="/admin/notice?page=1" />
         ) : loginType === "host" ? (
-          <HeaderTag name="공간등록 및 관리" target="/host/spaceList?page=1" />
+          <HeaderTag name="공간등록 및 관리" target="/host/spaceList" />
+        ) : isLogin ? (
+          <HeaderTag name="호스트 등록하기" target="/host/addHost" />
         ) : (
-          <HeaderTag name="호스트등록하기" target="/host/addHost" />
+          ``
         )}
-        {isLogin ? <HeaderTag name="마이페이지" target="/mypage" /> : ``}
         <HeaderTag name="공지사항" target="/notice?page=1" />
+        {isLogin ? <HeaderTag name="마이페이지" target="/mypage" /> : ``}
         <TextWrap onClick={handleLoginClick}>
           {localStorage.getItem("userToken") === null ? `로그인` : `로그아웃`}
         </TextWrap>

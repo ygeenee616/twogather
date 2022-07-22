@@ -30,7 +30,7 @@ export default function BookDetail() {
     const getData = async (bookId) => {
       try {
         // 나중에 url 해당 BookId 사용해서 API 연결
-        const req = await Api.get(`api/reservations/${bookId}`);
+        const req = await Api.getAuth(`api/reservations/${bookId}`);
         const data = await req.data.data;
         console.log(req);
         setData(data);
@@ -46,7 +46,7 @@ export default function BookDetail() {
   async function deleteBook(bookId) {
     try {
       // 나중에 url 해당 BookId 사용해서 API 연결
-      const req = await Api.delete(`api/reservations/${bookId}`);
+      const req = await Api.deleteAuth(`api/reservations/${bookId}`);
       console.log(req);
       const modal = document.querySelector(".modalWrap");
       modal.style.display = "block";

@@ -40,7 +40,7 @@ export default function Notice({ url }) {
   //삭제버튼 클릭시 삭제
   const handleClickDeleteButton = async (e) => {
     const clickedId = e.target.id.replace(/[^0-9]/g, "");
-    const req = await Api.delete(`api/notices/${clickedId}`);
+    const req = await Api.deleteAuth(`api/notices/${clickedId}`);
 
     const modal = document.querySelector(".modalWrap");
     modal.style.display = "block";
@@ -50,7 +50,7 @@ export default function Notice({ url }) {
   //데이터, 유저role 불러옴, admin계정일경우 추가, 수정, 삭제버튼 보임
   useEffect(() => {
     async function getData() {
-      const res = await Api.get(`api/notices?page=${page}&perPage=10`);
+      const res = await Api.getAuth(`api/notices?page=${page}&perPage=10`);
       const datas = res.data.data.paginatedNotices;
       setTotalPage(res.data.data.totlaPage);
       setData(datas);
@@ -58,7 +58,7 @@ export default function Notice({ url }) {
     getData();
 
     async function getUser() {
-      const response = await Api.get("api/users/info");
+      const response = await Api.getAuth("api/users/info");
       setIsAdmin(response.data.data.isAdmin);
     }
     getUser();

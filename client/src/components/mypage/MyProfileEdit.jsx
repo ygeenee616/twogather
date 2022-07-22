@@ -30,9 +30,8 @@ function MyProfileEdit({ user, handleEditUserDone }) {
 
   // 쿼리
   const handleDoneEdit = async () => {
-    console.log(newUser);
-
     const userData = newUser;
+
     for (var prop in userData) {
       if (userData[prop] === "") {
         delete userData[prop];
@@ -45,8 +44,7 @@ function MyProfileEdit({ user, handleEditUserDone }) {
 
     if (isFormValid && newUser !== null) {
       try {
-        const res = await Api.patch("api/users", userData);
-        console.log(res);
+        const res = await Api.patchAuth("api/users", userData);
         window.location.replace("/mypage");
       } catch (err) {
         console.log(err);
@@ -88,17 +86,17 @@ function MyProfileEdit({ user, handleEditUserDone }) {
             <tr>
               <TagTD>비밀번호</TagTD>
               <InputTD>
-                {loginType === "local" ? (
+                {loginType === "kakao" || loginType === "google" ? (
+                  <p style={{ fontSize: 5, color: "#ccd3f2" }}>
+                    소셜로그인된 회원은 비밀번호를 바꿀 수 없습니다.
+                  </p>
+                ) : (
                   <input
                     type="password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="새 비밀번호를 입력하세요."
                   />
-                ) : (
-                  <p style={{ fontSize: 5, color: "#ccd3f2" }}>
-                    소셜로그인된 회원은 비밀번호를 바꿀 수 없습니다.
-                  </p>
                 )}
               </InputTD>
             </tr>

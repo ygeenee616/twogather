@@ -10,7 +10,7 @@ export default function AdminUser() {
 
   useEffect(() => {
     async function getData() {
-      const response = await Api.get("api/users");
+      const response = await Api.getAuth("api/users");
       const data = response.data.data;
       setData(data);
     }
