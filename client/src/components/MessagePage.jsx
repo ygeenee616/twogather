@@ -2,7 +2,7 @@ import { Container, FormDiv, Line } from "./register/UserForm";
 import { useLocation, useNavigate } from "react-router-dom";
 import logoImg from "../assets/images/logo.png";
 import styled from "styled-components";
-function MessagePage({ content }) {
+function MessagePage({ title, content }) {
   const location = useLocation();
   const navigate = useNavigate();
   //   const nickname = location.state.nickname ?? '';
@@ -14,7 +14,11 @@ function MessagePage({ content }) {
           <img className="logoImg" src={logoImg} alt="logo" />
           <div className="logoTitle">TWOGATHER</div>
         </LogoDiv>
-        <h2>{content}</h2>
+        <MessageDiv>
+          <h2>{title}</h2>
+          <h4>{content}</h4>
+        </MessageDiv>
+
         <Line />
         <BtnDiv>
           <button className="home-btn" onClick={() => navigate("/")}>
@@ -33,6 +37,14 @@ const LogoDiv = styled.div`
   img {
     width: 5rem;
     height: 5rem;
+  }
+`;
+
+const MessageDiv = styled.div`
+  margin: 3rem 0;
+
+  h4 {
+    color: grey;
   }
 `;
 

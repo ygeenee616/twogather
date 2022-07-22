@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const QnaComponent = ({ room, qna, setDeleteQModal }) => {
+const QnaComponent = ({ room, qna }) => {
   // id 는 qna 아이디
   const { id, content, createdTime, reply } = qna;
 

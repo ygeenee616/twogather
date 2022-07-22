@@ -45,8 +45,6 @@ export default function AddHost() {
     const account = `${bankInfo.bankName} ${bankInfo.bankAccount} ${bankInfo.name}`;
     setHostInfo({ ...hostInfo, accountNumber: account });
     const response = await Api.patchAuth("api/users", hostInfo);
-    console.log(response);
-    console.log("asds");
   };
 
   //TODO
