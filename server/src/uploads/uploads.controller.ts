@@ -291,4 +291,47 @@ export class UploadsController {
   ) {
     return this.uploadsService.uploadProfileImage(userId, files);
   }
+
+  @Patch('/profile/:userId')
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth('userToken')
+  @ApiOperation({
+    summary: '프로필 이미지 수정 API',
+    description: '프로필 이미지 수정',
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        images: { type: 'string', format: 'binary' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 201,
+    description: '새 프로필 이미지 수정 완료',
+    schema: {
+      example: '1개의 profileImage 파일이 업로드되었습니다.',
+    },
+  })
+  @UseInterceptors(
+    FilesInterceptor('images', 1, {
+      storage: multerS3({
+        s3: s3,
+        bucket: process.env.AWS_BUCKET_NAME,
+        acl: 'public-read',
+        contentType: multerS3.AUTO_CONTENT_TYPE,
+        key: function (req, file, cb) {
+          cb(null, `origin/profileImage_${Date.now()}_${file.originalname}`);
+        },
+      }),
+    }),
+  )
+  async updateProfileImage(
+    @Param('userId') userId: number,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
+    return this.uploadsService.updateProfileImage(userId, files);
+  }
 }
