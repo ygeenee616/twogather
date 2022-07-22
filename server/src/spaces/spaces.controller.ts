@@ -151,7 +151,7 @@ export class SpacesController {
   }
 
   // 베스트 공간 4개 조회
-  @Get('/best')
+  @Get('/random')
   @ApiOperation({
     summary: '베스트 공간 4개 조회 API',
     description: '베스트 공간 4개 조회하기',
