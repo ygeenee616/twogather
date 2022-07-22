@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Patch,
   Post,
@@ -27,6 +28,7 @@ import { UserResExample } from './user.swagger.example';
 import { GetAdminUser, GetUser } from 'src/custom.decorator';
 import { User } from './entities/users.entity';
 import { KakaoAuthGuard } from './guards/kakao-auth.guard';
+import { generateRandomPassword } from '../utils/generate-random-password';
 const userResExample = new UserResExample();
 
 @Controller('api/users')
@@ -297,5 +299,44 @@ export class UsersController {
     }
     // res.redirect('http://localhost:5001/register');
     // res.end();
+  }
+
+  @Post('reset-password')
+  @ApiOperation({
+    summary: '비밀번호 찾기(비밀번호 초기화) API',
+    description: '비밀번호 초기화를 진행한다.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: '비밀번호 초기화 후 이메일 전송 성공',
+    schema: {
+      // example:
+    },
+  })
+  async resetPasswordUser(@Body() dto) {
+    const { email } = dto;
+    // email로 가입된 유저인 지 확인
+    const user = await this.usersService.findOneByEmail(email);
+    if (!user) {
+      throw new NotFoundException('존재하지 않는 유저입니다.');
+    }
+
+    // 랜덤 패스워드 생성
+    const newPassword = generateRandomPassword();
+
+    // user password 업데이트
+    const updatedUser = await this.usersService.updatePassword(
+      user.id,
+      newPassword,
+    );
+
+    // 변경된 패스워드 이메일 발송
+    await this.usersService.sendMemberResetPassword(email, newPassword);
+
+    return {
+      status: 201,
+      description: '특정 유저 비밀번호 초기화 성공',
+      success: true,
+    };
   }
 }
