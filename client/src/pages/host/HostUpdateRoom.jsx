@@ -8,7 +8,7 @@ import { set } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../components/Modal";
 import { RiNotificationBadgeFill } from "react-icons/ri";
-
+import TypeSelector from "../../components/TypeSelector";
 export default function HostAddRoom({ mode }) {
   const [imageSrc, setImageSrc] = useState("");
   const [detailImgs, setDatailImgs] = useState([]);
@@ -18,6 +18,10 @@ export default function HostAddRoom({ mode }) {
   const [alert, setAlert] = useState("");
   const [roomInfo, setRoomInfo] = useState({
     // spaceId: null,
+  });
+  const [select, setSelect] = useState({
+    items: ["파티룸", "스터디룸", "회의실", "연습실", "스튜디오"],
+    selectItem: "파티룸",
   });
 
   const navigate = useNavigate();
@@ -45,7 +49,7 @@ export default function HostAddRoom({ mode }) {
         name: roomInfo.roomName, //공간명
         capacity: Number(roomInfo.personal), //수용인원
         price: Number(roomInfo.price), //공간타입
-        description: roomInfo.roomType,
+        description: select.selectItem,
       });
 
       //룸 이미지 업데이트
@@ -65,6 +69,7 @@ export default function HostAddRoom({ mode }) {
         console.log(response);
         const res = response.data.data;
         console.log(res);
+        setSelect({ ...select, selectItem: res.description });
         setRoomInfo({
           capacity: Number(res.capacity),
           description: res.description,
@@ -180,17 +185,10 @@ export default function HostAddRoom({ mode }) {
           ></StyledInput>
         </InputBox>
 
-        <InputBox>
-          <StyledLabel>룸 타입</StyledLabel>
-          <StyledInput
-            type="text"
-            width="50%"
-            name="roomType"
-            value={roomInfo.description}
-            onChange={handleChangeRoomState}
-          ></StyledInput>
+        <InputBox className="selectBox">
+          <StyledLabel>공간 타입</StyledLabel>
+          <NewSelector state={select} setState={setSelect}></NewSelector>
         </InputBox>
-
         <InputBox>
           <StyledLabel>룸 수용인원</StyledLabel>
           <StyledInput
@@ -485,4 +483,9 @@ const Label = styled.label`
   & + & {
     margin-left: 20px;
   }
+`;
+const NewSelector = styled(TypeSelector)`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 `;
