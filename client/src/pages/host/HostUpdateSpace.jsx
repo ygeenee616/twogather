@@ -9,7 +9,7 @@ export default function HostUpdateSpace() {
 
   useEffect(() => {
     async function getData() {
-      const res = await Api.get(`api/spaces/${spaceId}`);
+      const res = await Api.getAuth(`api/spaces/${spaceId}`);
       const datas = res.data.data;
       setData(datas);
       console.log(datas);

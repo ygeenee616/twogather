@@ -5,25 +5,26 @@ import {
   BtnContainer,
 } from "../components/addComment/CommentForm";
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import * as Api from "../api";
 
 function AddQnA() {
   const location = useLocation();
+  const navigate = useNavigate();
   const contentTextarea = useRef(null); // 작성란
   const spaceId = location.state.spaceId;
   const spaceName = location.state.spaceName;
 
   const addQna = async (e) => {
     e.preventDefault();
+
     try {
       const data = {
-        content: contentTextarea.current,
+        content: contentTextarea.current.value,
       };
-      const res = await Api.post(`api/qnas/${spaceId}`, data);
-
-      console.log(data);
+      const res = await Api.postAuth(`api/qnas/${spaceId}`, data);
+      navigate(`/detail/${spaceId}`);
     } catch (err) {
       console.log(err);
     }
@@ -42,7 +43,7 @@ function AddQnA() {
         />
         <BtnContainer>
           <button className="cancel">취소</button>
-          <button type="submit" className="submit">
+          <button type="submit" className="submit" onClick={addQna}>
             작성 완료
           </button>
         </BtnContainer>

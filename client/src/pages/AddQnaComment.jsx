@@ -7,7 +7,7 @@ import {
 import styled from "styled-components";
 import { useState } from "react";
 import { useLocation, useNavigate, useNavigationType } from "react-router-dom";
-import * as api from "../api";
+import * as Api from "../api";
 
 function AddQnaComment() {
   // 답글달기로 넘어갈 때
@@ -20,7 +20,7 @@ function AddQnaComment() {
     const data = {
       reply: reply,
     };
-    const res = await api.post(`api/qnas/${reviewId}`, data);
+    const res = await Api.patchAuth(`api/qnas/${reviewId}`, data);
   };
 
   const reviewId = location.state.reviewId;
@@ -39,10 +39,7 @@ function AddQnaComment() {
           onChange={(e) => setReply(e.target.value)}
         />
         <BtnContainer>
-          <button
-            className="cancel"
-            onClick={(e) => navigate(`qnas/${reviewId}`)}
-          >
+          <button className="cancel" onClick={(e) => navigate(`/host/`)}>
             취소
           </button>
           <button type="submit" className="submit">

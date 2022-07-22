@@ -53,7 +53,11 @@ function MyProfile({ userInfo }) {
         formData.append("images", file);
         encodeFileToBase64(file);
         // 프로필 사진 변경
-        await Api.postImg(`api/uploads/profile/${userId}`, formData);
+        const res = await Api.postImg(
+          `api/uploads/profile/${userId}`,
+          formData
+        );
+        console.log(res);
       }
     } catch (err) {
       console.log(err);
@@ -63,25 +67,27 @@ function MyProfile({ userInfo }) {
   return (
     <ProfileDiv>
       <ProfileImgDiv>
-        {imageSrc && <img src={imageSrc} alt="내 프로필 사진" />}
+        {userInfo.profileImage ? (
+          <img src={userInfo.profileImage} alt="내 프로필 사진" />
+        ) : (
+          <img src={imageSrc} alt="내 프로필 사진"></img>
+        )}
         <EditBtnDiv>
-          <form>
-            <label htmlFor="imgUpload" name="profileImage">
-              <div id="img_upload">프로필 사진 변경</div>
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              id="imgUpload"
-              onChange={handleImageUpload}
-              name="images"
-            />
-            <input
-              type="submit"
-              value="유저 정보 수정"
-              onClick={handleEditUser}
-            />
-          </form>
+          <label htmlFor="imgUpload" name="profileImage">
+            <div id="img_upload">프로필 사진 변경</div>
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            id="imgUpload"
+            onChange={handleImageUpload}
+            name="images"
+          />
+          <input
+            type="button"
+            value="유저 정보 수정"
+            onClick={handleEditUser}
+          />
         </EditBtnDiv>
       </ProfileImgDiv>
       <ProfileContents>
@@ -141,7 +147,7 @@ const EditBtnDiv = styled.div`
   }
 
   label,
-  input[type="submit"] {
+  input[type="button"] {
     display: inline-block;
     background-color: white;
     color: #bbd3f2;
