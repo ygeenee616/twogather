@@ -99,7 +99,7 @@ function LoginForm() {
             <span>{alertMsg}</span>
           </AlertMsg>
 
-          {/* <SocialLoginDiv>
+          <SocialLoginDiv>
             <SocialLoginBtn className="kakao-login">
               <img src="/images/kakaoLogo.png" alt="KAKAO" />
               <p>카카오 로그인</p>
@@ -108,7 +108,7 @@ function LoginForm() {
               <img src="/images/googleLogo.png" alt="GOOGLE"></img>
               <p>구글 로그인</p>
             </SocialLoginBtn>
-          </SocialLoginDiv> */}
+          </SocialLoginDiv>
 
           <LoginFooterDiv>
             <thead>
@@ -118,10 +118,12 @@ function LoginForm() {
                   <a href="/register">회원가입</a>
                 </LinkTD>
               </tr>
-              {/* <tr>
+              <tr>
                 <QuestionTD>비밀번호를 잊으셨나요?</QuestionTD>
-                <LinkTD>비밀번호 찾기</LinkTD>
-              </tr> */}
+                <LinkTD>
+                  <a href="/findPw">비밀번호 찾기</a>
+                </LinkTD>
+              </tr>
             </thead>
           </LoginFooterDiv>
         </ContentsDiv>

@@ -19,10 +19,10 @@ function MyProfileInfo({ user }) {
             <TagTD>이메일</TagTD>
             <InfoTD> {email} </InfoTD>
           </tr>
-          {/* <tr>
+          <tr>
             <TagTD> SNS연동 </TagTD>
             <InfoTD> {loginType} </InfoTD>
-          </tr> */}
+          </tr>
           <tr>
             <TagTD>성별</TagTD>
             <InfoTD> {sex} </InfoTD>

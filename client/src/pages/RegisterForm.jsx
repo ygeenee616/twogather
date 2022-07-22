@@ -21,7 +21,7 @@ function RegisterForm() {
         <ContentsDiv>
           <PageTitle>회원가입</PageTitle>
 
-          {/* <SocialRegisterDiv>
+          <SocialRegisterDiv>
             <SocialRegisterBtn className="kakao">
               <img src="/images/kakaoLogo.png" alt="KAKAO" />
               <p>카카오로 시작하기</p>
@@ -32,7 +32,7 @@ function RegisterForm() {
             </SocialRegisterBtn>
           </SocialRegisterDiv>
 
-          <Line /> */}
+          <Line />
 
           <form className="register-form">
             <Register />
