@@ -204,9 +204,10 @@ export class UploadsService {
         };
         // await s3.putObject(params).promise().then();
         const awsAddress = process.env.AWS_S3_URL;
-        const updatedUser = await this.userService.update(userId, {
-          profileImage: files[i].location.replace('origin', 'wh_200'),
-        });
+        const updatedUser = await this.userService.updateProfileImage(
+          userId,
+          files[i].location.replace('origin', 'wh_200'),
+        );
       }
       return `${files.length}개의 profileImage 파일이 업로드되었습니다.`;
     } catch (error) {
@@ -242,9 +243,10 @@ export class UploadsService {
         const awsAddress = process.env.AWS_S3_URL;
 
         // 새로운 것 DB(user)에 update
-        const updatedUser = await this.userService.update(userId, {
-          profileImage: files[i].location.replace('origin', 'wh_200'),
-        });
+        const updatedUser = await this.userService.updateProfileImage(
+          userId,
+          files[i].location.replace('origin', 'wh_200'),
+        );
       }
       return `1개의 기존 profileImage 파일이 삭제되었습니다.
       ${files.length}개의 profileImage 파일이 업로드되었습니다.`;
