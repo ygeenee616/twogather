@@ -65,6 +65,26 @@ function LoginForm() {
   const [alertMsg, setAlertMsg] = useState("");
 
   const findEmailInput = useRef();
+  // 모달창에서 '확인' 클릭시
+  const handleModalClick = async (e) => {
+    const registeredEmail = findEmailInput.current.value;
+    e.preventDefault();
+    try {
+      const FindPWModal = document.getElementById("FindPWModal");
+      // 로그인 성공시
+      const response = await Api.post("api/users/reset-password", {
+        email: registeredEmail,
+      });
+
+      console.log(response);
+      FindPWModal.style.display = "none";
+      window.location.href = "/login/findPasswordMail";
+
+      // 로그인 실패시
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();

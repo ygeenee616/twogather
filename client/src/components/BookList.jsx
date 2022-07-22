@@ -4,8 +4,6 @@ import styled from "styled-components";
 import { FcSettings } from "react-icons/fc";
 
 export default function BookList({ data, endpoint }) {
-  console.log(data);
-
   return (
     data && (
       <Container>

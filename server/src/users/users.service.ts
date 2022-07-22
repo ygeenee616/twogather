@@ -13,6 +13,7 @@ import * as bcrypt from 'bcryptjs';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class UsersService {
@@ -20,6 +21,7 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private jwtService: JwtService,
+    private emailService: EmailService,
   ) {}
 
   // 유저 생성
@@ -246,5 +248,14 @@ export class UsersService {
     return await this.jwtService.verify(token, {
       secret: process.env.JWT_SECRET,
     });
+  }
+
+  async sendMemberResetPassword(email: string, newPassword: string) {
+    // 변경된 패스워드 발송
+    try {
+      await this.emailService.sendMemberResetPassword(email, newPassword);
+    } catch (error) {
+      throw error;
+    }
   }
 }

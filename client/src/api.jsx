@@ -177,6 +177,32 @@ async function patchAuth(endpoint, data) {
   return response;
 }
 
+async function patchImgAuth(endpoint, data) {
+  // JSON.stringify 함수: Javascript 객체를 JSON 형태로 변환함.
+  // 예시: {name: "Kim"} => {"name": "Kim"}
+  const bodyData = JSON.stringify(data);
+
+  console.log(`%cPATCH 요청: ${serverUrl + endpoint}`, "color: #059c4b;");
+  console.log(`%cPATCH 요청 데이터: ${bodyData}`, "color: #059c4b;");
+
+  let response;
+  try {
+    response = await axios.patch(serverUrl + endpoint, bodyData, {
+      // JWT 토큰을 헤더에 담아 백엔드 서버에 보냄.
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `${localStorage.getItem("userToken")}`,
+      },
+    });
+  } catch (error) {
+    if (error.response.status === 401) {
+      localStorage.clear();
+      window.location.href = "/401";
+    }
+  }
+  return response;
+}
+
 async function patch(endpoint, data) {
   // JSON.stringify 함수: Javascript 객체를 JSON 형태로 변환함.
   // 예시: {name: "Kim"} => {"name": "Kim"}
@@ -230,6 +256,7 @@ export {
   patchAuth,
   patch,
   postImg,
+  patchImgAuth,
   deleteAuth,
   del as delete,
 };

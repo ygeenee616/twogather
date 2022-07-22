@@ -7,18 +7,25 @@ const CLIENT_ID =
 const onSuccess = (res) => {
   console.log("LOGIN SUCESS! Current user: ", res.profileObj);
   const { email, name, imageUrl } = res.profileObj;
-  // const data = {
-  //   email: email,
-  //   nickname: name,
-  //   password:
-  // };
+  const data = {
+    email: email,
+    nickname: name,
+    loginType: "google",
+    profileImg: imageUrl,
+  };
+
   // "/apiusers/sign-in" 엔드포인트로 post요청함.
-  // const res = await Api.post("api/users/sign-up", data);
-  // // register 처리
+  const googleRegister = async () => {
+    try {
+      const res = await Api.post("api/users/sign-up", data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // register 처리
   // try {
   //   const result = await Api.postAuth("");
   // } catch (err) {}
-  //
 };
 const onFailure = (res) => {
   console.log("LOGIN FAILED! res: ", res);

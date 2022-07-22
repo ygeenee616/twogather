@@ -22,8 +22,6 @@ export default function Book() {
   const roomPay = location.state.room.pay;
   const host = location.state.host;
 
-  console.log(location.state);
-
   // 유저 입력 정보
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -65,7 +63,6 @@ export default function Book() {
     async function getData() {
       try {
         const req = await Api.getAuth(`api/users/info`);
-        console.log(req);
       } catch (err) {
         console.log(err);
       }
@@ -80,7 +77,6 @@ export default function Book() {
     const month = fullDate.substring(4, 6);
     const day = fullDate.substring(6, 8);
 
-    console.log(`${year}-${month}-${day}`);
     return `${year}-${month}-${day}`;
   }
 
@@ -110,7 +106,6 @@ export default function Book() {
       const modal = document.querySelector(".modalWrap");
       modal.style.display = "block";
       window.scrollTo(0, 0);
-      console.log(req);
     } catch (err) {
       console.log(err);
     }

@@ -13,6 +13,8 @@ import { RoomImagesModule } from 'src/room_images/room_images.module';
 import { RoomImagesService } from 'src/room_images/room_images.service';
 import { RoomsService } from 'src/rooms/rooms.service';
 import { RoomsModule } from 'src/rooms/rooms.module';
+import { EmailModule } from 'src/email/email.module';
+import { EmailService } from 'src/email/email.service';
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { RoomsModule } from 'src/rooms/rooms.module';
     UsersModule,
     SpacesModule,
     RoomsModule,
+    EmailModule,
   ],
   controllers: [UploadsController],
   providers: [
@@ -32,6 +35,7 @@ import { RoomsModule } from 'src/rooms/rooms.module';
     JwtService,
     SpacesService,
     RoomsService,
+    EmailService,
   ],
 })
 export class UploadsModule {
