@@ -150,22 +150,22 @@ export class SpacesController {
     };
   }
 
-  // 공간 ID로 조회(공간 상세보기)
+  // 베스트 공간 4개 조회
   @Get('/best')
   @ApiOperation({
-    summary: '공간 랜덤 4개 조회 API',
-    description: '랜덤 공간 조회하기',
+    summary: '베스트 공간 4개 조회 API',
+    description: '베스트 공간 4개 조회하기',
   })
   @ApiResponse({
     status: 200,
-    description: '랜덤 공간 조회 성공',
+    description: '베스트 공간 4개 성공',
   })
   async findByRandom() {
     const randomSpaces: Array<any> = await this.spacesService.findBest4();
 
     return {
       status: 200,
-      description: '랜덤 공간 조회 성공',
+      description: '베스트 공간 4개 성공',
       success: true,
       data: randomSpaces,
     };

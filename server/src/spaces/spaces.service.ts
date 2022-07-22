@@ -568,6 +568,7 @@ export class SpacesService {
     }
   }
 
+  //
   async findBest4() {
     try {
       const spaces = await this.spacesRepository.find({
@@ -586,15 +587,10 @@ export class SpacesService {
         },
       });
       // //랜덤 4개
-      // const randomSpaces = [];
-      // for (let i = 0; i < 4; i++) {
-      //   const randomNum = Math.floor(Math.random() * 10);
-      //   if (!randomSpaces.includes(randomNum)) {
-      //     randomSpaces.push(spaces[randomNum]);
-      //   } else {
-      //     i--;
-      //   }
-      // }
+      const bestSpaces = [];
+      for (let i = 0; i < 4; i++) {
+        bestSpaces.push(spaces[i]);
+      }
       return spaces;
     } catch (error) {
       throw error;
