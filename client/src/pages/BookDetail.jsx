@@ -65,12 +65,12 @@ export default function BookDetail() {
           startTime={data.startTime}
           endTime={data.endTime}
           people={data.personnel}
-          pay={data.totalPrice}
+          totalPrice={data.totalPrice}
         />
         <PostBookerInfo
-          name={data.user.name}
-          phone={data.user.phoneNumber}
-          email={data.user.email}
+          name={data.reserveUsername}
+          phone={data.reservePhoneNumber}
+          email={data.reserveEmail}
           purpose={data.purpose}
           request={data.requirement}
         />

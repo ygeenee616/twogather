@@ -186,7 +186,6 @@ export default function HostAddSpace({ mode }) {
       imgDiv.classList.add("imgDiv");
 
       imgDiv.addEventListener("click", (e) => {
-        console.log("미지미지");
         fileArr.splice(index, 1);
         setDatailImgs(fileArr);
         e.target.remove();

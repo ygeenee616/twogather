@@ -57,11 +57,9 @@ export default function HostSpaceList({ host }) {
   }, [dataTrigger]);
 
   const openModalDeletePopup = (e) => {
-    console.log(e.target);
-    const name = e.target.name;
+    const modal = document.getElementById(e);
 
-    const modal = document.getElementById(name);
-    console.log(modal);
+    modal.style.zIndex = "1000000";
     modal.style.display = "block";
     window.scrollTo(0, 0);
   };
@@ -98,6 +96,7 @@ export default function HostSpaceList({ host }) {
           reviewsLength={data.reviewsLength} //아직없음
           link={`/host/updateSpace/${data.id}`}
         ></ProductCard>
+
         <SubMenuBar>
           <Menu
             onClick={() => navigate(`/host/updateSpace/${data.id}`)}
@@ -106,8 +105,10 @@ export default function HostSpaceList({ host }) {
             ✏️공간 수정
           </Menu>
           <Menu
-            name={data.id}
-            onClick={(e) => openModalDeletePopup(e)}
+            value={data.id}
+            onClick={() => {
+              openModalDeletePopup(data.id);
+            }}
             style={{ backgroundColor: "#6E85B7" }}
           >
             ✂️공간 삭제

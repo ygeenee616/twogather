@@ -18,9 +18,11 @@ export default function Book() {
   const startTime = location.state.startTime;
   const endTime = location.state.endTime;
   const roomId = location.state.room.id;
-  const roomName = location.state.room.name;
+  const roomTitle = location.state.room.name;
   const roomPay = location.state.room.pay;
   const host = location.state.host;
+
+  console.log(location.state);
 
   // 유저 입력 정보
   const [name, setName] = useState("");
@@ -32,7 +34,7 @@ export default function Book() {
   const possible = useRef(false);
 
   // 총액 계산
-  const totalPay = roomPay * people * (endTime - startTime);
+  const totalPrice = roomPay * people * (endTime - startTime);
 
   // 이름 입력 함수
   function onChangeName(e) {
@@ -98,7 +100,7 @@ export default function Book() {
         endTime: endTime,
         date: dateToBook(date),
         personnel: Number(people),
-        totalPrice: totalPay,
+        totalPrice: totalPrice,
         reserveUsername: name,
         reservePhoneNumber: phone,
         reserveEmail: email,
@@ -132,12 +134,12 @@ export default function Book() {
       <HostInfo host={host} />
       <BookInfo
         roomId={roomId}
-        roomName={roomName}
+        roomTitle={roomTitle}
         people={people}
         date={date}
         startTime={startTime}
         endTime={endTime}
-        totalPay={totalPay}
+        totalPrice={totalPrice}
       />
       <BookBox possible={possible.current}>
         <p className="required">*예약 필수 정보를 입력해주세요</p>

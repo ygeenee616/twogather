@@ -318,7 +318,7 @@ export default function HostSpaceForm({ data }) {
             className="updateModal"
             title=""
             content="수정이 완료되었습니다."
-            clickEvent={() => nav("/host/spaceList")}
+          onClick = {() =>nav("host/spaceList")}
           />
         </ModalWrap>
       </SpaceForm>
