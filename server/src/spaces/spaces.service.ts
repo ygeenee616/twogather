@@ -475,8 +475,7 @@ export class SpacesService {
         skip: startIndex,
         take: perPage,
       });
-      const totalPage: number =
-        parseInt((totalSpaces.length / perPage).toString()) + 1;
+      const totalPage: number = Math.ceil(totalSpaces.length / perPage);
 
       const resPaginatedSpaces = [];
       totalSpaces.forEach((space) => {
