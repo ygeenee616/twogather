@@ -83,6 +83,7 @@ async function postImg(endpoint, data) {
   return axios.post(serverUrl + endpoint, data, {
     headers: {
       "Content-Type": "multipart/form-data",
+      Authorization: `${localStorage.getItem("userToken")}`,
     },
   });
 }
