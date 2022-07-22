@@ -13,6 +13,7 @@ function MyPage() {
   const [reservations, setReservations] = useState([]);
   const [qnas, setQnas] = useState([]);
   const QmodalElem = document.getElementById("deleteMyQModal");
+  const RmodalElem = document.getElementById("deleteMyRModal");
 
   useEffect(() => {
     // 유저 정보 가져오기
@@ -48,8 +49,9 @@ function MyPage() {
       const bookId = document
         .getElementById("deleteMyRModal")
         .getAttribute("target");
-      const res = Api.delete(`api/reservations/my/${bookId}`);
+      const res = Api.deleteAuth(`api/reservations/my/${bookId}`);
       window.location.replace("/mypage");
+      RmodalElem.style.display = "none";
     } catch (err) {
       console.error(err);
     }
@@ -62,7 +64,7 @@ function MyPage() {
       const qnaId = document
         .getElementById("deleteMyQModal")
         .getAttribute("target");
-      const res = await Api.delete(`api/qnas/mypage/${qnaId}`);
+      const res = await Api.deleteAuth(`api/qnas/mypage/${qnaId}`);
       window.location.replace("/mypage");
       QmodalElem.style.display = "none";
     } catch (err) {

@@ -20,7 +20,7 @@ function AddQnaComment() {
     const data = {
       reply: reply,
     };
-    const res = await Api.postAuth(`api/qnas/${reviewId}`, data);
+    const res = await Api.patchAuth(`api/qnas/${reviewId}`, data);
   };
 
   const reviewId = location.state.reviewId;
@@ -39,10 +39,7 @@ function AddQnaComment() {
           onChange={(e) => setReply(e.target.value)}
         />
         <BtnContainer>
-          <button
-            className="cancel"
-            onClick={(e) => navigate(`qnas/${reviewId}`)}
-          >
+          <button className="cancel" onClick={(e) => navigate(`/host/`)}>
             취소
           </button>
           <button type="submit" className="submit">
