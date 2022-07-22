@@ -55,24 +55,19 @@ function App() {
           <Route path="/notice" element={<Notice />} />
           <Route path="/addNotice" element={<AddNotice />} />
           <Route path="/updateNotice/:id" element={<UpdateNotice />} />
-
           <Route path="/admin/notice" element={<AdminNotice />} />
           <Route path="/admin/userList" element={<AdminUser />} />
           <Route path="/admin/bookList" element={<AdminBook />} />
-
           <Route
             path="/admin/bookList/bookDetail/:bookId"
             element={<BookDetail />}
           />
-
           <Route path="/host/bookList" element={<HostBook />} />
           <Route path="/host/bookList/:roomId" element={<HostRoomBook />} />
-
           <Route
             path="/host/bookList/:roomId/bookDetail/:bookId"
             element={<BookDetail />}
           />
-
           {/* 호스트 정보 추가 */}
           <Route path="/host/addHost" element={<AddHost />} />
           {/* 공간 추가 */}
@@ -86,10 +81,8 @@ function App() {
             path="/host/updateSpace/:spaceId"
             element={<HostUpdateSpace />}
           />
-
           {/* 룸 리스트 */}
           <Route path="/host/roomList/:spaceId" element={<HostRoomList />} />
-
           {/* 룸 추가 */}
           <Route path="/host/addRoom/:spaceId" element={<HostAddRoom />} />
           {/* 룸 수정 */}
@@ -97,11 +90,10 @@ function App() {
           {/* Q&A 관리 */}
           <Route path="/host/qna" element={<HostQnA />} />
           <Route path="/host/qna/:spaceId" element={<HostQnAList />} />
-
           <Route path="/list" element={<ProductList />} />
           <Route path="/detail/:spaceId" element={<Detail />} />
           <Route path="/book" element={<Book />} />
-          <Route path="/401" element={<LoginExpired />} />
+          <Route path="/401" element={<LoginExpired />} />w
           <Route path="/" element={<Home />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
