@@ -10,6 +10,7 @@ export default function SearchBar() {
   const params = new URLSearchParams(search);
   const path = useRef(window.location.pathname);
 
+  //공간목록이 아닌 페이지에선 value 초기화
   useEffect(() => {
     path.current = window.location.pathname;
 

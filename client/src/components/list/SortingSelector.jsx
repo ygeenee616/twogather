@@ -19,7 +19,7 @@ export default function CategorySelector() {
       >
         <option value="date">최근순</option>
         <option value="price">가격 낮은순</option>
-        <option value="review">리뷰 많은순</option>
+        <option value="reviews">리뷰 많은순</option>
       </SortSelector>
     </SortWrap>
   );
