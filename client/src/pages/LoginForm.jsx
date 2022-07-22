@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -14,9 +14,35 @@ import {
   ContentsDiv,
   FormDiv,
   PageTitle,
-  UserBtn,
 } from "../components/register/UserForm";
-import userInfoState from "../atom/userInfoState";
+import ModalWithInput from "../components/ModalWithInput";
+
+const FindPWModal = document.getElementById("FindPWModal");
+const Modal = document.getElementById("ModalWithInput");
+
+// 비밀번호 찾기 클릭시
+const handleFindPw = (e) => {
+  e.preventDefault();
+  FindPWModal.style.display = "block";
+};
+
+// 모달창에서 '닫기' 클릭시
+const handleModalCancel = (e) => {
+  e.preventDefault();
+  FindPWModal.style.display = "none";
+};
+
+// 모달창에서 '확인' 클릭시
+const handleModalClick = async (e) => {
+  e.preventDefault();
+  try {
+    // Modal.props.title = "메일 전송 완료!";
+    FindPWModal.style.display = "none";
+    window.location.href = "/";
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -24,6 +50,8 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alertMsg, setAlertMsg] = useState("");
+
+  const findEmailInput = useRef();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -121,13 +149,24 @@ function LoginForm() {
               <tr>
                 <QuestionTD>비밀번호를 잊으셨나요?</QuestionTD>
                 <LinkTD>
-                  <a href="/findPw">비밀번호 찾기</a>
+                  <span onClick={handleFindPw}>비밀번호 찾기</span>
                 </LinkTD>
               </tr>
             </thead>
           </LoginFooterDiv>
         </ContentsDiv>
       </FormDiv>
+      <ModalWrap id="FindPWModal">
+        <ModalWithInput
+          id="ModalWithInput"
+          title="비밀번호 찾기"
+          content="가입한 이메일로 임시 비밀번호를 발급해드립니다."
+          clickEvent={handleModalClick}
+          cancelEvent={handleModalCancel}
+          placeholder="test@twogather.com"
+          inputRef={findEmailInput}
+        />
+      </ModalWrap>
     </Container>
   );
 }
@@ -208,6 +247,14 @@ const LoginFooterDiv = styled.table`
   margin: 1.5rem;
   font-size: 0.8rem;
   border-spacing: 0 10px;
+
+  a,
+  span {
+    text-decoration: none;
+  }
+  span {
+    cursor: pointer;
+  }
 `;
 
 const QuestionTD = styled.td`
@@ -217,6 +264,15 @@ const QuestionTD = styled.td`
 const LinkTD = styled.td`
   text-align: right;
   text-decoration: underline;
+`;
+
+const ModalWrap = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 130vh;
+  background-color: rgba(90, 90, 90, 0.2);
+  display: none;
 `;
 
 export default LoginForm;

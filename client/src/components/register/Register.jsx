@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+
 import {
   validateEmail,
   validatePassword,
 } from "../../assets/utils/UsefulFunction";
+
 import * as Api from "../../api";
 
 function Register() {
@@ -44,6 +46,7 @@ function Register() {
       setPrivacyAgree(true);
     }
   };
+  // 회원가입 버튼 클릭 시
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -65,73 +68,75 @@ function Register() {
   return (
     <RegisterDiv>
       <RegisterInputDiv>
-        <tr className="nickname-input">
-          <TagTD>닉네임</TagTD>
-          <InputTD isValid={isNicknameValid}>
-            <input
-              value={nickname}
-              onChange={(e) => {
-                setNickname(e.target.value);
-              }}
-            ></input>
-          </InputTD>
-        </tr>
-        {!isNicknameValid && (
-          <AlertTR className="alert-msg">
-            <td colspan="2">4~10자로 입력해주세요.</td>
-          </AlertTR>
-        )}
-        <tr className="email-input">
-          <TagTD>이메일</TagTD>
-          <InputTD isValid={isEmailValid}>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            ></input>
-          </InputTD>
-        </tr>
-        {!isEmailValid && (
-          <AlertTR className="alert-msg">
-            <td colspan="2">이메일 형식이 올바르지 않습니다.</td>
-          </AlertTR>
-        )}
-        <tr className="password-input">
-          <TagTD>비밀번호</TagTD>
-          <InputTD isValid={isPasswordValid}>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            ></input>
-          </InputTD>
-        </tr>
-        {!isPasswordValid && (
-          <AlertTR className="alert-msg">
-            <td colspan="2">8~16자 영어, 숫자, 특수문자를 사용하세요.</td>
-          </AlertTR>
-        )}
-        <tr className="password-confirm-input">
-          <TagTD>비밀번호 확인</TagTD>
-          <InputTD isValid={isPasswordSame}>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => {
-                setConfirmPassword(e.target.value);
-              }}
-            ></input>
-          </InputTD>
-        </tr>
-        {!isPasswordSame && (
-          <AlertTR className="alert-msg">
-            <td colspan="2">비밀번호가 일치하지 않습니다.</td>
-          </AlertTR>
-        )}
+        <tboddy>
+          <tr className="nickname-input">
+            <TagTD>닉네임</TagTD>
+            <InputTD isValid={isNicknameValid}>
+              <input
+                value={nickname}
+                onChange={(e) => {
+                  setNickname(e.target.value);
+                }}
+              ></input>
+            </InputTD>
+          </tr>
+          {!isNicknameValid && (
+            <AlertTR className="alert-msg">
+              <td colspan="2">4~10자로 입력해주세요.</td>
+            </AlertTR>
+          )}
+          <tr className="email-input">
+            <TagTD>이메일</TagTD>
+            <InputTD isValid={isEmailValid}>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+              ></input>
+            </InputTD>
+          </tr>
+          {!isEmailValid && (
+            <AlertTR className="alert-msg">
+              <td colspan="2">이메일 형식이 올바르지 않습니다.</td>
+            </AlertTR>
+          )}
+          <tr className="password-input">
+            <TagTD>비밀번호</TagTD>
+            <InputTD isValid={isPasswordValid}>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+              ></input>
+            </InputTD>
+          </tr>
+          {!isPasswordValid && (
+            <AlertTR className="alert-msg">
+              <td colspan="2">8~16자 영어, 숫자, 특수문자를 사용하세요.</td>
+            </AlertTR>
+          )}
+          <tr className="password-confirm-input">
+            <TagTD>비밀번호 확인</TagTD>
+            <InputTD isValid={isPasswordSame}>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => {
+                  setConfirmPassword(e.target.value);
+                }}
+              ></input>
+            </InputTD>
+          </tr>
+          {!isPasswordSame && (
+            <AlertTR className="alert-msg">
+              <td colspan="2">비밀번호가 일치하지 않습니다.</td>
+            </AlertTR>
+          )}
+        </tboddy>
       </RegisterInputDiv>
 
       <AgreementDiv>
