@@ -124,4 +124,89 @@ export class UsersService {
       throw error;
     }
   }
+
+  async findUserById(id: number): Promise<User | undefined> {
+    const user = await this.usersRepository
+      .createQueryBuilder()
+      .select('user')
+      .from(User, 'user')
+      .where('user.id = :id', { id })
+      .getOne();
+    return user;
+  }
+
+  async validateUser(email: string): Promise<any> {
+    const user = await this.usersRepository
+      .createQueryBuilder()
+      .select('user')
+      .from(User, 'user')
+      .where('user.email = :email', { email })
+      .getOne();
+    return user;
+    if (!user) {
+      return null;
+    }
+    return user;
+  }
+
+  // 로그인 토큰 발급
+  async createLoginToken(user: User) {
+    const payload = {
+      userId: user.id,
+      user_token: 'loginToken',
+    };
+
+    return this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: '6m',
+    });
+  }
+
+  // 리프레쉬 토큰 발급
+  async createRefreshToken(user: User) {
+    const payload = {
+      userId: user.id,
+      user_token: 'refreshToken',
+    };
+
+    const token = this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: '50m',
+    });
+
+    const refresh_token = CryptoJS.AES.encrypt(
+      JSON.stringify(token),
+      process.env.AES_KEY,
+    ).toString();
+
+    await this.usersRepository
+      .createQueryBuilder()
+      .update(User)
+      .set({ user_refresh_token: token })
+      .where(`userId = ${user.id}`)
+      .execute();
+    return refresh_token;
+  }
+
+  // 1회용 토큰 발급
+  onceToken(user_profile: any) {
+    const payload = {
+      user_email: user_profile.user_email,
+      user_nick: user_profile.user_nick,
+      user_provider: user_profile.user_provider,
+      user_token: 'onceToken',
+    };
+
+    return this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: '10m',
+    });
+  }
+
+  // 토큰 검증
+  async tokenValidate(token: string) {
+    return await this.jwtService.verify(token, {
+      secret: process.env.JWT_SECRET,
+    });
+  }
 }

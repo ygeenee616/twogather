@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Req,
+  Res,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
@@ -25,6 +26,7 @@ import {
 import { UserResExample } from './user.swagger.example';
 import { GetAdminUser, GetUser } from 'src/custom.decorator';
 import { User } from './entities/users.entity';
+import { KakaoAuthGuard } from './guards/kakao-auth.guard';
 const userResExample = new UserResExample();
 
 @Controller('api/users')
@@ -248,4 +250,32 @@ export class UsersController {
       success: true,
     };
   }
+
+  // 카카오 로그인
+  // @ApiOperation({
+  //   summary: '카카오 로그인',
+  //   description: '카카오 로그인을 하는 API입니다.',
+  // })
+  // @UseGuards(KakaoAuthGuard)
+  // @Get('auth/kakao')
+  // async kakaoLogin() {
+  //   return;
+  // }
+
+  // @ApiOperation({
+  //   summary: '카카오 로그인 콜백',
+  //   description: '카카오 로그인시 콜백 라우터입니다.',
+  // })
+  // @UseGuards(KakaoAuthGuard)
+  // @Get('auth/kakao/callback')
+  // async kakaocallback(@Req() req, @Res() res: Response) {
+  //   if (req.user.type === 'login') {
+  //     res.cookie('access_token', req.user.access_token);
+  //     res.cookie('refresh_token', req.user.refresh_token);
+  //   } else {
+  //     res.cookie('once_token', req.user.once_token);
+  //   }
+  //   res.redirect('http://localhost:3000/auth/singup');
+  //   res.end();
+  // }
 }

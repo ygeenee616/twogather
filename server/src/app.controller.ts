@@ -1,4 +1,12 @@
-import { Controller, Get, Header, Param, Response } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Header,
+  Param,
+  Req,
+  Res,
+  Response,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -15,4 +23,10 @@ export class AppController {
     
     `;
   }
+
+  // @Get('/cookies')
+  // getCookies(@Req() req: Request, @Res() res: Response): any {
+  //   const jwt = req.cookies['jwt'];
+  //   return res.send(jwt);
+  // }
 }
