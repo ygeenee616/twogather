@@ -13,8 +13,8 @@ export default function AddHost() {
   const [detailImgs, setDatailImgs] = useState([]);
   const [datas, setData] = useState({ accountNumber: "" });
   const [hostInfo, setHostInfo] = useState({});
-
   const [bankInfo, setBankInfo] = useState({});
+
   const navigate = useNavigate();
   const handleChangeState = (e) => {
     setHostInfo({
@@ -40,25 +40,50 @@ export default function AddHost() {
     e.preventDefault();
     //포스트 요청시 데이터 새로 넘겨주기 합성해서
     const account = `${bankInfo.bankName} ${bankInfo.bankAccount} ${bankInfo.name}`;
-    setHostInfo({ ...hostInfo, accountNumber: account });
-    const response = await Api.patchAuth("api/users", hostInfo);
 
+    setHostInfo({ ...hostInfo, accountNumber: account });
+
+    const response = await Api.patchAuth("api/users", hostInfo);
+    const res = await Api.patchAuth("api/users", {
+      accountNumber: account,
+    });
     console.log(response);
+
+    console.log(res);
     openConfirmModal();
   };
 
   useEffect(() => {
     const getData = async () => {
-      const userDatas = await Api.getAuth("api/users/info");
-      const userData = userDatas.data.data;
-      setHostInfo({
-        accountNumber: userData.accountNumber, //계좌번호 ㅇㅇ ㅇㅇ ㅇㅇ 이렇게 들어옴
-        businessAddress: userData.businessAddress, //주th
-        businessName: userData.businessName, // 상호명
-        name: userData.name, //이름
-        businessNumber: userData.businessNumber, //사업자번호
-        phoneNumber: userData.phoneNumber, //전화번호
-      });
+      try {
+        const userDatas = await Api.getAuth("api/users/info");
+        const userData = userDatas.data.data;
+        console.log(userData);
+        console.log(userData.accountNumber);
+        const accountData = userData.accountNumber;
+        let accountNumbers = "";
+        if (accountData != null) {
+          accountNumbers = await userData.accountNumber.split(" ");
+        }
+        setBankInfo({
+          bankName: accountNumbers[0],
+          bankAccount: accountNumbers[1],
+          name: accountNumbers[2],
+        });
+
+        console.log(bankInfo);
+
+        setHostInfo({
+          businessAddress: userData.businessAddress, //주th
+          businessName: userData.businessName, // 상호명
+          name: userData.name, //이름
+          businessNumber: userData.businessNumber, //사업자번호
+          phoneNumber: userData.phoneNumber, //전화번호
+        });
+        console.log(accountNumbers);
+      } catch (err) {
+        console.log(err);
+      }
     };
     getData();
   }, []);
@@ -151,7 +176,7 @@ export default function AddHost() {
                 placeholder="계좌번호"
                 width={"40%"}
                 name="bankAccount"
-                value={bankInfo.accountNum}
+                value={bankInfo.bankAccount}
                 onChange={handleChangeBankState}
                 required
               ></StyledInput>
