@@ -1,11 +1,13 @@
 import Mail = require('nodemailer/lib/mailer');
 import * as nodemailer from 'nodemailer';
 import { Injectable } from '@nestjs/common';
+import 'dotenv/config';
 
 interface EmailOptions {
   to: string;
   subject: string;
   html: string;
+  from: string;
 }
 
 @Injectable()
@@ -16,16 +18,15 @@ export class EmailService {
     this.transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
-        user: 'phobos902080@gmail.com',
-        pass: 'prumireyypcfwsmf',
+        user: process.env.EMAIL_AUTH_EMAIL,
+        pass: process.env.EMAIL_AUTH_PASSWORD,
       },
     });
   }
 
   async sendMemberResetPassword(emailAddress: string, newPassword: string) {
-    const baseUrl = 'http://localhost:3000';
-
     const mailOptions: EmailOptions = {
+      from: process.env.EMAIL_AUTH_EMAIL,
       to: emailAddress,
       subject: '[TWOGATHER]비밀번호 초기화 안내 메일입니다.',
       html: `
@@ -65,6 +66,7 @@ export class EmailService {
     const url = `${baseUrl}/users/email-verify?signupVerifyToken=${signupVerifyToken}`;
 
     const mailOptions: EmailOptions = {
+      from: process.env.EMAIL_AUTH_EMAIL,
       to: emailAddress,
       subject: '가입 인증 메일',
       html: `

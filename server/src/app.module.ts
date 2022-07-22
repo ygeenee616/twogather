@@ -30,9 +30,6 @@ import { Notice } from './notices/entities/notice.entity';
 import { UploadsModule } from './uploads/uploads.module';
 import { EmailService } from './email/email.service';
 import { EmailModule } from './email/email.module';
-import { UsersService } from './users/users.service';
-import { UsersController } from './users/users.controller';
-import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -86,8 +83,8 @@ import { JwtService } from '@nestjs/jwt';
     UploadsModule,
     EmailModule,
   ],
-  controllers: [AppController, UsersController],
-  providers: [AppService, EmailService, UsersService, JwtService],
+  controllers: [AppController],
+  providers: [AppService, EmailService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
