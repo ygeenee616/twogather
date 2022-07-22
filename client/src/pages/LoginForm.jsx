@@ -120,7 +120,9 @@ function LoginForm() {
               </tr>
               <tr>
                 <QuestionTD>비밀번호를 잊으셨나요?</QuestionTD>
-                <LinkTD>비밀번호 찾기</LinkTD>
+                <LinkTD>
+                  <a href="/findPw">비밀번호 찾기</a>
+                </LinkTD>
               </tr>
             </thead>
           </LoginFooterDiv>

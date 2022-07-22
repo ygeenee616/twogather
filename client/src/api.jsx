@@ -68,6 +68,7 @@ async function post(endpoint, data) {
   return axios.post(serverUrl + endpoint, bodyData, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: `${localStorage.getItem("userToken")}`,
     },
   });
 }
