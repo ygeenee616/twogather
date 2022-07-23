@@ -17,9 +17,15 @@ export default function CategorySelector() {
         className="sortSelector"
         onChange={(e) => handelClickSortSelect(e.target.value)}
       >
-        <option value="date">최근순</option>
-        <option value="price">가격 낮은순</option>
-        <option value="reviews">리뷰 많은순</option>
+        <option className="date" value="date">
+          최근순
+        </option>
+        <option className="price" value="price">
+          가격 낮은순
+        </option>
+        <option className="reviews" value="reviews">
+          리뷰 많은순
+        </option>
       </SortSelector>
     </SortWrap>
   );

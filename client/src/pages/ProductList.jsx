@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import Pagination from "../components/Pagination";
+import Pagination from "../components/list/ListPagination";
 import ProductCard from "../components/ProductCard";
 import CategorySelector from "../components/list/CategorySelector";
 import CategoryModal from "../components/list/CategoryModal";
@@ -9,8 +9,6 @@ import DateSelector from "../components/list/DateSelector";
 import DateModal from "../components/list/DateModal";
 import SelecotrResetBtn from "../components/list/SelectorResetBtn";
 import SortingSelector from "../components/list/SortingSelector";
-import exImg1 from "../assets/images/ex1.png";
-import exImg2 from "../assets/images/ex2.png";
 import * as Api from "../api";
 
 export default function ProductList() {
@@ -29,8 +27,13 @@ export default function ProductList() {
   const dateInput = useRef(parseInt(params.get("date")));
   const searchInput = useRef(params.get("search"));
   const orderInput = useRef(params.get("order"));
-  const currentPage = useRef(params.get("page"));
+  const currentPage = useRef(Number(params.get("page")));
   const queryString = useRef("");
+  const paginationQuery = useRef("");
+
+  if (orderInput.current) {
+    document.getElementsByClassName(`${orderInput.current}`).selected = true;
+  }
 
   //url이 바뀔시 query 받아오는 함수
   useEffect(() => {
@@ -43,44 +46,52 @@ export default function ProductList() {
     //query유무에 맞게 queryString 지정
     if (!categoryInput.current && !searchInput.current && !orderInput.current) {
       queryString.current = `?order=date&page=${currentPage.current}&perPage=12`;
+      paginationQuery.current = ``;
     } else if (
       categoryInput.current &&
       !searchInput.current &&
       !orderInput.current
     ) {
       queryString.current = `?type=${categoryInput.current}&order=date&page=${currentPage.current}&perPage=12`;
+      paginationQuery.current = `?category=${categoryInput.current}`;
     } else if (
       !categoryInput.current &&
       searchInput.current &&
       !orderInput.current
     ) {
       queryString.current = `?keyword=${searchInput.current}&order=date&page=${currentPage.current}&perPage=12`;
+      paginationQuery.current = `?search=${searchInput.current}`;
     } else if (
       !categoryInput.current &&
       !searchInput.current &&
       orderInput.current
     ) {
       queryString.current = `?order=${orderInput.current}&page=${currentPage.current}&perPage=12`;
+      paginationQuery.current = `?order=${orderInput.current}`;
     } else if (
       categoryInput.current &&
       searchInput.current &&
       !orderInput.current
     ) {
       queryString.current = `?type=${categoryInput.current}&keyword=${searchInput.current}&order=date&page=${currentPage.current}&perPage=12`;
+      paginationQuery.current = `?category=${categoryInput.current}&search=$${searchInput.current}`;
     } else if (
       categoryInput.current &&
       !searchInput.current &&
       orderInput.current
     ) {
       queryString.current = `?type=${categoryInput.current}&order=${orderInput.current}&page=${currentPage.current}&perPage=12`;
+      paginationQuery.current = `?category=${categoryInput.current}&order=${orderInput.current}`;
     } else if (
       !categoryInput.current &&
       searchInput.current &&
       orderInput.current
     ) {
       queryString.current = `?keyword=${searchInput.current}&order=${orderInput.current}&page=${currentPage.current}&perPage=12`;
+      paginationQuery.current = `?search=${searchInput.current}&order=${orderInput.current}`;
     } else {
       queryString.current = `?type=${categoryInput.current}&keyword=${searchInput.current}&order=${orderInput.current}&page=${currentPage.current}&perPage=12`;
+      paginationQuery.current = `?category=${categoryInput.current}&search=${searchInput.current}&order=${orderInput.current}`;
     }
   }, [location.search]);
 
@@ -180,8 +191,8 @@ export default function ProductList() {
 
         <Pagination
           total={totalPage.current}
-          currentPage={currentPage}
-          url={"/list"}
+          currentPage={Number(currentPage.current)}
+          url={paginationQuery.current}
         />
       </BottomWrap>
     )
