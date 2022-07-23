@@ -1,7 +1,7 @@
 import axios from "axios";
 import { AiOutlineConsoleSql } from "react-icons/ai";
 
-const backendPortNumber = "3000";
+const backendPortNumber = "5000";
 const serverUrl =
   "http://" + window.location.hostname + ":" + backendPortNumber + "/";
 
