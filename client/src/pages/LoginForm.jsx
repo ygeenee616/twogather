@@ -161,7 +161,7 @@ function LoginForm() {
           </AlertMsg>
 
           <SocialLoginDiv>
-            <a href={`http://localhost:3000/api/users/auth/kakao`}>
+            <a href={`http://34.64.86.202/:5000/api/users/auth/kakao`}>
               <SocialLoginBtn className="kakao-login">
                 <img src="/images/kakaoLogo.png" alt="KAKAO" />
                 <p>카카오 로그인</p>
