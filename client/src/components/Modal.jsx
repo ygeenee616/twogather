@@ -7,7 +7,7 @@ Modal.defaultProps = {
   content: "공간 제공을 시작하기 전에 \n 호스트 정보를 먼저 입력해주세요",
 };
 
-export default function Modal({ title, content }) {
+export default function Modal({ title, content, clickEvent }) {
   return (
     <Container id="box">
       <ModalContainer>
@@ -15,7 +15,7 @@ export default function Modal({ title, content }) {
           <FiAlertCircle /> {title}
         </ModalTitle>
         <ModalContent>{content}</ModalContent>
-        <Button>확인</Button>
+        <Button onClick={clickEvent}>확인</Button>
       </ModalContainer>
     </Container>
   );
@@ -25,8 +25,10 @@ const Container = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
+  vertical-align: middle;
   justify-content: center;
   align-items: center;
+  z-index: 181800;
 `;
 
 const ModalContainer = styled.div`
@@ -69,3 +71,5 @@ const Button = styled.button`
     box-shadow: 2px 2px 5px -1px #a6a9b6;
   }
 `;
+
+export { Container, ModalContainer, ModalContent, ModalTitle, Button };

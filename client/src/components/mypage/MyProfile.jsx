@@ -1,152 +1,174 @@
 import styled from "styled-components";
-import { useSelector } from 'react-redux';
-import { useState } from "react"
-import { validatePassword } from "../../assets/utils/UsefulFunction";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import {
+  validateEmail,
+  validatePassword,
+} from "../../assets/utils/UsefulFunction";
+import MyProfileInfo from "./MyProfileInfo";
+import MyProfileEdit from "./MyProfileEdit";
+import defaultProfile from "../../assets/images/defaultProfile.png";
+import * as Api from "../../api";
+import axios from "axios";
 
+// form 타입 multitype / formdata // name -> images
 
-function MyProfile() {
-  const user = {
-    nickname: "연두부",
-    email: "dubu@kakao.com",
-    password: "******",
-    socialLogin: "카카오"
+function MyProfile({ userInfo }) {
+  const [editUser, setEditUser] = useState(false);
+  const [imageSrc, setImageSrc] = useState(
+    userInfo.profileImage || defaultProfile
+  );
+  const [alertMsg, setAlertMsg] = useState(false);
+  const userId = userInfo.userId;
+
+  function handleEditUser() {
+    setEditUser(true);
   }
-  const [editNickname, setEditNickname] = useState(true);
-  const [editPassword, setEditPassword] = useState(true);
-  const [nickname, setNickname] = useState(user.nickname);
-  const [password, setPassword] = useState('');
 
-  const isValidNickname = nickname.length>=2 && nickname.length<=10;
-  const isValidPassword = validatePassword(password);
-
-  const handleEditNickname = (e) => {
-    e.preventDefault();
-    setEditNickname(!editNickname);
+  function handleEditUserDone() {
+    setEditUser(false);
   }
-  const DoneEditNickname = () => {
-    if(isValidNickname(nickname) && user.nickname!==nickname){ // 닉네임 변경 요청
-      
+
+  useEffect(() => {
+    setEditUser(false);
+  }, []);
+
+  const encodeFileToBase64 = (fileBlob) => {
+    // 로컬에 변경된 이미지 띄우기
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBlob);
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setImageSrc(reader.result);
+        resolve();
+      };
+    });
+  };
+
+  const handleImageUpload = async (e) => {
+    try {
+      const file = e.target.files[0];
+      const formData = new FormData();
+      if (file) {
+        formData.append("images", file);
+        encodeFileToBase64(file);
+        // 프로필 사진 변경
+        const res = await Api.postImg(
+          `api/uploads/profile/${userId}`,
+          formData
+        );
+        console.log(res);
+      }
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
-  // 로그인이 안되어 있을 경우
   return (
-
     <ProfileDiv>
       <ProfileImgDiv>
-        <img src="/images/duck.png" alt="프로필 사진" />
-        <ProfileImgEditBtn>프로필 수정 </ProfileImgEditBtn>
+        {userInfo.profileImage ? (
+          <img src={userInfo.profileImage} alt="내 프로필 사진" />
+        ) : (
+          <img src={imageSrc} alt="내 프로필 사진"></img>
+        )}
+        <EditBtnDiv>
+          <label htmlFor="imgUpload" name="profileImage">
+            <div id="img_upload">프로필 사진 변경</div>
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            id="imgUpload"
+            onChange={handleImageUpload}
+            name="images"
+          />
+          <input
+            type="button"
+            value="유저 정보 수정"
+            onClick={handleEditUser}
+          />
+        </EditBtnDiv>
       </ProfileImgDiv>
-      <ProfileInfo>
-        <tr> 
-          <Nickname colSpan='2'> 
-          {editNickname 
-            ? nickname 
-            : <input value={nickname} onChange={(e)=>setNickname(e.target.value)} placeholder="닉네임을 입력하세요"/>} 
-            <span className="edit-nickname" onClick={handleEditNickname}> 
-            { editNickname ? <span>수정</span> : <DoneEditBtn onClick={DoneEditNickname}>수정 완료</DoneEditBtn> }
-            </span>
-
-          </Nickname>  
-        </tr>
-        <tr><td colSpan='2'> 2~10자로 입력해주세요. </td></tr>
-        <tr>
-
-          <InfoTag>이메일</InfoTag>
-          <InfoTD> {user.email} </InfoTD>
-        </tr>
-        <tr>
-          <InfoTag>비밀번호</InfoTag>
-          <InfoTD><span className="edit">비밀번호 변경</span></InfoTD>
-        </tr>
-        <tr>
-          <InfoTag>소셜 로그인 연동</InfoTag>
-          <InfoTD>{user.socialLogin}</InfoTD>
-        </tr>
-      </ProfileInfo>
+      <ProfileContents>
+        {editUser ? (
+          <MyProfileEdit user={userInfo} />
+        ) : (
+          <MyProfileInfo
+            user={userInfo}
+            editUser={editUser}
+            handleEditUserDone={handleEditUserDone}
+          />
+        )}
+      </ProfileContents>
     </ProfileDiv>
-
   );
 }
-
-
 
 const ProfileDiv = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: left;
+  justify-content: center;
   height: wrap-content;
-  border: none;
   text-align: center;
+  border: none;
+
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+  }
+`;
+
+const ProfileContents = styled.div`
+  width: 80%;
 `;
 
 const ProfileImgDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 5px 10vw;
+  width: 20vw;
 
   img {
-    width: 10rem;
-    height: 10rem;
-    border-radius: 10rem;
-    padding: 2rem;
+    width: 200px;
+    height: 200px;
+    border-radius: 200px;
+    margin-bottom: 1rem;
+  }
+
+  button {
+    margin: 2rem 0;
   }
 `;
 
-const ProfileImgEditBtn = styled.div`
-  border: solid #505050;
-  width: 7rem;
-  padding: 0.2rem;
-  font-size: 0.8rem;
-`;
-
-
-const ProfileInfo = styled.table`
-  border-collapse: collapse;
-  border-spacing: 0;
-  margin-left: 3rem;
-
-  tr {
-    width: 100%;
-    height: 1rem;
+const EditBtnDiv = styled.div`
+  input[type="file"] {
+    display: none;
   }
-`
 
-
-const Nickname = styled.td`
-  font-size: 2rem;
-  font-weight: bold;
-  text-align: left;
-  
-
-  input {
-    height: 2rem;
-    padding: 0 0.5rem;
-  }
-  span {
-    text-decoration: underline;
-    cursor: pointer;
-    margin-left: 1rem;
+  label,
+  input[type="button"] {
+    display: inline-block;
+    background-color: white;
+    color: #bbd3f2;
+    width: 8rem;
+    height: 2.5rem;
+    margin: 0.5rem;
+    border: solid #bbd3f2;
+    border-radius: 10px;
+    font-weight: bold;
     font-size: 0.8rem;
-    color: grey;
-  }
 
-`
-const DoneEditBtn = styled.button`
-  background-color: white;
-  color: #bbd3f2;
-  width: 5rem;
-  height: 2.5rem;
-  padding: 0.5rem;
-  margin: 0 1rem;
-  border: solid #bbd3f2;
-  border-radius: 10px;
-  font-weight: bold;
+    #img_upload {
+      padding: 0.6rem;
+    }
 
-  :hover {
-    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+    :hover {
+      box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+    }
   }
-`
+`;
+
 const AlertMsg = styled.div`
   margin: 0 6rem;
   text-align: left;
@@ -154,24 +176,6 @@ const AlertMsg = styled.div`
     font-size: 0.5rem;
     color: red;
   }
-`
-
-const InfoTag = styled.td`
-  font-size: 1rem;
-  color: #505050;
-  width: 10rem;
-  text-align: left;
-`
-
-const InfoTD = styled.td`
-  font-size: 1rem;
-  width: 20rem;
-  text-align: left;
-  height: 1rem;
-  
-  a {
-    text-decoration: underline;
-  }
-`
+`;
 
 export default MyProfile;

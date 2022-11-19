@@ -19,15 +19,15 @@ export class CreateUserDto {
   @ApiProperty({ description: '비밀번호(4~20자)' })
   readonly password: string;
 
-  @IsString()
   @MinLength(4)
   @MaxLength(20)
-  @Matches(/^[a-zA-Z0-9]*$/, {
-    message: '닉네임은 영어 대/소문자, 숫자만 가능합니다',
+  @ApiProperty({
+    description: '닉네임(4~20자, 영문 대소문자, 한글, 숫자만 가능)',
   })
-  @IsString()
-  @MinLength(4)
-  @MaxLength(20)
-  @ApiProperty({ description: '닉네임(4~20자, 영문 대소문자, 숫자만 가능)' })
   readonly nickname: string;
+
+  @ApiPropertyOptional({
+    description: '로그인 유형(로컬, 카카오 등)',
+  })
+  readonly loginType: string;
 }

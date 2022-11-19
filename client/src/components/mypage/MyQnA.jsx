@@ -1,31 +1,73 @@
 import styled from "styled-components";
 import MyQnaComponent from "./MyQnaComponent.jsx";
-import Pagination from "../Pagination";
-import { useState } from 'react';
+import { PaginationInLocal } from "../Pagination.jsx";
+import Modal from "../Modal";
+import { useState } from "react";
 
+function MyQnA({ qnas, setDeleteQModal }) {
+  // const {}
+  const total_elem = qnas.length;
+  const page_limit = 5;
+  const [page, setPage] = useState(1);
+  const page_limit_elem =
+    page_limit * page < total_elem ? page_limit * page : total_elem;
+  const [targetDetailTr, setTargetDetailTr] = useState("");
 
+  const handleToggle = (e) => {
+    e.preventDefault();
+    let target = e.target.closest("tr");
+    let detailTr = target.nextElementSibling;
+    if (!detailTr) return;
+    if (target.className === "detailTr") return; // detail tr이면 클릭 무시
+    // 기존 detail tr 숨기기
+    if (targetDetailTr !== "")
+      targetDetailTr.style.setProperty("display", "none");
 
-function MyQnA() {
-    const total_page = 10;
-    const limit_page = 5;
-    const page_number = 0 ;
-    const posts_per_page = 5; 
+    // 타겟 detail tr 변경하고 보이기
+    setTargetDetailTr(detailTr);
+    detailTr.style.setProperty("display", "table-row");
+  };
 
-    return(
-        <QnADiv>
-            <h3>Q&A</h3>
-            <QnATable>
-                <QnATableHead>
-                    <td className="space"> 공간정보 </td>
-                    <td className="description"> 문의내용 </td>
-                    <td className="registered-on"> 작성일 </td>
-                    <td className="replyed"> 답변유무 </td>
-                </QnATableHead>
-                <MyQnaComponent></MyQnaComponent>  
-            </QnATable>
-            <Pagination total={total_page} limit={limit_page} page={page_number} setPage={posts_per_page}></Pagination>
-        </QnADiv>       
-    );
+  return (
+    <QnADiv>
+      <h3>나의 질문</h3>
+      {qnas.length === 0 ? (
+        <EmptyQna>
+          <p>질문 내역이 없습니다.</p>
+        </EmptyQna>
+      ) : (
+        <>
+          <QnATable onClick={handleToggle}>
+            <QnATableHead>
+              <tr>
+                <th className="space"> 공간정보 </th>
+                <th className="description"> 문의내용 </th>
+                <th className="registered-on"> 작성일 </th>
+                <th className="replyed"> 답변유무 </th>
+              </tr>
+            </QnATableHead>
+            <tbody>
+              {qnas
+                .slice(page_limit * (page - 1), page_limit_elem)
+                .map((qna, idx) => (
+                  <MyQnaComponent
+                    qna={qna}
+                    key={idx}
+                    setDeleteQModal={setDeleteQModal}
+                  />
+                ))}
+            </tbody>
+          </QnATable>
+          <PaginationInLocal
+            total={total_elem}
+            limit={page_limit}
+            page={page}
+            setPage={setPage}
+          ></PaginationInLocal>
+        </>
+      )}
+    </QnADiv>
+  );
 }
 
 const QnADiv = styled.div`
@@ -40,21 +82,39 @@ const QnADiv = styled.div`
   h3 {
     text-align: left;
     font-size: 1.5rem;
-    color: #8daef2;
   }
 `;
 
-
-
 const QnATable = styled.table`
-    border-top: 2px;
-`
+  border-top: 2px;
+`;
 
 const QnATableHead = styled.thead`
-    font-weight: bold;
-    background-color: #BBD3F2; 
-    opacity: 0.5;
-`
+  font-weight: bold;
+  background-color: #bbd3f2;
+  opacity: 0.5;
 
+  td {
+    padding: 1rem 0;
+  }
+`;
+
+const EmptyQna = styled.div`
+  width: 100%;
+  height: 15rem;
+  border: solid 3px #bbd3f2;
+  font-size: 1rem;
+  text-align: center;
+  color: #bbd3f2;
+`;
+
+const ModalWrap = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: rgba(90, 90, 90, 0.2);
+  ${"" /* display: none; */}
+`;
 
 export default MyQnA;

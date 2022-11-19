@@ -2,48 +2,65 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { HiChevronDown } from "react-icons/hi";
 import { FcHome, FcConferenceCall } from "react-icons/fc";
+import * as Api from "../../api";
 
 export default function Dropbox({ rooms, acceptPeople, checkSelectRoom }) {
-  return (
-    <RoomList>
-      <p>세부 공간 선택</p>
+  const [roomUrl, setRoomUrl] = useState([]);
 
-      {rooms.map((item, i) => {
-        return (
-          <Container key={i}>
-            <RoomItem>
-              <input
-                type="radio"
-                id="select"
-                name="room"
-                className={item.title}
-                value={item.id}
-                onClick={(e) => {
-                  checkSelectRoom(e.target.value, e.target.className);
-                  acceptPeople.current = item.people;
-                }}
-              />
-              <RoomLabel>
-                <span>{item.title}</span>
-                <span>시간당 {item.pay} ₩</span>
-              </RoomLabel>
-              <img src={item.image} />
-              <HiChevronDown />
-            </RoomItem>
-            <Dropdown>
-              <div>
-                <FcHome style={{ marginRight: "5px" }} size={16} />
-                공간 유형 : {item.roomType}
-              </div>
-              <div>
-                <FcConferenceCall style={{ marginRight: "5px" }} size={16} />
-                수용 인원 : {item.people}
-              </div>
-            </Dropdown>
-          </Container>
+  useEffect(() => {
+    const take = async () => {
+      for (let i = 0; i < rooms.length; i++) {
+        const imageUrl = await Api.getAuth(
+          `api/room-images/room/${rooms[i].id}`
         );
-      })}
-    </RoomList>
+        const i2 = imageUrl.data.data[0].imageUrl;
+        setRoomUrl((prev) => [...prev, i2]);
+      }
+    };
+    take();
+  }, []);
+
+  return (
+    rooms && (
+      <RoomList>
+        <p>세부 공간 선택</p>
+        {rooms.map((room, i) => {
+          return (
+            <Container key={i}>
+              <RoomItem>
+                <input
+                  type="radio"
+                  id="select"
+                  name="room"
+                  className={room.name}
+                  value={room.id}
+                  onClick={(e) => {
+                    checkSelectRoom(room.id, room.name, room.price);
+                    acceptPeople.current = room.capacity;
+                  }}
+                />
+                <RoomLabel>
+                  <span>{room.name}</span>
+                  <span>시간당 {room.price} ₩</span>
+                </RoomLabel>
+                <img src={roomUrl[i]} />
+                <HiChevronDown />
+              </RoomItem>
+              <Dropdown>
+                <div>
+                  <FcHome style={{ marginRight: "5px" }} size={16} />
+                  공간 유형 : {room.description}
+                </div>
+                <div>
+                  <FcConferenceCall style={{ marginRight: "5px" }} size={16} />
+                  수용 인원 : {room.capacity}
+                </div>
+              </Dropdown>
+            </Container>
+          );
+        })}
+      </RoomList>
+    )
   );
 }
 

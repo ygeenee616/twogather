@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState, memo, useRef } from "react";
 import { RiEdit2Fill, RiExternalLinkFill } from "react-icons/ri";
 import ListItem from "./StripeListItem";
-import AdminBookDetail from "../pages/AdminBookDetail";
+import BookDetail from "../pages/BookDetail";
 import UserInfo from "../components/UserInfo";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -27,6 +27,7 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
       setUserId(id);
       // UserInfo 부분으로 스크롤 이동
       const thisContent = document.querySelector(".userContainer");
+      thisContent.style.display = "flex";
       thisContent.scrollIntoView({ behavior: "smooth", block: "center" });
     } else if (listName === "BOOK") {
       navigate(`/admin/bookList/bookDetail/${id}`);
@@ -77,14 +78,17 @@ function StripeLayout({ datas, headers, columnTemplete, keys, listName }) {
 
 const Container = styled.div`
   margin: 0 auto;
-  width: 90%;
+  width: 80%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: 50px;
   margin-bottom: 50px;
 `;
-const ListContainer = styled.div``;
+
+const ListContainer = styled.div`
+  font-family: "NEXON Lv2 Gothic Light";
+`;
+
 const ReservationForm = styled.div`
   margin: 0 auto;
   padding: 10px 0;
@@ -123,13 +127,14 @@ const Header = styled.div`
 
 const UserContainer = styled.div`
   width: 100%;
-
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
 `;
 
 const List = styled.div`
+  font-family: "NEXON Lv2 Gothic Light";
+  font-weight: bold;
   display: grid;
   grid-template-columns: ${(props) => props.templete};
   border-bottom: 2px solid #8daef2;

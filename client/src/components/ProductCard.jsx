@@ -7,18 +7,20 @@ import reviewImg from "../assets/images/reviewIcon.png";
 const productTags = (hashtags) => {
   let result = "";
   let resultStr = "";
-  for (let i = 0; i < hashtags.length; i++) {
-    resultStr += hashtags[i];
-  }
-  if (resultStr.length >= 20) {
-    for (let i = 0; i <= 18; i++) {
-      result += resultStr[i];
+  if (hashtags) {
+    for (let i = 0; i < hashtags.length; i++) {
+      resultStr += hashtags[i].tag;
     }
-    result += "···";
-  } else {
-    return resultStr;
+    if (resultStr.length >= 20) {
+      for (let i = 0; i <= 18; i++) {
+        result += resultStr[i];
+      }
+      result += "···";
+    } else {
+      return resultStr;
+    }
+    return result;
   }
-  return result;
 };
 
 export default function ProductCard({
@@ -26,16 +28,17 @@ export default function ProductCard({
   src,
   hashtags,
   name,
-  address,
+  address2,
+  address3,
   price,
-  review,
+  reviewsLength,
   link,
 }) {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate(link);
   };
-  //후에 아이디 넣기 지금은 임의로  1로 고정
+
   return (
     <CardWrap>
       <ImageSliderWrap>
@@ -48,13 +51,13 @@ export default function ProductCard({
             src={reviewImg}
             style={{ width: "13px", height: "13px", marginLeft: "auto" }}
           />
-          <SubTag>{review}</SubTag>
+          <SubTag>{reviewsLength}</SubTag>
         </Line>
         <Line>
           <Title>{name}</Title>
         </Line>
         <Line>
-          <SubTag>{address}</SubTag>
+          <SubTag>{`${address2} ${address3}`}</SubTag>
         </Line>
         <Line style={{ justifyContent: "flex-end", marginTop: "0.6vh" }}>
           <Price>{price}</Price>

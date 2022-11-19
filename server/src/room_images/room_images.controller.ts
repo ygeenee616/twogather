@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { RoomImagesService } from './room_images.service';
 import { CreateRoomImageDto } from './dto/create-room_image.dto';
@@ -13,19 +14,19 @@ import { UpdateRoomImageDto } from './dto/update-room_image.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
 import { RoomImage } from './entities/room_image.entity';
 import { RoomImageResExample } from './room_image.swagger.example';
+import { GetUser } from 'src/custom.decorator';
+import { User } from 'src/users/entities/users.entity';
+import { AuthGuard } from '@nestjs/passport';
 const roomImageResExample = new RoomImageResExample();
 
 @Controller('api/room-images')
 @ApiTags('룸 이미지 API')
-// @ApiHeader({
-//   name: 'authorization',
-//   description: 'Auth token',
-// }) // 사용자 정의 헤더인데, 추후 token 필요한 곳에 추가하기
 export class RoomImagesController {
   constructor(private readonly roomImagesService: RoomImagesService) {}
 
   // roomImage(URL) 생성
-  @Post()
+  @Post(':roomId')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: '룸 이미지(URL) 생성 API',
     description: '룸 이미지(URL) 생성한다.',
@@ -37,11 +38,16 @@ export class RoomImagesController {
       example: roomImageResExample.create,
     },
   })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
+  })
   async create(
     @Body() createRoomImageDto: CreateRoomImageDto,
-    @Body('roomId') roomId: number,
+    @Param('roomId') roomId: number,
+    @GetUser() host: User,
   ) {
-    const newRoomImage = await this.roomImagesService.create(
+    const newRoomImage: RoomImage = await this.roomImagesService.create(
       createRoomImageDto,
       roomId,
     );
@@ -71,6 +77,29 @@ export class RoomImagesController {
     return {
       status: 200,
       description: '전체 roomImages(URL) 목록 조회 성공',
+      success: true,
+      data: roomImages,
+    };
+  }
+
+  // 특정 룸의 roomImage URL 목록 조회
+  @Get('room/:roomId')
+  @ApiOperation({
+    summary: '특정 룸의 이미지(URL) findAll API',
+    description: '특정 룸의 이미지(URL) 목록을 불러온다.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '특정 룸의 이미지(URL) 목록',
+    schema: {
+      example: roomImageResExample.findAllByRoom,
+    },
+  })
+  async findAllByRoom(@Param('roomId') roomId: number) {
+    const roomImages = await this.roomImagesService.findAllByRoom(roomId);
+    return {
+      status: 200,
+      description: '특정 룸의 roomImages(URL) 목록 조회 성공',
       success: true,
       data: roomImages,
     };
@@ -111,6 +140,10 @@ export class RoomImagesController {
     schema: {
       example: roomImageResExample.updateRoomImage,
     },
+  })
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Auth token',
   })
   async updateRoomImage(
     @Param('id') id: number,

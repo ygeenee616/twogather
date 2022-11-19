@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Space } from 'src/spaces/entities/spaces.entity';
 import { SpacesService } from 'src/spaces/spaces.service';
 import { Repository } from 'typeorm';
 import { CreateRoomDto } from './dto/create-room.dto';
@@ -11,11 +12,11 @@ export class RoomsService {
   constructor(
     @InjectRepository(Room) private roomsRepository: Repository<Room>,
     private spaceService: SpacesService,
+    @InjectRepository(Space) private spacesRepository: Repository<Room>,
   ) {}
 
-  async create(createRoomDto: CreateRoomDto, spaceId: number) {
+  async create(createRoomDto: CreateRoomDto, space: Space) {
     try {
-      const space = await this.spaceService.findOne(spaceId);
       const newRoom = {
         ...createRoomDto,
         space,
@@ -34,19 +35,50 @@ export class RoomsService {
       order: {
         id: 'DESC',
       },
-      // cache:true, 캐시는 할 지 말지.
     });
+  }
+
+  async findAllBySpace(spaceId: number) {
+    try {
+      return await this.roomsRepository.find({
+        where: {
+          space: {
+            id: spaceId,
+          },
+        },
+        relations: {
+          space: true,
+        },
+        order: {
+          id: 'DESC',
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 
   // roomId로 특정 room 조회
   async findOne(id: number) {
     try {
       const room = await this.roomsRepository.findOne({
+        select: {
+          reservations: true,
+          space: {
+            id: true,
+            user: {
+              id: true,
+            },
+          },
+        },
         where: {
           id,
         },
         relations: {
-          space: true,
+          reservations: true,
+          space: {
+            user: true,
+          },
         },
         // cache: true,
       });
@@ -54,6 +86,36 @@ export class RoomsService {
         throw new NotFoundException('존재하지 않는 room입니다.');
       }
       return room;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // HostId로 rooms 조회
+  async findRoomsByUser(hostId: number) {
+    try {
+      const rooms = await this.roomsRepository.find({
+        select: {
+          space: {
+            id: true,
+            name: true,
+            user: {
+              id: true,
+            },
+          },
+        },
+        where: {
+          space: {
+            user: {
+              id: hostId,
+            },
+          },
+        },
+        relations: {
+          space: true,
+        },
+      });
+      return rooms;
     } catch (error) {
       throw error;
     }

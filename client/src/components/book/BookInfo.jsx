@@ -1,10 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-BookInfo.defaultProps = {
-  pay: 2000,
-};
-
 export default function BookInfo({
   roomId,
   roomTitle,
@@ -12,11 +8,9 @@ export default function BookInfo({
   startTime,
   endTime,
   people,
-  pay,
+  totalPrice,
 }) {
-  const useTime = endTime - startTime;
-  const totalPay = pay * people * useTime;
-
+  // 출력용 날짜 포맷팅
   function dateToString(date) {
     const fullDate = String(date);
     const year = fullDate.substring(0, 4);
@@ -36,7 +30,7 @@ export default function BookInfo({
         </Info>
         <Info>
           <div>예약 날짜</div>
-          <div>{dateToString(date)}</div>
+          <div>{date}</div>
         </Info>
         <Info>
           <div>예약 시간</div>
@@ -50,7 +44,7 @@ export default function BookInfo({
         </Info>
         <Info>
           <div>결제 금액</div>
-          <div className="pay">{totalPay} ₩</div>
+          <div className="pay">{totalPrice} ₩</div>
         </Info>
       </div>
     </Container>
@@ -79,7 +73,8 @@ const Header = styled.div`
 const Info = styled.div`
   width: 100%;
   display: flex;
-  padding: 10px 0;
+  align-items: center;
+  padding: 15px 0;
   font-size: 0.9rem;
 
   & div:first-child {

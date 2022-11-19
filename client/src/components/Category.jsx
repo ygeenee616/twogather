@@ -11,7 +11,7 @@ const CategoryButton = ({ img, title }) => {
   const navigate = useNavigate();
 
   const handleGoToListByCategoryClick = () => {
-    navigate(`/list?category=${title}`);
+    navigate(`/list?category=${title}&page=1`);
   };
   return (
     <ButtonWrap onClick={handleGoToListByCategoryClick}>
@@ -47,7 +47,8 @@ const ButtonWrap = styled.button`
   }
   &:hover {
     .imgWrap {
-      box-shadow: 5px 5px 5px #d9d9d9;
+      box-shadow: 2px 2px 7px #d9d9d9;
+      transition: all 0.3s;
     }
   }
 `;

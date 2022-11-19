@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
@@ -7,7 +6,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../../assets/styles/DatePicker.css";
 
 export default function ListDatePicker() {
-  const nav = useNavigate();
   const [date, setDate] = useState(new Date());
 
   const { search } = window.location;
@@ -26,7 +24,7 @@ export default function ListDatePicker() {
   const handleClickApplyButton = (date) => {
     params.set("date", date);
     const stringParams = params.toString();
-    nav(`/list?${stringParams}`);
+    window.location.replace(`/list?${stringParams}`);
   };
 
   return (

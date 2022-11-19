@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +6,6 @@ import {
   validateEmail,
   validatePassword,
 } from "../assets/utils/UsefulFunction";
-import userSlice, { login } from "../slices/UserSlice";
 import * as Api from "../api";
 
 import styled from "styled-components";
@@ -15,32 +14,78 @@ import {
   ContentsDiv,
   FormDiv,
   PageTitle,
-  UserBtn,
 } from "../components/register/UserForm";
-import userInfoState from "../atom/userInfoState";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from "recoil";
+import ModalWithInput from "../components/ModalWithInput";
+
+// 비밀번호 찾기 클릭시
+const handleFindPw = (e) => {
+  e.preventDefault();
+  const FindPWModal = document.getElementById("FindPWModal");
+  FindPWModal.style.display = "block";
+};
+
+// 모달창에서 '닫기' 클릭시
+const handleModalCancel = (e) => {
+  const FindPWModal = document.getElementById("FindPWModal");
+  e.preventDefault();
+  FindPWModal.style.display = "none";
+};
+
+// 모달창에서 '확인' 클릭시
+const handleModalClick = async (e) => {
+  e.preventDefault();
+  try {
+    const FindPWModal = document.getElementById("FindPWModal");
+    FindPWModal.style.display = "none";
+    // 로그인 성공시
+    window.location.href = "/login/findPasswordMail";
+
+    // 로그인 실패시
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const handleLoginKakao = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await Api.get("api/users/auth/kakao");
+    localStorage.setItem("userToken", res.data.accessToken);
+    window.location.href = "/";
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 function LoginForm() {
-  const user = useSelector((store) => store.user);
-
-  const dispatch = useDispatch();
-  const params = useParams();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alertMsg, setAlertMsg] = useState("");
 
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const a = useRecoilValue(userInfoState);
-  
-  
+  const findEmailInput = useRef();
+  // 모달창에서 '확인' 클릭시
+  const handleModalClick = async (e) => {
+    const registeredEmail = findEmailInput.current.value;
+    e.preventDefault();
+    try {
+      const FindPWModal = document.getElementById("FindPWModal");
+      // 로그인 성공시
+      const response = await Api.post("api/users/reset-password", {
+        email: registeredEmail,
+      });
+
+      console.log(response);
+      FindPWModal.style.display = "none";
+      window.location.href = "/login/findPasswordMail";
+
+      // 로그인 실패시
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -58,18 +103,25 @@ function LoginForm() {
         const jwtToken = `Bearer ${res.data.accessToken}`;
         // sessionStorage에 "userToken"이라는 키로 JWT 토큰을 저장함.
         localStorage.setItem("userToken", jwtToken);
-        // dispatch 함수를 이용해 로그인 성공 상태로 만듦.
-        dispatch(login(data));
+        setAlertMsg("");
 
-        setUserInfo({ ...userInfo, userEmail: email });
+        try {
+          const user = await Api.getAuth(`api/users/info`);
+          const { nickname, isAdmin, businessNumber } = user.data.data;
 
-        console.log(userInfo);
-        console.log("asdasdasd");
-        console.log(a);
+          localStorage.setItem("nickname", nickname);
 
-        // email로 유저 검색해서 유저정보 받아오기
+          if (isAdmin) {
+            localStorage.setItem("loginType", "admin");
+          } else if (businessNumber) {
+            localStorage.setItem("loginType", "host");
+          } else {
+            localStorage.setItem("loginType", "user");
+          }
+        } catch (err) {
+          console.error(err);
+        }
 
-        // 기본 페이지로 이동함.
         navigate("/", { replace: true });
       } catch (err) {
         console.log("로그인에 실패하였습니다.", err);
@@ -78,7 +130,6 @@ function LoginForm() {
         );
       }
     }
-    console.log(user);
   };
 
   return (
@@ -110,30 +161,43 @@ function LoginForm() {
           </AlertMsg>
 
           <SocialLoginDiv>
-            <SocialLoginBtn className="kakao-login">
-              <img src="/images/kakaoLogo.png" alt="KAKAO" />
-              <p>카카오 로그인</p>
-            </SocialLoginBtn>
-            <SocialLoginBtn className="kakao-login">
-              <img src="/images/googleLogo.png" alt="GOOGLE"></img>
-              <p>구글 로그인</p>
-            </SocialLoginBtn>
+            <a href={`http://34.64.86.202/:5000/api/users/auth/kakao`}>
+              <SocialLoginBtn className="kakao-login">
+                <img src="/images/kakaoLogo.png" alt="KAKAO" />
+                <p>카카오 로그인</p>
+              </SocialLoginBtn>
+            </a>
           </SocialLoginDiv>
 
           <LoginFooterDiv>
-            <tr>
-              <QuestionTD>회원이 아니신가요?</QuestionTD>
-              <LinkTD>
-                <a href="/register">회원가입</a>
-              </LinkTD>
-            </tr>
-            <tr>
-              <QuestionTD>비밀번호를 잊으셨나요?</QuestionTD>
-              <LinkTD>비밀번호 찾기</LinkTD>
-            </tr>
+            <thead>
+              <tr>
+                <QuestionTD>회원이 아니신가요?</QuestionTD>
+                <LinkTD>
+                  <a href="/register">회원가입</a>
+                </LinkTD>
+              </tr>
+              <tr>
+                <QuestionTD>비밀번호를 잊으셨나요?</QuestionTD>
+                <LinkTD>
+                  <span onClick={handleFindPw}>비밀번호 찾기</span>
+                </LinkTD>
+              </tr>
+            </thead>
           </LoginFooterDiv>
         </ContentsDiv>
       </FormDiv>
+      <ModalWrap id="FindPWModal">
+        <ModalWithInput
+          id="ModalWithInput"
+          title="비밀번호 찾기"
+          content="가입한 이메일로 임시 비밀번호를 발급해드립니다."
+          clickEvent={handleModalClick}
+          cancelEvent={handleModalCancel}
+          placeholder="test@twogather.com"
+          inputRef={findEmailInput}
+        />
+      </ModalWrap>
     </Container>
   );
 }
@@ -185,13 +249,17 @@ const SocialLoginDiv = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  a {
+    text-decoration: none;
+    color: black;
+  }
 `;
 
 const SocialLoginBtn = styled.button`
   display: flex;
   flex-direction: row;
   height: 3rem;
-  width: 10rem;
+  width: 18rem;
   background-color: white;
   border: solid #d9d9d9;
   border-radius: 10px;
@@ -206,7 +274,7 @@ const SocialLoginBtn = styled.button`
     width: 2rem;
     height: 2rem;
     border-radius: 5rem;
-    margin: 0.3rem 1rem 0 0;
+    margin: 0.3rem 4.5rem 0 0;
   }
 `;
 const LoginFooterDiv = styled.table`
@@ -214,6 +282,14 @@ const LoginFooterDiv = styled.table`
   margin: 1.5rem;
   font-size: 0.8rem;
   border-spacing: 0 10px;
+
+  a,
+  span {
+    text-decoration: none;
+  }
+  span {
+    cursor: pointer;
+  }
 `;
 
 const QuestionTD = styled.td`
@@ -223,6 +299,15 @@ const QuestionTD = styled.td`
 const LinkTD = styled.td`
   text-align: right;
   text-decoration: underline;
+`;
+
+const ModalWrap = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 130vh;
+  background-color: rgba(90, 90, 90, 0.2);
+  display: none;
 `;
 
 export default LoginForm;

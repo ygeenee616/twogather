@@ -1,47 +1,20 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ImageSlider from "../components/detail/ImageSlider";
 import Tab from "../components/detail/Tab";
 import Map from "../components/detail/Map";
 import Dropbox from "../components/detail/DropBox";
 import { MyDatePicker } from "../components/detail/DatePicker";
 import ToTop from "../components/ToTop";
-import axios from "axios";
-
-// 날짜 선택시 해당 날짜의 예약 내역 가져오는 함수
-const handleDateChange = async (date) => {
-  // 클릭한 date에 따른 예약 내역
-  const req = await axios.get("/dummyBook.json");
-  const data = await req.data.books;
-
-  // 예약 내역이 있는 시간 배열
-  let bookedTime = [];
-  data.map((item) => {
-    for (let t = item.startTime; t <= item.endTime; t++) {
-      bookedTime.push(t);
-    }
-  });
-
-  let startTimeList = document.querySelectorAll(".startTime");
-  let endTimeList = document.querySelectorAll(".endTime");
-
-  bookedTime.forEach((num) => {
-    startTimeList[num].disabled = true;
-    startTimeList[num].classList.add("disable");
-    startTimeList[num].style.textDecoration = "line-through";
-
-    endTimeList[num].disabled = true;
-    endTimeList[num].classList.add("disable");
-    endTimeList[num].style.textDecoration = "line-through";
-  });
-};
+import * as Api from "../api";
 
 export default function Detail() {
   // api 데이터 state
   const [data, setData] = useState("");
+  const [imgData, setImgData] = useState([]);
   // 선택한 룸
-  const room = useRef({ id: "", title: "" });
+  const room = useRef({ id: "", name: "", pay: "" });
   // 사용자 예약 인원 state
   const [people, setPeople] = useState(0);
   const refPeople = useRef(people);
@@ -53,6 +26,8 @@ export default function Detail() {
   const [lessTime, setLessTime] = useState(true);
   // 예약 중복 내역
   const [overlap, setOverlap] = useState(false);
+  // 해당 날짜에 예약내역이 있는 시간대
+  const [bookedTime, setBookedTime] = useState([]);
 
   // 선택한 룸의 수용 가능 인원
   const acceptPeople = useRef(0);
@@ -61,13 +36,20 @@ export default function Detail() {
 
   const navigate = useNavigate();
 
+  const { spaceId } = useParams();
+
   // api 데이터 받아오는 함수
   useEffect(() => {
     const getData = async () => {
       try {
-        const req = await axios.get("/dummyDetail.json");
-        const space = await req.data.space;
-        setData(space);
+        const spaceDataReq = await Api.get(`api/spaces/${spaceId}`);
+        const spaceImgDataReq = await Api.get(
+          `api/space-images/space/${spaceId}`
+        );
+        const data = await spaceDataReq.data.data;
+        setData(data);
+        const image = await spaceImgDataReq.data.data;
+        setImgData(image);
       } catch (err) {
         console.log(err);
       }
@@ -76,19 +58,22 @@ export default function Detail() {
   }, []);
 
   // 받아온 데이터를 각각 변수에 저장
-  const title = data.title;
-  const hashTag = data.hashTag;
-  const contents = data.contents;
-  const address = data.address;
+  const name = data.name;
+  const hashTags = data.hashtags;
+  const intro = data.intro;
+  const notice = data.notice;
+  const qnas = data.qnas;
+  const reviews = data.reviews;
+  const address = data.address2;
   const rooms = data.rooms;
-  const images = data.images;
-  const host = data.host;
+  const host = data.user;
 
   // 룸 선택시 적용하는 DropBox 함수
-  function checkSelectRoom(eId, eClass) {
+  function checkSelectRoom(id, name, pay) {
     room.current = {
-      id: eId,
-      title: eClass,
+      id: id,
+      name: name,
+      pay: pay,
     };
   }
 
@@ -104,7 +89,7 @@ export default function Detail() {
       : (possible.current = false);
   }
 
-  // 날짜 포맷팅
+  // setData 날짜 포맷팅 (YYYYMMDD)
   function dateToNumber(date) {
     const formatDate = Number(
       date.getFullYear() +
@@ -114,10 +99,21 @@ export default function Detail() {
     return formatDate;
   }
 
+  // API 호출시 날짜 포맷팅 (YYYY-MM-DD)
+  function dateToString(date) {
+    const formatDate =
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0");
+    return formatDate;
+  }
+
   // date 선택시 적용하는 DatePicker 함수
   function onChangeDate(date) {
     setDate(dateToNumber(date));
-    handleDateChange(date);
+    handleDateChange(dateToString(date));
   }
 
   // startTime 선택시 적용하는 DatePicker 함수
@@ -132,6 +128,56 @@ export default function Detail() {
     setEndTime(Number(time));
     handleTimeChange(startTime, Number(time));
     startTime < Number(time) ? setLessTime(false) : setLessTime(true);
+  }
+
+  // 날짜 선택시 해당 날짜의 예약 내역 가져오는 함수
+  const handleDateChange = async (date) => {
+    clearTimePicker();
+    setBookedTime([]);
+
+    // 클릭한 date에 따른 예약 내역
+    const req = await Api.get(
+      `api/reservations/room/${room.current.id}?date=${date}`
+    );
+    const data = await req.data.data.reservations;
+
+    // 예약 내역이 있는 시간 배열
+    const booked = data.map((time) => {
+      for (let t = time.startTime; t <= time.endTime; t++) {
+        bookedTime.push(t);
+      }
+    });
+
+    // undefined 제거
+    const bookedArr = booked.filter(Boolean);
+
+    setBookedTime(bookedArr);
+
+    let startTimeList = document.querySelectorAll(".startTime");
+    let endTimeList = document.querySelectorAll(".endTime");
+
+    bookedTime.forEach((num) => {
+      startTimeList[num].disabled = true;
+      startTimeList[num].classList.add("disable");
+      startTimeList[num].style.textDecoration = "line-through";
+
+      endTimeList[num].disabled = true;
+      endTimeList[num].classList.add("disable");
+      endTimeList[num].style.textDecoration = "line-through";
+    });
+  };
+
+  // 타임피커 초기화
+  function clearTimePicker() {
+    let bookedList = document.querySelectorAll(".disable");
+
+    if (bookedList.length !== 0 || bookedList !== undefined) {
+      bookedList.forEach((i) => {
+        i.disabled = false;
+        i.classList.remove("disable");
+        i.style.textDecoration = "none";
+      });
+    }
   }
 
   // 예약 시작 시간과 종료 시간 사이에 이미 예약된 시간이 있을 시 주의를 주는 함수
@@ -156,26 +202,36 @@ export default function Detail() {
     data && (
       <FullContainer>
         <DetailHeader>
-          <Title>[{title}]</Title>
+          <Title>[{name}]</Title>
           <div style={{ margin: "20px 0" }}>
-            {hashTag.map((tag, i) => (
-              <HashTag key={i}>{tag}</HashTag>
-            ))}
+            {hashTags.length === 0 ? (
+              <HashTag>투게더</HashTag>
+            ) : (
+              hashTags.map((hashTag, i) => (
+                <HashTag key={i}>{hashTag.tag}</HashTag>
+              ))
+            )}
           </div>
         </DetailHeader>
 
         <DetailContainer>
           <LeftContainer>
-            <ImageSlider images={images} />
-            <Tab contents={contents} />
-            <Map title={title} address={address} />
+            <ImageSlider images={imgData} />
+            <Tab
+              name={name}
+              intro={intro}
+              notice={notice}
+              qnas={qnas}
+              reviews={reviews}
+            />
+            <Map name={name} address={address} />
           </LeftContainer>
 
           <RightContainer>
             <Dropbox
               rooms={rooms}
-              acceptPeople={acceptPeople}
               checkSelectRoom={checkSelectRoom}
+              acceptPeople={acceptPeople}
             />
             <MyDatePicker
               date={date}
@@ -235,6 +291,7 @@ export default function Detail() {
 }
 
 const FullContainer = styled.div`
+  font-family: "NEXON Lv2 Gothic Light";
   max-width: 100%;
   margin: 5% 10%;
   display: flex;
@@ -249,6 +306,7 @@ const DetailHeader = styled.div`
 `;
 
 const Title = styled.div`
+  font-family: "S-CoreDream-7ExtraBold";
   font-weight: bold;
   font-size: 2.5rem;
 `;
@@ -284,6 +342,7 @@ const Personnel = styled.div`
   & .overPeople {
     font-size: 0.8rem;
     color: red;
+    font-weight: bold;
     ${({ possible }) => (possible ? `display: none;` : `display: block;`)};
   }
 `;

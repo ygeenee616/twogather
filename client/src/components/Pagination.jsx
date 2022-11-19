@@ -1,6 +1,43 @@
 import styled from "styled-components";
 
-function Pagination({ total, limit, page, setPage }) {
+function Pagination({ total, currentPage, url }) {
+  //total: totalpage수, currentPage: 현재 페이지(querystring)
+  return (
+    <>
+      <Nav>
+        <Button
+          onClick={() =>
+            window.location.replace(`${url}?page=${currentPage - 1}`)
+          }
+          disabled={currentPage === 1}
+        >
+          &lt;
+        </Button>
+        {Array(total)
+          .fill()
+          .map((_, i) => (
+            <Button
+              key={i + 1}
+              onClick={() => window.location.replace(`${url}?page=${i + 1}`)}
+              aria-current={currentPage === i + 1 ? "page" : null}
+            >
+              {i + 1}
+            </Button>
+          ))}
+        <Button
+          onClick={() =>
+            window.location.replace(`${url}?page=${currentPage + 1}`)
+          }
+          disabled={currentPage === total}
+        >
+          &gt;
+        </Button>
+      </Nav>
+    </>
+  );
+}
+
+function PaginationInLocal({ total, limit, page, setPage }) {
   const numPages = Math.ceil(total / limit);
 
   return (
@@ -66,4 +103,5 @@ const Button = styled.button`
   }
 `;
 
+export { PaginationInLocal };
 export default Pagination;

@@ -1,116 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
 import { AiOutlinePlus } from "react-icons/ai";
 import Pagination from "../components/Pagination";
+import Modal from "../components/Modal";
+import * as Api from "../api";
 
-const exData = [
-  {
-    id: 1,
-    title: "1번째 공지사항",
-    writtenDate: "2022-07-11",
-    content: "입니다.",
-  },
-  {
-    id: 2,
-    title: "2번째 공지사항",
-    writtenDate: "2022-07-11",
-    content: "입니다.",
-  },
-  {
-    id: 3,
-    title: "3번째 공지사항",
-    writtenDate: "2022-07-11",
-    content: "입니다.",
-  },
-  {
-    id: 4,
-    title: "4번째 공지사항",
-    writtenDate: "2022-07-11",
-    content: "입니다.",
-  },
-  {
-    id: 5,
-    title: "5번째 공지사항",
-    writtenDate: "2022-07-11",
-    content: "입니다.",
-  },
-  {
-    id: 6,
-    title: "6번째 공지사항",
-    writtenDate: "2022-07-11",
-    content: "입니다.",
-  },
-  {
-    id: 7,
-    title: "7번째 공지사항",
-    writtenDate: "2022-07-11",
-    content: "입니다.",
-  },
-  {
-    id: 8,
-    title: "8번째 공지사항",
-    writtenDate: "2022-07-11",
-    content: "입니다.",
-  },
-  {
-    id: 9,
-    title: "9번째 공지사항",
-    writtenDate: "2022-07-11",
-    content: "입니다.",
-  },
-  {
-    id: 10,
-    title: "10번째 공지사항",
-    writtenDate: "2022-07-11",
-    content: "입니다.",
-  },
-  {
-    id: 11,
-    title: "11번째 공지사항",
-    writtenDate: "2022-07-11",
-    content: "입니다.",
-  },
-  {
-    id: 12,
-    title: "12번째 공지사항",
-    writtenDate: "2022-07-11",
-    content: "입니다.",
-  },
-  {
-    id: 13,
-    title: "13번째 공지사항",
-    writtenDate: "2022-07-11",
-    content: "입니다.",
-  },
-  {
-    id: 14,
-    title: "14번째 공지사항",
-    writtenDate: "2022-07-11",
-    content: "입니다.",
-  },
-  {
-    id: 15,
-    title: "15번째 공지사항",
-    writtenDate: "2022-07-11",
-    content: "입니다.",
-  },
-  {
-    id: 16,
-    title: "16번째 공지사항",
-    writtenDate: "2022-07-11",
-    content: "입니다.",
-  },
-];
+export default function Notice({ url }) {
+  const [data, setData] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [totalPage, setTotalPage] = useState(1);
 
-const reversedData = exData.reverse();
-
-export default function Notice() {
-  const [page, setPage] = useState(1);
-  const limit = 10;
-  const offset = (page - 1) * limit;
   const nav = useNavigate();
+  const { search } = window.location;
+  const params = new URLSearchParams(search);
+  const page = Number(params.get("page"));
+
   const [clickedNumber, setClickedNumber] = useState(0);
 
   //클릭된 line의 content만 보이도록 하는 함수
@@ -132,20 +38,45 @@ export default function Notice() {
   };
 
   //삭제버튼 클릭시 삭제
-  const handleClickDeleteButton = (e) => {
+  const handleClickDeleteButton = async (e) => {
     const clickedId = e.target.id.replace(/[^0-9]/g, "");
-    //console.log(clickedId);
+    const req = await Api.deleteAuth(`api/notices/${clickedId}`);
+
+    const modal = document.querySelector(".modalWrap");
+    modal.style.display = "block";
+    window.scrollTo(0, 0);
   };
 
-  const renderData = ({ offset, limit }) => {
-    return reversedData.slice(offset, offset + limit).map((cur, i) => {
+  //데이터, 유저role 불러옴, admin계정일경우 추가, 수정, 삭제버튼 보임
+  useEffect(() => {
+    async function getData() {
+      const res = await Api.getAuth(`api/notices?page=${page}&perPage=10`);
+      const datas = res.data.data.paginatedNotices;
+      setTotalPage(res.data.data.totlaPage);
+      setData(datas);
+    }
+    getData();
+
+    async function getUser() {
+      const response = await Api.getAuth("api/users/info");
+      setIsAdmin(response.data.data.isAdmin);
+    }
+    getUser();
+  }, []);
+
+  //불러온 데이터 렌더링
+  const renderData = (data) => {
+    return data.map((cur, i) => {
       return (
         <Item key={i} className={cur.id} onClick={handleClickToNoticeDetail}>
           <Line className={cur.id}>
             <div className={cur.id}>공지사항</div>
             <div className={cur.id}>{cur.title}</div>
             <div className={cur.id}>{cur.writtenDate}</div>
-            <div className={cur.id}>
+            <div
+              className={"updateDeleteButton"}
+              style={isAdmin ? { display: "block" } : { display: "none" }}
+            >
               <NoticeUpdateButton
                 id={cur.id}
                 onClick={(e) => handleClickUpdateButton(e)}
@@ -159,7 +90,9 @@ export default function Notice() {
                 삭제
               </NoticeDeleteButton>
             </div>
-            <IoIosArrowDown className={cur.id} />
+            <div>
+              <IoIosArrowDown className={cur.id} />
+            </div>
           </Line>
           <Content className={`content${cur.id}`}>{cur.content}</Content>
         </Item>
@@ -168,24 +101,41 @@ export default function Notice() {
   };
 
   return (
-    <div>
-      <NoticeWrap>
-        <NoticeTitle>공지사항</NoticeTitle>
-        <ButtonGoToAddNotice onClick={() => nav("/addNotice")}>
-          <AiOutlinePlus />
-          <div>공지사항 추가</div>
-        </ButtonGoToAddNotice>
-        <NoticeTable clickedNumber={clickedNumber}>
-          {renderData({ offset, limit })}
-        </NoticeTable>
-      </NoticeWrap>
-      <Pagination
-        total={exData.length}
-        limit={limit}
-        page={page}
-        setPage={setPage}
-      />
-    </div>
+    data && (
+      <div>
+        <NoticeWrap>
+          <NoticeTitle>공지사항</NoticeTitle>
+          <ButtonGoToAddNotice
+            id="addButton"
+            style={isAdmin ? { display: "flex" } : { display: "none" }}
+            onClick={() => nav("/addNotice")}
+          >
+            <AiOutlinePlus />
+            <div>공지사항 추가</div>
+          </ButtonGoToAddNotice>
+          <NoticeTable clickedNumber={clickedNumber}>
+            {renderData(data)}
+          </NoticeTable>
+        </NoticeWrap>
+        <Pagination
+          total={totalPage}
+          currentPage={page}
+          url={url ?? "/notice"}
+        />
+        <ModalWrap className="modalWrap">
+          <Modal
+            className="deleteNoticeModal"
+            title=""
+            content="공지사항이 삭제되었습니다."
+            clickEvent={() =>
+              window.location.replace(
+                url ? `${url}?page=${page}` : `/notice?page=${page}`
+              )
+            }
+          />
+        </ModalWrap>
+      </div>
+    )
   );
 }
 
@@ -197,13 +147,15 @@ const Item = styled.div`
 const Line = styled.div`
   display: flex;
   border-bottom: 1px solid #8daef2;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 400;
   padding: 10px 0;
   cursor: pointer;
   div {
     flex-grow: 1;
     margin-left: 2.5vw;
+    display: flex;
+    align-items: center;
   }
   svg {
     margin-right: 2.5vw;
@@ -221,15 +173,17 @@ const Line = styled.div`
 `;
 
 const Content = styled.div`
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 400;
   padding: 3vh 12.6vw;
   border: 1px solid #8daef2;
   border-top: none;
   display: none;
+  white-space: pre-wrap;
 `;
 
 const NoticeWrap = styled.div`
+  font-family: "NEXON Lv2 Gothic Light";
   margin: 0 auto 10vh auto;
   width: 80%;
   height: 100%;
@@ -258,19 +212,20 @@ const NoticeTable = styled.div`
 `;
 
 const ButtonGoToAddNotice = styled.button`
-  display: flex;
   background-color: white;
   border: 2px solid #8daef2;
   font-size: 20px;
   border-radius: 10px;
-  width: 150px;
+  width: 11rem;
   height: 40px;
-  padding-top: 7px;
   font-weight: 600;
   color: #8daef2;
   cursor: pointer;
   margin-left: auto;
   margin: 0 0 1% auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const NoticeUpdateButton = styled.button`
@@ -292,4 +247,13 @@ const NoticeDeleteButton = styled.button`
   margin-left: 5px;
   border: 2px solid #d80907;
   border-radius: 6px;
+`;
+
+const ModalWrap = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 244vh;
+  background-color: rgba(90, 90, 90, 0.2);
+  display: none;
 `;

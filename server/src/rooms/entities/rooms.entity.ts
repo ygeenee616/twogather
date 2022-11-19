@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { RoomImage } from 'src/room_images/entities/room_image.entity';
+import { Reservation } from 'src/reservations/entities/reservation.entity';
 
 @Entity()
 export class Room {
@@ -40,6 +41,13 @@ export class Room {
   @JoinColumn({ name: 'spaceId', referencedColumnName: 'id' })
   space: Space;
 
-  @OneToMany(() => RoomImage, (roomImage) => roomImage.room)
+  @OneToMany(() => RoomImage, (roomImage) => roomImage.room, {
+    eager: false,
+  })
   roomImages: RoomImage[];
+
+  @OneToMany(() => Reservation, (reservation) => reservation.room, {
+    eager: false,
+  })
+  reservations: Reservation[];
 }

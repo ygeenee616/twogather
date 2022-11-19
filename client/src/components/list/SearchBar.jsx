@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import searchIcon from "../../assets/images/searchIcon.png";
 
 export default function SearchBar() {
   const searchInput = useRef("");
   const [caution, setCaution] = useState(false);
-  const nav = useNavigate();
 
   const { search } = window.location;
   const params = new URLSearchParams(search);
   const path = useRef(window.location.pathname);
 
+  //공간목록이 아닌 페이지에선 value 초기화
   useEffect(() => {
     path.current = window.location.pathname;
 
@@ -29,8 +28,10 @@ export default function SearchBar() {
     searchInput.current.length === 0
       ? setCaution(true)
       : stringParams.length === 0
-      ? nav(`/list?search=${searchInput.current}`)
-      : nav(`/list?${stringParams}&search=${searchInput.current}`);
+      ? window.location.replace(`/list?search=${searchInput.current}&page=1`)
+      : window.location.replace(
+          `/list?${stringParams}&search=${searchInput.current}`
+        );
   };
 
   //enter button을 누를시에도 search할수있게함

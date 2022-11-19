@@ -1,25 +1,74 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import ProductCard from "./ProductCard";
-import exImg1 from "../assets/images/ex1.png";
-import exImg2 from "../assets/images/ex2.png";
+import * as Api from "../api";
 
-const exData = {
-  src: [exImg1, exImg2],
-  hashtags: [
-    "#강남모임공간",
-    "#강남파티룸",
-    "#강남럭셔리파티룸",
-    "#강남럭셔리모임공간",
-    "#앤틱공간대여",
-  ],
-  name: "강남최대 앤틱모임공간 공유먼트청담",
-  address: "서울 강남구 청담동 88-1 하늘빌딩 지하1층",
-  price: "150,000",
-  review: "12",
-};
+export default function Recommendation() {
+  const [spaces, setSpaces] = useState(false);
+  const imgUrlList = useRef([]);
+
+  useEffect(() => {
+    async function getData() {
+      try {
+        const res = await Api.get(`api/spaces/random`);
+        const datas = res.data.data;
+        const spacesIdList = datas.map((space) => space.id);
+
+        await Promise.all(
+          spacesIdList.map(async (spaceId, i) => {
+            const imgData = await Api.get(`api/space-images/space/${spaceId}`);
+            const imgUrlListElement = await imgData.data.data.map(
+              (i) => i.imageUrl
+            );
+            imgUrlList.current[i] = imgUrlListElement;
+          })
+        );
+        setSpaces(datas);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getData();
+  }, []);
+
+  const renderData = (spaces) => {
+    //space의 최소 가격 리스트, room이 없을 시 0을 반환
+    const priceList = spaces.map((space) => {
+      const min = Math.min(...space.rooms.map((i) => i.price));
+      if (min === Infinity) {
+        return 999999;
+      } else {
+        return min;
+      }
+    });
+
+    return spaces.map((data, i) => (
+      <ProductCard
+        key={i}
+        src={imgUrlList.current[i]}
+        hashtags={data.hashtags}
+        name={data.name}
+        address2={data.address2}
+        address3={data.address3}
+        price={priceList[i]}
+        reviewsLength={data.numberOfReviews}
+        link={`/detail/${data.id}`}
+      />
+    ));
+  };
+
+  return (
+    spaces && (
+      <RecomWrap>
+        <RecomTitle>오늘의 추천 공간</RecomTitle>
+        <CardWrap className="card">{renderData(spaces)}</CardWrap>
+      </RecomWrap>
+    )
+  );
+}
 
 const RecomTitle = styled.div`
+  font-family: "S-CoreDream-6Bold";
   font-size: 1.5vw;
   font-weight: bold;
   margin-bottom: 5vh;
@@ -35,44 +84,3 @@ const CardWrap = styled.div`
   grid-template-rows: 1fr;
   gap: 2%;
 `;
-
-export default function Recommendation() {
-  let props = [];
-  for (let i = 1; i <= 4; i++) {
-    props.push({
-      className: "recomCard",
-      src: exData.src,
-      hashtags: exData.hashtags,
-      name: exData.name,
-      address: exData.address,
-      price: exData.price,
-      review: exData.review,
-    });
-  }
-
-  const rendering = () => {
-    const result = props.map((item, i) => {
-      return (
-        <ProductCard
-          key={i}
-          className="recomCard"
-          src={item.src}
-          hashtags={item.hashtags}
-          name={item.name}
-          address={item.address}
-          price={item.price}
-          review={item.review}
-          link={"/detail/1"}
-        ></ProductCard>
-      );
-    });
-    return result;
-  };
-
-  return (
-    <RecomWrap>
-      <RecomTitle>오늘의 추천 공간</RecomTitle>
-      <CardWrap className="card">{rendering()}</CardWrap>
-    </RecomWrap>
-  );
-}

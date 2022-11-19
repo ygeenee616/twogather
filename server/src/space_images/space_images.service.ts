@@ -39,15 +39,44 @@ export class SpaceImagesService {
     });
   }
 
+  async findAllBySpace(spaceId: number) {
+    try {
+      return await this.spaceImagesRepository.find({
+        where: {
+          space: {
+            id: spaceId,
+          },
+        },
+        relations: {
+          space: true,
+        },
+        order: {
+          id: 'DESC',
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // spaceImageId로 특정 spaceImage(URL) 조회
   async findOne(id: number) {
     try {
       const spaceImage = await this.spaceImagesRepository.findOne({
+        select: {
+          space: {
+            user: {
+              id: true,
+            },
+          },
+        },
         where: {
           id,
         },
         relations: {
-          space: true,
+          space: {
+            user: true,
+          },
         },
         // cache: true
       });
@@ -82,6 +111,31 @@ export class SpaceImagesService {
           description: '삭제할 spaceImage가 없습니다.',
         });
       }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async removeBySpace(spaceId: number) {
+    try {
+      const spaceImagesForRemove = await this.spaceImagesRepository.find({
+        where: {
+          space: {
+            id: spaceId,
+          },
+        },
+        relations: {
+          space: true,
+        },
+      });
+      let spaceImageUrlsForRemove = [];
+      for (let i = 0; i < spaceImagesForRemove.length; i++) {
+        spaceImageUrlsForRemove.push(spaceImagesForRemove[i].imageUrl);
+        const deletedSpaceImages = await this.spaceImagesRepository.delete(
+          spaceImagesForRemove[i].id,
+        );
+      }
+      return spaceImageUrlsForRemove;
     } catch (error) {
       throw error;
     }

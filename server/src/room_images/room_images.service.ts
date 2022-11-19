@@ -39,6 +39,26 @@ export class RoomImagesService {
     });
   }
 
+  async findAllByRoom(roomId: number) {
+    try {
+      return await this.roomImagesRepository.find({
+        where: {
+          room: {
+            id: roomId,
+          },
+        },
+        relations: {
+          room: true,
+        },
+        order: {
+          id: 'DESC',
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // roomImageId로 특정 roomImage 조회
   async findOne(id: number) {
     try {
@@ -82,6 +102,31 @@ export class RoomImagesService {
           description: '삭제할 roomImage가 없습니다.',
         });
       }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async removeByRoom(roomId: number) {
+    try {
+      const roomImagesForRemove = await this.roomImagesRepository.find({
+        where: {
+          room: {
+            id: roomId,
+          },
+        },
+        relations: {
+          room: true,
+        },
+      });
+      let roomImageUrlsForRemove = [];
+      for (let i = 0; i < roomImagesForRemove.length; i++) {
+        roomImageUrlsForRemove.push(roomImagesForRemove[i].imageUrl);
+        const deletedRoomImages = await this.roomImagesRepository.delete(
+          roomImagesForRemove[i].id,
+        );
+      }
+      return roomImageUrlsForRemove;
     } catch (error) {
       throw error;
     }

@@ -33,12 +33,61 @@ export class QnasService {
     return await this.qnasRepository.find({
       relations: {
         space: true,
-        user: true,
       },
       order: {
         id: 'DESC',
       },
     });
+  }
+
+  async findBySpace(spaceId: number) {
+    try {
+      return await this.qnasRepository.find({
+        where: {
+          space: {
+            id: spaceId,
+          },
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findBySpacePaginated(
+    spaceId: number,
+    startIndex: number,
+    perPage: number,
+  ) {
+    try {
+      const totalQna = await this.qnasRepository.find({
+        where: {
+          space: {
+            id: spaceId,
+          },
+        },
+      });
+      const totalPage = Math.ceil(totalQna.length / perPage);
+      const paginatedQnas = await this.qnasRepository.find({
+        where: {
+          space: {
+            id: spaceId,
+          },
+        },
+        relations: {
+          space: true,
+          user: true,
+        },
+        order: {
+          id: 'DESC',
+        },
+        skip: startIndex,
+        take: perPage,
+      });
+      return { totalPage, paginatedQnas };
+    } catch (error) {
+      throw error;
+    }
   }
 
   async findOne(id: number) {
@@ -48,7 +97,9 @@ export class QnasService {
           id,
         },
         relations: {
-          space: true,
+          space: {
+            user: true,
+          },
           user: true,
         },
       });
@@ -75,9 +126,7 @@ export class QnasService {
     try {
       const deletedQna = await this.qnasRepository.delete(id);
       if (!deletedQna.affected) {
-        throw new NotFoundException({
-          description: '삭제할 qna가 없습니다.',
-        });
+        throw new NotFoundException('삭제할 qna가 없습니다.');
       }
     } catch (error) {
       throw error;
